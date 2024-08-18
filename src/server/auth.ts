@@ -3,7 +3,7 @@ import {
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import KeycloakProvider from "next-auth/providers/keycloak";
 
 import { env } from "~/env";
 
@@ -44,9 +44,10 @@ export const authOptions: NextAuthOptions = {
     }),
   },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    KeycloakProvider({
+      clientId: env.KEYCLOAK_ID,
+      clientSecret: env.KEYCLOAK_SECRET,
+      issuer: env.KEYCLOAK_ISSUER,
     }),
     /**
      * ...add more providers here.

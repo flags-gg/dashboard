@@ -10,6 +10,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+
     NEXTAUTH_SECRET:
       process.env.NODE_ENV === "production"
         ? z.string()
@@ -21,8 +22,21 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url()
     ),
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
+
+    KEYCLOAK_ID: z.string(),
+    KEYCLOAK_SECRET: z.string(),
+    KEYCLOAK_ISSUER: z.string(),
+
+    UPLOADTHING_SECRET: z.string(),
+    UPLOADTHING_APP_ID: z.string(),
+
+    STRIPE_KEY: z.string(),
+    STRIPE_SECRET: z.string(),
+
+    FLAGS_AGENT: z.string().optional(),
+    FLAGS_PROJECT: z.string().optional(),
+    FLAGS_ENVIRONMENT: z.string().optional(),
+    FLAGS_SERVER: z.string().optional(),
   },
 
   /**
@@ -40,10 +54,25 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+
+    KEYCLOAK_ID: process.env.KEYCLOAK_ID,
+    KEYCLOAK_SECRET: process.env.KEYCLOAK_SECRET,
+    KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
+
+    UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
+    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+
+    STRIPE_KEY: process.env.STRIPE_KEY,
+    STRIPE_SECRET: process.env.STRIPE_SECRET,
+
+    FLAGS_AGENT: process.env.FLAGS_AGENT,
+    FLAGS_PROJECT: process.env.FLAGS_PROJECT,
+    FLAGS_ENVIRONMENT: process.env.FLAGS_ENVIRONMENT,
+    FLAGS_SERVER: process.env.FLAGS_SERVER,
+
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
