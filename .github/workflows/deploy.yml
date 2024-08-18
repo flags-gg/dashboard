@@ -1,0 +1,85 @@
+name: Deploy
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Extract tag
+        id: extract_tag
+        run: echo "::set-output name=tag::${GITHUB_REF/refs\/tags\//}"
+      - name: Meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: containers.chewed-k8s.net/flags-gg/dashboard
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{raw}}
+            type=sha
+      - name: QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v3
+      - name: Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-buildx-
+      - name: Login Github
+        uses: docker/login-action@v3
+        with:
+          registry: containers.chewed-k8s.net
+          username: robot$flags-gg+github
+          password: ${{ secrets.CONTAINERS_KEY }}
+      - name: Build and Push
+        id: docker_build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          builder: ${{ steps.buildx.outputs.name }}
+          file: ./k8s/Containerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          build-args: |
+            GIT_VERSION=${{ startsWith(github.ref, 'refs/tags/') && steps.extract_tag.outputs.tag || github.sha }}
+            GIT_BUILD=${{ github.sha }}
+            SERVICE_NAME=frontend
+            KEYCLOAK_SECRET=${{ secrets.KEYCLOAK_SECRET }}
+            FLAGS_PROJECT_ID=b0c5020e-760e-4156-a88b-344fb725a9b7
+            FLAGS_DASHBOARD_ID=c778cf4b-83f1-4c53-951e-604102c84898
+            FLAGS_DASHBOARD_ENVIRONMENT_ID=81aca98e-3b01-4c3c-a4cf-c7eee26185c5
+            FLAGS_FRONTEND_ID=a7978e82-bee0-4357-808d-53ee33d3bc55
+            FLAGS_FRONTEND_ENVIRONMENT_ID=f8f84114-0706-40b7-a929-995d675f1f6d
+            FLAGS_SERVER=https://api.flags.gg/v1
+            UPLOADTHING_KEY=${{ secrets.UPLOADTHING_KEY }}
+            UPLOADTHING_SECRET=${{ secrets.UPLOADTHING_SECRET }}
+            STRIP_KEY=${{ secrets.STRIP_KEY }}
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    steps:
+#      - name: Deploy
+#        uses: k8sdeploy/github-action@v1
+#        with:
+#          service-namespace: k8sdeploy
+#          service-name: hooks-service
+#          k8sdeploy-key: ${{ secrets.K8SDEPLOY_KEY }}
+#          k8sdeploy-secret: ${{ secrets.K8SDEPLOY_SECRET }}
+#          k8sdeploy-id: ${{ secrets.K8SDEPLOY_ID }}
+#          image-hash: ${{ github.sha }}
+#          image-tag: ${{ github.ref_name }}
+

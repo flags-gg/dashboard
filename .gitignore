@@ -24,3 +24,5 @@ yarn-error.log*
 keycloak.secret
 .commit_hash
 .latest_tag
+.next/cache/*
+.next/*

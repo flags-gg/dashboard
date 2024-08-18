@@ -1,0 +1,70 @@
+# Base
+FROM containers.chewed-k8s.net/docker_hub_cache/library/node:20-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+## Copy the files
+WORKDIR /frontend
+COPY package*.json ./
+COPY pnpm-lock.yaml ./
+COPY public ./public
+COPY src ./src
+COPY tsconfig.json ./
+COPY vite.config.ts ./
+COPY tsconfig.json ./
+COPY tsconfig.node.json ./
+COPY .eslintrc.cjs ./
+COPY index.html ./
+COPY k8s/serve.json ./serve.json
+
+# Build
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+## Set Args
+ARG KEYCLOAK_SECRET
+ARG GIT_BUILD
+ARG GIT_VERSION
+
+ARG FLAGS_PROJECT_ID
+ARG FLAGS_DASHBOARD_ID
+ARG FLAGS_DASHBOARD_ENVIRONMENT_ID
+ARG FLAGS_FRONTEND_ID
+ARG FLAGS_FRONTEND_ENVIRONMENT_ID
+ARG FLAGS_SERVER
+
+ARG UPLOADTHING_KEY
+ARG UPLOADTHING_SECRET
+
+ARG STRIP_KEY
+ARG STRIP_SECRET
+
+## Set Envs for build
+ENV VITE_KEYCLOAK_SECRET=$KEYCLOAK_SECRET
+ENV VITE_COMMIT_HASH=$GIT_BUILD
+ENV VITE_GIT_TAG=$GIT_VERSION
+
+ENV VITE_FLAGS_PROJECT_ID=$FLAGS_PROJECT_ID
+ENV VITE_FLAGS_DASHBOARD_ID=$FLAGS_DASHBOARD_ID
+ENV VITE_FLAGS_DASHBOARD_ENVIRONMENT_ID=$FLAGS_DASHBOARD_ENVIRONMENT_ID
+ENV VITE_FLAGS_FRONTEND_ID=$FLAGS_FRONTEND_ID
+ENV VITE_FLAGS_FRONTEND_ENVIRONMENT_ID=$FLAGS_FRONTEND_ENVIRONMENT_ID
+ENV VITE_FLAGS_API_SERVER=$FLAGS_SERVER
+
+ENV VITE_UPLOADTHING_APP_ID=$UPLOADTHING_KEY
+ENV VITE_UPLOADTHING_SECRET=$UPLOADTHING_SECRET
+
+ENV VITE_STRIPE_KEY=$STRIP_KEY
+ENV VITE_STRIPE_SECRET=$STRIP_SECRET
+
+RUN pnpm build
+
+# Runner
+FROM containers.chewed-k8s.net/docker_hub_cache/library/node:20-alpine AS runner
+WORKDIR /runner
+COPY --from=build /frontend/dist /runner
+COPY --from=build /frontend/serve.json /runner/serve.json
+RUN npm install -g serve
+
+CMD ["serve", "-l", "80", "-u", "/runner", "-c", "/runner/serve.json"]

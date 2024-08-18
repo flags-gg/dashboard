@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: flags-gg
+  labels:
+    name: dashboard
+    app: dashboard
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 3
+  selector:
+    matchLabels:
+      name: dashboard
+  template:
+    metadata:
+      labels:
+        name: dashboard
+        app: dashboard
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+        - name: frontend
+          image: containers.chewed-k8s.net/flags-gg/dashboard:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: flags-gg
+  labels:
+    name: dashboard
+    app: dashboard
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: dashboard
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard
+  namespace: flags-gg
+  annotations:
+    cert-manager.io/cluster-issuer: live-issuer
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app: dashboard
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - dashboard.flags.gg
+      secretName: dashboard-tls
+  rules:
+    - host: dashboard.flags.gg
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard
+                port:
+                  number: 80
