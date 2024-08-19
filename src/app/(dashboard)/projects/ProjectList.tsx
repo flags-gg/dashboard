@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "~/components/ui/table";
 
 type Project = {
   id: number
@@ -17,23 +18,26 @@ type ProjectsData = {
 export default function ProjectList({ projects }: { projects: ProjectsData }) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
-  console.info("projects", projects)
-
   return (
-    <div>
-      <ul>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableCell></TableCell>
+          <TableCell>Name</TableCell>
+          <TableCell>Project ID</TableCell>
+          <TableCell>Agent Limit</TableCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {projects.projects.map(project => (
-          <li key={project.id} onClick={() => setSelectedProject(project)}>
-            {project.name}
-          </li>
+          <TableRow key={project.id} onClick={() => setSelectedProject(project)}>
+            <TableCell><img src={project.logo} alt={project.name} width={"50px"} height={"50px"}/></TableCell>
+            <TableCell>{project.name}</TableCell>
+            <TableCell>{project.project_id}</TableCell>
+            <TableCell>{project.agent_limit}</TableCell>
+          </TableRow>
         ))}
-      </ul>
-      {selectedProject && (
-        <div>
-          <h2>Selected Project: {selectedProject.name}</h2>
-          {/* Add more project details here */}
-        </div>
-      )}
-    </div>
+      </TableBody>
+    </Table>
   )
 }
