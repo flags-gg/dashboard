@@ -1,22 +1,17 @@
 'use client'
 
-import { useState } from 'react'
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "~/components/ui/table";
-
-type Project = {
-  id: number
-  name: string
-  project_id: string
-  agent_limit: number
-  logo: string
-}
+import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
+import {useRouter} from "next/navigation";
+import {useAtom} from "jotai";
+import {type IProject, projectAtom} from "~/lib/statemanager";
 
 type ProjectsData = {
-  projects: Project[]
+  projects: IProject[]
 }
 
 export default function ProjectList({ projects }: { projects: ProjectsData }) {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const router = useRouter()
+  const [, setSelectedProject] = useAtom(projectAtom);
 
   return (
     <Table>
@@ -30,7 +25,10 @@ export default function ProjectList({ projects }: { projects: ProjectsData }) {
       </TableHeader>
       <TableBody>
         {projects.projects.map(project => (
-          <TableRow key={project.id} onClick={() => setSelectedProject(project)}>
+          <TableRow key={project.id} onClick={() => {
+            setSelectedProject(project)
+            router.push(`/project/${project.project_id}`)}
+          } style={{cursor: "pointer"}}>
             <TableCell><img src={project.logo} alt={project.name} width={"50px"} height={"50px"}/></TableCell>
             <TableCell>{project.name}</TableCell>
             <TableCell>{project.project_id}</TableCell>

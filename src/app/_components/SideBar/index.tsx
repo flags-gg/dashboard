@@ -54,8 +54,8 @@ export default function SideBar() {
             <TooltipContent sideOffset={4}>Projects</TooltipContent>
           </Tooltip>
         </Link>
-        {selectedProject && (
-          <Link href={`/project/${selectedProject.id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
+        {selectedProject.project_id && (
+          <Link href={`/project/${selectedProject.project_id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
             <Tooltip>
               <TooltipTrigger>
                 <SquareKanban className={"h-5 w-5"} />
@@ -65,7 +65,7 @@ export default function SideBar() {
             </Tooltip>
           </Link>
         )}
-        {selectedAgent && (
+        {selectedAgent.agent_id && (
           <Link href={`/agent/${selectedAgent.id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
             <Tooltip>
               <TooltipTrigger>
@@ -76,7 +76,7 @@ export default function SideBar() {
             </Tooltip>
           </Link>
         )}
-        {selectedEnvironment && (
+        {selectedEnvironment.environment_id && (
           <Link href={`/environment/${selectedEnvironment.id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
             <Tooltip>
               <TooltipTrigger>
@@ -87,7 +87,7 @@ export default function SideBar() {
             </Tooltip>
           </Link>
         )}
-        {selectedMenu && (
+        {selectedMenu.menu_id && (
           <Link href={`/secretmenu/${selectedMenu.id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
             <Tooltip>
               <TooltipTrigger>
