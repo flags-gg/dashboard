@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
 import { authOptions } from "~/server/auth"
-import ProjectListContainer from './ProjectListContainer'
+import ProjectsInfo from "./Info";
+import ProjectList from "./ProjectList";
 
 export default async function ProjectsPage() {
   const session = await getServerSession(authOptions)
@@ -11,9 +12,12 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <div className={"grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2"}>
-      <h1>Projects</h1>
-      <ProjectListContainer session={session} />
-    </div>
+    <>
+      <header className={"col-span-2"}>
+        <h1 className={"text-2xl font-semibold"}>Projects</h1>
+      </header>
+      <ProjectList session={session} />
+      <ProjectsInfo session={session} />
+    </>
   )
 }

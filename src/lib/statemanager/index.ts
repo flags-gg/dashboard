@@ -1,18 +1,38 @@
 "use client"
 import {atomWithStorage} from "jotai/utils";
 
+export type CompanyLimits = {
+  projects: {
+    allowed: number;
+    used: number;
+  };
+  agents: {
+    allowed: number;
+    used: number;
+  };
+  environments: {
+    allowed: number;
+    used: number;
+  };
+};
+
 export interface IProject {
   id: string;
   name: string;
   project_id: string;
   agent_limit: number;
+  agents_used?: number;
   logo: string;
+}
+export type ProjectsData = {
+  projects: IProject[]
 }
 export const projectAtom = atomWithStorage<IProject>("project", {
   id: '',
   name: '',
   project_id: '',
   agent_limit: 0,
+  agents_used: 0,
   logo: ''
 })
 

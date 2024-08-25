@@ -1,9 +1,9 @@
-import {Session} from 'next-auth'
+import {type Session} from 'next-auth'
+import {env} from "~/env";
+import {type ProjectsData} from "~/lib/statemanager";
 
-export async function getProjects(session: Session) {
-  const apiUrl = process.env.NODE_ENV === 'production'
-    ? 'https://api.flags.gg/v1/projects'
-    : 'http://localhost:8080/projects'
+export async function getProjects(session: Session): Promise<ProjectsData> {
+  const apiUrl = `${env.FLAGS_SERVER}/projects`
 
   if (!session || !session.user) {
     throw new Error('No session found')
@@ -11,6 +11,7 @@ export async function getProjects(session: Session) {
 
   const res = await fetch(apiUrl, {
     headers: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       'x-user-access-token': session.user.token,
       'x-user-subject': session.user.id,
     },
@@ -21,5 +22,6 @@ export async function getProjects(session: Session) {
     throw new Error('Failed to fetch projects')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }

@@ -11,6 +11,9 @@ import SideBar from "~/app/_components/SideBar";
 import {TooltipProvider} from "~/components/ui/tooltip";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import QueryProvider from "./QueryProvider";
+import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
+import {extractRouterConfig} from "uploadthing/server";
+import {ourFileRouter} from "~/app/api/uploadthing/core";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -35,7 +38,8 @@ export default async function RootLayout({
           <QueryProvider>
             <TooltipProvider>
               {session ? (
-                <div className="flex flex-col min-h-screen w-full">
+                <div className="flex min-h-screen w-full flex-col bg-muted/40">
+                  <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
                   <SideBar />
                   <div className={"flex flex-col sm:gap-4 sm:py-4 sm:pl-14"}>
                     <HeaderBar />

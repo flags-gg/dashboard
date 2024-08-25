@@ -36,7 +36,7 @@ export const env = createEnv({
     FLAGS_AGENT: z.string().optional(),
     FLAGS_PROJECT: z.string().optional(),
     FLAGS_ENVIRONMENT: z.string().optional(),
-    FLAGS_SERVER: z.string().optional(),
+    FLAGS_SERVER: z.string().default("https://api.flags.gg/v1"),
   },
 
   /**
