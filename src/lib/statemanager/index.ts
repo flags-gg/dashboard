@@ -58,27 +58,35 @@ export const agentAtom = atomWithStorage<FlagAgent>("agent", {
     name: '',
   }
 })
+export type AgentsData = {
+  agents: FlagAgent[]
+}
 
 export interface IEnvironment {
   id: string;
   name: string;
   environment_id: string;
-  flags: [];
+  enabled: boolean;
   secret_menu: {
     enabled: boolean;
     id: string;
-  }
+  },
+  flags: [];
 }
 export const environmentAtom = atomWithStorage<IEnvironment>("environment", {
   id: '',
   name: '',
   environment_id: '',
-  flags: [],
+  enabled: false,
   secret_menu: {
     enabled: false,
     id: '',
-  }
+  },
+  flags: [],
 })
+export type EnvironmentsData = {
+  environments: IEnvironment[]
+}
 
 export interface secretMenu {
   id: string,
@@ -104,3 +112,14 @@ export const menuAtom = atomWithStorage<secretMenu>("secretMenu", {
     style_id: '',
   }
 })
+
+export interface Flag {
+  enabled: boolean,
+  details: {
+    name: string,
+    id: string,
+  }
+}
+export type Flags = {
+  flags: Flag[]
+}

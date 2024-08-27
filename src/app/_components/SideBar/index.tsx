@@ -36,15 +36,6 @@ export default function SideBar() {
             <TooltipContent sideOffset={4}>Company</TooltipContent>
           </Tooltip>
         </Link>
-        <Link href={"/company/account"} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-          <Tooltip>
-            <TooltipTrigger>
-              <Building className={"h-5 w-5"} />
-              <span className={"sr-only"}>Company Account</span>
-            </TooltipTrigger>
-            <TooltipContent sideOffset={4}>Company Account</TooltipContent>
-          </Tooltip>
-        </Link>
         <Link href={"/projects"} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
           <Tooltip>
             <TooltipTrigger>

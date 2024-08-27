@@ -1,9 +1,9 @@
 import {type Session} from 'next-auth'
 import {env} from "~/env";
-import {type ProjectsData} from "~/lib/statemanager";
+import {type AgentsData} from "~/lib/statemanager";
 
-export async function getProjects(session: Session): Promise<ProjectsData> {
-  const apiUrl = `${env.FLAGS_SERVER}/projects`
+export async function getAgents(session: Session, project_id: string): Promise<AgentsData> {
+  const apiUrl = `${env.FLAGS_SERVER}/project/${project_id}/agents`
 
   if (!session || !session.user) {
     throw new Error('No session found')
@@ -18,7 +18,7 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
   })
 
   if (!res.ok) {
-    throw new Error('Failed to fetch projects')
+    throw new Error('Failed to fetch agents')
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return

@@ -1,6 +1,5 @@
 import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
 import {type ProjectsData} from "~/lib/statemanager";
-import {Separator} from "~/components/ui/separator";
 import {Card} from "~/components/ui/card";
 import {type Session} from "next-auth";
 import {getProjects} from "~/app/api/project/project";
@@ -52,7 +51,6 @@ export default async function ProjectList({ session }: { session: Session }) {
             ))}
           </TableBody>
         </Table>
-        <Separator />
       </Card>
     </div>
   )

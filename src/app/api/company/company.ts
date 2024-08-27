@@ -11,8 +11,7 @@ export async function getCompanyLimits(session: Session): Promise<CompanyLimits>
 
   const res = await fetch(apiUrl, {
     headers: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      'x-user-access-token': session.user.token,
+      'x-user-access-token': session.user.access_token,
       'x-user-subject': session.user.id,
     },
     cache: 'no-store' // or 'force-cache' if you want to enable caching
