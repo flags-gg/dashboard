@@ -1,19 +1,33 @@
-import {type Session} from "next-auth";
-import {Card, CardContent, CardHeader} from "~/components/ui/card";
-import {Separator} from "~/components/ui/separator";
-import CreateFlag from "~/app/(dashboard)/flags/create";
+"use client"
 
-export default async function EnvironmentInfo({ session, environment_id }: { session: Session, environment_id: string }) {
+import {environmentAtom, type IEnvironment} from "~/lib/statemanager";
+import {EnvironmentSwitch} from "~/app/(dashboard)/environment/[environment_id]/switch";
+import {type Session} from "next-auth";
+import {useAtom} from "jotai";
+import {useEffect} from "react";
+
+export default function EnvironmentInfo({environmentInfo, session}: {environmentInfo: IEnvironment, session: Session}) {
+  const [, setSelectedEnvironment] = useAtom(environmentAtom)
+  useEffect(() => {
+    setSelectedEnvironment(environmentInfo)
+  }, [environmentInfo, setSelectedEnvironment])
+
   return (
-    <Card>
-      <CardHeader>
-        <h2 className={"text-xl font-semibold"}>Agent Info</h2>
-      </CardHeader>
-      <CardContent>
-        Environment Info goes here
-        <Separator />
-        <CreateFlag session={session} environment_id={environment_id} />
-      </CardContent>
-    </Card>
-  )
+    <div className={"grid gap-3"}>
+      <ul className={"grid gap-3"}>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Environment ID</span>
+          <span>{environmentInfo.environment_id}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Enabled</span>
+          <span><EnvironmentSwitch session={session} environment_id={environmentInfo.environment_id} /></span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Secret Menu</span>
+          <span>{environmentInfo.secret_menu.enabled ? "Enabled" : "Disabled"}</span>
+        </li>
+      </ul>
+    </div>
+  );
 }

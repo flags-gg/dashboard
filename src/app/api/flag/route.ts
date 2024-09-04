@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import {env} from "~/env";
-import {Flag} from "~/lib/statemanager";
+import {type Flag} from "~/lib/statemanager";
 
 type UpdateFlagRequest = {
   flag: Flag,
@@ -14,6 +14,7 @@ export async function POST(request: Request) {
 
   try {
     const apiUrl = `${env.FLAGS_SERVER}/flag/${flag.details.id}`;
+
     const response = await fetch(apiUrl, {
       method: 'PATCH',
       headers: {
@@ -25,10 +26,11 @@ export async function POST(request: Request) {
         enabled: !flag.enabled,
         name: flag.details.name,
       }),
+      cache: 'no-store',
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update flag');
+      return new Error('Failed to update flag');
     }
 
     return NextResponse.json({ message: 'Flag updated successfully' });

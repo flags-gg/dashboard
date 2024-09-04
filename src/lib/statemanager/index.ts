@@ -40,6 +40,7 @@ export interface FlagAgent {
   id: string;
   name: string;
   agent_id: string;
+  request_limit: number;
   environment_limit: number;
   environments: []
   project_info: {
@@ -51,6 +52,7 @@ export const agentAtom = atomWithStorage<FlagAgent>("agent", {
   id: '',
   name: '',
   agent_id: '',
+  request_limit: 0,
   environment_limit: 0,
   environments: [],
   project_info: {
@@ -69,7 +71,7 @@ export interface IEnvironment {
   enabled: boolean;
   secret_menu: {
     enabled: boolean;
-    id: string;
+    menu_id: string;
   },
   flags: [];
 }
@@ -80,7 +82,7 @@ export const environmentAtom = atomWithStorage<IEnvironment>("environment", {
   enabled: false,
   secret_menu: {
     enabled: false,
-    id: '',
+    menu_id: '',
   },
   flags: [],
 })

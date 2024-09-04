@@ -4,8 +4,12 @@ import {type Flags} from "~/lib/statemanager";
 
 export async function getFlags(session: Session, environment_id: string): Promise<Flags> {
   const apiUrl = `${env.FLAGS_SERVER}/environment/${environment_id}/flags`
+
   if (!session || !session.user) {
     throw new Error('No session found')
+  }
+  if (!session.user.access_token || !session.user.id) {
+    throw new Error('No access token or user id found')
   }
 
   const res = await fetch(apiUrl, {
@@ -15,19 +19,21 @@ export async function getFlags(session: Session, environment_id: string): Promis
     },
     cache: 'no-store'
   })
-
   if (!res.ok) {
     throw new Error('Failed to fetch flags')
   }
-
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
 
-export async function updateFlag(session: Session, flag_id, flagEnabled): Promise<void> {
+export async function updateFlag(session: Session, flag_id: string, flagEnabled: boolean): Promise<void> {
   const apiUrl = `${env.FLAGS_SERVER}/flag/${flag_id}`
+
   if (!session || !session.user) {
     throw new Error('No session found')
+  }
+  if (!session.user.access_token || !session.user.id) {
+    throw new Error('No access token or user id found')
   }
 
   const res = await fetch(apiUrl, {
@@ -37,11 +43,12 @@ export async function updateFlag(session: Session, flag_id, flagEnabled): Promis
       'x-user-access-token': session.user.access_token,
       'x-user-subject': session.user.id,
     },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     body: JSON.stringify({enabled: flagEnabled}),
     cache: 'no-store'
   })
-
   if (!res.ok) {
     throw new Error('Failed to update flag')
   }
+  return res.json()
 }

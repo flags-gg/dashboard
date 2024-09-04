@@ -1,19 +1,36 @@
-import {type Session} from "next-auth";
-import {Card, CardContent, CardHeader} from "~/components/ui/card";
-import {Separator} from "~/components/ui/separator";
-import CreateEnvironment from "~/app/(dashboard)/environment/create";
+"use client"
 
-export default async function AgentInfo({ session, agent_id }: { session: Session, agent_id: string }) {
+import { agentAtom } from "~/lib/statemanager";
+import { useAtom } from "jotai";
+import { type FlagAgent } from "~/lib/statemanager";
+import {useEffect} from "react";
+
+export default function AgentInfo({agentInfo}: {agentInfo: FlagAgent}) {
+  const [, setSelectedAgent] = useAtom(agentAtom);
+  useEffect(() => {
+    setSelectedAgent(agentInfo);
+  }, [agentInfo, setSelectedAgent]);
+
   return (
-    <Card>
-      <CardHeader>
-        <h2 className={"text-xl font-semibold"}>Agent Info</h2>
-      </CardHeader>
-      <CardContent>
-        Agent Info goes here
-        <Separator />
-        <CreateEnvironment session={session} agent_id={agent_id} />
-      </CardContent>
-    </Card>
-  )
+    <div className={"grid gap-3"}>
+      <ul className={"grid gap-3"}>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Agent ID</span>
+          <span>{agentInfo.agent_id}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Environment Limit</span>
+          <span>{agentInfo.environment_limit}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Environments Used</span>
+          <span>{agentInfo.environments ? agentInfo.environments.length : 0}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Request Limit</span>
+          <span>{agentInfo.request_limit.toLocaleString()}</span>
+        </li>
+      </ul>
+    </div>
+  );
 }

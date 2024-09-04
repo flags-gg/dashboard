@@ -3,10 +3,11 @@
 import {Switch} from "~/components/ui/switch";
 import {type Session} from "next-auth";
 import {type Flag} from "~/lib/statemanager";
+import {useState} from "react";
 
 async function updateFlag(session: Session, flag: Flag) {
   try {
-    const response = await fetch('/api/updateFlag', {
+    const response = await fetch('/api/flag', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -16,9 +17,10 @@ async function updateFlag(session: Session, flag: Flag) {
         sessionToken: session.user.access_token,
         userId: session.user.id,
       }),
+      cache: 'no-store',
     })
     if (!response.ok) {
-      throw new Error('Failed to update flag')
+      return new Error('Failed to update flag')
     }
   } catch (e) {
     throw new Error('Failed to update flag')
@@ -26,15 +28,30 @@ async function updateFlag(session: Session, flag: Flag) {
 }
 
 export function FlagSwitch({session, flag}: { session: Session, flag: Flag }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [flagData, setFlagData] = useState(flag);
+
+  const handleChange = async () => {
+    if (isUpdating) {
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      await updateFlag(session, flagData);
+    } catch (e) {
+      console.error('Error updating flag:', e);
+    } finally {
+      setIsUpdating(false);
+      setFlagData({...flagData, enabled: !flagData.enabled});
+    }
+  }
+
   return (
-    <Switch defaultChecked={flag.enabled} name={flag.details.id} onCheckedChange={() => {
-      updateFlag(session, flag)
-          .then(r => {
-            console.info("Flag updated", r);
-          })
-          .catch((e) => {
-            console.error("Error updating flag", e);
-          });
-    }} />
+    <Switch
+      defaultChecked={flagData.enabled}
+      name={flagData.details.id}
+      onCheckedChange={handleChange}
+      disabled={isUpdating} />
   )
 }

@@ -8,6 +8,9 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
   if (!session || !session.user) {
     throw new Error('No session found')
   }
+  if (!session.user.access_token || !session.user.id) {
+    throw new Error('No access token or user id found')
+  }
 
   const res = await fetch(apiUrl, {
     headers: {
@@ -16,11 +19,9 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
     },
     cache: 'no-store'
   })
-
   if (!res.ok) {
     throw new Error('Failed to fetch projects')
   }
-
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
