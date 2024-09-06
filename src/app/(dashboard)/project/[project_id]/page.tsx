@@ -2,7 +2,7 @@ import List from "~/app/(dashboard)/agent/list";
 import {getServerSession} from "next-auth/next";
 import {authOptions} from "~/server/auth";
 import {redirect} from "next/navigation";
-import ProjectInfo from "./Info";
+import InfoBox from "./infoBox";
 
 export default async function ProjectPage({params}: {params: {project_id: string}}) {
   const session = await getServerSession(authOptions)
@@ -14,10 +14,10 @@ export default async function ProjectPage({params}: {params: {project_id: string
   return (
     <>
       <header className={"col-span-2"}>
-        <h1 className={"text-2xl font-semibold"}>Projects</h1>
+        <h1 className={"text-2xl font-semibold"}>Agents</h1>
       </header>
       <List session={session} project_id={params.project_id} />
-      <ProjectInfo session={session} project_id={params.project_id} />
+      <InfoBox session={session} project_id={params.project_id} />
     </>
   )
 }
