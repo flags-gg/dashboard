@@ -13,6 +13,34 @@ interface IError {
   title: string
 }
 
+interface uploadImageProps {
+  flagServer: string
+  projectId: string
+  accessToken: string
+  userId: string
+  imageUrl: string
+}
+function uploadImage({flagServer, projectId, accessToken, userId, imageUrl}: uploadImageProps): Error | void {
+  fetch(`${flagServer}/project/${projectId}/image`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-user-access-token": accessToken,
+      "x-user-subject": userId,
+    },
+    body: JSON.stringify({image: imageUrl}),
+  }).then((response) => {
+    if (!response.ok) {
+      return new Error(`HTTP error! status: ${response.status}`);
+    }
+    //return response.json();
+  }).then((data) => {
+    document.getElementById("projectImage")!.setAttribute("src", imageUrl)
+  }).catch((error: Error) => {
+    return error
+  })
+}
+
 export default function ProjectInfo({session, projectInfo, flagServer}: {session: Session, projectInfo: IProject, flagServer: string}) {
   if (!session) {
     throw new Error('No session found')
@@ -73,31 +101,21 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
                 <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
-                    fetch(`${flagServer}/project/${projectInfo.project_id}/image`, {
-                      method: "PUT",
-                      headers: {
-                        "Content-Type": "application/json",
-                        "x-user-access-token": session.user.access_token,
-                        "x-user-subject": session.user.id,
-                      },
-                      body: JSON.stringify({image: res[0].url}),
-                    }).then((response) => {
-                      if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                      }
-                      return response.json();
-                    }).then((data) => {
-                      document.getElementById("projectImage")!.setAttribute("src", res[0].url)
-                    }).catch((error) => {
+                    const upload = uploadImage({
+                      flagServer: flagServer,
+                      projectId: projectInfo.project_id,
+                      accessToken: session.user.access_token!,
+                      userId: session.user.id,
+                      imageUrl: res[0].url,
+                    })
+                    if (upload instanceof Error) {
                       setShowError(true)
                       setErrorInfo({
-                        title: "Error updating image",
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                        message: error.message,
+                        title: "Error uploading image",
+                        message: upload.message,
                       })
-                    }).finally(() => {
                       setIconOpen(false)
-                    });
+                    }
                   }}
                   onUploadError={(error: Error) => {
                     setShowError(true)
@@ -105,6 +123,7 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
                       title: "Error uploading image",
                       message: error.message,
                     })
+                    setIconOpen(false)
                   }} />
               </div>
             </DialogContent>
