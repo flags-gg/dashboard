@@ -1,6 +1,5 @@
-import {CompanyLimits, type ProjectsData} from "~/lib/statemanager";
+import {type CompanyLimits} from "~/lib/statemanager";
 import {type Session} from "next-auth";
-import {getProjects} from "~/app/api/project/project";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
 import ProjectsInfo from "./info";
 import CreateProject from "~/app/(dashboard)/project/create";

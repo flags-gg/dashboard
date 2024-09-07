@@ -4,8 +4,6 @@ import { getServerAuthSession } from "~/server/auth";
 
 export async function middleware(req: NextRequest) {
   const session = await getServerAuthSession();
-  const isRootPath = req.nextUrl.pathname === '/';
-
   const protectedPaths = [
     '/company',
     '/company/setup',

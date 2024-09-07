@@ -1,4 +1,5 @@
 "use client"
+
 import {atomWithStorage} from "jotai/utils";
 
 export type CompanyLimits = {
@@ -121,9 +122,6 @@ export interface Flag {
     name: string,
     id: string,
   }
-}
-export type Flags = {
-  flags: Flag[]
 }
 
 export interface BreadCrumb {

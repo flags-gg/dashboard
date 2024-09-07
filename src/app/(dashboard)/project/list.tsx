@@ -4,6 +4,7 @@ import {Card} from "~/components/ui/card";
 import {type Session} from "next-auth";
 import {getProjects} from "~/app/api/project/project";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function ProjectList({ session }: { session: Session }) {
   let projects: ProjectsData;
@@ -32,7 +33,7 @@ export default async function ProjectList({ session }: { session: Session }) {
               <TableRow key={project.id}>
                 <TableCell className={"place-content-center justify-center"} style={{paddingLeft: "3%"}}>
                   <Link href={`/project/${project.project_id}`}>
-                    <img src={project.logo} alt={project.name} width={"50px"} height={"50px"} />
+                    <Image src={project.logo} alt={project.name} width={50} height={50} />
                   </Link>
                 </TableCell>
                 <TableCell>
