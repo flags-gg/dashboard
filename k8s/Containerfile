@@ -11,11 +11,13 @@ COPY pnpm-lock.yaml ./
 COPY public ./public
 COPY src ./src
 COPY tsconfig.json ./
-COPY vite.config.ts ./
-COPY tsconfig.json ./
-COPY tsconfig.node.json ./
+COPY next.config.js ./
 COPY .eslintrc.cjs ./
 COPY index.html ./
+COPY postcss.config.cjs ./
+COPY tailwind.config.js ./
+COPY prettier.config.js ./
+COPY components.json ./
 COPY k8s/serve.json ./serve.json
 
 # Build
