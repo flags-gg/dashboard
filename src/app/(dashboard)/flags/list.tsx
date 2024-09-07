@@ -1,5 +1,5 @@
 import {type Session} from 'next-auth'
-import { type Flag, type Flags } from "~/lib/statemanager";
+import { type Flag} from "~/lib/statemanager";
 import { Card } from "~/components/ui/card";
 import {
   Table,
@@ -19,7 +19,7 @@ export default async function FlagsList({
   session: Session;
   environment_id: string;
 }) {
-  let flags: Flags;
+  let flags: Flag[] = [];
   try {
     flags = await getFlags(session, environment_id);
   } catch (e) {
@@ -38,6 +38,7 @@ export default async function FlagsList({
             </TableRow>
           </TableHeader>
           <TableBody>
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
             {flags.map((flag: Flag) => (
               <TableRow key={flag.details.id}>
                 <TableCell>

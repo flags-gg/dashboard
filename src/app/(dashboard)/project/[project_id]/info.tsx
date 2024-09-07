@@ -4,9 +4,17 @@ import {type Session} from "next-auth";
 import {type BreadCrumb, breadCrumbAtom, type IProject, projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useEffect, useState} from "react";
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "~/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from "~/components/ui/dialog";
 import {UploadButton} from "~/utils/uploadthing";
 import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
+import Image from "next/image";
 
 interface IError {
   message: string
@@ -33,9 +41,6 @@ function uploadImage({flagServer, projectId, accessToken, userId, imageUrl}: upl
     if (!response.ok) {
       return new Error(`HTTP error! status: ${response.status}`);
     }
-    //return response.json();
-  }).then((data) => {
-    document.getElementById("projectImage")!.setAttribute("src", imageUrl)
   }).catch((error: Error) => {
     return error
   })
@@ -64,6 +69,7 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
   const [iconOpen, setIconOpen] = useState(false)
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
+  const [imageURL, setImageURL] = useState(projectInfo.logo)
 
   if (showError) {
     return (
@@ -89,7 +95,7 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
           <span className={"text-muted-foreground"}>Logo</span>
           <Dialog open={iconOpen} onOpenChange={setIconOpen}>
             <DialogTrigger asChild>
-              <img id={"projectImage"} src={projectInfo.logo} alt={projectInfo.name} width={"50px"} height={"50px"} style={{
+              <Image src={imageURL} alt={projectInfo.name} width={50} height={50} style={{
                 "cursor": "pointer",
               }} />
             </DialogTrigger>
@@ -97,10 +103,22 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
               <DialogHeader>
                 <DialogTitle>Update Project Image</DialogTitle>
               </DialogHeader>
+              <DialogDescription>
+                Upload a new image for your project.
+              </DialogDescription>
               <div className={"grid gap-4 py-4"}>
                 <UploadButton
                   endpoint="imageUploader"
                   onClientUploadComplete={(res) => {
+                    if (!res?.[0]?.url) {
+                      setShowError(true)
+                      setErrorInfo({
+                        title: "Error uploading image",
+                        message: "No image URL returned",
+                      })
+                      setIconOpen(false)
+                      return
+                    }
                     const upload = uploadImage({
                       flagServer: flagServer,
                       projectId: projectInfo.project_id,
@@ -114,8 +132,9 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
                         title: "Error uploading image",
                         message: upload.message,
                       })
-                      setIconOpen(false)
                     }
+                    setIconOpen(false)
+                    setImageURL(res[0].url)
                   }}
                   onUploadError={(error: Error) => {
                     setShowError(true)

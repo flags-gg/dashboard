@@ -1,6 +1,6 @@
 import {type Session} from 'next-auth'
 import {env} from "~/env";
-import {IProject, type ProjectsData} from "~/lib/statemanager";
+import {type IProject, type ProjectsData} from "~/lib/statemanager";
 
 export async function getProjects(session: Session): Promise<ProjectsData> {
   const apiUrl = `${env.FLAGS_SERVER}/projects`

@@ -59,13 +59,20 @@ tasks:
           --build-arg GIT_VERSION={{.LATEST_TAG}} \
           --build-arg GIT_BUILD={{.COMMIT_HASH}} \
           --build-arg SERVICE_NAME={{.SERVICE_NAME}} \
+          --build-arg KEYCLOAK_ISSUER={{.KEYCLOAK_ISSUER}} \
           --build-arg KEYCLOAK_SECRET={{.KEYCLOAK_SECRET}} \
+          --build-arg KEYCLOAK_ID={{.KEYCLOAK_ID}} \
           --build-arg FLAGS_SERVER="https://api.flags.gg/v1" \
           --build-arg FLAGS_PROJECT_ID=b0c5020e-760e-4156-a88b-344fb725a9b7 \
           --build-arg FLAGS_DASHBOARD_ID=c778cf4b-83f1-4c53-951e-604102c84898 \
           --build-arg FLAGS_DASHBOARD_ENVIRONMENT_ID=81aca98e-3b01-4c3c-a4cf-c7eee26185c5 \
-          --build-arg FLAGS_FRONTEND_ID=a7978e82-bee0-4357-808d-53ee33d3bc55 \
-          --build-arg FLAGS_FRONTEND_ENVIRONMENT_ID=f8f84114-0706-40b7-a929-995d675f1f6d \
+          --build-arg NEXT_PUBLIC_FLAGS_SERVER=https://api.flags.gg/v1 \
+          --build-arg NEXTAUTH_URL=http://localhost:3000 \
+          --build-arg NEXTAUTH_SECRET={{.NEXTAUTH_SECRET}} \
+          --build-arg UPLOADTHING_APP_ID={{.UPLOADTHING_APP_ID}} \
+          --build-arg UPLOADTHING_SECRET={{.UPLOADTHING_SECRET}} \
+          --build-arg STRIPE_KEY={{.STRIPE_KEY}} \
+          --build-arg STRIPE_SECRET={{.STRIPE_SECRET}} \
           -f ./k8s/Containerfile .
       - nerdctl tag containers.chewed-k8s.net/{{.NAMESPACE}}/{{.SERVICE_NAME}}:{{.COMMIT_HASH}} containers.chewed-k8s.net/{{.NAMESPACE}}/{{.SERVICE_NAME}}:latest
     vars:
@@ -75,6 +82,14 @@ tasks:
         sh: cat .commit_hash
       KEYCLOAK_SECRET:
         sh: cat keycloak.secret
+      KEYCLOAK_ISSUER: https://keys.chewedfeed.com/realms/flags-gg
+      KEYCLOAK_ID: dashboard
+      STRIPE_KEY: tester
+      STRIPE_SECRET: tester
+      UPLOADTHING_APP_ID: tester
+      UPLOADTHING_SECRET: tester
+      NEXTAUTH_SECRET: tester
+
   build-push-latest:
     cmds:
       - task: get-latest-tag

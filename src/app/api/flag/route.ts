@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
-      return new Error('Failed to update flag');
+      return NextResponse.json({message: "Failed to update flag"}, { status: 500 });
     }
 
     return NextResponse.json({ message: 'Flag updated successfully' });
