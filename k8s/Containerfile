@@ -15,7 +15,7 @@ COPY next.config.js ./
 COPY .eslintrc.cjs ./
 COPY index.html ./
 COPY postcss.config.cjs ./
-COPY tailwind.config.js ./
+COPY tailwind.config.ts ./
 COPY prettier.config.js ./
 COPY components.json ./
 COPY k8s/serve.json ./serve.json
