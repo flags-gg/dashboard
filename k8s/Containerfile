@@ -12,8 +12,8 @@ COPY public ./public
 COPY src ./src
 COPY tsconfig.json ./
 COPY next.config.js ./
+COPY next-env.d.ts ./
 COPY .eslintrc.cjs ./
-COPY index.html ./
 COPY postcss.config.cjs ./
 COPY tailwind.config.ts ./
 COPY prettier.config.js ./
