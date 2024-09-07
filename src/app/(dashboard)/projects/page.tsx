@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
 import { authOptions } from "~/server/auth"
-import ProjectsInfo from "./Info";
 import List from "../project/list";
+import InfoBox from "./infoBox";
 
 export default async function ProjectsPage() {
   const session = await getServerSession(authOptions)
@@ -17,7 +17,7 @@ export default async function ProjectsPage() {
         <h1 className={"text-2xl font-semibold"}>Projects</h1>
       </header>
       <List session={session} />
-      <ProjectsInfo session={session} />
+      <InfoBox session={session} />
     </>
   )
 }

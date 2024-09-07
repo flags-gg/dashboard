@@ -125,3 +125,12 @@ export interface Flag {
 export type Flags = {
   flags: Flag[]
 }
+
+export interface BreadCrumb {
+  title: string,
+  url: string,
+}
+export const breadCrumbAtom = atomWithStorage<BreadCrumb[]>("breadCrumb", [{
+  title: 'Home',
+  url: '/',
+}])
