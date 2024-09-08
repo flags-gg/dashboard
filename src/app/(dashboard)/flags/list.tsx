@@ -21,7 +21,11 @@ export default async function FlagsList({
 }) {
   let flags: Flag[] = [];
   try {
-    flags = await getFlags(session, environment_id);
+    await getFlags(session, environment_id).then((data) => {
+      flags = data;
+    }).catch((e) => {
+      throw e;
+    });
   } catch (e) {
     console.error("flags", e);
     return <div>Error loading flags. Please try again later.</div>;
