@@ -15,10 +15,11 @@ jobs:
           fetch-depth: 1
       - name: Extract tag
         id: extract_tag
-        run: echo "::set-output name=tag::${GITHUB_REF/refs\/tags\//}"
+        run: echo "{tag}=${GITHUB_REF/refs\\/tags\\//}" >> $GITHUB_OUTPUT
+#        run: echo "::set-output name=tag::${GITHUB_REF/refs\/tags\//}"
       - name: Meta
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: containers.chewed-k8s.net/flags-gg/dashboard
           tags: |
