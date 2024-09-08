@@ -7,3 +7,4 @@ exclude:
   - name: All
     paths:
       - .pnpm-store
+      - src/components/ui
