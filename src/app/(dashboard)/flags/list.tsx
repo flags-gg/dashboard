@@ -43,7 +43,7 @@ export default async function FlagsList({
           </TableHeader>
           <TableBody>
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
-            {flags.map((flag: Flag) => (
+            {flags?.map((flag: Flag) => (
               <TableRow key={flag.details.id}>
                 <TableCell>
                   <Link href={`/flag/${flag.details.id}`}>

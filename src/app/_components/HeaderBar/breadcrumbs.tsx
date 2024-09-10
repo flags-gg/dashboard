@@ -4,7 +4,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
+  BreadcrumbList, BreadcrumbPage,
   BreadcrumbSeparator
 } from "~/components/ui/breadcrumb";
 import Link from "next/link";
@@ -14,26 +14,34 @@ import {useAtom} from "jotai";
 export default function BreadCrumbs() {
   const [breadcrumbs] = useAtom(breadCrumbAtom)
   if (!breadcrumbs) {
-    return null
+    return (
+      <Breadcrumb className={"hidden md:flex"}>
+        <BreadcrumbList>
+          <BreadcrumbItem key={"home"}>
+            <BreadcrumbLink asChild key={"home-link-parent"}>
+              <Link href={"/"} key={"home-link"}>Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    )
   }
 
   return (
     <Breadcrumb className={"hidden md:flex"}>
       <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href={"/"}>Home</Link>
+        <BreadcrumbItem key={"home"}>
+          <BreadcrumbLink asChild key={"home-link-parent"}>
+            <Link href={"/"} key={"home-link"}>Home</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         {breadcrumbs.map((crumb) => (
-          <>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem key={crumb.url}>
-              <BreadcrumbLink asChild>
-                <Link href={crumb.url}>{crumb.title}</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </>
+          <BreadcrumbItem key={`${crumb.url}-item`}>
+            <BreadcrumbSeparator key={`${crumb.url}-separator`}/>
+            <BreadcrumbLink key={`${crumb.url}-link-parent`}>
+              <Link href={crumb.url} key={`${crumb.url}-link`}>{crumb.title}</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
         ))}
       </BreadcrumbList>
     </Breadcrumb>

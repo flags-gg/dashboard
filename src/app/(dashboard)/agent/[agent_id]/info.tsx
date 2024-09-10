@@ -17,8 +17,8 @@ export default function AgentInfo({agentInfo}: {agentInfo: FlagAgent}) {
     setBreadcrumbs([])
     const breadcrumbs: Array<BreadCrumb> = [
       {title: "Projects", url: "/projects"},
-      {title: project.name, url: `/project/${project.project_id}`},
-      {title: agentInfo.name, url: `/agent/${agentInfo.agent_id}`},
+      {title: project?.name, url: `/project/${project?.project_id}`},
+      {title: agentInfo?.name, url: `/agent/${agentInfo?.agent_id}`},
     ]
     setBreadcrumbs(breadcrumbs)
   }, [project, agentInfo, setBreadcrumbs])
