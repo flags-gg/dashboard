@@ -25,31 +25,70 @@ async function getMenu(session: Session, menuId: string): Promise<SecretMenuData
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        menu_id: menu_id,
+        menuId: menuId,
         sessionToken: session.user.access_token,
         userId: session.user.id,
       }),
       cache: 'no-store',
     })
     if (!response.ok) {
+      console.error("getMenu", "response", response);
       return new Error('Failed to get secret menu')
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await response.json()
   } catch (e) {
+    console.error("getMenu", 'Error getting secret menu:', e)
     throw new Error('Failed to get secret menu')
   }
 }
 
-export default function Maker({session}: {session: Session}) {
-  const [selectedSecretMenu] = useAtom(secretMenuAtom)
-  const [code, setCode] = useState<{id: string, icon: string}[]>([])
+async function saveMenu(session: Session, menu_id: string, sequence: string[]) {
+  try {
+    const response = await fetch('/api/secretmenu/sequence', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionToken: session.user.access_token,
+        userId: session.user.id,
+        menuId: menu_id,
+        sequence: sequence,
+      }),
+      cache: 'no-store',
+    })
+    if (!response.ok) {
+      return new Error('Failed to save secret menu sequence')
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await response.json()
+  } catch (e) {
+    console.error('Error saving secret menu sequence:', e)
+    throw new Error('Failed to save secret menu sequence')
+  }
+}
+
+export default function Maker({session, menuId}: {session: Session, menuId: string}) {
+  const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
 
   useEffect(() => {
-    getMenu(session, selectedSecretMenu.id).then(r => {
-      console.info("Menu retrieved", r);
+    getMenu(session, menuId).then(resp => {
+      if ("sequence" in resp && resp?.sequence) {
+        setCodeSequence(resp.sequence)
+      }
     }).catch((e) => {
       console.error("Error retrieving menu", e);
     })
-  }, [selectedSecretMenu.id, session])
+  }, [menuId, session])
+
+  const setCodeSequence = (sequence: string[]) => {
+    const newSequence = sequence.map((keyId) => {
+      const key = KeyMap.find((k) => k.id === keyId)
+      return key ? {id: `${key.id}-${Math.random()}`, icon: key.icon, keyCode: key.id} : {id: keyId, icon: keyId, keyCode: keyId}
+    })
+    setCode(newSequence)
+  }
 
   const handleDragEnd = (event: DragEndEvent) => {
     const {active, over} = event
@@ -69,7 +108,7 @@ export default function Maker({session}: {session: Session}) {
       const key = KeyMap.find((item) => item.id === active.id)
       if (key) {
         const updatedCode = [...code]
-        updatedCode.splice(newIndex, 0, {id: `${active.id}-${Math.random()}`, icon: key.icon})
+        updatedCode.splice(newIndex, 0, {id: `${active.id}-${Math.random()}`, icon: key.icon, keyCode: key.id})
         setCode(updatedCode)
       }
     } else {
@@ -81,8 +120,6 @@ export default function Maker({session}: {session: Session}) {
     setCode(code.filter((_, i) => i !== id))
   }
 
-  console.info("selectedSecretMenu", selectedSecretMenu);
-
   return (
     <div className="col-span-2 gap-3">
       <Card className={"mb-3"}>
@@ -93,9 +130,19 @@ export default function Maker({session}: {session: Session}) {
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
             </div>
-            <DropTarget sequence={code} onRemove={handleRemove} setCode={setCode} />
+            <Separator />
+            <DropTarget sequence={code} onRemove={handleRemove} />
           </DndContext>
         </CardContent>
+        <CardFooter>
+          <Button onClick={() => {
+            const sequence = code.map((key) => key.keyCode)
+
+            saveMenu(session, menuId, sequence).catch((e) => {
+              console.error("Error saving menu", e);
+            })
+          }} className={"w-full"}>Save</Button>
+        </CardFooter>
       </Card>
     </div>
   )
