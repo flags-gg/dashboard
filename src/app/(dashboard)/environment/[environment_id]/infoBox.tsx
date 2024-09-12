@@ -2,7 +2,7 @@ import { type Session } from "next-auth";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
 import {type IEnvironment} from "~/lib/statemanager";
 import {getEnvironment} from "~/app/api/environment/environment";
-import EnvironmentInfo from "./info";
+import Info from "./info";
 import CreateFlag from "~/app/(dashboard)/flags/create";
 import Guide from './guide';
 import {buttonVariants} from "~/components/ui/button";
@@ -18,7 +18,15 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
     environmentInfo = await getEnvironment(session, environment_id)
   } catch (e) {
     console.error(e)
-    return <div>Error loading environment info</div>
+    return (
+      <Card>
+        <CardHeader className={"flex flex-row items-start bg-muted/50"}>
+          <CardTitle className={"group flex items-center gap-2 text-lg"}>
+            Failed to load environment
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    )
   }
 
   return (
@@ -29,7 +37,7 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
         </CardTitle>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <EnvironmentInfo environmentInfo={environmentInfo} session={session} />
+        <Info environmentInfo={environmentInfo} session={session} />
       </CardContent>
       <CardFooter className={"p-3 border-t-2 gap-2 items-center"}>
         <CreateFlag session={session} environment_id={environment_id} />

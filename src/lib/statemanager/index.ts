@@ -101,9 +101,13 @@ export interface secretMenu {
     container: string,
     button: string,
     style_id: string,
+  },
+  environment_details: {
+    name: string,
+    id: string,
   }
 }
-export const menuAtom = atom<secretMenu>({
+export const secretMenuAtom = atom<secretMenu>({
   id: '',
   menu_id: '',
   enabled: false,
@@ -113,6 +117,10 @@ export const menuAtom = atom<secretMenu>({
     container: '',
     button: '',
     style_id: '',
+  },
+  environment_details: {
+    name: '',
+    id: '',
   }
 })
 
@@ -128,7 +136,4 @@ export interface BreadCrumb {
   title: string,
   url: string,
 }
-export const breadCrumbAtom = atom<BreadCrumb[]>([{
-  title: 'Home',
-  url: '/',
-}])
+export const breadCrumbAtom = atom<BreadCrumb[]>([])
