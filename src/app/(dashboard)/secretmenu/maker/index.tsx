@@ -1,17 +1,23 @@
 "use client"
 
 import {type Session} from "next-auth";
-import {Card, CardContent} from "~/components/ui/card";
+import {Card, CardContent, CardFooter} from "~/components/ui/card";
 import {closestCenter, DndContext, type DragEndEvent} from "@dnd-kit/core";
-import {useAtom} from "jotai";
-import {secretMenuAtom} from "~/lib/statemanager";
 import {KeyMap} from "./keymap";
 import Draggable from "./draggable";
 import DropTarget from "./droptarget";
 import {useEffect, useState} from "react";
 import {arrayMove} from "@dnd-kit/sortable";
+import {Separator} from "~/components/ui/separator";
+import {Button} from "~/components/ui/button";
 
-async function getMenu(session: Session, menu_id: string) {
+interface SecretMenuData {
+  menu_id: string,
+  enabled: boolean,
+  sequence: string[]
+}
+
+async function getMenu(session: Session, menuId: string): Promise<SecretMenuData | Error> {
   try {
     const response = await fetch('/api/secretmenu', {
       method: 'POST',

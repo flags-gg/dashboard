@@ -1,6 +1,6 @@
 "use client"
 
-import {atom} from "jotai";
+import {atomWithStorage} from "jotai/utils";
 
 export type CompanyLimits = {
   projects: {
@@ -28,7 +28,7 @@ export interface IProject {
 export type ProjectsData = {
   projects: IProject[]
 }
-export const projectAtom = atom<IProject>({
+export const projectAtom = atomWithStorage<IProject>("projectAtom", {
   id: '',
   name: '',
   project_id: '',
@@ -49,7 +49,7 @@ export interface FlagAgent {
     name: string;
   }
 }
-export const agentAtom = atom<FlagAgent>({
+export const agentAtom = atomWithStorage<FlagAgent>("agentAtom", {
   id: '',
   name: '',
   agent_id: '',
@@ -76,7 +76,7 @@ export interface IEnvironment {
   },
   flags: [];
 }
-export const environmentAtom = atom<IEnvironment>({
+export const environmentAtom = atomWithStorage<IEnvironment>("environmentAtom", {
   id: '',
   name: '',
   environment_id: '',
@@ -107,7 +107,7 @@ export interface secretMenu {
     id: string,
   }
 }
-export const secretMenuAtom = atom<secretMenu>({
+export const secretMenuAtom = atomWithStorage<secretMenu>("secretMenuAtom", {
   id: '',
   menu_id: '',
   enabled: false,
@@ -136,4 +136,4 @@ export interface BreadCrumb {
   title: string,
   url: string,
 }
-export const breadCrumbAtom = atom<BreadCrumb[]>([])
+export const breadCrumbAtom = atomWithStorage<BreadCrumb[]>("breadCrumbAtom", [])
