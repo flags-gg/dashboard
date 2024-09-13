@@ -33,7 +33,7 @@ export default async function InfoBox({session, agent_id}: {session: Session, ag
         <AgentInfo agentInfo={agentInfo} />
       </CardContent>
       {allowedToCreateEnv && (
-        <CardFooter className={"p-3 border-t-2"}>
+        <CardFooter className={"p-3 border-t-2 items-center justify-center"}>
           <CreateEnvironment session={session} agent_id={agent_id} />
         </CardFooter>
       )}
