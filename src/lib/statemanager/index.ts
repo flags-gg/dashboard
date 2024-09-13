@@ -28,7 +28,7 @@ export interface IProject {
 export type ProjectsData = {
   projects: IProject[]
 }
-export const projectAtom = atomWithStorage<IProject>("project", {
+export const projectAtom = atomWithStorage<IProject>("projectAtom", {
   id: '',
   name: '',
   project_id: '',
@@ -49,7 +49,7 @@ export interface FlagAgent {
     name: string;
   }
 }
-export const agentAtom = atomWithStorage<FlagAgent>("agent", {
+export const agentAtom = atomWithStorage<FlagAgent>("agentAtom", {
   id: '',
   name: '',
   agent_id: '',
@@ -76,7 +76,7 @@ export interface IEnvironment {
   },
   flags: [];
 }
-export const environmentAtom = atomWithStorage<IEnvironment>("environment", {
+export const environmentAtom = atomWithStorage<IEnvironment>("environmentAtom", {
   id: '',
   name: '',
   environment_id: '',
@@ -101,9 +101,13 @@ export interface secretMenu {
     container: string,
     button: string,
     style_id: string,
+  },
+  environment_details: {
+    name: string,
+    id: string,
   }
 }
-export const menuAtom = atomWithStorage<secretMenu>("secretMenu", {
+export const secretMenuAtom = atomWithStorage<secretMenu>("secretMenuAtom", {
   id: '',
   menu_id: '',
   enabled: false,
@@ -113,6 +117,10 @@ export const menuAtom = atomWithStorage<secretMenu>("secretMenu", {
     container: '',
     button: '',
     style_id: '',
+  },
+  environment_details: {
+    name: '',
+    id: '',
   }
 })
 
@@ -128,7 +136,4 @@ export interface BreadCrumb {
   title: string,
   url: string,
 }
-export const breadCrumbAtom = atomWithStorage<BreadCrumb[]>("breadCrumb", [{
-  title: 'Home',
-  url: '/',
-}])
+export const breadCrumbAtom = atomWithStorage<BreadCrumb[]>("breadCrumbAtom", [])

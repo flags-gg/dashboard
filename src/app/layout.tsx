@@ -1,16 +1,17 @@
 import "~/styles/globals.css";
+import "@uploadthing/react/styles.css"
+
+
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { type ReactNode } from "react";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "~/lib/utils"
-import { ThemeProvider } from "~/components/theme-provider";
 import { getServerAuthSession } from "~/server/auth";
 import HeaderBar from "~/app/_components/HeaderBar";
 import SideBar from "~/app/_components/SideBar";
 import {TooltipProvider} from "~/components/ui/tooltip";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
-import QueryProvider from "./QueryProvider";
+import QueryProvider from "~/components/QueryProvider";
 import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
 import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
@@ -34,27 +35,24 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <ThemeProvider attribute="class" defaultTheme={"dark"} enableSystem disableTransitionOnChange>
-          <QueryProvider>
-            <TooltipProvider>
-              {session ? (
-                <div className="flex min-h-screen w-full flex-col bg-muted/40">
-                  <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-                  <SideBar />
-                  <div className={"flex flex-col sm:gap-4 sm:py-4 sm:pl-14"}>
-                    <HeaderBar />
-                    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3" suppressHydrationWarning={true}>
-                      {children}
-                    </main>
-                  </div>
+        <QueryProvider>
+          <TooltipProvider>
+            {session ? (
+              <div className="flex min-h-screen w-full flex-col bg-muted/40">
+                <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+                <SideBar />
+                <div className={"flex flex-col sm:gap-4 sm:py-4 sm:pl-14"}>
+                  <HeaderBar />
+                  <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3" suppressHydrationWarning={true}>
+                    {children}
+                  </main>
                 </div>
-              ) : (
-                children
-              )}
-            </TooltipProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryProvider>
-        </ThemeProvider>
+              </div>
+            ) : (
+              children
+            )}
+          </TooltipProvider>
+        </QueryProvider>
       </body>
     </html>
   );

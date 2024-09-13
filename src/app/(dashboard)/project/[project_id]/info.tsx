@@ -61,7 +61,7 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
     setBreadcrumbs([])
     const breadcrumbs: Array<BreadCrumb> = [
       {title: "Projects", url: "/projects"},
-      {title: projectInfo.name, url: `/project/${projectInfo.project_id}`},
+      {title: projectInfo?.name, url: `/project/${projectInfo?.project_id}`},
     ]
     setBreadcrumbs(breadcrumbs)
   }, [projectInfo, setBreadcrumbs])

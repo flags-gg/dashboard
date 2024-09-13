@@ -12,13 +12,13 @@ import {
 } from "lucide-react";
 import {Tooltip, TooltipContent, TooltipTrigger} from "~/components/ui/tooltip";
 import {useAtom} from "jotai";
-import {projectAtom, agentAtom, menuAtom, environmentAtom} from "~/lib/statemanager";
+import {projectAtom, agentAtom, environmentAtom, secretMenuAtom} from "~/lib/statemanager";
 
 export default function SideBar() {
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
-  const [selectedMenu] = useAtom(menuAtom);
+  const [selectedMenu] = useAtom(secretMenuAtom);
 
   return (
     <aside className={"fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex"}>

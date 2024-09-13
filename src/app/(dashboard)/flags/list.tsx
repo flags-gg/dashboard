@@ -1,6 +1,6 @@
 import {type Session} from 'next-auth'
 import { type Flag} from "~/lib/statemanager";
-import { Card } from "~/components/ui/card";
+import {Card, CardHeader, CardTitle} from "~/components/ui/card";
 import {
   Table,
   TableBody,
@@ -28,7 +28,17 @@ export default async function FlagsList({
     });
   } catch (e) {
     console.error("flags", e);
-    return <div>Error loading flags. Please try again later.</div>;
+    return (
+      <div className="col-span-2 gap-3">
+        <Card className={"mb-3"}>
+          <CardHeader className={"flex flex-row items-start bg-muted/50"}>
+            <CardTitle className={"group flex items-center gap-2 text-lg"}>
+              Failed to load flags
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
+    )
   }
 
   return (
@@ -43,7 +53,7 @@ export default async function FlagsList({
           </TableHeader>
           <TableBody>
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-call */}
-            {flags.map((flag: Flag) => (
+            {flags?.map((flag: Flag) => (
               <TableRow key={flag.details.id}>
                 <TableCell>
                   <Link href={`/flag/${flag.details.id}`}>

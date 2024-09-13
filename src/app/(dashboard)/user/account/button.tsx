@@ -15,5 +15,7 @@ export default function Button() {
           // Do something with the error.
           alert(`ERROR! ${error.message}`);
         }}
+
+        className="ut-button:bg-primary ut-button:text-primary-foreground"
       />
 }
