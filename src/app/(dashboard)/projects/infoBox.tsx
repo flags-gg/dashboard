@@ -36,7 +36,7 @@ export default async function InfoBox({session}: {session: Session}) {
         <ProjectsInfo companyLimits={companyLimits} />
       </CardContent>
       {companyLimits.projects.allowed > companyLimits.projects.used && (
-        <CardFooter className={"p-3 border-t-2 gap-2 items-center"}>
+        <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
           <CreateProject session={session} />
         </CardFooter>
       )}

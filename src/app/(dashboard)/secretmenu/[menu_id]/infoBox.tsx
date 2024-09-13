@@ -1,8 +1,9 @@
 import {type Session} from "next-auth";
 import {type secretMenu} from "~/lib/statemanager";
 import {getSecretMenu} from "~/app/api/secretmenu/data";
-import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
 import Info from "./info";
+import {Button} from "~/components/ui/button";
 
 export default async function InfoBox({session, menu_id}: {session: Session, menu_id: string}) {
   if (!session) {
@@ -35,6 +36,9 @@ export default async function InfoBox({session, menu_id}: {session: Session, men
       <CardContent className={"p-6 text-sm"}>
         <Info secretMenuInfo={secretMenuInfo} session={session} />
       </CardContent>
+      <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
+        <Button>Styling</Button>
+      </CardFooter>
     </Card>
   )
 }

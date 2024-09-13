@@ -39,7 +39,7 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
       <CardContent className={"p-6 text-sm"}>
         <Info environmentInfo={environmentInfo} session={session} />
       </CardContent>
-      <CardFooter className={"p-3 border-t-2 gap-2 items-center"}>
+      <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
         <CreateFlag session={session} environment_id={environment_id} />
         <Guide session={session} />
         {environmentInfo.secret_menu.enabled ? (
