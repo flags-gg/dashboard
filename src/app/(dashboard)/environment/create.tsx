@@ -2,7 +2,7 @@ import {Button} from "~/components/ui/button";
 import {type Session} from "next-auth";
 
 export default async function CreateEnvironment({ session, agent_id }: { session: Session, agent_id: string }) {
-  console.log("stuff", session, agent_id)
+  console.log("create env", agent_id)
 
   return (
     <div className={"col-span-3"}>

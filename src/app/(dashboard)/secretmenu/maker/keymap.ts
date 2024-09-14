@@ -1,8 +1,11 @@
-export const KeyMap = [
+export const DirectionMap = [
   {id: 'ArrowUp', icon: '🔼'},
   {id: 'ArrowDown', icon: '🔽'},
   {id: 'ArrowLeft', icon: '◀️'},
   {id: 'ArrowRight', icon: '▶️'},
+]
+
+export const LetterMap = [
   {id: 'a', icon: '🇦'},
   {id: 'b', icon: '🇧'},
   {id: 'c', icon: '🇨'},
@@ -29,6 +32,9 @@ export const KeyMap = [
   {id: 'x', icon: '🇽'},
   {id: 'y', icon: '🇾'},
   {id: 'z', icon: '🇿'},
+]
+
+export const NumberMap = [
   {id: '0', icon: '0️⃣'},
   {id: '1', icon: '1️⃣'},
   {id: '2', icon: '2️⃣'},

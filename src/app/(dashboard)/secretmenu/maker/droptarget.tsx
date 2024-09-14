@@ -15,7 +15,7 @@ export default function DropTarget({sequence, onRemove}: DropTargetProps) {
   })
 
   return (
-    <div ref={setNodeRef} className="min-h-12 border-dashed p-3 flex gap-3 flex-wrap">
+    <div ref={setNodeRef} className="min-h-12 border-dashed p-3 flex gap-3 flex-wrap bg-secondary">
       <SortableContext items={sequence} strategy={rectSortingStrategy}>
         {sequence.map((key, index) => (
           <Sortable key={key.id} item={key} index={index} onRemove={onRemove} />

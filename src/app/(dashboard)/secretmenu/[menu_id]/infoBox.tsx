@@ -34,6 +34,12 @@ export default async function InfoBox({session, menu_id}: {session: Session, men
         </CardTitle>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
+        <div className={"mb-5"}>
+          <span>Drag the items into the grey area to create your secret menu code.</span>
+          <br /><br />
+          <span>Double click to remove them.</span>
+        </div>
+
         <Info secretMenuInfo={secretMenuInfo} session={session} />
       </CardContent>
       <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>

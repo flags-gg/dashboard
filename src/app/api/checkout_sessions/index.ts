@@ -1,4 +1,5 @@
-import stripe from "~/lib/stripe";
+import {stripe} from "~/lib/stripe";
+import type Stripe from "stripe";
 
 const params: Stripe.Checkout.SessionCreateParams = {
   submit_type: 'pay',

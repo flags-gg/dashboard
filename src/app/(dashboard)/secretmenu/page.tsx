@@ -2,8 +2,9 @@ import {authOptions} from "~/server/auth";
 import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
 import Maker from "./maker";
+import InfoBox from "./info"
 
-export default async function SecretMenuPage({params}: {params: {menu_id: string}}) {
+export default async function SecretMenuPage() {
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
@@ -15,6 +16,7 @@ export default async function SecretMenuPage({params}: {params: {menu_id: string
         <h1 className="text-2xl font-semibold">Secret Menu Builder</h1>
       </header>
       <Maker session={session} menuId={""} />
+      <InfoBox session={session} />
     </>
   )
 }

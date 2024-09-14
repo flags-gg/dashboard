@@ -3,7 +3,7 @@
 import {type Session} from "next-auth";
 import {Card, CardContent, CardFooter} from "~/components/ui/card";
 import {closestCenter, DndContext, type DragEndEvent} from "@dnd-kit/core";
-import {KeyMap} from "./keymap";
+import {DirectionMap, LetterMap, NumberMap} from "./keymap";
 import Draggable from "./draggable";
 import DropTarget from "./droptarget";
 import {useEffect, useState} from "react";
@@ -84,7 +84,11 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
 
   const setCodeSequence = (sequence: string[]) => {
     const newSequence = sequence.map((keyId) => {
-      const key = KeyMap.find((k) => k.id === keyId)
+      const direction = DirectionMap.find((k) => k.id === keyId)
+      const letter = LetterMap.find((k) => k.id === keyId)
+      const number = NumberMap.find((k) => k.id === keyId)
+      const key = (direction ?? letter) ?? number
+
       return key ? {id: `${key.id}-${Math.random()}`, icon: key.icon, keyCode: key.id} : {id: keyId, icon: keyId, keyCode: keyId}
     })
     setCode(newSequence)
@@ -105,7 +109,11 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
     const oldIndex = code.findIndex((item) => item.id === active.id)
     const newIndex = code.findIndex((item) => item.id === over.id)
     if (oldIndex === -1 || newIndex === -1) {
-      const key = KeyMap.find((item) => item.id === active.id)
+      const direction = DirectionMap.find((item) => item.id === active.id)
+      const letter = LetterMap.find((item) => item.id === active.id)
+      const number = NumberMap.find((item) => item.id === active.id)
+      const key = (direction ?? letter) ?? number
+
       if (key) {
         const updatedCode = [...code]
         updatedCode.splice(newIndex, 0, {id: `${active.id}-${Math.random()}`, icon: key.icon, keyCode: key.id})
@@ -126,11 +134,18 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
         <CardContent className={"p-6 text-sm"}>
           <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
             <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
-              {KeyMap.map((key, _) => (
+              {DirectionMap.map((key, _) => (
+                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
+              ))}
+              <Separator />
+              {LetterMap.map((key, _) => (
+                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
+              ))}
+              <Separator />
+              {NumberMap.map((key, _) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
             </div>
-            <Separator />
             <DropTarget sequence={code} onRemove={handleRemove} />
           </DndContext>
         </CardContent>
