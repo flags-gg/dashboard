@@ -17,7 +17,32 @@ interface SecretMenuData {
   sequence: string[]
 }
 
-async function getMenu(session: Session, menuId: string): Promise<SecretMenuData | Error> {
+async function createMenuId(session: Session): Promise<SecretMenuData | Error> {
+  try {
+    const response = await fetch('/api/secretmenu/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionToken: session.user.access_token,
+        userId: session.user.id,
+      }),
+      cache: 'no-store',
+    })
+    if (!response.ok) {
+      console.error("createMenuId", "response", response);
+      return new Error('Failed to create secret menu ID')
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await response.json()
+  } catch (e) {
+    console.error("createMenuId", 'Error creating secret menu:', e)
+    throw new Error('Failed to create secret menu')
+  }
+}
+
+async function getSequence(session: Session, menuId: string): Promise<SecretMenuData | Error> {
   try {
     const response = await fetch('/api/secretmenu', {
       method: 'POST',
@@ -43,7 +68,7 @@ async function getMenu(session: Session, menuId: string): Promise<SecretMenuData
   }
 }
 
-async function saveMenu(session: Session, menu_id: string, sequence: string[]) {
+async function saveSequence(session: Session, menu_id: string, sequence: string[]) {
   try {
     const response = await fetch('/api/secretmenu/sequence', {
       method: 'PUT',
@@ -73,7 +98,7 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
 
   useEffect(() => {
-    getMenu(session, menuId).then(resp => {
+    getSequence(session, menuId).then(resp => {
       if ("sequence" in resp && resp?.sequence) {
         setCodeSequence(resp.sequence)
       }

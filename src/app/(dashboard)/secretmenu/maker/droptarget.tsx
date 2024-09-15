@@ -1,7 +1,7 @@
 "use client"
 
-import {useDraggable} from "@dnd-kit/core";
-import {rectSortingStrategy, SortableContext} from "@dnd-kit/sortable";
+import {useDroppable} from "@dnd-kit/core";
+import {horizontalListSortingStrategy, SortableContext} from "@dnd-kit/sortable";
 import Sortable from "./sortable";
 
 interface DropTargetProps {
