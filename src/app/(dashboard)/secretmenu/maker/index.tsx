@@ -19,7 +19,7 @@ interface SecretMenuData {
 
 async function createMenuId(session: Session): Promise<SecretMenuData | Error> {
   try {
-    const response = await fetch('/api/secretmenu/generate', {
+    const response = await fetch('/api/secretmenu/sequence', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

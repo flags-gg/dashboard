@@ -34,7 +34,7 @@ export default function Info({secretMenuInfo, session}: {secretMenuInfo: secretM
       {title: "Secret Menu", url: `/secretmenu/${secretMenuInfo?.menu_id}`},
     ]
     setBreadcrumbs(breadcrumbs)
-  }, [environmentInfo, project, agent, setBreadcrumbs])
+  }, [environmentInfo, project, agent, setBreadcrumbs, secretMenuInfo])
 
   return (
     <div className={"grid gap-3"}>
