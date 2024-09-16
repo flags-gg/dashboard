@@ -1,6 +1,6 @@
 import {getServerSession} from "next-auth/next";
 import {authOptions} from "~/server/auth";
-import EnvironmentsList from "~/app/(dashboard)/environment/list";
+import EnvironmentsList from "./list";
 import {redirect} from "next/navigation";
 import InfoBox from "./infoBox";
 

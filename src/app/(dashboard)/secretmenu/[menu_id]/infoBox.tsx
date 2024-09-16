@@ -4,6 +4,7 @@ import {getSecretMenu} from "~/app/api/secretmenu/data";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
 import Info from "./info";
 import {Button} from "~/components/ui/button";
+import {InfoBoxError} from "~/app/_components/InfoBoxError";
 
 export default async function InfoBox({session, menu_id}: {session: Session, menu_id: string}) {
   if (!session) {
@@ -15,15 +16,7 @@ export default async function InfoBox({session, menu_id}: {session: Session, men
     secretMenuInfo = await getSecretMenu(session, menu_id)
   } catch(e) {
     console.error(e)
-    return (
-      <Card>
-        <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-          <CardTitle className={"group flex items-center gap-2 text-lg"}>
-            Failed to load secret menu info
-          </CardTitle>
-        </CardHeader>
-      </Card>
-    )
+    return <InfoBoxError name={"secret menu"} blurb={"secret menu"} />
   }
 
   return (

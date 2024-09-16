@@ -1,4 +1,4 @@
-import List from "~/app/(dashboard)/agent/list";
+import List from "./list";
 import {getServerSession} from "next-auth/next";
 import {authOptions} from "~/server/auth";
 import {redirect} from "next/navigation";

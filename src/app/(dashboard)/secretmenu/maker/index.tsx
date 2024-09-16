@@ -96,6 +96,7 @@ async function saveSequence(session: Session, menu_id: string, sequence: string[
 
 export default function Maker({session, menuId}: {session: Session, menuId: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     getSequence(session, menuId).then(resp => {
@@ -104,6 +105,7 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
       }
     }).catch((e) => {
       console.error("Error retrieving menu", e);
+      setError("Error retrieving menu")
     })
   }, [menuId, session])
 
@@ -154,6 +156,20 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
     setCode(code.filter((_, i) => i !== id))
   }
 
+  if (error) {
+    return (
+      <div className="col-span-2 gap-3">
+        <Card className={"mb-3"}>
+          <CardContent className={"p-6 text-sm"}>
+            <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
+              <p>{error}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="col-span-2 gap-3">
       <Card className={"mb-3"}>
@@ -181,12 +197,15 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
 
             if (menuId === "") {
               createMenuId(session).then((menuData) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                saveSequence(session, menuData.menu_id, sequence).catch((e) => {
-                  console.error("Error saving menu", e);
-                })
+                if ("menu_id" in menuData) {
+                  saveSequence(session, menuData.menu_id, sequence).catch((e) => {
+                    console.error("Error saving menu", e);
+                    setError("Error saving menu")
+                  })
+                }
               }).catch((e) => {
                 console.error("Error creating menu", e);
+                setError("Error creating menu")
               })
 
               return
@@ -194,6 +213,7 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
 
             saveSequence(session, menuId, sequence).catch((e) => {
               console.error("Error saving menu", e);
+              setError("Error saving menu")
             })
           }} className={"w-full"}>Save</Button>
         </CardFooter>

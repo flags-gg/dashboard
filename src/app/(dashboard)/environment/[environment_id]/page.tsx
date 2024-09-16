@@ -1,7 +1,7 @@
 import {authOptions} from "~/server/auth";
 import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
-import FlagsList from "~/app/(dashboard)/flags/list";
+import FlagsList from "./flags/list";
 import InfoBox from "./infoBox";
 
 
