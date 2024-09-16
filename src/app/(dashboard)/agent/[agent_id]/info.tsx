@@ -1,6 +1,6 @@
 "use client"
 
-import {agentAtom, type BreadCrumb, breadCrumbAtom, projectAtom} from "~/lib/statemanager";
+import {agentAtom} from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { type FlagAgent } from "~/lib/statemanager";
 import {useEffect} from "react";
@@ -10,18 +10,6 @@ export default function AgentInfo({agentInfo}: {agentInfo: FlagAgent}) {
   useEffect(() => {
     setSelectedAgent(agentInfo);
   }, [agentInfo, setSelectedAgent]);
-
-  const [, setBreadcrumbs] = useAtom(breadCrumbAtom)
-  const [project] = useAtom(projectAtom)
-  useEffect(() => {
-    setBreadcrumbs([])
-    const breadcrumbs: Array<BreadCrumb> = [
-      {title: "Projects", url: "/projects"},
-      {title: project?.name, url: `/project/${project?.project_id}`},
-      {title: agentInfo?.name, url: `/agent/${agentInfo?.agent_id}`},
-    ]
-    setBreadcrumbs(breadcrumbs)
-  }, [project, agentInfo, setBreadcrumbs])
 
   return (
     <div className={"grid gap-3"}>

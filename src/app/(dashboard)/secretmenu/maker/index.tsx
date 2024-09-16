@@ -2,8 +2,8 @@
 
 import {type Session} from "next-auth";
 import {Card, CardContent, CardFooter} from "~/components/ui/card";
-import {closestCenter, DndContext, type DragEndEvent} from "@dnd-kit/core";
-import {KeyMap} from "./keymap";
+import {DndContext, type DragEndEvent, rectIntersection} from "@dnd-kit/core";
+import {DirectionMap, LetterMap, NumberMap} from "./keymap";
 import Draggable from "./draggable";
 import DropTarget from "./droptarget";
 import {useEffect, useState} from "react";
@@ -17,7 +17,32 @@ interface SecretMenuData {
   sequence: string[]
 }
 
-async function getMenu(session: Session, menuId: string): Promise<SecretMenuData | Error> {
+async function createMenuId(session: Session): Promise<SecretMenuData | Error> {
+  try {
+    const response = await fetch('/api/secretmenu/sequence', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sessionToken: session.user.access_token,
+        userId: session.user.id,
+      }),
+      cache: 'no-store',
+    })
+    if (!response.ok) {
+      console.error("createMenuId", "response", response);
+      return new Error('Failed to create secret menu ID')
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return await response.json()
+  } catch (e) {
+    console.error("createMenuId", 'Error creating secret menu:', e)
+    throw new Error('Failed to create secret menu')
+  }
+}
+
+async function getSequence(session: Session, menuId: string): Promise<SecretMenuData | Error> {
   try {
     const response = await fetch('/api/secretmenu', {
       method: 'POST',
@@ -43,7 +68,7 @@ async function getMenu(session: Session, menuId: string): Promise<SecretMenuData
   }
 }
 
-async function saveMenu(session: Session, menu_id: string, sequence: string[]) {
+async function saveSequence(session: Session, menu_id: string, sequence: string[]) {
   try {
     const response = await fetch('/api/secretmenu/sequence', {
       method: 'PUT',
@@ -71,20 +96,26 @@ async function saveMenu(session: Session, menu_id: string, sequence: string[]) {
 
 export default function Maker({session, menuId}: {session: Session, menuId: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    getMenu(session, menuId).then(resp => {
+    getSequence(session, menuId).then(resp => {
       if ("sequence" in resp && resp?.sequence) {
         setCodeSequence(resp.sequence)
       }
     }).catch((e) => {
       console.error("Error retrieving menu", e);
+      setError("Error retrieving menu")
     })
   }, [menuId, session])
 
   const setCodeSequence = (sequence: string[]) => {
     const newSequence = sequence.map((keyId) => {
-      const key = KeyMap.find((k) => k.id === keyId)
+      const direction = DirectionMap.find((k) => k.id === keyId)
+      const letter = LetterMap.find((k) => k.id === keyId)
+      const number = NumberMap.find((k) => k.id === keyId)
+      const key = (direction ?? letter) ?? number
+
       return key ? {id: `${key.id}-${Math.random()}`, icon: key.icon, keyCode: key.id} : {id: keyId, icon: keyId, keyCode: keyId}
     })
     setCode(newSequence)
@@ -105,10 +136,15 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
     const oldIndex = code.findIndex((item) => item.id === active.id)
     const newIndex = code.findIndex((item) => item.id === over.id)
     if (oldIndex === -1 || newIndex === -1) {
-      const key = KeyMap.find((item) => item.id === active.id)
+      const direction = DirectionMap.find((item) => item.id === active.id)
+      const letter = LetterMap.find((item) => item.id === active.id)
+      const number = NumberMap.find((item) => item.id === active.id)
+      const key = (direction ?? letter) ?? number
+
       if (key) {
         const updatedCode = [...code]
-        updatedCode.splice(newIndex, 0, {id: `${active.id}-${Math.random()}`, icon: key.icon, keyCode: key.id})
+        const insertIndex = newIndex === -1 ? updatedCode.length : newIndex
+        updatedCode.splice(insertIndex, 0, {id: `${active.id}-${Math.random()}`, icon: key.icon, keyCode: key.id})
         setCode(updatedCode)
       }
     } else {
@@ -120,17 +156,38 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
     setCode(code.filter((_, i) => i !== id))
   }
 
+  if (error) {
+    return (
+      <div className="col-span-2 gap-3">
+        <Card className={"mb-3"}>
+          <CardContent className={"p-6 text-sm"}>
+            <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
+              <p>{error}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="col-span-2 gap-3">
       <Card className={"mb-3"}>
         <CardContent className={"p-6 text-sm"}>
-          <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCenter}>
+          <DndContext onDragEnd={handleDragEnd} collisionDetection={rectIntersection}>
             <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
-              {KeyMap.map((key, _) => (
+              {DirectionMap.map((key, _) => (
+                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
+              ))}
+              <Separator />
+              {LetterMap.map((key, _) => (
+                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
+              ))}
+              <Separator />
+              {NumberMap.map((key, _) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
             </div>
-            <Separator />
             <DropTarget sequence={code} onRemove={handleRemove} />
           </DndContext>
         </CardContent>
@@ -138,8 +195,25 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
           <Button onClick={() => {
             const sequence = code.map((key) => key.keyCode)
 
-            saveMenu(session, menuId, sequence).catch((e) => {
+            if (menuId === "") {
+              createMenuId(session).then((menuData) => {
+                if ("menu_id" in menuData) {
+                  saveSequence(session, menuData.menu_id, sequence).catch((e) => {
+                    console.error("Error saving menu", e);
+                    setError("Error saving menu")
+                  })
+                }
+              }).catch((e) => {
+                console.error("Error creating menu", e);
+                setError("Error creating menu")
+              })
+
+              return
+            }
+
+            saveSequence(session, menuId, sequence).catch((e) => {
               console.error("Error saving menu", e);
+              setError("Error saving menu")
             })
           }} className={"w-full"}>Save</Button>
         </CardFooter>

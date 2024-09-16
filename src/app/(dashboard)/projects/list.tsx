@@ -12,7 +12,11 @@ export default async function ProjectList({ session }: { session: Session }) {
     projects = await getProjects(session);
   } catch (e) {
     console.error(e);
-    return <div>Error loading projects. Please try again later</div>
+    return <div className="gap-3 col-span-2">
+      <Card className={"mb-3 p-3"}>
+        Error loading projects
+      </Card>
+    </div>
   }
 
   return (
@@ -33,7 +37,7 @@ export default async function ProjectList({ session }: { session: Session }) {
               <TableRow key={project.id}>
                 <TableCell className={"place-content-center justify-center"} style={{paddingLeft: "3%"}}>
                   <Link href={`/project/${project.project_id}`}>
-                    <Image src={project.logo} alt={project.name} width={50} height={50} />
+                    {project.logo && <Image src={project.logo} alt={project.name} width={50} height={50} />}
                   </Link>
                 </TableCell>
                 <TableCell>

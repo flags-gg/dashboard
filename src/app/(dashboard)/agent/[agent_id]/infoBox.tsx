@@ -4,6 +4,10 @@ import CreateEnvironment from "~/app/(dashboard)/environment/create";
 import { type FlagAgent } from "~/lib/statemanager";
 import {getAgent} from "~/app/api/agent/agent";
 import AgentInfo from "./info";
+import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
+import {Button} from "~/components/ui/button";
+import {Pencil} from "lucide-react";
+import {InfoBoxError} from "~/app/_components/InfoBoxError";
 
 export default async function InfoBox({session, agent_id}: {session: Session, agent_id: string}) {
   if (!session) {
@@ -15,8 +19,7 @@ export default async function InfoBox({session, agent_id}: {session: Session, ag
   try {
     agentInfo = await getAgent(session, agent_id)
   } catch (e) {
-    console.error(e)
-    return <div>Error loading agent info</div>
+    return <InfoBoxError name={"Agent"} blurb={"agent"} />
   }
   if (agentInfo.environments && agentInfo.environment_limit > agentInfo.environments.length) {
     allowedToCreateEnv = true
@@ -27,6 +30,16 @@ export default async function InfoBox({session, agent_id}: {session: Session, ag
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
         <CardTitle className={"group flex items-center gap-2 text-lg"}>
           {agentInfo.name}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
+                <Pencil className={"h-5 w-5"} />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              Agent Name Edit
+            </PopoverContent>
+          </Popover>
         </CardTitle>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>

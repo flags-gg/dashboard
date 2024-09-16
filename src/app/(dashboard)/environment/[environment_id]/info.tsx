@@ -3,10 +3,6 @@
 import {
   environmentAtom,
   type IEnvironment,
-  type BreadCrumb,
-  breadCrumbAtom,
-  projectAtom,
-  agentAtom
 } from "~/lib/statemanager";
 import {EnvironmentSwitch} from "./switch";
 import {type Session} from "next-auth";
@@ -18,20 +14,6 @@ export default function Info({environmentInfo, session}: {environmentInfo: IEnvi
   useEffect(() => {
     setSelectedEnvironment(environmentInfo)
   }, [environmentInfo, setSelectedEnvironment])
-
-  const [, setBreadcrumbs] = useAtom(breadCrumbAtom)
-  const [project] = useAtom(projectAtom)
-  const [agent] = useAtom(agentAtom)
-  useEffect(() => {
-    setBreadcrumbs([])
-    const breadcrumbs: Array<BreadCrumb> = [
-      {title: "Projects", url: "/projects"},
-      {title: project?.name, url: `/project/${project?.project_id}`},
-      {title: agent?.name, url: `/agent/${agent?.agent_id}`},
-      {title: environmentInfo?.name, url: `/environment/${environmentInfo?.environment_id}`},
-    ]
-    setBreadcrumbs(breadcrumbs)
-  }, [environmentInfo, project, agent, setBreadcrumbs])
 
   return (
     <div className={"grid gap-3"}>

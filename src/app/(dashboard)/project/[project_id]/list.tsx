@@ -11,7 +11,13 @@ export default async function AgentsList({ session, project_id }: { session: Ses
     agents = await getAgents(session, project_id);
   } catch (e) {
     console.error(e);
-    return <div>Error loading agents. Please try again later</div>
+    return (
+      <div className="gap-3 col-span-2">
+        <Card className={"mb-3 p-3"}>
+          <p>Failed to load agents</p>
+        </Card>
+      </div>
+    )
   }
 
   return (

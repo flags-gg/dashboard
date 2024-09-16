@@ -8,37 +8,98 @@ import {
   BreadcrumbSeparator
 } from "~/components/ui/breadcrumb";
 import Link from "next/link";
-import {breadCrumbAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {Fragment} from "react";
+import {agentAtom, environmentAtom, projectAtom, secretMenuAtom} from "~/lib/statemanager";
+import {usePathname} from "next/navigation";
+
+function useBreadcrumbs() {
+  const [project] = useAtom(projectAtom)
+  const [agent] = useAtom(agentAtom)
+  const [environment] = useAtom(environmentAtom)
+  const [secretMenu] = useAtom(secretMenuAtom)
+  const pathname = usePathname()
+
+  const pathSegments = pathname.split("/").filter(Boolean) ?? []
+
+  const breadcrumbs = [{
+    title: "Home",
+    url: "/",
+  }]
+
+  if (pathSegments[0] === "projects") {
+    breadcrumbs.push({ title: "Projects", url: "/projects" });
+    return breadcrumbs
+  }
+
+  // Add "Projects" breadcrumb if necessary
+  if (
+    pathSegments.includes("project") ||
+    pathSegments.includes("agent") ||
+    pathSegments.includes("environment") ||
+    pathSegments.includes("secretmenu")
+  ) {
+    breadcrumbs.push({ title: "Projects", url: "/projects" });
+  }
+
+  // Add Project breadcrumb
+  if (
+    (pathSegments.includes("project") ||
+      pathSegments.includes("agent") ||
+      pathSegments.includes("environment") ||
+      pathSegments.includes("secretmenu")) &&
+    project?.project_id
+  ) {
+    breadcrumbs.push({
+      title: project.name || `Project ${project.project_id}`,
+      url: `/project/${project.project_id}`,
+    });
+  }
+
+  // Add Agent breadcrumb
+  if (
+    (pathSegments.includes("agent") ||
+      pathSegments.includes("environment") ||
+      pathSegments.includes("secretmenu")) &&
+    agent?.agent_id
+  ) {
+    breadcrumbs.push({
+      title: agent.name || `Agent ${agent.agent_id}`,
+      url: `/agent/${agent.agent_id}`,
+    });
+  }
+
+  // Add Environment breadcrumb
+  if (
+    (pathSegments.includes("environment") || pathSegments.includes("secretmenu")) &&
+    environment?.environment_id
+  ) {
+    breadcrumbs.push({
+      title: environment.name || `Environment ${environment.environment_id}`,
+      url: `/environment/${environment.environment_id}`,
+    });
+  }
+
+  // Add Secret Menu breadcrumb
+  if (pathSegments.includes("secretmenu") && secretMenu?.menu_id) {
+    breadcrumbs.push({
+      title: "Secret Menu",
+      url: `/secretmenu/${secretMenu.menu_id}`,
+    });
+  }
+
+  return breadcrumbs
+}
 
 export default function BreadCrumbs() {
-  const [breadcrumbs] = useAtom(breadCrumbAtom)
-  if (!breadcrumbs) {
-    return (
-      <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-nocrumbs-root"}>
-        <BreadcrumbList key={"breadcrumbs-nocrumbs-list"}>
-          <BreadcrumbItem key={"breadcrumbs-nocrumbs-home"}>
-            <BreadcrumbLink asChild key={"breadcrumbs-nocrumbs-home-link-parent"}>
-              <Link href={"/"} key={"breadcrumbs-nocrumbs-home-link"}>Home</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-    )
-  }
+  const breadcrumbs = useBreadcrumbs()
 
   return (
     <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>
       <BreadcrumbList key={"breadcrumbs-list"}>
-        <BreadcrumbItem key={"breadcrumbs-home"}>
-          <BreadcrumbLink asChild key={"breadcrumbs-home-link-parent"}>
-            <Link href={"/"} key={"breadcrumbs-home-link"}>Home</Link>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        {breadcrumbs.map((crumb) => (
+        {breadcrumbs.map((crumb, index) => (
           <Fragment key={`${crumb.url}-container`}>
-            <BreadcrumbSeparator key={`${crumb.url}-separator`} />
+            {index > 0 && <BreadcrumbSeparator key={`${crumb.url}-separator`} />}
             <BreadcrumbItem key={`${crumb.url}-item`}>
               <BreadcrumbLink key={`${crumb.url}-link-parent`} asChild>
                 <Link href={crumb.url} key={`${crumb.url}-link`}>{crumb.title}</Link>

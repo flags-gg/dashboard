@@ -30,12 +30,8 @@ export default async function FlagsList({
     console.error("flags", e);
     return (
       <div className="col-span-2 gap-3">
-        <Card className={"mb-3"}>
-          <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-            <CardTitle className={"group flex items-center gap-2 text-lg"}>
-              Failed to load flags
-            </CardTitle>
-          </CardHeader>
+        <Card className={"mb-3 p-3"}>
+          Error Loading Flags
         </Card>
       </div>
     )

@@ -12,6 +12,10 @@ export async function POST(request: Request) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const {sessionToken, userId, menuId}: SecretMenuParams = await request.json();
 
+    if (!menuId) {
+        return NextResponse.json({message: "No Menu to retrieve"}, { status: 404 });
+    }
+
     try {
         const apiUrl = `${env.FLAGS_SERVER}/secret-menu/${menuId}`;
         const response = await fetch(apiUrl, {
