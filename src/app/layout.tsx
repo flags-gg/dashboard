@@ -15,6 +15,7 @@ import QueryProvider from "~/components/QueryProvider";
 import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
 import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
+import {Toaster} from "~/components/ui/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -46,6 +47,7 @@ export default async function RootLayout({
                   <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3" suppressHydrationWarning={true}>
                     {children}
                   </main>
+                  <Toaster />
                 </div>
               </div>
             ) : (

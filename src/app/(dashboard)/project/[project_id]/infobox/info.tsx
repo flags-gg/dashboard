@@ -51,7 +51,7 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
     throw new Error('No session found')
   }
 
-  const [, setSelectedProject] = useAtom(projectAtom)
+  const [selectedProject, setSelectedProject] = useAtom(projectAtom)
   useEffect(() => {
     setSelectedProject(projectInfo)
   }, [projectInfo, setSelectedProject])
@@ -79,13 +79,13 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Name</span>
-          <span>{projectInfo.name}</span>
+          <span>{selectedProject.name}</span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Logo</span>
           <Dialog open={iconOpen} onOpenChange={setIconOpen}>
             <DialogTrigger asChild>
-              <Image src={imageURL} alt={projectInfo.name} width={50} height={50} style={{
+              <Image src={imageURL} alt={selectedProject.name} width={50} height={50} style={{
                 "cursor": "pointer",
               }} />
             </DialogTrigger>
