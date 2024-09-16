@@ -1,7 +1,7 @@
 "use client"
 
 import {type Session} from "next-auth";
-import {type BreadCrumb, breadCrumbAtom, type IProject, projectAtom} from "~/lib/statemanager";
+import {type IProject, projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useEffect, useState} from "react";
 import {
@@ -55,16 +55,6 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
   useEffect(() => {
     setSelectedProject(projectInfo)
   }, [projectInfo, setSelectedProject])
-
-  const [, setBreadcrumbs] = useAtom(breadCrumbAtom)
-  useEffect(() => {
-    setBreadcrumbs([])
-    const breadcrumbs: Array<BreadCrumb> = [
-      {title: "Projects", url: "/projects"},
-      {title: projectInfo?.name, url: `/project/${projectInfo?.project_id}`},
-    ]
-    setBreadcrumbs(breadcrumbs)
-  }, [projectInfo, setBreadcrumbs])
 
   const [iconOpen, setIconOpen] = useState(false)
   const [showError, setShowError] = useState(false)

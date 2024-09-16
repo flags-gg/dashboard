@@ -1,19 +1,8 @@
 "use client"
 
-import {type BreadCrumb, breadCrumbAtom, type CompanyLimits} from "~/lib/statemanager";
-import {useAtom} from "jotai";
-import {useEffect} from "react";
+import {type CompanyLimits} from "~/lib/statemanager";
 
 export default function ProjectsInfo({ companyLimits }: { companyLimits: CompanyLimits }) {
-  const [, setBreadcrumbs] = useAtom(breadCrumbAtom)
-  useEffect(() => {
-    setBreadcrumbs([])
-    const breadcrumbs: Array<BreadCrumb> = [
-      {title: "Projects", url: "/projects"},
-    ]
-    setBreadcrumbs(breadcrumbs)
-  }, [setBreadcrumbs])
-
   return (
     <div className={"grid gap-3"}>
       <ul className={"grid gap-3"}>

@@ -1,6 +1,7 @@
 "use client"
 
 import {atomWithStorage} from "jotai/utils";
+import {atom} from "jotai";
 
 export type CompanyLimits = {
   projects: {
@@ -131,9 +132,3 @@ export interface Flag {
     id: string,
   }
 }
-
-export interface BreadCrumb {
-  title: string,
-  url: string,
-}
-export const breadCrumbAtom = atomWithStorage<BreadCrumb[]>("breadCrumbAtom", [])
