@@ -36,7 +36,11 @@ async function updateProjectName(session: Session, project_id: string, name: str
 
     return await res.json() as IProject
   } catch (e) {
-    return Error("Failed to update project name")
+    if (e instanceof Error) {
+      return Error(`Failed to update project name: ${e.message}`)
+    } else {
+      console.error("updateProjectName", e)
+    }
   }
 }
 

@@ -20,7 +20,11 @@ async function enableDisableEnvironment(session: Session, environment_id: string
       return new Error('Failed to enable/disable environment')
     }
   } catch (e) {
-    throw new Error('Failed to enable/disable environment')
+    if (e instanceof Error) {
+      throw new Error(`Failed to enable/disable environment: ${e.message}`)
+    } else {
+      console.error('An unknown error occurred', e)
+    }
   }
 }
 

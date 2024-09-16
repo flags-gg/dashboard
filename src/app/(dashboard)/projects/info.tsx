@@ -15,9 +15,10 @@ export default function ProjectsInfo({ session }: { session: Session }) {
       getCompanyLimits(session).then((companyLimits) => {
         setCompanyLimits(companyLimits);
       }).catch((e) => {
-        throw new Error("Failed to fetch company limits");
+        throw new Error(`Failed to fetch company limits: ${e}`);
       })
     } catch (e) {
+      console.error("Failed to fetch company limits", e);
       return <div>Error loading projects. Please try again later.</div>
     }
   }, [session])

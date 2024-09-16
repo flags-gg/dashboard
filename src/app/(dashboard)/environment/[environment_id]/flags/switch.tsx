@@ -23,7 +23,11 @@ async function updateFlag(session: Session, flag: Flag) {
       return new Error('Failed to update flag')
     }
   } catch (e) {
-    throw new Error('Failed to update flag')
+    if (e instanceof Error) {
+      throw new Error(`Failed to update flag: ${e.message}`)
+    } else {
+      console.error('Failed to update flag:', e)
+    }
   }
 }
 

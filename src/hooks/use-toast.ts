@@ -18,6 +18,7 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
   UPDATE_TOAST: "UPDATE_TOAST",
@@ -180,7 +181,7 @@ function useToast() {
       const index = listeners.indexOf(setState)
       if (index > -1) {
         listeners.splice(index, 1)
-      }1
+      }
     }
   }, [state])
 

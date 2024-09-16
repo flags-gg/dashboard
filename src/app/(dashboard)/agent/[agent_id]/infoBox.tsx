@@ -19,6 +19,7 @@ export default async function InfoBox({session, agent_id}: {session: Session, ag
   try {
     agentInfo = await getAgent(session, agent_id)
   } catch (e) {
+    console.error(e)
     return <InfoBoxError name={"Agent"} blurb={"agent"} />
   }
   if (agentInfo.environments && agentInfo.environment_limit > agentInfo.environments.length) {

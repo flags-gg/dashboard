@@ -1,7 +1,6 @@
 "use client"
 
 import {atomWithStorage} from "jotai/utils";
-import {atom} from "jotai";
 
 export type CompanyLimits = {
   projects: {

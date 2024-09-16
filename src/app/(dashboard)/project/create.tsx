@@ -40,7 +40,11 @@ async function createProject(session: Session, name: string): Promise<IProject |
 
     return await res.json() as IProject
   } catch (e) {
-    return Error("Failed to create project")
+    if (e instanceof Error) {
+      return Error(`Failed to create project: ${e.message}`)
+    } else {
+      console.error(e)
+    }
   }
 }
 
@@ -67,7 +71,7 @@ export default function CreateProject({ session }: { session: Session }) {
         }
         setProjectInfo(project)
       }).catch((e) => {
-        throw new Error("Failed to create project")
+        throw new Error(`Failed to create project: ${e}`)
       })
     } catch (e) {
       console.error(e)
@@ -105,9 +109,10 @@ export default function CreateProject({ session }: { session: Session }) {
         const projectsLeft = allowed - used;
         setProjectsLeft(projectsLeft);
       }).catch((e) => {
-        throw new Error("Failed to fetch company limits");
+        throw new Error(`Failed to fetch company limits: ${e}`);
       })
     } catch (e) {
+      console.error(e)
       toast({
         title: "Failed to fetch company limits",
         description: "Failed to fetch company limits",
