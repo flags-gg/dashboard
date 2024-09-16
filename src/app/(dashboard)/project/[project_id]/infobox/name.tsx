@@ -11,17 +11,13 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "~/components/ui/form";
 import {Input} from "~/components/ui/input";
-import {IProject, projectAtom} from "~/lib/statemanager";
+import {type IProject, projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useToast} from "~/hooks/use-toast";
 
-const FormSchema = z.object({
-  name: z.string().min(2, {message: "Name is required a minimum of 2 characters"}),
-})
-
 async function updateProjectName(session: Session, project_id: string, name: string): Promise<IProject | Error> {
   try {
-    const res = await fetch(`/api/project//name`, {
+    const res = await fetch(`/api/project/name`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -37,8 +33,8 @@ async function updateProjectName(session: Session, project_id: string, name: str
     if (!res.ok) {
       return new Error("Failed to update project name")
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return await res.json()
+
+    return await res.json() as IProject
   } catch (e) {
     return Error("Failed to update project name")
   }
@@ -50,12 +46,16 @@ export default function Name({session, project_id, name}: {session: Session, pro
   const [openEdit, setOpenEdit] = useState(false)
   const {toast} = useToast()
 
+  const FormSchema = z.object({
+    name: z.string().min(2, {message: "Name is required a minimum of 2 characters"}),
+  })
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {name: projectName},
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setOpenEdit(false)
 
     try {
@@ -67,12 +67,12 @@ export default function Name({session, project_id, name}: {session: Session, pro
           description: "The project name has been updated",
         })
       }).catch((e) => {
-        console.info("try - Error updating project name", e)
+        console.error("try - Error updating project name", e)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         throw new Error(e.message)
       })
     } catch (e) {
-      console.info("Error updating project name", e)
+      console.error("Error updating project name", e)
 
       toast({
         title: "Project Name Error",

@@ -1,7 +1,6 @@
 import "~/styles/globals.css";
 import "@uploadthing/react/styles.css"
 
-
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { type ReactNode } from "react";
@@ -34,7 +33,7 @@ export default async function RootLayout({
   const session = await getServerAuthSession();
 
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <QueryProvider>
           <TooltipProvider>

@@ -29,6 +29,7 @@ export interface IProject {
 export type ProjectsData = {
   projects: IProject[]
 }
+
 export const projectAtom = atomWithStorage<IProject>("projectAtom", {
   id: '',
   name: '',

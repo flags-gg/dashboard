@@ -37,7 +37,7 @@ export default async function ProjectList({ session }: { session: Session }) {
               <TableRow key={project.id}>
                 <TableCell className={"place-content-center justify-center"} style={{paddingLeft: "3%"}}>
                   <Link href={`/project/${project.project_id}`}>
-                    <Image src={project.logo} alt={project.name} width={50} height={50} />
+                    {project.logo && <Image src={project.logo} alt={project.name} width={50} height={50} />}
                   </Link>
                 </TableCell>
                 <TableCell>
