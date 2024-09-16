@@ -42,6 +42,8 @@ async function updateProjectName(session: Session, project_id: string, name: str
       console.error("updateProjectName", e)
     }
   }
+
+  return new Error("Failed to update project name")
 }
 
 export default function Name({session, project_id, name}: {session: Session, project_id: string, name: string}) {

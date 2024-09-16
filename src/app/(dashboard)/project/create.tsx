@@ -46,6 +46,8 @@ async function createProject(session: Session, name: string): Promise<IProject |
       console.error(e)
     }
   }
+
+  return new Error("Failed to create project")
 }
 
 export default function CreateProject({ session }: { session: Session }) {
@@ -102,10 +104,12 @@ export default function CreateProject({ session }: { session: Session }) {
   useMemo(() => {
     try {
       getCompanyLimits(session).then((companyLimits) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-        const allowed = companyLimits?.projects?.allowed;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-        const used = companyLimits?.projects?.used;
+        if (companyLimits instanceof Error) {
+          throw new Error("Failed to fetch company limits")
+        }
+
+        const allowed = companyLimits.projects.allowed;
+        const used = companyLimits.projects.used;
         const projectsLeft = allowed - used;
         setProjectsLeft(projectsLeft);
       }).catch((e) => {

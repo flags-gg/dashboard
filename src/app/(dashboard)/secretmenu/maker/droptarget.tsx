@@ -1,5 +1,3 @@
-"use client"
-
 import {useDroppable} from "@dnd-kit/core";
 import {horizontalListSortingStrategy, SortableContext} from "@dnd-kit/sortable";
 import Sortable from "./sortable";
