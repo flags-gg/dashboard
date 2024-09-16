@@ -176,15 +176,15 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
         <CardContent className={"p-6 text-sm"}>
           <DndContext onDragEnd={handleDragEnd} collisionDetection={rectIntersection}>
             <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
-              {DirectionMap.map((key, _) => (
+              {DirectionMap.map((key) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
               <Separator />
-              {LetterMap.map((key, _) => (
+              {LetterMap.map((key) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
               <Separator />
-              {NumberMap.map((key, _) => (
+              {NumberMap.map((key) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
             </div>

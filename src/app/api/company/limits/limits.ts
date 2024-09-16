@@ -21,6 +21,11 @@ export async function getCompanyLimits(session: Session): Promise<CompanyLimits 
 
     return await res.json() as CompanyLimits
   } catch (e) {
-    return new Error("Failed to fetch company limits")
+    if (e instanceof Error) {
+      return new Error(`Failed to fetch company limits: ${e.message}`)
+    } else {
+      console.error("failed to fetch company limits", e)
+      return new Error("Failed to fetch company limits")
+    }
   }
 }

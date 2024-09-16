@@ -20,7 +20,11 @@ async function enableDisableMenu(session: Session, menu_id: string) {
       return new Error('Failed to enable/disable menu')
     }
   } catch (e) {
-    throw new Error('Failed to enable/disable menu')
+    if (e instanceof Error) {
+      throw new Error(`Failed to enable/disable menu: ${e.message}`)
+    } else {
+      console.error('Failed to enable/disable menu', e)
+    }
   }
 }
 

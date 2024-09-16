@@ -1,6 +1,6 @@
 import {type Session} from 'next-auth'
 import { type Flag} from "~/lib/statemanager";
-import {Card, CardHeader, CardTitle} from "~/components/ui/card";
+import {Card} from "~/components/ui/card";
 import {
   Table,
   TableBody,
