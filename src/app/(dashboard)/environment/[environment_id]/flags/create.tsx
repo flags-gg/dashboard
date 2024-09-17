@@ -1,7 +1,7 @@
 import {Button} from "~/components/ui/button";
 import {type Session} from "next-auth";
 
-export default async function CreateFlag({ session, environment_id }: { session: Session, environment_id: string }) {
+export default function CreateFlag({ session, environment_id }: { session: Session, environment_id: string }) {
   console.log("stuff", session, environment_id)
 
   return (

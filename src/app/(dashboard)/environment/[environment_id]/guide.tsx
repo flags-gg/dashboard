@@ -1,7 +1,7 @@
 import {Button} from "~/components/ui/button";
 import {type Session} from "next-auth";
 
-export default async function Guide({session}: {session: Session}) {
+export default function Guide({session}: {session: Session}) {
   console.log("guide", session)
 
   return (
