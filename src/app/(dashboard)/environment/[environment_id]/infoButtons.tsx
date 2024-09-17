@@ -4,8 +4,7 @@ import {type Session} from "next-auth";
 import CreateFlag from "./flags/create";
 import {buttonVariants} from "~/components/ui/button";
 import Guide from './guide';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-expect-error types missing
 import {useFlags} from "@flags-gg/react-library";
 import {CardFooter} from "~/components/ui/card";
 import Link from "next/link";

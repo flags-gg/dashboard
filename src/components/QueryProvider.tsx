@@ -4,8 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {type ReactNode, useState} from 'react'
 import {ThemeProvider} from "~/components/theme-provider";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-expect-error types missing
 import {FlagsProvider} from "@flags-gg/react-library";
 import {env} from "~/env";
 
