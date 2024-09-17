@@ -12,7 +12,7 @@ export async function PUT(request: Request) {
   const { name, projectId, sessionToken, userId }: UpdateProjectName = await request.json() as UpdateProjectName
 
   try {
-    const apiUrl = `${env.FLAGS_SERVER}/project/${projectId}`
+    const apiUrl = `${env.API_SERVER}/project/${projectId}`
 
     const respopnse = await fetch(apiUrl, {
       method : 'PUT',

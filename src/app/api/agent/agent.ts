@@ -3,7 +3,7 @@ import {env} from "~/env";
 import {type AgentsData, type FlagAgent} from "~/lib/statemanager";
 
 export async function getAgents(session: Session, project_id: string): Promise<AgentsData> {
-  const apiUrl = `${env.FLAGS_SERVER}/project/${project_id}/agents`
+  const apiUrl = `${env.API_SERVER}/project/${project_id}/agents`
 
   if (!session || !session.user) {
     throw new Error('No session found')
@@ -27,7 +27,7 @@ export async function getAgents(session: Session, project_id: string): Promise<A
 }
 
 export async function getAgent(session: Session, agent_id: string): Promise<FlagAgent> {
-  const apiUrl = `${env.FLAGS_SERVER}/agent/${agent_id}`
+  const apiUrl = `${env.API_SERVER}/agent/${agent_id}`
 
   if (!session || !session.user) {
     throw new Error('No session found')

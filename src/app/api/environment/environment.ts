@@ -3,7 +3,7 @@ import {env} from "~/env";
 import {type EnvironmentsData, type IEnvironment} from "~/lib/statemanager";
 
 export async function getEnvironments(session: Session, agent_id: string): Promise<EnvironmentsData> {
-  const apiUrl = `${env.FLAGS_SERVER}/agent/${agent_id}/environments`
+  const apiUrl = `${env.API_SERVER}/agent/${agent_id}/environments`
 
   if (!session || !session.user) {
     throw new Error('No session found')
@@ -27,7 +27,7 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
 }
 
 export async function getEnvironment(session: Session, environment_id: string): Promise<IEnvironment> {
-  const apiUrl = `${env.FLAGS_SERVER}/environment/${environment_id}`
+  const apiUrl = `${env.API_SERVER}/environment/${environment_id}`
 
   if (!session || !session.user) {
     throw new Error('No session found')

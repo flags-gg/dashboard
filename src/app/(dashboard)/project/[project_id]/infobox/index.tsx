@@ -27,7 +27,7 @@ export default async function InfoBox({session, project_id}: {session: Session, 
         <Name session={session} project_id={project_id} name={projectInfo.name} />
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <ProjectInfo projectInfo={projectInfo} session={session} flagServer={env.FLAGS_SERVER} />
+        <ProjectInfo projectInfo={projectInfo} session={session} flagServer={env.API_SERVER} />
       </CardContent>
       <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
         <CreateAgent session={session} project_id={project_id} />

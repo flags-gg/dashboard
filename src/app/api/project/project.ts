@@ -3,7 +3,7 @@ import {env} from "~/env";
 import {type IProject, type ProjectsData} from "~/lib/statemanager";
 
 export async function getProjects(session: Session): Promise<ProjectsData> {
-  const apiUrl = `${env.FLAGS_SERVER}/projects`
+  const apiUrl = `${env.API_SERVER}/projects`
 
   if (!session || !session.user) {
     throw new Error('No session found')
@@ -27,7 +27,7 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
 }
 
 export async function getProject(session: Session, project_id: string): Promise<IProject> {
-  const apiUrl = `${env.FLAGS_SERVER}/project/${project_id}`
+  const apiUrl = `${env.API_SERVER}/project/${project_id}`
 
   if (!session || !session.user) {
     throw new Error('No session found')
