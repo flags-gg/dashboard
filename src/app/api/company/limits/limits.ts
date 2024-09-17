@@ -16,6 +16,7 @@ export async function getCompanyLimits(session: Session): Promise<CompanyLimits 
       cache: "no-store",
     })
     if (!res.ok) {
+      console.error("Failed to fetch company limits", res.status, res.statusText);
       return new Error("Failed to fetch company limits")
     }
 

@@ -113,7 +113,11 @@ export default function CreateProject({ session }: { session: Session }) {
         const projectsLeft = allowed - used;
         setProjectsLeft(projectsLeft);
       }).catch((e) => {
-        throw new Error(`Failed to fetch company limits: ${e}`);
+        if (e instanceof Error) {
+          throw new Error(`Failed to fetch company limits: ${e.message}`);
+        } else {
+          console.error("failed to fetch company limits, create project", e);
+        }
       })
     } catch (e) {
       console.error(e)

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const {sessionToken, userId}: RequestLimits = await request.json() as RequestLimits
 
   try {
-    const apiUrl = `${env.FLAGS_SERVER}/company/limits`
+    const apiUrl = `${env.API_SERVER}/company/limits`
 
     const response = await fetch(apiUrl, {
       method: 'GET',

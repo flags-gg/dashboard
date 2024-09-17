@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     }
 
     try {
-        const apiUrl = `${env.FLAGS_SERVER}/secret-menu/${menuId}`;
+        const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}`;
         const response = await fetch(apiUrl, {
           method: 'GET',
           headers: {

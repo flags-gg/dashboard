@@ -33,10 +33,7 @@ export const env = createEnv({
     STRIPE_KEY: z.string(),
     STRIPE_SECRET: z.string(),
 
-    FLAGS_AGENT: z.string().optional(),
-    FLAGS_PROJECT: z.string().optional(),
-    FLAGS_ENVIRONMENT: z.string().optional(),
-    FLAGS_SERVER: z.string().default("https://api.flags.gg/v1"),
+    API_SERVER: z.string().default("https://api.flags.gg/v1"),
   },
 
   /**
@@ -45,7 +42,9 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_FLAGS_AGENT: z.string().optional(),
+    NEXT_PUBLIC_FLAGS_PROJECT: z.string().optional(),
+    NEXT_PUBLIC_FLAGS_ENVIRONMENT: z.string().optional(),
   },
 
   /**
@@ -68,10 +67,11 @@ export const env = createEnv({
     STRIPE_KEY: process.env.STRIPE_KEY,
     STRIPE_SECRET: process.env.STRIPE_SECRET,
 
-    FLAGS_AGENT: process.env.FLAGS_AGENT,
-    FLAGS_PROJECT: process.env.FLAGS_PROJECT,
-    FLAGS_ENVIRONMENT: process.env.FLAGS_ENVIRONMENT,
-    FLAGS_SERVER: process.env.FLAGS_SERVER,
+    API_SERVER: process.env.API_SERVER,
+
+    NEXT_PUBLIC_FLAGS_AGENT: process.env.NEXT_PUBLIC_FLAGS_AGENT,
+    NEXT_PUBLIC_FLAGS_PROJECT: process.env.NEXT_PUBLIC_FLAGS_PROJECT,
+    NEXT_PUBLIC_FLAGS_ENVIRONMENT: process.env.NEXT_PUBLIC_FLAGS_ENVIRONMENT,
 
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

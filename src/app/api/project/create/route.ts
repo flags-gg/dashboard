@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const { name, sessionToken, userId }: CreateProject = await request.json() as CreateProject
 
   try {
-    const apiUrl = `${env.FLAGS_SERVER}/project`
+    const apiUrl = `${env.API_SERVER}/project`
 
     const response = await fetch(apiUrl, {
       method : 'POST',

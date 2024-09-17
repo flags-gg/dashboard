@@ -3,7 +3,7 @@ import {type secretMenu} from "~/lib/statemanager";
 import {env} from "~/env";
 
 export async function getSecretMenu(session: Session, menu_id: string): Promise<secretMenu> {
-  const apiUrl = `${env.FLAGS_SERVER}/secret-menu/${menu_id}`
+  const apiUrl = `${env.API_SERVER}/secret-menu/${menu_id}`
 
   if (!session || !session.user) {
     throw new Error('No session found')

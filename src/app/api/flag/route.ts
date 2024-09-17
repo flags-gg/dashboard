@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   const { flag, sessionToken, userId }: UpdateFlagRequest = await request.json();
 
   try {
-    const apiUrl = `${env.FLAGS_SERVER}/flag/${flag.details.id}`;
+    const apiUrl = `${env.API_SERVER}/flag/${flag.details.id}`;
 
     const response = await fetch(apiUrl, {
       method: 'PATCH',

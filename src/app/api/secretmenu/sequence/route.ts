@@ -14,7 +14,7 @@ export async function PUT(request: Request) {
   const {sessionToken, userId, menuId, sequence}: SecretMenuParams = await request.json();
 
   try {
-    const apiUrl = `${env.FLAGS_SERVER}/secret-menu/${menuId}/sequence`;
+    const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/sequence`;
     const response = await fetch(apiUrl, {
       method: 'PUT',
       headers: {
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   const {sessionToken, userId, sequence, environmentId}: SecretMenuParams = await request.json();
 
   try {
-    const apiUrl = `${env.FLAGS_SERVER}/secret-menu/${environmentId}`;
+    const apiUrl = `${env.API_SERVER}/secret-menu/${environmentId}`;
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
