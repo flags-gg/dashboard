@@ -58,13 +58,13 @@ importers:
         version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@stripe/react-stripe-js':
         specifier: ^2.8.0
-        version: 2.8.0(@stripe/stripe-js@4.4.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 2.8.0(@stripe/stripe-js@4.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@stripe/stripe-js':
-        specifier: ^4.4.0
-        version: 4.4.0
+        specifier: ^4.5.0
+        version: 4.5.0
       '@t3-oss/env-nextjs':
         specifier: ^0.11.1
-        version: 0.11.1(typescript@5.6.2)(zod@3.23.8)
+        version: 0.11.1(typescript@5.6.2)(zod@@hookform+resolvers+zod)
       '@tanstack/react-query':
         specifier: ^5.56.2
         version: 5.56.2(react@18.3.1)
@@ -127,7 +127,7 @@ importers:
         version: 6.13.3(next@14.2.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.11)
       zod:
         specifier: link:@hookform/resolvers/zod
-        version: 3.23.8
+        version: link:@hookform/resolvers/zod
     devDependencies:
       '@eslint/js':
         specifier: ^9.10.0
@@ -806,8 +806,8 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@stripe/stripe-js@4.4.0':
-    resolution: {integrity: sha512-p1WeTOwnAyXQ9I5/YC3+JXoUB6NKMR4qGjBobie2+rgYa3ftUTRS2L5qRluw/tGACty5SxqnfORCdsaymD1XjQ==}
+  '@stripe/stripe-js@4.5.0':
+    resolution: {integrity: sha512-dMOzc58AOlsF20nYM/avzV8RFhO/vgYTY7ajLMH6mjlnZysnOHZxsECQvjEmL8Q/ukPwHkOnxSPW/QGCCnp7XA==}
     engines: {node: '>=12.16'}
 
   '@swc/counter@0.1.3':
@@ -2692,9 +2692,6 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.23.8:
-    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
-
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
@@ -3288,14 +3285,14 @@ snapshots:
 
   '@rushstack/eslint-patch@1.10.4': {}
 
-  '@stripe/react-stripe-js@2.8.0(@stripe/stripe-js@4.4.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@stripe/react-stripe-js@2.8.0(@stripe/stripe-js@4.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@stripe/stripe-js': 4.4.0
+      '@stripe/stripe-js': 4.5.0
       prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@stripe/stripe-js@4.4.0': {}
+  '@stripe/stripe-js@4.5.0': {}
 
   '@swc/counter@0.1.3': {}
 
@@ -3304,16 +3301,16 @@ snapshots:
       '@swc/counter': 0.1.3
       tslib: 2.7.0
 
-  '@t3-oss/env-core@0.11.1(typescript@5.6.2)(zod@3.23.8)':
+  '@t3-oss/env-core@0.11.1(typescript@5.6.2)(zod@@hookform+resolvers+zod)':
     dependencies:
-      zod: 3.23.8
+      zod: link:@hookform/resolvers/zod
     optionalDependencies:
       typescript: 5.6.2
 
-  '@t3-oss/env-nextjs@0.11.1(typescript@5.6.2)(zod@3.23.8)':
+  '@t3-oss/env-nextjs@0.11.1(typescript@5.6.2)(zod@@hookform+resolvers+zod)':
     dependencies:
-      '@t3-oss/env-core': 0.11.1(typescript@5.6.2)(zod@3.23.8)
-      zod: 3.23.8
+      '@t3-oss/env-core': 0.11.1(typescript@5.6.2)(zod@@hookform+resolvers+zod)
+      zod: link:@hookform/resolvers/zod
     optionalDependencies:
       typescript: 5.6.2
 
@@ -5421,5 +5418,3 @@ snapshots:
   yaml@2.5.1: {}
 
   yocto-queue@0.1.0: {}
-
-  zod@3.23.8: {}
