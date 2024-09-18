@@ -1,17 +1,15 @@
 import { type Session } from "next-auth";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
+import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 import {type IEnvironment} from "~/lib/statemanager";
 import {getEnvironment} from "~/app/api/environment/environment";
 import Info from "./info";
-import CreateFlag from "~/app/(dashboard)/environment/[environment_id]/flags/create";
-import Guide from './guide';
-import {Button, buttonVariants} from "~/components/ui/button";
-import Link from "next/link";
+import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Label} from "~/components/ui/label";
 import {Input} from "~/components/ui/input";
 import {InfoBoxError} from "~/app/_components/InfoBoxError";
+import InfoButtons from "~/app/(dashboard)/environment/[environment_id]/infoButtons";
 
 export default async function InfoBox({session, environment_id}: {session: Session, environment_id: string}) {
   if (!session) {
@@ -60,15 +58,7 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
       <CardContent className={"p-6 text-sm"}>
         <Info environmentInfo={environmentInfo} session={session} />
       </CardContent>
-      <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
-        <CreateFlag session={session} environment_id={environment_id} />
-        <Guide session={session} />
-        {environmentInfo.secret_menu.enabled ? (
-          <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${environmentInfo.secret_menu.menu_id}`}>Secret Menu</Link>
-        ) : (
-          <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/`}>Secret Menu</Link>
-        )}
-      </CardFooter>
+      <InfoButtons session={session} environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
     </Card>
   );
 }

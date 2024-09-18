@@ -27,8 +27,7 @@ export const env = createEnv({
     KEYCLOAK_SECRET: z.string(),
     KEYCLOAK_ISSUER: z.string(),
 
-    UPLOADTHING_SECRET: z.string(),
-    UPLOADTHING_APP_ID: z.string(),
+    UPLOADTHING_TOKEN: z.string(),
 
     STRIPE_KEY: z.string(),
     STRIPE_SECRET: z.string(),
@@ -61,8 +60,7 @@ export const env = createEnv({
     KEYCLOAK_SECRET: process.env.KEYCLOAK_SECRET,
     KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
 
-    UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
-    UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
+    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
 
     STRIPE_KEY: process.env.STRIPE_KEY,
     STRIPE_SECRET: process.env.STRIPE_SECRET,
