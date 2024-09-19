@@ -9,7 +9,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Label} from "~/components/ui/label";
 import {Input} from "~/components/ui/input";
 import {InfoBoxError} from "~/app/_components/InfoBoxError";
-import InfoButtons from "~/app/(dashboard)/environment/[environment_id]/infoButtons";
+import InfoButtons from "./buttons";
 
 export default async function InfoBox({session, environment_id}: {session: Session, environment_id: string}) {
   if (!session) {

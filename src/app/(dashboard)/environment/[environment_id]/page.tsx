@@ -2,7 +2,7 @@ import {authOptions} from "~/server/auth";
 import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
 import FlagsList from "./flags/list";
-import InfoBox from "./infoBox";
+import InfoBox from "./infobox";
 
 
 export default async function EnvironmentPage({params}: {params: {environment_id: string}}) {

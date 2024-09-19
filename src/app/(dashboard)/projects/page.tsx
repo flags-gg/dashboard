@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
 import { authOptions } from "~/server/auth"
 import List from "./list";
-import InfoBox from "./infoBox";
+import InfoBox from "./infobox";
 
 export default async function ProjectsPage() {
   const session = await getServerSession(authOptions)
