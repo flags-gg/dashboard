@@ -3,10 +3,26 @@ import {getServerSession} from "next-auth/next";
 import {authOptions} from "~/server/auth";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
+import { Metadata } from "next";
+import { getProject } from "~/app/api/project/project";
+
+export async function generateMetadata({params}: {params: {project_id: string}}): Promise<Metadata> {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    redirect('/api/auth/signin')
+  }
+  const projectInfo = await getProject(session, params.project_id)
+  if (!projectInfo) {
+    redirect('/projects')
+  }
+
+  return {
+    title: `${projectInfo.name} Agents - Flags.gg`,
+  }
+}
 
 export default async function ProjectPage({params}: {params: {project_id: string}}) {
   const session = await getServerSession(authOptions)
-
   if (!session) {
     redirect('/api/auth/signin')
   }

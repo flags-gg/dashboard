@@ -3,6 +3,11 @@ import { redirect } from 'next/navigation'
 import { authOptions } from "~/server/auth"
 import List from "./list";
 import InfoBox from "./infobox";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects - Flags.gg",
+}
 
 export default async function ProjectsPage() {
   const session = await getServerSession(authOptions)

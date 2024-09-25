@@ -10,6 +10,7 @@ import {Label} from "~/components/ui/label";
 import {Input} from "~/components/ui/input";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 import InfoButtons from "./buttons";
+import Head from "next/head";
 
 export default async function InfoBox({session, environment_id}: {session: Session, environment_id: string}) {
   if (!session) {
@@ -26,6 +27,9 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
 
   return (
     <Card>
+      <Head>
+        <title>{environmentInfo.name}</title>
+      </Head>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
         <CardTitle className={"group flex items-center gap-2 text-lg"}>
           {environmentInfo.name}

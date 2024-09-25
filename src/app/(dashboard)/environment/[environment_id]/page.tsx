@@ -3,8 +3,25 @@ import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
 import FlagsList from "./flags/list";
 import InfoBox from "./infobox";
+import { Metadata } from "next";
+import { getEnvironment } from "~/app/api/environment/environment";
 
+export async function generateMetadata({params}: {params: {environment_id: string}}): Promise<Metadata> {
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    redirect('/api/auth/signin')
+  }
+  const environmentInfo = await getEnvironment(session, params.environment_id)
+  if (!environmentInfo) {
+    redirect('/projects')
+  }
 
+  console.log("environmentInfo", environmentInfo)
+
+  return {
+    title: `${environmentInfo.name} Flags - Flags.gg`,
+  }
+}
 export default async function EnvironmentPage({params}: {params: {environment_id: string}}) {
   const session = await getServerSession(authOptions)
   if (!session) {
