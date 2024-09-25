@@ -81,6 +81,8 @@ export interface IEnvironment {
     menu_id: string;
   },
   flags: [];
+  agent_name: string;
+  project_name: string;
 }
 export const environmentAtom = atomWithStorage<IEnvironment>("environmentAtom", {
   id: '',
@@ -92,6 +94,8 @@ export const environmentAtom = atomWithStorage<IEnvironment>("environmentAtom", 
     menu_id: '',
   },
   flags: [],
+  agent_name: '',
+  project_name: '',
 })
 export type EnvironmentsData = {
   environments: IEnvironment[]

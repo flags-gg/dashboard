@@ -16,10 +16,8 @@ export async function generateMetadata({params}: {params: {environment_id: strin
     redirect('/projects')
   }
 
-  console.log("environmentInfo", environmentInfo)
-
   return {
-    title: `${environmentInfo.name} Flags - Flags.gg`,
+    title: `${environmentInfo.project_name}: ${environmentInfo.agent_name} - ${environmentInfo.name} Flags - Flags.gg`,
   }
 }
 export default async function EnvironmentPage({params}: {params: {environment_id: string}}) {
