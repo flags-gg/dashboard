@@ -7,8 +7,8 @@ import { type ReactNode } from "react";
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "~/lib/utils"
 import { getServerAuthSession } from "~/server/auth";
-import HeaderBar from "~/app/_components/HeaderBar";
-import SideBar from "~/app/_components/SideBar";
+import HeaderBar from "~/app/components/HeaderBar";
+import SideBar from "~/app/components/SideBar";
 import {TooltipProvider} from "~/components/ui/tooltip";
 import QueryProvider from "~/components/QueryProvider";
 import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";

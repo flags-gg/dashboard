@@ -1,5 +1,5 @@
 import {type Session} from 'next-auth'
-import { type Flag} from "~/lib/statemanager";
+import {type Flag} from "~/lib/statemanager";
 import {Card} from "~/components/ui/card";
 import {
   Table,
@@ -11,6 +11,8 @@ import {
 import Link from "next/link";
 import { getFlags } from "~/app/api/flag/flag";
 import { FlagSwitch } from "./switch";
+import { DeleteFlag } from "./delete";
+import { EditFlag } from "./edit";
 
 export default async function FlagsList({
   session,
@@ -44,7 +46,8 @@ export default async function FlagsList({
           <TableHeader>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell>Enabled</TableCell>
+              <TableCell colSpan={2}>Enabled</TableCell>
+              <TableCell>Options</TableCell>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -56,8 +59,12 @@ export default async function FlagsList({
                     {flag.details.name}
                   </Link>
                 </TableCell>
-                <TableCell>
+                <TableCell colSpan={2}>
                   <FlagSwitch session={session} flag={flag} />
+                </TableCell>
+                <TableCell className={"gap-2 flex flex-row-reverse"}>
+                  <DeleteFlag session={session} flag={flag} />
+                  <EditFlag session={session} flag={flag} />
                 </TableCell>
               </TableRow>
             ))}

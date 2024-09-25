@@ -1,7 +1,7 @@
 import {authOptions} from "~/server/auth";
 import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
-import InfoBox from "./infoBox";
+import InfoBox from "./infobox";
 import Maker from "../maker";
 
 export default async function SecretMenuSpecificPage({params}: {params: {menu_id: string}}) {

@@ -69,8 +69,7 @@ tasks:
           --build-arg NEXT_PUBLIC_FLAGS_SERVER=https://api.flags.gg/v1 \
           --build-arg NEXTAUTH_URL=http://localhost:3000 \
           --build-arg NEXTAUTH_SECRET={{.NEXTAUTH_SECRET}} \
-          --build-arg UPLOADTHING_APP_ID={{.UPLOADTHING_APP_ID}} \
-          --build-arg UPLOADTHING_SECRET={{.UPLOADTHING_SECRET}} \
+          --build-arg UPLOADTHING_TOKEN={{.UPLOADTHING_TOKEN}} \
           --build-arg STRIPE_KEY={{.STRIPE_KEY}} \
           --build-arg STRIPE_SECRET={{.STRIPE_SECRET}} \
           -f ./k8s/Containerfile .
@@ -86,8 +85,7 @@ tasks:
       KEYCLOAK_ID: dashboard
       STRIPE_KEY: tester
       STRIPE_SECRET: tester
-      UPLOADTHING_APP_ID: tester
-      UPLOADTHING_SECRET: tester
+      UPLOADTHING_TOKEN: tester
       NEXTAUTH_SECRET: tester
 
   build-push-latest:
