@@ -9,7 +9,12 @@ export type CompanyLimits = {
   };
   agents: {
     allowed: number;
-    used: number;
+    used: [
+      {
+        project_id: string;
+        used: number;
+      }
+    ];
   };
   environments: {
     allowed: number;

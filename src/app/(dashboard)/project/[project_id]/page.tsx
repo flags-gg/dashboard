@@ -14,10 +14,10 @@ export default async function ProjectPage({params}: {params: {project_id: string
   return (
     <>
       <header className={"col-span-2"}>
-        <h1 className={"text-2xl font-semibold"}>Agents</h1>
+        <h1 className={"text-2xl font-semibold"}>Project Agents</h1>
       </header>
       <List session={session} project_id={params.project_id} />
       <InfoBox session={session} project_id={params.project_id} />
     </>
-  )
+  );
 }

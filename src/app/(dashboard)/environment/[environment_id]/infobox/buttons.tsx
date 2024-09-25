@@ -1,7 +1,7 @@
 "use client"
 
 import {type Session} from "next-auth";
-import CreateFlag from "./flags/create";
+import CreateFlag from "../flags/create";
 import {buttonVariants} from "~/components/ui/button";
 import Guide from './guide';
 import {useFlags} from "@flags-gg/react-library";
@@ -13,8 +13,8 @@ export default function InfoButtons({session, environmentId, menuId}: {session: 
 
   return (
     <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
-      {is("createFlag")?.enabled() && <CreateFlag session={session} environment_id={environmentId} />}
-      {is("viewGuide")?.enabled() && <Guide session={session} />}
+      {is("create flag")?.enabled() && <CreateFlag session={session} environment_id={environmentId} />}
+      {is("view guide")?.enabled() && <Guide session={session} />}
       {is("secret menu")?.enabled() && (
         menuId ? (
           <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}`}>Secret Menu</Link>
