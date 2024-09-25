@@ -3,6 +3,11 @@ import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
 import Maker from "./maker";
 import InfoBox from "./info"
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Secret Menu Builder - Flags.gg",
+}
 
 export default async function SecretMenuPage() {
   const session = await getServerSession(authOptions)

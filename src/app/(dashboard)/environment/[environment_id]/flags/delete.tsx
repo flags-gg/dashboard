@@ -6,28 +6,59 @@ import {useState} from "react";
 import {Button} from "~/components/ui/button";
 import {Trash2} from "lucide-react";
 import {LoadingSpinner} from "~/components/ui/loader";
+import { toast } from "~/hooks/use-toast";
 
 async function deleteFlagAction(session: Session, flag_id: string): Promise<null | Error> {
-    return null
+    try {
+        const response = await fetch(`/api/flag/delete`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                flag_id: flag_id,
+                sessionToken: session.user.access_token,
+                userId: session.user.id,
+            }),
+            cache: "no-store",
+        })
+        if (!response.ok) {
+            return new Error("Failed to delete flag")
+        }
+
+        return null
+    } catch (e) {
+        if (e instanceof Error) {
+            return Error(`Failed to delete flag: ${e.message}`)
+        } else {
+            console.error("deleteFlag", e)
+        }
+    }
+
+    return Error("Failed to delete flag")
 }
 
 export function DeleteFlag({session, flag}: {session: Session, flag: Flag}) {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState<boolean | null>(null);
 
     const deleteFlag = async () => {
+        setLoading(true);
+
         try {
-            setLoading(true);
-            await deleteFlagAction(session, flag.details.id);
-            setSuccess(true);
+            deleteFlagAction(session, flag.details.id).then(() => {
+                setLoading(false);
+            }).catch((e) => {
+                if (e instanceof Error) {
+                    throw new Error(`Failed to delete flag: ${e.message}`);
+                }
+                throw new Error("Failed to delete flag");
+            })
         } catch (e) {
-            if (e instanceof Error) {
-                setError(e.message);
-            }
-            console.log("Error deleting flag", e);
-        } finally {
-            //setLoading(false);
+            console.error("Error deleting flag", e);
+            toast({
+                title: "Failed to delete flag",
+                description: "Failed to delete flag",
+            })
         }
     }
 
