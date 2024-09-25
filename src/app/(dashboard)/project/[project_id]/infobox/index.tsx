@@ -4,7 +4,7 @@ import {type IProject} from "~/lib/statemanager";
 import ProjectInfo from "./info";
 import {getProject} from "~/app/api/project/project";
 import {env} from "~/env";
-import {InfoBoxError} from "~/app/_components/InfoBoxError";
+import {InfoBoxError} from "~/app/components/InfoBoxError";
 import Name from "./name";
 import InfoButtons from "./buttons";
 

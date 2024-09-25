@@ -8,7 +8,7 @@ import {Pencil} from "lucide-react";
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Label} from "~/components/ui/label";
 import {Input} from "~/components/ui/input";
-import {InfoBoxError} from "~/app/_components/InfoBoxError";
+import {InfoBoxError} from "~/app/components/InfoBoxError";
 import InfoButtons from "./buttons";
 
 export default async function InfoBox({session, environment_id}: {session: Session, environment_id: string}) {

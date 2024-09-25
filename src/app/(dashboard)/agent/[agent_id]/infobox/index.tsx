@@ -7,7 +7,7 @@ import AgentInfo from "./info";
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
-import {InfoBoxError} from "~/app/_components/InfoBoxError";
+import {InfoBoxError} from "~/app/components/InfoBoxError";
 
 export default async function InfoBox({session, agent_id}: {session: Session, agent_id: string}) {
   if (!session) {
