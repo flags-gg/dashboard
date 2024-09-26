@@ -6,10 +6,10 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
   const apiUrl = `${env.API_SERVER}/agent/${agent_id}/environments`
 
   if (!session || !session.user) {
-    throw new Error('No session found')
+    throw Error('No session found')
   }
   if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+    throw Error('No access token or user id found')
   }
 
   const res = await fetch(apiUrl, {
@@ -20,9 +20,9 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
     cache: 'no-store'
   })
   if (!res.ok) {
-    throw new Error('Failed to fetch environments')
+    throw Error('Failed to fetch environments')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
   return res.json()
 }
 
@@ -30,10 +30,10 @@ export async function getEnvironment(session: Session, environment_id: string): 
   const apiUrl = `${env.API_SERVER}/environment/${environment_id}`
 
   if (!session || !session.user) {
-    throw new Error('No session found')
+    throw Error('No session found')
   }
   if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+    throw Error('No access token or user id found')
   }
 
   const res = await fetch(apiUrl, {
@@ -44,8 +44,8 @@ export async function getEnvironment(session: Session, environment_id: string): 
     cache: 'no-store'
   })
   if (!res.ok) {
-    throw new Error('Failed to fetch environment')
+    throw Error('Failed to fetch environment')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
   return res.json()
 }

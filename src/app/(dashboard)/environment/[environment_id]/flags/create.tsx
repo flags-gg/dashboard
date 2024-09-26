@@ -19,6 +19,7 @@ import { Input } from "~/components/ui/input";
 import { agentAtom, Flag } from "~/lib/statemanager";
 import { toast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 
 async function createFlagAction(session: Session, environment_id: string, agent_id: string, name: string): Promise<Flag | Error> {
   try {
@@ -54,6 +55,7 @@ async function createFlagAction(session: Session, environment_id: string, agent_
 export default function CreateFlag({ session, environment_id }: { session: Session, environment_id: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [agentInfo] = useAtom(agentAtom)
+  const router = useRouter()
 
   const FormSchema = z.object({
     flagName: z.string().min(2, {message: "Name is required a minimum of 2 characters"}),
@@ -71,6 +73,8 @@ export default function CreateFlag({ session, environment_id }: { session: Sessi
         if (flag instanceof Error) {
           throw new Error("Failed to create flag")
         }
+
+        router.refresh()
       }).catch((e) => {
         throw new Error(`Failed to create flag: ${e}`)
       })
