@@ -12,18 +12,24 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
     throw Error('No access token or user id found')
   }
 
-  const res = await fetch(apiUrl, {
-    headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
-    },
-    cache: 'no-store'
-  })
-  if (!res.ok) {
-    throw Error('Failed to fetch environments')
+  try {
+    const res = await fetch(apiUrl, {
+      headers: {
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+      },
+      cache: 'no-store'
+    })
+    if (!res.ok) {
+      throw Error('Failed to fetch environments')
+    }
+
+    return res.json()
+  } catch (e) {
+    console.error('Failed to fetch environments', e)
   }
 
-  return res.json()
+  throw new Error('Internal Server Error')
 }
 
 export async function getEnvironment(session: Session, environment_id: string): Promise<IEnvironment> {
@@ -36,16 +42,24 @@ export async function getEnvironment(session: Session, environment_id: string): 
     throw Error('No access token or user id found')
   }
 
-  const res = await fetch(apiUrl, {
-    headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
-    },
-    cache: 'no-store'
-  })
-  if (!res.ok) {
-    throw Error('Failed to fetch environment')
+  try {
+    const res = await fetch(apiUrl, {
+      headers: {
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+      },
+      cache: 'no-store'
+    })
+    if (!res.ok) {
+      throw Error('Failed to fetch environment')
+    }
+
+    return res.json()
+  }
+  catch (e) {
+    console.error('Failed to fetch environment', e)
+    throw new Error('Internal Server Error')
   }
 
-  return res.json()
+  throw new Error('Internal Server Error')
 }

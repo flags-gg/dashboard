@@ -39,6 +39,14 @@ export function EditFlag({session, flag}: {session: Session, flag: Flag}) {
         )
     }
 
+    if (error) {
+        return (
+            <Button disabled={true} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
+                <Pencil className={"h-5 w-5"} />
+            </Button>
+        )
+    }
+
     return (
         <Button onClick={editFlag} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
             <Pencil className={"h-5 w-5"} />
