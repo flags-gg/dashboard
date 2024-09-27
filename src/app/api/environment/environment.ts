@@ -60,6 +60,4 @@ export async function getEnvironment(session: Session, environment_id: string): 
     console.error('Failed to fetch environment', e)
     throw new Error('Internal Server Error')
   }
-
-  throw new Error('Internal Server Error')
 }
