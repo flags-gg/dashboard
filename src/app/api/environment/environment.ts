@@ -2,14 +2,14 @@ import {type Session} from 'next-auth'
 import {env} from "~/env";
 import {type EnvironmentsData, type IEnvironment} from "~/lib/statemanager";
 
-export async function getEnvironments(session: Session, agent_id: string): Promise<EnvironmentsData> {
+export async function getEnvironments(session: Session, agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
   const apiUrl = `${env.API_SERVER}/agent/${agent_id}/environments`
 
   if (!session || !session.user) {
-    throw Error('No session found')
+    return { data: null, error: new Error('No session found') }
   }
   if (!session.user.access_token || !session.user.id) {
-    throw Error('No access token or user id found')
+    return { data: null, error: new Error('No access token or user id found') }
   }
 
   try {
@@ -21,25 +21,25 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
       cache: 'no-store'
     })
     if (!res.ok) {
-      throw Error('Failed to fetch environments')
+      return { data: null, error: new Error('Failed to fetch environments') }
     }
 
-    return res.json()
+    const data = await res.json() as EnvironmentsData
+    return { data, error: null }
   } catch (e) {
     console.error('Failed to fetch environments', e)
+    return { data: null, error: new Error('Internal Server Error') }
   }
-
-  throw new Error('Internal Server Error')
 }
 
-export async function getEnvironment(session: Session, environment_id: string): Promise<IEnvironment> {
+export async function getEnvironment(session: Session, environment_id: string): Promise<{ data: IEnvironment | null, error: Error | null }> {
   const apiUrl = `${env.API_SERVER}/environment/${environment_id}`
 
   if (!session || !session.user) {
-    throw Error('No session found')
+    return { data: null, error: new Error('No session found') }
   }
   if (!session.user.access_token || !session.user.id) {
-    throw Error('No access token or user id found')
+    return { data: null, error: new Error('No access token or user id found') }
   }
 
   try {
@@ -51,13 +51,14 @@ export async function getEnvironment(session: Session, environment_id: string): 
       cache: 'no-store'
     })
     if (!res.ok) {
-      throw Error('Failed to fetch environment')
+      return { data: null, error: new Error('Failed to fetch environment') }
     }
 
-    return res.json()
+    const data = await res.json() as IEnvironment
+    return { data, error: null }
   }
   catch (e) {
     console.error('Failed to fetch environment', e)
-    throw new Error('Internal Server Error')
+    return { data: null, error: new Error('Internal Server Error') }
   }
 }

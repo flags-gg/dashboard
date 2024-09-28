@@ -39,7 +39,7 @@ const createProject = async (session: Session, name: string): Promise<IProject> 
     throw new Error("Failed to create project");
   }
 
-  return res.json();
+  return await res.json() as IProject;
 };
 
 const FormSchema = z.object({
@@ -55,7 +55,7 @@ export default function CreateProject({ session }: { session: Session }) {
   const createProjectMutation = useMutation({
     mutationFn: (name: string) => createProject(session, name),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ['companyLimits', session.user.id]});
+      queryClient.invalidateQueries({queryKey: ['companyLimits', session.user.id]}).catch(console.error);
       toast({
         title: "Project Created",
         description: "Project has been created",

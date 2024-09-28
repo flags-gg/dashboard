@@ -1,16 +1,14 @@
 import {type Session} from "next-auth";
-import {type EnvironmentsData} from "~/lib/statemanager";
 import {Card} from "~/components/ui/card";
 import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
 import Link from "next/link";
 import {getEnvironments} from "~/app/api/environment/environment";
 
 export default async function EnvironmentsList({ session, agent_id }: { session: Session, agent_id: string }) {
-  let environments: EnvironmentsData;
-  try {
-    environments = await getEnvironments(session, agent_id);
-  } catch (e) {
-    console.error(e);
+  const { data: environments, error } = await getEnvironments(session, agent_id);
+
+  if (error ?? !environments) {
+    console.error(error);
     return (
       <div className="gap-3 col-span-2">
         <Card className={"mb-3 p-3"}>

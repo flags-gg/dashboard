@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       env.STRIPE_SECRET,
     );
   } catch (e) {
-    // @ts-ignore
+    // @ts-expect-error - ignore
     return new Response(`Webhook Error: ${e?.message}`, { status: 400 });
   }
 

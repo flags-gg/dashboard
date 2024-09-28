@@ -63,6 +63,14 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
   const [imageURL, setImageURL] = useState(projectInfo.logo)
   const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
 
+  if (error) {
+    setShowError(true)
+    setErrorInfo({
+      message: "Error loading company limits",
+      title: "Error loading company limits",
+    });
+  }
+
   let agentsUsed = 0
   for (const agent of companyLimits?.agents?.used ?? []) {
     if (agent.project_id === projectInfo.project_id) {
@@ -77,6 +85,10 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
         <AlertDescription>{errorInfo.message}</AlertDescription>
       </Alert>
     )
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>
   }
 
   return (

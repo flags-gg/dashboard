@@ -3,7 +3,7 @@ import {getServerSession} from "next-auth/next";
 import {authOptions} from "~/server/auth";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { getProject } from "~/app/api/project/project";
 
 export async function generateMetadata({params}: {params: {project_id: string}}): Promise<Metadata> {

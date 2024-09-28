@@ -1,6 +1,5 @@
 import { type Session } from "next-auth";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
-import {type IEnvironment} from "~/lib/statemanager";
 import {getEnvironment} from "~/app/api/environment/environment";
 import Info from "./info";
 import {Button} from "~/components/ui/button";
@@ -13,15 +12,14 @@ import InfoButtons from "./buttons";
 
 export default async function InfoBox({session, environment_id}: {session: Session, environment_id: string}) {
   if (!session) {
-    throw new Error('No session found')
+    return <InfoBoxError name={"session"} blurb={"No session found"} />
   }
 
-  let environmentInfo: IEnvironment
-  try {
-    environmentInfo = await getEnvironment(session, environment_id)
-  } catch (e) {
-    console.error(e)
-    return <InfoBoxError name={"environment"} blurb={"environment"} />
+  const { data: environmentInfo, error } = await getEnvironment(session, environment_id)
+
+  if (error ?? !environmentInfo) {
+    console.error(error)
+    return <InfoBoxError name={"environment"} blurb={"Failed to fetch environment"} />
   }
 
   return (

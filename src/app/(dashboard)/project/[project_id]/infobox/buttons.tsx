@@ -3,7 +3,7 @@
 import { CardFooter } from "~/components/ui/card";
 import CreateAgent from "~/app/(dashboard)/agent/create";
 import { useAtom } from "jotai";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { projectAtom } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
 import { useFlags } from "@flags-gg/react-library";

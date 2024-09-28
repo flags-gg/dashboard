@@ -3,7 +3,7 @@ import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
 import Maker from "../maker";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "SecretMenu Builder - Flags.gg",
