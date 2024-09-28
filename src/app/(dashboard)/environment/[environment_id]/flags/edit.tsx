@@ -8,7 +8,6 @@ import {useState} from "react";
 import {LoadingSpinner} from "~/components/ui/loader";
 import { Popover } from "@radix-ui/react-popover";
 import { PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +16,10 @@ import { useRouter } from "next/navigation";
 import { toast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 
+// TODO: edit flag
 async function editFlagAction(session: Session, flag: Flag): Promise<null | Error> {
+    console.log("edit", flag, session)
+
     return null
 }
 

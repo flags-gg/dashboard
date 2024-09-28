@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { agentAtom, Flag } from "~/lib/statemanager";
+import { agentAtom, type Flag } from "~/lib/statemanager";
 import { toast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";

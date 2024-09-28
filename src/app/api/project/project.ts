@@ -48,7 +48,7 @@ export async function getProject(session: Session, project_id: string): Promise<
       return Error('Failed to fetch project')
     }
 
-    return res.json()
+    return await res.json() as IProject
   } catch (e) {
     console.error('Failed to fetch project', e)
     return Error('Internal Server Error')

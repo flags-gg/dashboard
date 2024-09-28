@@ -3,7 +3,7 @@ import {authOptions} from "~/server/auth";
 import EnvironmentsList from "./list";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { getAgent } from "~/app/api/agent/agent";
 
 export async function generateMetadata({params}: {params: {agent_id: string}}): Promise<Metadata> {

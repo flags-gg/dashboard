@@ -21,7 +21,7 @@ const fetchCompanyLimits = async (session: Session): Promise<CompanyLimits> => {
     throw new Error('Failed to fetch company limits');
   }
 
-  return res.json();
+  return await res.json() as CompanyLimits;
 };
 
 export const useCompanyLimits = (session: Session) => {
