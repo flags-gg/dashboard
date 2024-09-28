@@ -7,7 +7,6 @@ import {env} from "~/env";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 import Name from "./name";
 import InfoButtons from "./buttons";
-import { useState } from "react";
 
 export default async function InfoBox({session, project_id}: {session: Session, project_id: string}) {
   if (!session) {
