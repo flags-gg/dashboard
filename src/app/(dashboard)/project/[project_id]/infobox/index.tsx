@@ -7,6 +7,7 @@ import {env} from "~/env";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 import Name from "./name";
 import InfoButtons from "./buttons";
+import { useState } from "react";
 
 export default async function InfoBox({session, project_id}: {session: Session, project_id: string}) {
   if (!session) {
@@ -17,7 +18,8 @@ export default async function InfoBox({session, project_id}: {session: Session, 
   try {
     const data = await getProject(session, project_id)
     if (data instanceof Error) {
-      throw data
+      console.error(data)
+      return <InfoBoxError name={"project"} blurb={"project"} />
     }
     projectInfo = data
   } catch (e) {
@@ -28,6 +30,7 @@ export default async function InfoBox({session, project_id}: {session: Session, 
   if (!projectInfo) {
     return <InfoBoxError name={"project"} blurb={"project"} />
   }
+
 
   return (
     <Card>
