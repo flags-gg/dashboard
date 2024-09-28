@@ -7,7 +7,7 @@ import {ThemeProvider} from "~/components/theme-provider";
 import {FlagsProvider} from "@flags-gg/react-library";
 import {env} from "~/env";
 
-export default function QueryProvider({ children }: { children: ReactNode }) {
+export default function ClientProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (

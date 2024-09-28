@@ -10,7 +10,7 @@ import { getServerAuthSession } from "~/server/auth";
 import HeaderBar from "~/app/components/HeaderBar";
 import SideBar from "~/app/components/SideBar";
 import {TooltipProvider} from "~/components/ui/tooltip";
-import QueryProvider from "~/components/QueryProvider";
+import ClientProvider from "~/components/ClientProvider";
 import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
 import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
@@ -35,7 +35,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <QueryProvider>
+        <ClientProvider>
           <TooltipProvider>
             {session ? (
               <div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -53,7 +53,7 @@ export default async function RootLayout({
               children
             )}
           </TooltipProvider>
-        </QueryProvider>
+        </ClientProvider>
       </body>
     </html>
   );

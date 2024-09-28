@@ -13,11 +13,19 @@ export default async function InfoBox({session, project_id}: {session: Session, 
     throw new Error('No session found')
   }
 
-  let projectInfo: IProject
+  let projectInfo: IProject | null = null
   try {
-    projectInfo = await getProject(session, project_id)
+    const data = await getProject(session, project_id)
+    if (data instanceof Error) {
+      throw data
+    }
+    projectInfo = data
   } catch (e) {
     console.error(e)
+    return <InfoBoxError name={"project"} blurb={"project"} />
+  }
+
+  if (!projectInfo) {
     return <InfoBoxError name={"project"} blurb={"project"} />
   }
 
