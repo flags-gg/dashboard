@@ -16,11 +16,10 @@ export async function generateMetadata({params}: {params: {environment_id: strin
 
   if (error ?? !environmentInfo) {
     console.error('Failed to fetch environment:', error)
-    redirect('/projects')
   }
 
   return {
-    title: `${environmentInfo.project_name}: ${environmentInfo.agent_name} - ${environmentInfo.name} Flags - Flags.gg`,
+    title: `${environmentInfo?.project_name}: ${environmentInfo?.agent_name} - ${environmentInfo?.name} Flags - Flags.gg`,
   }
 }
 
