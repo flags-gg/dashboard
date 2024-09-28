@@ -1,18 +1,17 @@
 "use client"
 
-import {Button} from "~/components/ui/button";
 import {CardFooter} from "~/components/ui/card";
-import {useFlags} from "@flags-gg/react-library";
 import {type Session} from "next-auth";
+import { buttonVariants } from "~/components/ui/button";
+import Link from "next/link";
+import { useFlags } from "@flags-gg/react-library";
 
-// TODO: styling creator
 export default function InfoBox({session, menuId}: {session: Session, menuId: string}) {
-    const {is} = useFlags()
-    console.log("menuId", menuId, session)
+  const {is} = useFlags()
 
-    return (
-        <CardFooter className={"p-3 border-t-2 items-center justify-center"}>
-            {is("menu style")?.enabled() && <Button>Styling</Button>}
-        </CardFooter>
-    )
+  return (
+    <CardFooter className={"p-3 border-t-2 items-center justify-center"}>
+      {is("menu style")?.enabled() && <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}/styling`}>Styling</Link>}
+    </CardFooter>
+  )
 }
