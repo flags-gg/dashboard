@@ -1,8 +1,8 @@
 "use client"
 
-import {Button} from "~/components/ui/button";
-import {type Session} from "next-auth";
-import {useMemo, useState} from "react";
+import { Button } from "~/components/ui/button";
+import { type Session } from "next-auth";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,126 +11,82 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import {getCompanyLimits} from "~/app/api/company/limits/limits";
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm} from "react-hook-form";
-import {type IProject} from "~/lib/statemanager";
-import {toast} from "~/hooks/use-toast";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "~/components/ui/form";
-import {Input} from "~/components/ui/input";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { type IProject } from "~/lib/statemanager";
+import { toast } from "~/hooks/use-toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { useCompanyLimits } from '~/hooks/use-company-limits';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-async function createProject(session: Session, name: string): Promise<IProject | Error> {
-  try {
-    const res = await fetch(`/api/project/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
-      }),
-      cache: "no-store",
-    })
-    if (!res.ok) {
-      return new Error("Failed to create project")
-    }
+const createProject = async (session: Session, name: string): Promise<IProject> => {
+  const res = await fetch(`/api/project/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      sessionToken: session.user.access_token,
+      userId: session.user.id,
+    }),
+    cache: "no-store",
+  });
 
-    return await res.json() as IProject
-  } catch (e) {
-    if (e instanceof Error) {
-      return Error(`Failed to create project: ${e.message}`)
-    } else {
-      console.error(e)
-    }
+  if (!res.ok) {
+    throw new Error("Failed to create project");
   }
 
-  return new Error("Failed to create project")
-}
+  return res.json();
+};
+
+const FormSchema = z.object({
+  projectName: z.string().min(2, {message: "Project Name is required a minimum of 2 characters"}),
+});
 
 export default function CreateProject({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [projectsLeft, setProjectsLeft] = useState(0);
-  const [projectInfo, setProjectInfo] = useState<IProject | null>(null);
+  const queryClient = useQueryClient();
 
-  const FormSchema = z.object({
-    projectName: z.string().min(2, {message: "Project Name is required a minimum of 2 characters"}),
-  })
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {projectName: ""},
-  })
+  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    setIsOpen(false)
-
-    try {
-      createProject(session, data.projectName).then((project) => {
-        if (project instanceof Error) {
-          throw new Error("Failed to create project")
-        }
-        setProjectInfo(project)
-      }).catch((e) => {
-        throw new Error(`Failed to create project: ${e}`)
-      })
-    } catch (e) {
-      console.error(e)
+  const createProjectMutation = useMutation({
+    mutationFn: (name: string) => createProject(session, name),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({queryKey: ['companyLimits', session.user.id]});
+      toast({
+        title: "Project Created",
+        description: "Project has been created",
+      });
+      window.location.href = `/project/${data.project_id}`;
+    },
+    onError: (error) => {
+      console.error(error);
       toast({
         title: "Failed to create project",
         description: "Failed to create project",
-      })
-    }
+      });
+    },
+  });
 
-    toast({
-      title: "Project Created",
-      description: "Project has been created",
-    })
-  }
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {projectName: ""},
+  });
 
-  if (projectInfo) {
-    try {
-      window.location.href = `/project/${projectInfo?.project_id}`
-    } catch (e) {
-      console.error(e)
-      toast({
-        title: "Failed to redirect",
-        description: "Failed to redirect",
-      })
-    }
-  }
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    setIsOpen(false);
+    createProjectMutation.mutate(data.projectName);
+  };
 
-  useMemo(() => {
-    try {
-      getCompanyLimits(session).then((companyLimits) => {
-        if (companyLimits instanceof Error) {
-          throw new Error("Failed to fetch company limits")
-        }
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
-        const allowed = companyLimits.projects.allowed;
-        const used = companyLimits.projects.used;
-        const projectsLeft = allowed - used;
-        setProjectsLeft(projectsLeft);
-      }).catch((e) => {
-        if (e instanceof Error) {
-          throw new Error(`Failed to fetch company limits: ${e.message}`);
-        } else {
-          console.error("failed to fetch company limits, create project", e);
-        }
-      })
-    } catch (e) {
-      console.error(e)
-      toast({
-        title: "Failed to fetch company limits",
-        description: "Failed to fetch company limits",
-      })
-      return <></>
-    }
-  }, [session])
-
+  const projectsLeft = companyLimits?.projects?.allowed && companyLimits?.projects?.used ? companyLimits.projects.allowed - companyLimits.projects.used : 0;
   if (projectsLeft <= 0) {
-    return <></>
+    return null;
   }
 
   return (
@@ -159,5 +115,5 @@ export default function CreateProject({ session }: { session: Session }) {
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

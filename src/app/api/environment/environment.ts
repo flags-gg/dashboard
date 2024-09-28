@@ -6,46 +6,58 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
   const apiUrl = `${env.API_SERVER}/agent/${agent_id}/environments`
 
   if (!session || !session.user) {
-    throw new Error('No session found')
+    throw Error('No session found')
   }
   if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+    throw Error('No access token or user id found')
   }
 
-  const res = await fetch(apiUrl, {
-    headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
-    },
-    cache: 'no-store'
-  })
-  if (!res.ok) {
-    throw new Error('Failed to fetch environments')
+  try {
+    const res = await fetch(apiUrl, {
+      headers: {
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+      },
+      cache: 'no-store'
+    })
+    if (!res.ok) {
+      throw Error('Failed to fetch environments')
+    }
+
+    return res.json()
+  } catch (e) {
+    console.error('Failed to fetch environments', e)
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return res.json()
+
+  throw new Error('Internal Server Error')
 }
 
 export async function getEnvironment(session: Session, environment_id: string): Promise<IEnvironment> {
   const apiUrl = `${env.API_SERVER}/environment/${environment_id}`
 
   if (!session || !session.user) {
-    throw new Error('No session found')
+    throw Error('No session found')
   }
   if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+    throw Error('No access token or user id found')
   }
 
-  const res = await fetch(apiUrl, {
-    headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
-    },
-    cache: 'no-store'
-  })
-  if (!res.ok) {
-    throw new Error('Failed to fetch environment')
+  try {
+    const res = await fetch(apiUrl, {
+      headers: {
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+      },
+      cache: 'no-store'
+    })
+    if (!res.ok) {
+      throw Error('Failed to fetch environment')
+    }
+
+    return res.json()
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return res.json()
+  catch (e) {
+    console.error('Failed to fetch environment', e)
+    throw new Error('Internal Server Error')
+  }
 }

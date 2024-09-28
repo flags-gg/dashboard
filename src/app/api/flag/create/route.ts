@@ -11,10 +11,9 @@ type CreateFlag = {
 
 export async function POST(request: Request) {
   const { name, environment_id, agent_id, sessionToken, userId }: CreateFlag = await request.json() as CreateFlag
+  const apiUrl = `${env.API_SERVER}/flag`
 
   try {
-    const apiUrl = `${env.API_SERVER}/flag`
-
     const response = await fetch(apiUrl, {
       method : 'POST',
       headers: {

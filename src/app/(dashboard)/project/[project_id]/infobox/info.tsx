@@ -15,6 +15,7 @@ import {
 import {UploadButton} from "~/utils/uploadthing";
 import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
 import Image from "next/image";
+import { useCompanyLimits } from "~/hooks/use-company-limits";
 
 interface IError {
   message: string
@@ -60,6 +61,14 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [imageURL, setImageURL] = useState(projectInfo.logo)
+  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
+
+  let agentsUsed = 0
+  for (const agent of companyLimits?.agents?.used ?? []) {
+    if (agent.project_id === projectInfo.project_id) {
+      agentsUsed = agent.used
+    }
+  }
 
   if (showError) {
     return (
@@ -80,6 +89,14 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Name</span>
           <span>{selectedProject.name}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Max Agents</span>
+          <span>{companyLimits?.agents?.allowed ?? 0}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Agents Used</span>
+          <span>{agentsUsed}</span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Logo</span>

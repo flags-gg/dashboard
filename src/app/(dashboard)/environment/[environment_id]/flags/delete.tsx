@@ -7,6 +7,7 @@ import {Button} from "~/components/ui/button";
 import {Trash2} from "lucide-react";
 import {LoadingSpinner} from "~/components/ui/loader";
 import { toast } from "~/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 async function deleteFlagAction(session: Session, flag_id: string): Promise<null | Error> {
     try {
@@ -40,6 +41,7 @@ async function deleteFlagAction(session: Session, flag_id: string): Promise<null
 
 export function DeleteFlag({session, flag}: {session: Session, flag: Flag}) {
     const [loading, setLoading] = useState(false);
+    const router = useRouter()
 
     const deleteFlag = async () => {
         setLoading(true);
@@ -47,6 +49,7 @@ export function DeleteFlag({session, flag}: {session: Session, flag: Flag}) {
         try {
             deleteFlagAction(session, flag.details.id).then(() => {
                 setLoading(false);
+                router.refresh()
             }).catch((e) => {
                 if (e instanceof Error) {
                     throw new Error(`Failed to delete flag: ${e.message}`);

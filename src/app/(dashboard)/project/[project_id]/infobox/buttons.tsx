@@ -1,75 +1,53 @@
 "use client"
 
-import {CardFooter} from "~/components/ui/card";
+import { CardFooter } from "~/components/ui/card";
 import CreateAgent from "~/app/(dashboard)/agent/create";
-import {useAtom} from "jotai";
-import {useMemo, useState} from "react";
-import {Session} from "next-auth";
-import {projectAtom} from "~/lib/statemanager";
-import {useToast} from "~/hooks/use-toast";
-import {useFlags} from "@flags-gg/react-library";
-import {getCompanyLimits} from "~/app/api/company/limits/limits";
-import {buttonVariants} from "~/components/ui/button";
+import { useAtom } from "jotai";
+import { Session } from "next-auth";
+import { projectAtom } from "~/lib/statemanager";
+import { useToast } from "~/hooks/use-toast";
+import { useFlags } from "@flags-gg/react-library";
+import { useCompanyLimits } from "~/hooks/use-company-limits";
+import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 
-export default function InfoButtons({session}: {session: Session}) {
-  const [companyLimits, setCompanyLimits] = useState({maxAgents: 0, usedAgents: 0})
-  const [retrieveError, setRetrieveError] = useState<Error | null>(null)
-  const [projectInfo] = useAtom(projectAtom)
-  const {is} = useFlags()
-  const {toast} = useToast()
+export default function InfoButtons({ session }: { session: Session }) {
+  const [projectInfo] = useAtom(projectAtom);
+  const { is } = useFlags();
+  const { toast } = useToast();
+  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
 
   if (!session) {
-    throw new Error('No session found')
+    throw new Error('No session found');
   }
 
-  useMemo(() => {
-    try {
-      getCompanyLimits(session).then((companyLimitsData) => {
-        if (companyLimitsData instanceof Error) {
-          throw new Error(`Failed to fetch company limits: ${companyLimitsData}`);
-        }
-        let used = 0
-        for (const project of companyLimitsData.agents.used) {
-          if (project.project_id === projectInfo.project_id) {
-            used = project.used
-          }
-        }
+  if (isLoading) {
+    return <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">Loading...</CardFooter>;
+  }
 
-        setCompanyLimits({
-          maxAgents: companyLimitsData.agents.allowed,
-          usedAgents: used
-        });
-      }).catch((e) => {
-        throw new Error(`Failed to fetch company limits: ${e}`);
-      })
-    } catch (e) {
-      console.error("Failed to fetch company limits", e);
-      if (e instanceof Error) {
-        setRetrieveError(e);
-      }
-    }
-  }, [session])
-
-  if (retrieveError) {
+  if (error) {
     toast({
-      title: "Error loading projects",
+      title: "Error loading company limits",
       description: "Please try again later.",
-    })
+    });
+    return <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">Error loading limits</CardFooter>;
   }
 
-  if (companyLimits.maxAgents === 0 || companyLimits.usedAgents >= companyLimits.maxAgents) {
+  const maxAgents = companyLimits?.agents?.allowed ?? 0;
+  const usedAgents = companyLimits?.agents?.used?.find(project => project.project_id === projectInfo.project_id)?.used ?? 0;
+
+  if (maxAgents === 0 || usedAgents >= maxAgents) {
     return (
-      <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
-        {is("update limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href={`/company/limits`}>Update Limits</Link>}
+      <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
+        {is("update limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href="/company/limits">Update Limits</Link>}
       </CardFooter>
-    )
+    );
   }
 
   return (
-    <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
+    <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
       {is("create agent")?.enabled() && <CreateAgent session={session} project_id={projectInfo.project_id} />}
-      {is("update limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href={`/company/limits`}>Update Limits</Link>}
+      {is("update limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href="/company/limits">Update Limits</Link>}
     </CardFooter>
-  )
+  );
 }
