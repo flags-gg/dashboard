@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +17,11 @@ import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { type Session } from "next-auth";
+import { useStyleContext } from "./context";
 
 const positionOptions = ["relative", "fixed", "absolute", "static", "sticky"] as const;
+type PositionType = typeof positionOptions[number];
 
 const FormSchema = z.object({
   position: z.enum(positionOptions),
@@ -29,40 +32,35 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-const defaultStyles: FormValues = {
-  position: "absolute",
-  top: "0.3rem",
-  left: "0.5rem",
-  color: "#F8F8F2",
-};
+function isValidPosition(position: unknown): position is PositionType {
+  return typeof position === 'string' && positionOptions.includes(position as PositionType);
+}
 
-export default function ResetButton() {
+export default function ResetButton({session, menuId}: {session: Session, menuId: string}) {
   const [open, setOpen] = useState(false);
-  const [styles, setStyles] = useState<FormValues>(defaultStyles);
+  const {styles, updateStyle} = useStyleContext();
+
+  const defaultValues: FormValues = {
+    position: isValidPosition(styles.resetButton.position) ? styles.resetButton.position : 'absolute',
+    top: (styles.resetButton.top as string) || '0.3rem',
+    left: (styles.resetButton.left as string) || '0.5rem',
+    color: (styles.resetButton.color as string) || '#F8F8F2',
+  };
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
-    defaultValues: styles,
+    defaultValues: defaultValues,
   });
 
-  const buttonStyle = useMemo(() => ({
-    position: styles.position,
-    top: styles.top,
-    left: styles.left,
-    color: styles.color,
-    cursor: "pointer",
-    background: "transparent",
-  }), [styles]);
-
   const onSubmit = (data: FormValues) => {
-    setStyles(data);
+    updateStyle('resetButton', data);
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button style={buttonStyle} aria-label="Reset">
+        <button style={styles.resetButton} aria-label="Reset">
           <RefreshCcw />
         </button>
       </DialogTrigger>
