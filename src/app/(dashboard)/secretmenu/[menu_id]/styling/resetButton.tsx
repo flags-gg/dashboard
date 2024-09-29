@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,43 +18,53 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { type Session } from "next-auth";
-import { useStyleContext } from "./context";
+import { isValidPosition, positionOptions, useStyleContext } from "./context";
 
-const positionOptions = ["relative", "fixed", "absolute", "static", "sticky"] as const;
-type PositionType = typeof positionOptions[number];
 
 const FormSchema = z.object({
   position: z.enum(positionOptions),
-  top: z.string().regex(/^\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
-  left: z.string().regex(/^\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
+  top: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
+  left: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
 
-function isValidPosition(position: unknown): position is PositionType {
-  return typeof position === 'string' && positionOptions.includes(position as PositionType);
-}
-
 export default function ResetButton({session, menuId}: {session: Session, menuId: string}) {
   const [open, setOpen] = useState(false);
-  const {styles, updateStyle} = useStyleContext();
+  const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
+  const lastResetTimestamp = useRef(0);
 
-  const defaultValues: FormValues = {
-    position: isValidPosition(styles.resetButton.position) ? styles.resetButton.position : 'absolute',
-    top: (styles.resetButton.top as string) || '0.3rem',
-    left: (styles.resetButton.left as string) || '0.5rem',
-    color: (styles.resetButton.color as string) || '#F8F8F2',
+  const getDefaultValues = (): FormValues => {
+    const resetButtonStyle = styles.resetButton;
+    return {
+      position: isValidPosition(resetButtonStyle.position) ? resetButtonStyle.position : 'absolute',
+      top: (resetButtonStyle.top as string) || '0.3rem',
+      left: (resetButtonStyle.left as string) || '0.5rem',
+      color: (resetButtonStyle.color as string) || '#F8F8F2',
+    };
   };
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
-    defaultValues: defaultValues,
-  });
+    defaultValues: getDefaultValues(),
+  })
+
+  useEffect(() => {
+    const currentResetTimestamp = resetTimestamps.resetButton || 0;
+    if (currentResetTimestamp > lastResetTimestamp.current) {
+      form.reset(getDefaultValues());
+      lastResetTimestamp.current = currentResetTimestamp;
+    }
+  }, [resetTimestamps.resetButton, form]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('resetButton', data);
     setOpen(false);
+  };
+
+  const onReset = () => {
+    resetStyle('resetButton');
   };
 
   return (
@@ -128,6 +138,9 @@ export default function ResetButton({session, menuId}: {session: Session, menuId
               )}
             />
             <Button type="submit">Save</Button>
+            {modifiedStyles.has('resetButton') && (
+              <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
+            )}
           </form>
         </Form>
       </DialogContent>

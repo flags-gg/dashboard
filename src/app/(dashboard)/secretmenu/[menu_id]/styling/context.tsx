@@ -10,9 +10,16 @@ type StyleContextType = {
   styles: StyleState;
   originalStyles: StyleState;
   modifiedStyles: Set<StyleKey>;
+  resetTimestamps: {[K in StyleKey]?: number};
   updateStyle: (key: StyleKey, newStyle: React.CSSProperties) => void;
   resetStyle: (key: StyleKey) => void;
 };
+
+export const positionOptions = ["relative", "fixed", "absolute", "static", "sticky"] as const;
+type PositionType = typeof positionOptions[number];
+export function isValidPosition(position: unknown): position is PositionType {
+  return typeof position === 'string' && positionOptions.includes(position as PositionType);
+}
 
 const StyleContext = createContext<StyleContextType | undefined>(undefined);
 
@@ -83,6 +90,7 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const [styles, setStyles] = useState<StyleState>(initialStyles);
   const [modifiedStyles, setModifiedStyles] = useState<Set<StyleKey>>(new Set());
+  const [resetTimestamps, setResetTimestamps] = useState<{[K in StyleKey]?: number}>({});
 
   const updateStyle = (key: StyleKey, newStyle: React.CSSProperties) => {
     setStyles(prevStyles => ({
@@ -102,10 +110,14 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       newModified.delete(key);
       return newModified;
     });
+    setResetTimestamps(prev => ({
+      ...prev,
+      [key]: Date.now(),
+    }))
   };
 
   return (
-    <StyleContext.Provider value={{ styles, originalStyles: initialStyles, modifiedStyles, updateStyle, resetStyle }}>
+    <StyleContext.Provider value={{ styles, originalStyles: initialStyles, modifiedStyles, resetTimestamps, updateStyle, resetStyle }}>
       {children}
     </StyleContext.Provider>
   );
