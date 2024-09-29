@@ -2,11 +2,10 @@ import {authOptions} from "~/server/auth";
 import {getServerSession} from "next-auth/next";
 import {redirect} from "next/navigation";
 import { type Metadata } from "next";
-import Container from "./container";
-import Info from "./info";
+import ClientWrapper from "./clientWrapper";
 
 export const metadata: Metadata = {
-  title: "SecretMenu Builder - Flags.gg",
+  title: "SecretMenu Style Builder - Flags.gg",
 }
 
 export default async function Styling({params}: {params: {menu_id: string}}) {
@@ -20,8 +19,7 @@ export default async function Styling({params}: {params: {menu_id: string}}) {
       <header className="col-span-2">
         <h1 className="text-2xl font-semibold">Secret Menu Updater</h1>
       </header>
-      <Container session={session} menuId={params.menu_id} />
-      <Info />
+      <ClientWrapper session={session} menuId={params.menu_id} />
     </>
   )
 }
