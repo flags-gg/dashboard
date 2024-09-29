@@ -11,7 +11,7 @@ type StyleContextType = {
   originalStyles: StyleState;
   modifiedStyles: Set<StyleKey>;
   updateStyle: (key: StyleKey, newStyle: React.CSSProperties) => void;
-  resetStyle: (key: string) => void;
+  resetStyle: (key: StyleKey) => void;
 };
 
 const StyleContext = createContext<StyleContextType | undefined>(undefined);

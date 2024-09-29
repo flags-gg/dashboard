@@ -11,10 +11,6 @@ const styleNames: {[key: string]: string} = {
   buttonDisabled: "Disabled Button",
   header: "Header",
 }
-type StyleKey = keyof typeof styleNames;
-function isStyleKey(key: string | number): key is StyleKey {
-  return typeof key === 'string' && key in styleNames;
-}
 
 export default function Info() {
   const {resetStyle, modifiedStyles} = useStyleContext();
