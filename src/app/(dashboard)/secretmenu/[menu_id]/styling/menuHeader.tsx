@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 
 const FormSchema = z.object({
   position: z.enum(positionOptions),
@@ -69,7 +70,7 @@ export default function MenuHeader() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <h1 style={styles.header}>Secret Menu</h1>
+        <h1 style={styles.header} className={"cursor-pointer"}>Secret Menu</h1>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -107,9 +108,11 @@ export default function MenuHeader() {
                 <FormMessage />
               </FormItem>
             )} />
+            <Separator />
+            <h2 className={"text-md font-medium"}>Margin</h2>
             <FormField control={form.control} name={"marginRight"} render={({ field: fieldProps }) => (
               <FormItem>
-                <FormLabel>Margin Right</FormLabel>
+                <FormLabel>Right</FormLabel>
                 <FormControl>
                   <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                 </FormControl>
@@ -118,13 +121,14 @@ export default function MenuHeader() {
             )} />
             <FormField control={form.control} name={"marginLeft"} render={({ field: fieldProps }) => (
               <FormItem>
-                <FormLabel>Margin Left</FormLabel>
+                <FormLabel>Left</FormLabel>
                 <FormControl>
                   <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )} />
+            <Separator />
             <FormField control={form.control} name={"fontWeight"} render={({ field: fieldProps }) => (
               <FormItem>
                 <FormLabel>Font Weight</FormLabel>
@@ -134,21 +138,17 @@ export default function MenuHeader() {
                 <FormMessage />
               </FormItem>
             )} />
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center">
-                      <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                      <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+            <FormField control={form.control} name="color" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Text Color</FormLabel>
+                <FormControl>
+                  <div className="flex items-center">
+                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>)} />
             <Button type={"submit"}>Preview</Button>
             {modifiedStyles.has('header') && (
               <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>

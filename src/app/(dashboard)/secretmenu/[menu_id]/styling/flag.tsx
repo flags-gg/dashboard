@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 
 const FormSchema = z.object({
   display: z.enum(displayOptions),
@@ -104,8 +105,7 @@ export default function Flag({children}: {children: ReactNode}) {
                       </SelectContent>
                     </Select>
                     <FormMessage />
-                  </FormItem>
-                )} />
+                  </FormItem>)} />
                 <FormField control={form.control} name={"justifyContent"} render={({ field: fieldProps }) => (
                   <FormItem>
                     <FormLabel>Justify Content</FormLabel>
@@ -124,14 +124,12 @@ export default function Flag({children}: {children: ReactNode}) {
                       </SelectContent>
                     </Select>
                     <FormMessage />
-                  </FormItem>
-                )} />
-              <FormField
-                control={form.control}
-                name="borderColor"
-                render={({ field: fieldProps }) => (
+                  </FormItem>)} />
+                <Separator />
+                <h2 className={"text-md font-medium"}>Border</h2>
+                <FormField control={form.control} name="borderColor" render={({ field: fieldProps }) => (
                   <FormItem>
-                    <FormLabel>Border Color</FormLabel>
+                    <FormLabel>Color</FormLabel>
                     <FormControl>
                       <div className="flex items-center">
                         <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
@@ -139,49 +137,65 @@ export default function Flag({children}: {children: ReactNode}) {
                       </div>
                     </FormControl>
                     <FormMessage />
-                  </FormItem>
-                )} />
-                <FormField
-                  control={form.control}
-                  name="borderStyle"
-                  render={({ field: fieldProps }) => (
-                    <FormItem>
-                      <FormLabel>Border Style</FormLabel>
-                      <Select onValueChange={fieldProps.onChange} defaultValue={fieldProps.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a style" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {borderStyleOptions.map((option) => (
-                            <SelectItem key={`${fieldProps}-${option}`} value={option}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                {["borderColor", "backgroundColor", "color"].map((field) => (
-                  <FormField
-                    key={`${field}-field`}
-                    control={form.control}
-                    name={field as "borderColor" | "backgroundColor" | "color"}
-                    render={({ field: fieldProps }) => (
-                      <FormItem>
-                        <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center">
-                            <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
-                            <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                ))}
+                  </FormItem> )} />
+                <FormField control={form.control} name="borderStyle" render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Style</FormLabel>
+                    <Select onValueChange={fieldProps.onChange} defaultValue={fieldProps.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a style" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {borderStyleOptions.map((option) => (
+                          <SelectItem key={`${fieldProps}-${option}`} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem> )} />
+                <FormField control={form.control} name={"borderWidth"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Width</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem> )} />
+                <FormField control={form.control} name={"borderRadius"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Radius</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem> )} />
+                <Separator />
+                <FormField control={form.control} name={"backgroundColor"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Background Color</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center">
+                        <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
+                        <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem> )} />
+                <FormField control={form.control} name={"color"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Text Color</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center">
+                        <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
+                        <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem> )} />
                 <Button type={"submit"}>Preview</Button>
                 {modifiedStyles.has('header') && (
                   <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
