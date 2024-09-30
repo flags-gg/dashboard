@@ -108,8 +108,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </SelectContent>
                   </Select>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               {["top", "left"].map((field) => (
                 <FormField key={field} control={form.control} name={field as "top" | "left"} render={({ field: fieldProps }) => (
                   <FormItem>
@@ -118,8 +117,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                       <Input placeholder={`e.g., 10px, 2rem, 1.5em, 50%`} {...fieldProps} />
                     </FormControl>
                     <FormMessage />
-                  </FormItem>
-                )} />
+                  </FormItem>)} />
               ))}
               <Separator />
               <h3 className={"text-md font-medium"}>Border</h3>
@@ -130,8 +128,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               <FormField control={form.control} name={"borderWidth"} render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>Width</FormLabel>
@@ -139,8 +136,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               <FormField control={form.control} name={"borderStyle"} render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>Style</FormLabel>
@@ -159,8 +155,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </SelectContent>
                   </Select>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               <FormField control={form.control} name={"borderColor"} render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>Color</FormLabel>
@@ -171,8 +166,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </div>
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               <Separator />
               <FormField control={form.control} name={"backgroundColor"} render={({ field: fieldProps }) => (
                 <FormItem>
@@ -184,8 +178,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </div>
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               <FormField control={form.control} name={"color"} render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>Text Color</FormLabel>
@@ -196,8 +189,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </div>
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
               <Button type={"submit"}>Preview</Button>
               {modifiedStyles.has('header') && (
                 <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>

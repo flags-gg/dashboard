@@ -76,61 +76,46 @@ export default function CloseButton() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-            <FormField
-              control={form.control}
-              name="position"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Position</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a position" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {positionOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {["top", "right"].map((field) => (
-              <FormField
-                key={field}
-                control={form.control}
-                name={field as "top" | "right"}
-                render={({ field: fieldProps }) => (
-                  <FormItem>
-                    <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
-                    <FormControl>
-                      <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
+            <FormField control={form.control} name="position" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Position</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <div className="flex items-center">
-                      <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                      <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
-                    </div>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a position" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {positionOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>)} />
+            {["top", "right"].map((field) => (
+              <FormField key={field} control={form.control} name={field as "top" | "right"} render={({ field: fieldProps }) => (
+                <FormItem>
+                  <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )} />
+                </FormItem>)} />
+            ))}
+            <FormField control={form.control} name="color" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Text Color</FormLabel>
+                <FormControl>
+                  <div className="flex items-center">
+                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>)} />
             <Button type="submit">Preview</Button>
             {modifiedStyles.has('closeButton') && (
               <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>

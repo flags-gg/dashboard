@@ -74,60 +74,44 @@ export default function EnableButton() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-            <FormField
-              control={form.control}
-              name="background"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Background</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center">
-                      <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                      <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-            <FormField
-              control={form.control}
-              name="padding"
-              render={({ field: fieldProps }) => (
-                <FormItem>
-                  <FormLabel>Padding</FormLabel>
-                  <FormControl>
-                    <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-            <FormField
-              control={form.control}
-              name="borderRadius"
-              render={({ field: fieldProps }) => (
-                <FormItem>
-                  <FormLabel>Border Radius</FormLabel>
-                  <FormControl>
-                    <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <div className="flex items-center">
-                      <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                      <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
+            <FormField control={form.control} name="background" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Background</FormLabel>
+                <FormControl>
+                  <div className="flex items-center">
+                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>)} />
+            <FormField control={form.control} name="padding" render={({ field: fieldProps }) => (
+              <FormItem>
+                <FormLabel>Padding</FormLabel>
+                <FormControl>
+                  <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>)} />
+            <FormField control={form.control} name="borderRadius" render={({ field: fieldProps }) => (
+              <FormItem>
+                <FormLabel>Border Radius</FormLabel>
+                <FormControl>
+                  <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>)} />
+            <FormField control={form.control} name="color" render={({ field }) => (
+              <FormItem>
+                <FormLabel>TextColor</FormLabel>
+                <FormControl>
+                  <div className="flex items-center">
+                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>)} />
             <Button type="submit">Preview</Button>
             {modifiedStyles.has('buttonDisabled') && (
               <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
