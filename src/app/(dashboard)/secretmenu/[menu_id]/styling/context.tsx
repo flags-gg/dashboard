@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type StyleKey = 'resetButton' | 'closeButton' | 'container' | 'flag' | 'buttonEnabled' | 'buttonDisabled' | 'header';
-
 type StyleState = {
   [K in StyleKey]: React.CSSProperties;
 };
@@ -19,6 +18,12 @@ export const positionOptions = ["relative", "fixed", "absolute", "static", "stic
 type PositionType = typeof positionOptions[number];
 export function isValidPosition(position: unknown): position is PositionType {
   return typeof position === 'string' && positionOptions.includes(position as PositionType);
+}
+
+export const borderOptions = ["solid", "dashed", "dotted", "double", "groove", "ridge", "inset", "outset", "none"] as const;
+type BorderType = typeof borderOptions[number];
+export function isValidBorder(border: unknown): border is BorderType {
+  return typeof border === 'string' && borderOptions.includes(border as BorderType);
 }
 
 const StyleContext = createContext<StyleContextType | undefined>(undefined);
@@ -48,9 +53,10 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     container: {
       position: 'relative',
       backgroundColor: '#282A36',
-      color: 'black',
-      border: '2px solid #BD93F9',
-      borderRadius: '0.5rem',
+      color: '#000000',
+      borderRadius: '2px',
+      borderStyle: 'solid',
+      borderColor: '#BD93F9',
       padding: '1rem',
     },
     flag: {

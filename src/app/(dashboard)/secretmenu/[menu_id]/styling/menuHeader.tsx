@@ -36,14 +36,14 @@ export default function MenuHeader({session, menuId}: {session: Session, menuId:
   const lastResetTimestamp = useRef(0);
 
   const getDefaultValues = (): FormValues => {
-    const headerStyle = styles.header;
+    const elementStyle = styles.header;
     return {
-      position: isValidPosition(headerStyle.position) ? headerStyle.position : 'relative',
-      top: (headerStyle.top as string) || '-0.6rem',
-      color: (headerStyle.color as string) || '#F8F8F2',
-      fontWeight: (headerStyle.fontWeight as number) || 700,
-      marginRight: (headerStyle.marginRight as string) || '1rem',
-      marginLeft: (headerStyle.marginLeft as string) || '1.5rem',
+      position: isValidPosition(elementStyle.position) ? elementStyle.position : 'relative',
+      top: (elementStyle.top as string) || '-0.6rem',
+      color: (elementStyle.color as string) || '#F8F8F2',
+      fontWeight: (elementStyle.fontWeight as number) || 700,
+      marginRight: (elementStyle.marginRight as string) || '1rem',
+      marginLeft: (elementStyle.marginLeft as string) || '1.5rem',
     }
   };
 
@@ -53,12 +53,12 @@ export default function MenuHeader({session, menuId}: {session: Session, menuId:
   });
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.resetButton || 0;
+    const currentResetTimestamp = resetTimestamps.header || 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.resetButton, form]);
+  }, [resetTimestamps.header, form]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('header', data);
@@ -151,9 +151,8 @@ export default function MenuHeader({session, menuId}: {session: Session, menuId:
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )}
-            />
-            <Button type={"submit"}>Save</Button>
+              )} />
+            <Button type={"submit"}>Preview</Button>
             {modifiedStyles.has('header') && (
               <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
             )}

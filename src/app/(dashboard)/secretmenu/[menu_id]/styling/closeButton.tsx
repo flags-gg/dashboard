@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import { RefreshCcw } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,27 +20,26 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 import { type Session } from "next-auth";
 import { isValidPosition, positionOptions, useStyleContext } from "./context";
 
-
 const FormSchema = z.object({
   position: z.enum(positionOptions),
   top: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
-  left: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
+  right: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ResetButton({session, menuId}: {session: Session, menuId: string}) {
+export default function CloseButton({session, menuId}: {session: Session, menuId: string}) {
   const [open, setOpen] = useState(false);
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const lastResetTimestamp = useRef(0);
 
   const getDefaultValues = (): FormValues => {
-    const elementStyle = styles.resetButton;
+    const elementStyle = styles.closeButton;
     return {
       position: isValidPosition(elementStyle.position) ? elementStyle.position : 'absolute',
       top: (elementStyle.top as string) || '0.3rem',
-      left: (elementStyle.left as string) || '0.5rem',
+      right: (elementStyle.right as string) || '0.5rem',
       color: (elementStyle.color as string) || '#F8F8F2',
     };
   };
@@ -51,33 +50,33 @@ export default function ResetButton({session, menuId}: {session: Session, menuId
   })
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.resetButton || 0;
+    const currentResetTimestamp = resetTimestamps.closeButton || 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.resetButton, form]);
+  }, [resetTimestamps.closeButton, form]);
 
   const onSubmit = (data: FormValues) => {
-    updateStyle('resetButton', data);
+    updateStyle('closeButton', data);
     setOpen(false);
   };
 
   const onReset = () => {
-    resetStyle('resetButton');
+    resetStyle('closeButton');
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <button style={styles.resetButton} aria-label="Reset">
-          <RefreshCcw />
+        <button style={styles.closeButton} aria-label="Reset">
+          <CircleX />
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Reset Button Style</DialogTitle>
-          <DialogDescription>Change the style of the reset button.</DialogDescription>
+          <DialogTitle>Close Button Style</DialogTitle>
+          <DialogDescription>Change the style of the close button.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
@@ -105,11 +104,11 @@ export default function ResetButton({session, menuId}: {session: Session, menuId
                 </FormItem>
               )}
             />
-            {["top", "left"].map((field) => (
+            {["top", "right"].map((field) => (
               <FormField
                 key={field}
                 control={form.control}
-                name={field as "top" | "left"}
+                name={field as "top" | "right"}
                 render={({ field: fieldProps }) => (
                   <FormItem>
                     <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
@@ -137,7 +136,7 @@ export default function ResetButton({session, menuId}: {session: Session, menuId
                 </FormItem>
               )} />
             <Button type="submit">Preview</Button>
-            {modifiedStyles.has('resetButton') && (
+            {modifiedStyles.has('closeButton') && (
               <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
             )}
           </form>
