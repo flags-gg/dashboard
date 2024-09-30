@@ -20,14 +20,25 @@ export function isValidPosition(position: unknown): position is PositionType {
   return typeof position === 'string' && positionOptions.includes(position as PositionType);
 }
 
-export const borderOptions = ["solid", "dashed", "dotted", "double", "groove", "ridge", "inset", "outset", "none"] as const;
-type BorderType = typeof borderOptions[number];
+export const borderStyleOptions = ["solid", "dashed", "dotted", "double", "groove", "ridge", "inset", "outset", "none"] as const;
+type BorderType = typeof borderStyleOptions[number];
 export function isValidBorder(border: unknown): border is BorderType {
-  return typeof border === 'string' && borderOptions.includes(border as BorderType);
+  return typeof border === 'string' && borderStyleOptions.includes(border as BorderType);
+}
+
+export const displayOptions = ["flex", "grid"] as const;
+type DisplayType = typeof displayOptions[number];
+export function isValidDisplay(display: unknown): display is DisplayType {
+  return typeof display === 'string' && displayOptions.includes(display as DisplayType);
+}
+
+export const justifyContentOptions = ["flex-start", "center", "flex-end", "space-between", "space-around"] as const;
+type JustifyContentType = typeof justifyContentOptions[number];
+export function isValidJustifyContent(justifyContent: unknown): justifyContent is JustifyContentType {
+  return typeof justifyContent === 'string' && justifyContentOptions.includes(justifyContent as JustifyContentType);
 }
 
 const StyleContext = createContext<StyleContextType | undefined>(undefined);
-
 export const useStyleContext = () => {
   const context = useContext(StyleContext);
   if (context === undefined) {
@@ -54,9 +65,10 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       position: 'relative',
       backgroundColor: '#282A36',
       color: '#000000',
-      borderRadius: '2px',
+      borderRadius: '0.5rem',
       borderStyle: 'solid',
       borderColor: '#BD93F9',
+      borderWidth: '2px',
       padding: '1rem',
     },
     flag: {
@@ -75,14 +87,12 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       padding: '0.4rem',
       borderRadius: '0.5rem',
       color: '#44475A',
-      fontWeight: 500,
     },
     buttonDisabled: {
       background: '#FF79C6',
       padding: '0.4rem',
       borderRadius: '0.5rem',
       color: '#44475A',
-      fontWeight: 500,
     },
     header: {
       fontWeight: 700,
@@ -91,6 +101,7 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       position: 'relative',
       marginRight: '1rem',
       marginLeft: '1.5rem',
+      width: '10rem',
     },
   };
 

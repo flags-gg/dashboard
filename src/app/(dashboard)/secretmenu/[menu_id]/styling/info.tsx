@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useStyleContext } from "./context";
 import { Button } from "~/components/ui/button";
+import { Session } from "next-auth";
 
 const styleNames: {[key: string]: string} = {
   resetButton: "Reset Button",
@@ -12,7 +13,7 @@ const styleNames: {[key: string]: string} = {
   header: "Header",
 }
 
-export default function Info() {
+export default function Info({session, menuId}: {session: Session, menuId: string}) {
   const {resetStyle, modifiedStyles} = useStyleContext();
 
   return (

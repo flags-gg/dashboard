@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
@@ -17,7 +15,6 @@ import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { type Session } from "next-auth";
 import { isValidPosition, positionOptions, useStyleContext } from "./context";
 
 const FormSchema = z.object({
@@ -26,10 +23,9 @@ const FormSchema = z.object({
   right: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
 });
-
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function CloseButton({session, menuId}: {session: Session, menuId: string}) {
+export default function CloseButton() {
   const [open, setOpen] = useState(false);
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const lastResetTimestamp = useRef(0);

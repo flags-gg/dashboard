@@ -1,16 +1,12 @@
-"use client"
-
-import { type Session } from "next-auth";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
 } from "~/components/ui/dialog";
-import { borderOptions, isValidBorder, isValidPosition, positionOptions, useStyleContext } from "./context";
+import { borderStyleOptions, isValidBorder, isValidPosition, positionOptions, useStyleContext } from "./context";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -18,21 +14,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 
 const FormSchema = z.object({
   position: z.enum(positionOptions),
   backgroundColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
   color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
   borderColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
-  borderStyle: z.enum(borderOptions),
+  borderStyle: z.enum(borderStyleOptions),
   borderRadius: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   borderWidth: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   padding: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
+  top: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em|%)$/, "Must be a number followed by px, rem, or em"),
+  left: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em|%)$/, "Must be a number followed by px, rem, or em"),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ContainerElement({children, session, menuId}: {children: ReactNode,session: Session, menuId: string}) {
+export default function ContainerElement({children}: {children: ReactNode}) {
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const [open, setOpen] = useState(false);
   const lastResetTimestamp = useRef(0);
@@ -41,13 +40,15 @@ export default function ContainerElement({children, session, menuId}: {children:
     const elementStyle = styles.container;
     return {
       position: isValidPosition(elementStyle.position) ? elementStyle.position : 'relative',
-      backgroundColor: (elementStyle.top as string) || '-0.6rem',
+      backgroundColor: (elementStyle.backgroundColor as string) || '#282A36',
       color: (elementStyle.color as string) || '#F8F8F2',
       borderColor: (elementStyle.borderColor as string) || '#F8F8F2',
       borderStyle: isValidBorder(elementStyle.borderStyle) ? elementStyle.borderStyle : 'solid',
       borderWidth: (elementStyle.borderWidth as string) || '2px',
       borderRadius: (elementStyle.borderRadius as string) || '0.5rem',
       padding: (elementStyle.padding as string) || '1rem',
+      top: (elementStyle.top as string) || '50%',
+      left: (elementStyle.left as string) || '50%',
     }
   };
 
@@ -75,7 +76,7 @@ export default function ContainerElement({children, session, menuId}: {children:
 
   return (
     <>
-      <div style={styles.container} onClick={(e) => {
+      <div key={`sm_item_container`} style={styles.container} onClick={(e) => {
       if (e.target === e.currentTarget) {
         setOpen(true);
       }}}>
@@ -100,7 +101,7 @@ export default function ContainerElement({children, session, menuId}: {children:
                     </FormControl>
                     <SelectContent>
                       {positionOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
+                        <SelectItem key={`${field}-${option}`} value={option}>
                           {option}
                         </SelectItem>
                       ))}
@@ -109,9 +110,22 @@ export default function ContainerElement({children, session, menuId}: {children:
                   <FormMessage />
                 </FormItem>
               )} />
+              {["top", "left"].map((field) => (
+                <FormField key={field} control={form.control} name={field as "top" | "left"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`e.g., 10px, 2rem, 1.5em, 50%`} {...fieldProps} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+              ))}
+              <Separator />
+              <h3 className={"text-md font-medium"}>Border</h3>
               <FormField control={form.control} name={"borderRadius"} render={({ field: fieldProps }) => (
                 <FormItem>
-                  <FormLabel>Border Radius</FormLabel>
+                  <FormLabel>Radius</FormLabel>
                   <FormControl>
                     <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                   </FormControl>
@@ -120,7 +134,7 @@ export default function ContainerElement({children, session, menuId}: {children:
               )} />
               <FormField control={form.control} name={"borderWidth"} render={({ field: fieldProps }) => (
                 <FormItem>
-                  <FormLabel>Border Width</FormLabel>
+                  <FormLabel>Width</FormLabel>
                   <FormControl>
                     <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
                   </FormControl>
@@ -129,7 +143,7 @@ export default function ContainerElement({children, session, menuId}: {children:
               )} />
               <FormField control={form.control} name={"borderStyle"} render={({ field: fieldProps }) => (
                 <FormItem>
-                  <FormLabel>Border Style</FormLabel>
+                  <FormLabel>Style</FormLabel>
                   <Select onValueChange={fieldProps.onChange} defaultValue={fieldProps.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -137,8 +151,8 @@ export default function ContainerElement({children, session, menuId}: {children:
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {borderOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
+                      {borderStyleOptions.map((option) => (
+                        <SelectItem key={`${fieldProps}-${option}`} value={option}>
                           {option}
                         </SelectItem>
                       ))}
@@ -147,23 +161,43 @@ export default function ContainerElement({children, session, menuId}: {children:
                   <FormMessage />
                 </FormItem>
               )} />
-              {["borderColor", "backgroundColor", "color"].map((field) => (
-                <FormField
-                  control={form.control}
-                  name={field as "borderColor" | "backgroundColor" | "color"}
-                  render={({ field: fieldProps }) => (
-                    <FormItem>
-                      <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center">
-                          <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
-                          <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-              ))}
+              <FormField control={form.control} name={"borderColor"} render={({ field: fieldProps }) => (
+                <FormItem>
+                  <FormLabel>Color</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center">
+                      <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
+                      <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <Separator />
+              <FormField control={form.control} name={"backgroundColor"} render={({ field: fieldProps }) => (
+                <FormItem>
+                  <FormLabel>Background Color</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center">
+                      <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
+                      <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <FormField control={form.control} name={"color"} render={({ field: fieldProps }) => (
+                <FormItem>
+                  <FormLabel>Text Color</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center">
+                      <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
+                      <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
               <Button type={"submit"}>Preview</Button>
               {modifiedStyles.has('header') && (
                 <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>

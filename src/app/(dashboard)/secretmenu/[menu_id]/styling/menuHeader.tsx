@@ -1,6 +1,3 @@
-"use client"
-
-import { type Session } from "next-auth";
 import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
@@ -30,7 +27,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function MenuHeader({session, menuId}: {session: Session, menuId: string}) {
+export default function MenuHeader() {
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const [open, setOpen] = useState(false);
   const lastResetTimestamp = useRef(0);

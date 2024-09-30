@@ -14,8 +14,8 @@ type ClientWrapperProps = {
 export default function ClientWrapper({ session, menuId }: ClientWrapperProps) {
   return (
     <StyleProvider>
-      <PageContainer session={session} menuId={menuId} />
-      <Info />
+      <PageContainer />
+      <Info session={session} menuId={menuId} />
     </StyleProvider>
   );
 }

@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react";
 import {
   Dialog,
@@ -17,7 +15,6 @@ import { Button } from "~/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { type Session } from "next-auth";
 import { isValidPosition, positionOptions, useStyleContext } from "./context";
 
 
@@ -30,7 +27,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ResetButton({session, menuId}: {session: Session, menuId: string}) {
+export default function ResetButton() {
   const [open, setOpen] = useState(false);
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const lastResetTimestamp = useRef(0);
