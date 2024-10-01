@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {useStyleContext} from "./context";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,15 +28,15 @@ export default function EnableButton() {
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const lastResetTimestamp = useRef(0);
 
-  const getDefaultValues = (): FormValues => {
+  const getDefaultValues = useCallback((): FormValues => {
     const elementStyle = styles.buttonEnabled;
     return {
-      background: (elementStyle.background as string) || '#FF79C6',
-      padding: (elementStyle.padding as string) || '0.4rem',
-      borderRadius: (elementStyle.borderRadius as string) || '0.5rem',
-      color: (elementStyle.color as string) || '#44475A',
+      background: (elementStyle.background as string) ?? '#FF79C6',
+      padding: (elementStyle.padding as string) ?? '0.4rem',
+      borderRadius: (elementStyle.borderRadius as string) ?? '0.5rem',
+      color: (elementStyle.color as string) ?? '#44475A',
     };
-  };
+  }, [styles.buttonEnabled]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -44,12 +44,12 @@ export default function EnableButton() {
   })
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.buttonEnabled || 0;
+    const currentResetTimestamp = resetTimestamps.buttonEnabled ?? 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.buttonEnabled, form]);
+  }, [resetTimestamps.buttonEnabled, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('buttonDisabled', data);

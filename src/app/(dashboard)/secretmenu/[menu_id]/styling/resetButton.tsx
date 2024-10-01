@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -32,15 +32,15 @@ export default function ResetButton() {
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const lastResetTimestamp = useRef(0);
 
-  const getDefaultValues = (): FormValues => {
+  const getDefaultValues = useCallback((): FormValues => {
     const elementStyle = styles.resetButton;
     return {
       position: isValidPosition(elementStyle.position) ? elementStyle.position : 'absolute',
-      top: (elementStyle.top as string) || '0.3rem',
-      left: (elementStyle.left as string) || '0.5rem',
-      color: (elementStyle.color as string) || '#F8F8F2',
+      top: (elementStyle.top as string) ?? '0.3rem',
+      left: (elementStyle.left as string) ?? '0.5rem',
+      color: (elementStyle.color as string) ?? '#F8F8F2',
     };
-  };
+  }, [styles.resetButton]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -48,12 +48,12 @@ export default function ResetButton() {
   })
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.resetButton || 0;
+    const currentResetTimestamp = resetTimestamps.resetButton ?? 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.resetButton, form]);
+  }, [resetTimestamps.resetButton, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('resetButton', data);

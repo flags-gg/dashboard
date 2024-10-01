@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -36,21 +36,21 @@ export default function ContainerElement({children}: {children: ReactNode}) {
   const [open, setOpen] = useState(false);
   const lastResetTimestamp = useRef(0);
 
-  const getDefaultValues = (): FormValues => {
+  const getDefaultValues = useCallback((): FormValues => {
     const elementStyle = styles.container;
     return {
       position: isValidPosition(elementStyle.position) ? elementStyle.position : 'relative',
-      backgroundColor: (elementStyle.backgroundColor as string) || '#282A36',
+      backgroundColor: (elementStyle.backgroundColor as string) ?? '#282A36',
       color: (elementStyle.color as string) || '#F8F8F2',
-      borderColor: (elementStyle.borderColor as string) || '#F8F8F2',
+      borderColor: (elementStyle.borderColor as string) ?? '#F8F8F2',
       borderStyle: isValidBorder(elementStyle.borderStyle) ? elementStyle.borderStyle : 'solid',
-      borderWidth: (elementStyle.borderWidth as string) || '2px',
-      borderRadius: (elementStyle.borderRadius as string) || '0.5rem',
-      padding: (elementStyle.padding as string) || '1rem',
-      top: (elementStyle.top as string) || '50%',
-      left: (elementStyle.left as string) || '50%',
+      borderWidth: (elementStyle.borderWidth as string) ?? '2px',
+      borderRadius: (elementStyle.borderRadius as string) ?? '0.5rem',
+      padding: (elementStyle.padding as string) ?? '1rem',
+      top: (elementStyle.top as string) ?? '50%',
+      left: (elementStyle.left as string) ?? '50%',
     }
-  };
+  }, [styles.container])
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -58,12 +58,12 @@ export default function ContainerElement({children}: {children: ReactNode}) {
   });
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.container || 0;
+    const currentResetTimestamp = resetTimestamps.container ?? 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.container, form]);
+  }, [resetTimestamps.container, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('container', data);
@@ -101,7 +101,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </FormControl>
                     <SelectContent>
                       {positionOptions.map((option) => (
-                        <SelectItem key={`${field}-${option}`} value={option}>
+                        <SelectItem key={`${field.name}-${option}`} value={option}>
                           {option}
                         </SelectItem>
                       ))}
@@ -148,7 +148,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                     </FormControl>
                     <SelectContent>
                       {borderStyleOptions.map((option) => (
-                        <SelectItem key={`${fieldProps}-${option}`} value={option}>
+                        <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                           {option}
                         </SelectItem>
                       ))}

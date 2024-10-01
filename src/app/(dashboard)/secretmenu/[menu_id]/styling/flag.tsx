@@ -6,7 +6,7 @@ import {
   justifyContentOptions,
   useStyleContext
 } from "./context";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,20 +35,20 @@ export default function Flag({children}: {children: ReactNode}) {
   const [open, setOpen] = useState(false);
   const lastResetTimestamp = useRef(0);
 
-  const getDefaultValues = (): FormValues => {
+  const getDefaultValues = useCallback((): FormValues => {
     const elementStyle = styles.container;
     return {
       display: isValidDisplay(elementStyle.display) ? elementStyle.display : 'flex',
       justifyContent: isValidJustifyContent(elementStyle.justifyContent) ? elementStyle.justifyContent : 'center',
-      backgroundColor: (elementStyle.backgroundColor as string) || '#282A36',
-      color: (elementStyle.color as string) || '#F8F8F2',
-      borderColor: (elementStyle.borderColor as string) || '#F8F8F2',
+      backgroundColor: (elementStyle.backgroundColor as string) ?? '#282A36',
+      color: (elementStyle.color as string) ?? '#F8F8F2',
+      borderColor: (elementStyle.borderColor as string) ?? '#F8F8F2',
       borderStyle: isValidBorder(elementStyle.borderStyle) ? elementStyle.borderStyle : 'solid',
-      borderWidth: (elementStyle.borderWidth as string) || '2px',
-      borderRadius: (elementStyle.borderRadius as string) || '0.5rem',
-      padding: (elementStyle.padding as string) || '1rem',
+      borderWidth: (elementStyle.borderWidth as string) ?? '2px',
+      borderRadius: (elementStyle.borderRadius as string) ?? '0.5rem',
+      padding: (elementStyle.padding as string) ?? '1rem',
     }
-  };
+  }, [styles.container]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -56,12 +56,12 @@ export default function Flag({children}: {children: ReactNode}) {
   });
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.flag || 0;
+    const currentResetTimestamp = resetTimestamps.flag ?? 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.flag, form]);
+  }, [resetTimestamps.flag, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('container', data);
@@ -98,7 +98,7 @@ export default function Flag({children}: {children: ReactNode}) {
                       </FormControl>
                       <SelectContent>
                         {displayOptions.map((option) => (
-                          <SelectItem key={`${field}-${option}`} value={option}>
+                          <SelectItem key={`${field.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>
                         ))}
@@ -117,7 +117,7 @@ export default function Flag({children}: {children: ReactNode}) {
                       </FormControl>
                       <SelectContent>
                         {justifyContentOptions.map((option) => (
-                          <SelectItem key={`${fieldProps}-${option}`} value={option}>
+                          <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>
                         ))}
@@ -149,7 +149,7 @@ export default function Flag({children}: {children: ReactNode}) {
                       </FormControl>
                       <SelectContent>
                         {borderStyleOptions.map((option) => (
-                          <SelectItem key={`${fieldProps}-${option}`} value={option}>
+                          <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>
                         ))}

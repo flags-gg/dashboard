@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -33,17 +33,17 @@ export default function MenuHeader() {
   const [open, setOpen] = useState(false);
   const lastResetTimestamp = useRef(0);
 
-  const getDefaultValues = (): FormValues => {
+  const getDefaultValues = useCallback((): FormValues => {
     const elementStyle = styles.header;
     return {
       position: isValidPosition(elementStyle.position) ? elementStyle.position : 'relative',
-      top: (elementStyle.top as string) || '-0.6rem',
-      color: (elementStyle.color as string) || '#F8F8F2',
-      fontWeight: (elementStyle.fontWeight as number) || 700,
-      marginRight: (elementStyle.marginRight as string) || '1rem',
-      marginLeft: (elementStyle.marginLeft as string) || '1.5rem',
+      top: (elementStyle.top as string) ?? '-0.6rem',
+      color: (elementStyle.color as string) ?? '#F8F8F2',
+      fontWeight: (elementStyle.fontWeight as number) ?? 700,
+      marginRight: (elementStyle.marginRight as string) ?? '1rem',
+      marginLeft: (elementStyle.marginLeft as string) ?? '1.5rem',
     }
-  };
+  }, [styles.header]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -51,12 +51,12 @@ export default function MenuHeader() {
   });
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.header || 0;
+    const currentResetTimestamp = resetTimestamps.header ?? 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.header, form]);
+  }, [resetTimestamps.header, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('header', data);
@@ -90,7 +90,7 @@ export default function MenuHeader() {
                   </FormControl>
                   <SelectContent>
                     {positionOptions.map((option) => (
-                      <SelectItem key={option} value={option}>
+                      <SelectItem key={`${field.name} - ${option}`} value={option}>
                         {option}
                       </SelectItem>
                     ))}

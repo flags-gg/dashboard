@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -30,15 +30,15 @@ export default function CloseButton() {
   const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   const lastResetTimestamp = useRef(0);
 
-  const getDefaultValues = (): FormValues => {
+  const getDefaultValues = useCallback((): FormValues => {
     const elementStyle = styles.closeButton;
     return {
       position: isValidPosition(elementStyle.position) ? elementStyle.position : 'absolute',
-      top: (elementStyle.top as string) || '0.3rem',
-      right: (elementStyle.right as string) || '0.5rem',
-      color: (elementStyle.color as string) || '#F8F8F2',
+      top: (elementStyle.top as string) ?? '0.3rem',
+      right: (elementStyle.right as string) ?? '0.5rem',
+      color: (elementStyle.color as string) ?? '#F8F8F2',
     };
-  };
+  }, [styles.closeButton]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -46,12 +46,12 @@ export default function CloseButton() {
   })
 
   useEffect(() => {
-    const currentResetTimestamp = resetTimestamps.closeButton || 0;
+    const currentResetTimestamp = resetTimestamps.closeButton ?? 0;
     if (currentResetTimestamp > lastResetTimestamp.current) {
       form.reset(getDefaultValues());
       lastResetTimestamp.current = currentResetTimestamp;
     }
-  }, [resetTimestamps.closeButton, form]);
+  }, [resetTimestamps.closeButton, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
     updateStyle('closeButton', data);
