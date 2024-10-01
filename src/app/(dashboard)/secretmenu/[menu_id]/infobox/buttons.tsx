@@ -8,6 +8,7 @@ import { useFlags } from "@flags-gg/react-library";
 
 export default function InfoBox({session, menuId}: {session: Session, menuId: string}) {
   const {is} = useFlags()
+  console.info("session", session, "menuId", menuId)
 
   return (
     <CardFooter className={"p-3 border-t-2 items-center justify-center"}>
