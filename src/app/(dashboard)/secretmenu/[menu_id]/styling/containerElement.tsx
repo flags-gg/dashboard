@@ -191,7 +191,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                   <FormMessage />
                 </FormItem>)} />
               <Button type={"submit"}>Preview</Button>
-              {modifiedStyles.has('header') && (
+              {modifiedStyles.has('container') && (
                 <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
               )}
             </form>

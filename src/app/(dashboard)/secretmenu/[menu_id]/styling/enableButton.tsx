@@ -52,12 +52,12 @@ export default function EnableButton() {
   }, [resetTimestamps.buttonEnabled, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
-    updateStyle('buttonDisabled', data);
+    updateStyle('buttonEnabled', data);
     setOpen(false);
   };
 
   const onReset = () => {
-    resetStyle('buttonDisabled');
+    resetStyle('buttonEnabled');
   };
 
   return (
@@ -103,7 +103,7 @@ export default function EnableButton() {
               </FormItem>)} />
             <FormField control={form.control} name="color" render={({ field }) => (
               <FormItem>
-                <FormLabel>TextColor</FormLabel>
+                <FormLabel>Text Color</FormLabel>
                 <FormControl>
                   <div className="flex items-center">
                     <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
@@ -113,7 +113,7 @@ export default function EnableButton() {
                 <FormMessage />
               </FormItem>)} />
             <Button type="submit">Preview</Button>
-            {modifiedStyles.has('buttonDisabled') && (
+            {modifiedStyles.has('buttonEnabled') && (
               <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
             )}
           </form>

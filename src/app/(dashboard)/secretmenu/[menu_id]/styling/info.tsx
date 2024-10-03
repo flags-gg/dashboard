@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useStyleContext } from "./context";
 import { Button } from "~/components/ui/button";
 import { type Session } from "next-auth";
+import { Separator } from "~/components/ui/separator";
 
 const styleNames: Record<string, string> = {
   resetButton: "Reset Button",
@@ -13,8 +14,39 @@ const styleNames: Record<string, string> = {
   header: "Header",
 }
 
+async function saveStyle(session: Session, menuId: string, style: string) {
+  try {
+    const response = await fetch(`/api/secretmenu/style`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sessionToken: session.user.access_token,
+        userId: session.user.id,
+        menuId: menuId,
+        style: style,
+      }),
+      cache: "no-store",
+    })
+    if (!response.ok) {
+      return new Error("Failed to save style")
+    }
+
+    return await response.json()
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new Error(`Failed to save style: ${e.message}`)
+    } else {
+      console.error("saveStyle", e)
+    }
+  }
+
+  return null
+}
+
 export default function Info({session, menuId}: {session: Session, menuId: string}) {
-  const {resetStyle, modifiedStyles} = useStyleContext();
+  const {resetStyle, modifiedStyles, styles} = useStyleContext();
   console.info("session", session, "menuId", menuId)
 
   return (
@@ -33,11 +65,22 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
             <span>Reset modified styles:</span>
             <div className="flex flex-wrap gap-2 mt-2">
               {Array.from(modifiedStyles).map((styleKey) => (
-                <Button key={styleKey} onClick={() => resetStyle(styleKey)}>
-                  {styleNames[styleKey]}
-                </Button>
+                <>
+                  <Button key={styleKey} onClick={() => resetStyle(styleKey)}>
+                    {styleNames[styleKey]}
+                  </Button>
+                </>
               ))}
             </div>
+            <Separator />
+            <Button onClick={() => {
+              const style = JSON.stringify(styles)
+              saveStyle(session, menuId, style).then(r => {
+                console.info("Style saved", r);
+              }).catch((e) => {
+                console.error("Error saving style", e);
+              })
+            }}>Save Custom Style</Button>
           </div>
         )}
       </CardContent>
