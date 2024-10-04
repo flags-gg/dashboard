@@ -1,17 +1,14 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
-import { StyleState } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 
-type StyleParams = {
-  sessionToken: string
-  userId: string
-  menuId: string
-  style: string
-}
+export async function POST(request: Request) {
+  type StyleParams = {
+    sessionToken: string
+    userId: string
+    menuId: string
+  }
 
-export async function POST(request: Request): Promise<StyleState | Error> {
   const { sessionToken, userId, menuId }: StyleParams = await request.json() as StyleParams
-
   const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/style`
   const response = await fetch(apiUrl, {
     method: 'GET',
@@ -23,16 +20,42 @@ export async function POST(request: Request): Promise<StyleState | Error> {
     cache: 'no-store',
   })
   if (!response.ok) {
-    return new Error('Failed to get style')
+    console.error("Failed to get style", response)
+    return NextResponse.json({ message: "Failed to get style" }, { status: 500 })
   }
 
-  return await response.json() as StyleState
+  const data = await response.json()
+  return NextResponse.json(data)
 }
 
 export async function PUT(request: Request) {
-  const { sessionToken, userId, menuId, style }: StyleParams = await request.json() as StyleParams
+  type StyleParams = {
+    sessionToken: string
+    userId: string
+    menuId?: string
+    styleId?: string
+    style: string
+  }
 
+  const { sessionToken, userId, menuId, styleId, style }: StyleParams = await request.json() as StyleParams
   const styleJson = JSON.parse(style)
+  const dataModel = {
+    menu_id: menuId,
+    custom_style: {
+      style_id: "",
+      reset_button: styleJson.resetButton,
+      close_button: styleJson.closeButton,
+      container: styleJson.container,
+      flag: styleJson.flag,
+      button_enabled: styleJson.buttonEnabled,
+      button_disabled: styleJson.buttonDisabled,
+      header: styleJson.header,
+    }
+  }
+
+  if (styleId) {
+    dataModel.custom_style.style_id = styleId
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/style`
@@ -43,18 +66,7 @@ export async function PUT(request: Request) {
         'x-user-access-token': sessionToken,
         'x-user-subject': userId,
       },
-      body: JSON.stringify({
-        menu_id: menuId,
-        custom_style: {
-          reset_button: styleJson.resetButton,
-          close_button: styleJson.closeButton,
-          container: styleJson.container,
-          flag: styleJson.flag,
-          button_enabled: styleJson.buttonEnabled,
-          button_disabled: styleJson.buttonDisabled,
-          header: styleJson.header,
-        },
-      }),
+      body: JSON.stringify(dataModel),
       cache: 'no-store',
     })
     if (!response.ok) {
