@@ -3,6 +3,7 @@ import { useStyleContext } from "./context";
 import { Button } from "~/components/ui/button";
 import { type Session } from "next-auth";
 import { Separator } from "~/components/ui/separator";
+import { useStyles } from "~/hooks/use-styles";
 
 const styleNames: Record<string, string> = {
   resetButton: "Reset Button",
@@ -14,7 +15,7 @@ const styleNames: Record<string, string> = {
   header: "Header",
 }
 
-async function saveStyle(session: Session, menuId: string, style: string) {
+async function saveStyle({session, style, menuId, styleId}: {session: Session, style: string, menuId: string, styleId?: string}) {
   try {
     const response = await fetch(`/api/secretmenu/style`, {
       method: "PUT",
@@ -25,6 +26,7 @@ async function saveStyle(session: Session, menuId: string, style: string) {
         sessionToken: session.user.access_token,
         userId: session.user.id,
         menuId: menuId,
+        styleId: styleId,
         style: style,
       }),
       cache: "no-store",
@@ -47,7 +49,20 @@ async function saveStyle(session: Session, menuId: string, style: string) {
 
 export default function Info({session, menuId}: {session: Session, menuId: string}) {
   const {resetStyle, modifiedStyles, styles} = useStyleContext();
-  console.info("session", session, "menuId", menuId)
+  const {data, isLoading, error} = useStyles(session, menuId);
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
+  if (!data) {
+    throw new Error("No data returned");
+  }
+
+  const styleId = data.id;
 
   return (
     <Card>
@@ -75,11 +90,19 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
             <Separator />
             <Button onClick={() => {
               const style = JSON.stringify(styles)
-              saveStyle(session, menuId, style).then(r => {
-                console.info("Style saved", r);
-              }).catch((e) => {
-                console.error("Error saving style", e);
-              })
+              if (styleId) {
+                saveStyle({session, style, menuId: menuId, styleId: styleId}).then(() => {
+                  console.info("Style saved");
+                }).catch((e) => {
+                  console.error("Error saving style", e);
+                })
+              } else {
+                saveStyle({ session, style, menuId: menuId}).then(r => {
+                  console.info("Style saved");
+                }).catch((e) => {
+                  console.error("Error saving style", e);
+                })
+              }
             }}>Save Custom Style</Button>
           </div>
         )}

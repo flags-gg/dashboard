@@ -1,9 +1,17 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
 
-type StyleKey = 'resetButton' | 'closeButton' | 'container' | 'flag' | 'buttonEnabled' | 'buttonDisabled' | 'header';
+export type StyleKey = 'resetButton' | 'closeButton' | 'container' | 'flag' | 'buttonEnabled' | 'buttonDisabled' | 'header';
 export type StyleState = {
   [K in StyleKey]: React.CSSProperties;
 };
+
+export type StyleFetch = {
+  style_id: string
+  styles: Array<{
+    name: StyleKey,
+    value: string
+  }>
+}
 
 type StyleContextType = {
   styles: StyleState;
@@ -53,8 +61,8 @@ export const useStyleContext = () => {
   return context;
 };
 
-export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const initialStyles: StyleState = {
+export const StyleProvider: React.FC<{ children: ReactNode, initialStyles?: StyleState }> = ({ children, initialStyles }) => {
+  const defaultStyles: StyleState = {
     resetButton: {
       position: "absolute",
       top: "0.3rem",
@@ -111,7 +119,7 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     },
   };
 
-  const [styles, setStyles] = useState<StyleState>(initialStyles);
+  const [styles, setStyles] = useState<StyleState>(initialStyles || defaultStyles);
   const [modifiedStyles, setModifiedStyles] = useState<Set<StyleKey>>(new Set());
   const [resetTimestamps, setResetTimestamps] = useState<{[K in StyleKey]?: number}>({});
 
@@ -126,7 +134,7 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const resetStyle = (key: StyleKey) => {
     setStyles(prevStyles => ({
       ...prevStyles,
-      [key]: initialStyles[key],
+      [key]: initialStyles ? initialStyles[key] : defaultStyles[key],
     }));
     setModifiedStyles(prevModified => {
       const newModified = new Set(prevModified);
@@ -140,7 +148,7 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   return (
-    <StyleContext.Provider value={{ styles, originalStyles: initialStyles, modifiedStyles, resetTimestamps, updateStyle, resetStyle }}>
+    <StyleContext.Provider value={{ styles, originalStyles: initialStyles || defaultStyles, modifiedStyles, resetTimestamps, updateStyle, resetStyle }}>
       {children}
     </StyleContext.Provider>
   );
