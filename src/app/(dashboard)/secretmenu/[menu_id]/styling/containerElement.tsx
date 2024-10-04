@@ -66,7 +66,13 @@ export default function ContainerElement({children}: {children: ReactNode}) {
   }, [resetTimestamps.container, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
-    updateStyle('container', data);
+    const updatedData = {
+      ...data,
+      transform: "translate(-50%, -50%)",
+      zIndex: 9001
+    }
+
+    updateStyle('container', updatedData);
     setOpen(false);
   };
 

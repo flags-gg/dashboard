@@ -1,11 +1,32 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { StyleState } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 
 type StyleParams = {
   sessionToken: string
   userId: string
   menuId: string
   style: string
+}
+
+export async function POST(request: Request): Promise<StyleState | Error> {
+  const { sessionToken, userId, menuId }: StyleParams = await request.json() as StyleParams
+
+  const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/style`
+  const response = await fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-user-access-token': sessionToken,
+      'x-user-subject': userId,
+    },
+    cache: 'no-store',
+  })
+  if (!response.ok) {
+    return new Error('Failed to get style')
+  }
+
+  return await response.json() as StyleState
 }
 
 export async function PUT(request: Request) {

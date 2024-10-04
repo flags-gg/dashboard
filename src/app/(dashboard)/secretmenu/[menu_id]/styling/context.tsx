@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
 
 type StyleKey = 'resetButton' | 'closeButton' | 'container' | 'flag' | 'buttonEnabled' | 'buttonDisabled' | 'header';
-type StyleState = {
+export type StyleState = {
   [K in StyleKey]: React.CSSProperties;
 };
 
