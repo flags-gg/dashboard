@@ -41,7 +41,7 @@ async function getStyle(session: Session, menuId: string): Promise<StyleState | 
 }
 
 export default function PageContainer({session, menuId}: {session: Session, menuId: string}) {
-  const {styles, updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
+  const {updateStyle, resetStyle, resetTimestamps, modifiedStyles} = useStyleContext();
   useEffect(() => {
     getStyle(session, menuId).then(r => {
       if ("container" in r) {
