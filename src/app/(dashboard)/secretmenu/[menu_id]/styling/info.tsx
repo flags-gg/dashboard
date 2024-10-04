@@ -91,7 +91,7 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
             <Button onClick={() => {
               const style = JSON.stringify(styles)
               if (styleId) {
-                saveStyle({session, style, menuId: menuId, styleId: styleId}).then(r => {
+                saveStyle({session, style, menuId: menuId, styleId: styleId}).then(() => {
                   console.info("Style saved");
                 }).catch((e) => {
                   console.error("Error saving style", e);
