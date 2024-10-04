@@ -107,7 +107,7 @@ export default function CloseButton() {
             ))}
             <FormField control={form.control} name="color" render={({ field }) => (
               <FormItem>
-                <FormLabel>Text Color</FormLabel>
+                <FormLabel>Icon Color</FormLabel>
                 <FormControl>
                   <div className="flex items-center">
                     <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />

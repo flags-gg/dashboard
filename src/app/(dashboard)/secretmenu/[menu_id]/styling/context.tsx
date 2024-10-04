@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, type ReactNode } from 'react';
 
 type StyleKey = 'resetButton' | 'closeButton' | 'container' | 'flag' | 'buttonEnabled' | 'buttonDisabled' | 'header';
-type StyleState = {
+export type StyleState = {
   [K in StyleKey]: React.CSSProperties;
 };
 
@@ -36,6 +36,12 @@ export const justifyContentOptions = ["flex-start", "center", "flex-end", "space
 type JustifyContentType = typeof justifyContentOptions[number];
 export function isValidJustifyContent(justifyContent: unknown): justifyContent is JustifyContentType {
   return typeof justifyContent === 'string' && justifyContentOptions.includes(justifyContent as JustifyContentType);
+}
+
+export const alignItemsOptions = ["flex-start", "center", "flex-end", "stretch"] as const;
+type AlignItemsType = typeof alignItemsOptions[number];
+export function isValidAlignItems(alignItems: unknown): alignItems is AlignItemsType {
+  return typeof alignItems === 'string' && alignItemsOptions.includes(alignItems as AlignItemsType);
 }
 
 const StyleContext = createContext<StyleContextType | undefined>(undefined);
@@ -76,9 +82,9 @@ export const StyleProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: '0.5rem',
-      background: '#44475A',
+      backgroundColor: '#44475A',
       borderRadius: '5px',
-      margin: '0.5rem 0',
+      margin: '0.5rem',
       color: '#F8F8F2',
       minWidth: '20rem',
     },

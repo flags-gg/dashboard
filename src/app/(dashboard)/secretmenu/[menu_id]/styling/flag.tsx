@@ -1,6 +1,7 @@
 import {
+  alignItemsOptions,
   borderStyleOptions,
-  displayOptions,
+  displayOptions, isValidAlignItems,
   isValidBorder,
   isValidDisplay, isValidJustifyContent,
   justifyContentOptions,
@@ -20,13 +21,16 @@ import { Separator } from "~/components/ui/separator";
 const FormSchema = z.object({
   display: z.enum(displayOptions),
   justifyContent: z.enum(justifyContentOptions),
+  alignItems: z.enum(alignItemsOptions),
+  padding: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   backgroundColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
-  color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
   borderColor: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
   borderStyle: z.enum(borderStyleOptions),
   borderRadius: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
   borderWidth: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
-  padding: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
+  margin: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
+  color: z.string().regex(/^#([0-9A-F]{3}){1,2}$/i, "Must be a valid hex color"),
+  minWidth: z.string().regex(/^-?\d+(\.\d+)?(px|rem|em)$/, "Must be a number followed by px, rem, or em"),
 });
 type FormValues = z.infer<typeof FormSchema>;
 
@@ -36,19 +40,22 @@ export default function Flag({children}: {children: ReactNode}) {
   const lastResetTimestamp = useRef(0);
 
   const getDefaultValues = useCallback((): FormValues => {
-    const elementStyle = styles.container;
+    const elementStyle = styles.flag;
     return {
       display: isValidDisplay(elementStyle.display) ? elementStyle.display : 'flex',
-      justifyContent: isValidJustifyContent(elementStyle.justifyContent) ? elementStyle.justifyContent : 'center',
-      backgroundColor: (elementStyle.backgroundColor as string) ?? '#282A36',
-      color: (elementStyle.color as string) ?? '#F8F8F2',
+      justifyContent: isValidJustifyContent(elementStyle.justifyContent) ? elementStyle.justifyContent : 'space-between',
+      alignItems: isValidAlignItems(elementStyle.alignItems) ? elementStyle.alignItems : 'center',
+      padding: (elementStyle.padding as string) ?? '1rem',
+      backgroundColor: (elementStyle.backgroundColor as string) ?? '#44475A',
       borderColor: (elementStyle.borderColor as string) ?? '#F8F8F2',
       borderStyle: isValidBorder(elementStyle.borderStyle) ? elementStyle.borderStyle : 'solid',
       borderWidth: (elementStyle.borderWidth as string) ?? '2px',
       borderRadius: (elementStyle.borderRadius as string) ?? '0.5rem',
-      padding: (elementStyle.padding as string) ?? '1rem',
+      margin: (elementStyle.margin as string) ?? '0.5rem 0',
+      color: (elementStyle.color as string) ?? '#F8F8F2',
+      minWidth: (elementStyle.minWidth as string) ?? '20rem',
     }
-  }, [styles.container]);
+  }, [styles.flag]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -64,12 +71,12 @@ export default function Flag({children}: {children: ReactNode}) {
   }, [resetTimestamps.flag, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
-    updateStyle('container', data);
+    updateStyle('flag', data);
     setOpen(false);
   };
 
   const onReset = () => {
-    resetStyle('container');
+    resetStyle('flag');
   }
 
   return (
@@ -106,6 +113,25 @@ export default function Flag({children}: {children: ReactNode}) {
                     </Select>
                     <FormMessage />
                   </FormItem>)} />
+                <FormField control={form.control} name={"alignItems"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Align Items</FormLabel>
+                    <Select onValueChange={fieldProps.onChange} defaultValue={fieldProps.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select an item alignment" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {alignItemsOptions.map((option) => (
+                          <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>)} />
                 <FormField control={form.control} name={"justifyContent"} render={({ field: fieldProps }) => (
                   <FormItem>
                     <FormLabel>Justify Content</FormLabel>
@@ -125,6 +151,14 @@ export default function Flag({children}: {children: ReactNode}) {
                     </Select>
                     <FormMessage />
                   </FormItem>)} />
+                <FormField control={form.control} name={"minWidth"} render={({ field: fieldProps }) => (
+                  <FormItem>
+                    <FormLabel>Min Width</FormLabel>
+                    <FormControl>
+                      <Input placeholder={`e.g., 10px, 2rem, 1.5em`} {...fieldProps} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem> )} />
                 <Separator />
                 <h2 className={"text-md font-medium"}>Border</h2>
                 <FormField control={form.control} name="borderColor" render={({ field: fieldProps }) => (
@@ -197,7 +231,7 @@ export default function Flag({children}: {children: ReactNode}) {
                     <FormMessage />
                   </FormItem> )} />
                 <Button type={"submit"}>Preview</Button>
-                {modifiedStyles.has('header') && (
+                {modifiedStyles.has('flag') && (
                   <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
                 )}
               </form>

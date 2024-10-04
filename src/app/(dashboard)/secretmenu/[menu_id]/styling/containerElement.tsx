@@ -66,7 +66,13 @@ export default function ContainerElement({children}: {children: ReactNode}) {
   }, [resetTimestamps.container, form, getDefaultValues]);
 
   const onSubmit = (data: FormValues) => {
-    updateStyle('container', data);
+    const updatedData = {
+      ...data,
+      transform: "translate(-50%, -50%)",
+      zIndex: 9001
+    }
+
+    updateStyle('container', updatedData);
     setOpen(false);
   };
 
@@ -191,7 +197,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                   <FormMessage />
                 </FormItem>)} />
               <Button type={"submit"}>Preview</Button>
-              {modifiedStyles.has('header') && (
+              {modifiedStyles.has('container') && (
                 <Button type="button" onClick={onReset} className={"absolute right-6"}>Reset</Button>
               )}
             </form>
