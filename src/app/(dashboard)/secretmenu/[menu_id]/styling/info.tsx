@@ -34,7 +34,7 @@ async function saveStyle({session, style, menuId, styleId}: {session: Session, s
     if (!response.ok) {
       return new Error("Failed to save style")
     }
-
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await response.json()
   } catch (e) {
     if (e instanceof Error) {
@@ -97,7 +97,7 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
                   console.error("Error saving style", e);
                 })
               } else {
-                saveStyle({ session, style, menuId: menuId}).then(r => {
+                saveStyle({ session, style, menuId: menuId}).then(() => {
                   console.info("Style saved");
                 }).catch((e) => {
                   console.error("Error saving style", e);
