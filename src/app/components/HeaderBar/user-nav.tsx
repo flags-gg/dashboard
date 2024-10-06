@@ -1,3 +1,5 @@
+"use client"
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,15 +8,16 @@ import {
 } from "~/components/ui/dropdown-menu";
 import {Button} from "~/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
-import {getServerAuthSession} from "~/server/auth";
 import Link from "next/link";
+import { Session } from "next-auth";
+import { useFlags } from "@flags-gg/react-library";
 
-export async function UserNav() {
-  const session = await getServerAuthSession();
+export function UserNav({session}: {session: Session}) {
   const user = session?.user;
   const userImage = user?.image ?? "";
   const userName = user?.name ?? "";
   const shortName = userName.split(" ").map((n) => n[0]).join("");
+  const {is} = useFlags();
 
   return (
     <DropdownMenu>
@@ -29,12 +32,14 @@ export async function UserNav() {
       <DropdownMenuContent align={"end"}>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        {is("user account")?.enabled() && <DropdownMenuItem>
           <Link href={"/user/account"}>Account</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        }
+        {is("user settings")?.enabled() && <DropdownMenuItem>
           <Link href={"/user/settings"}>Settings</Link>
         </DropdownMenuItem>
+        }
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href={"/api/auth/signout"}>Sign out</Link>
