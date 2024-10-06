@@ -8,7 +8,6 @@ import {
 } from "~/components/ui/dropdown-menu";
 import {Button} from "~/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
-import {getServerAuthSession} from "~/server/auth";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
