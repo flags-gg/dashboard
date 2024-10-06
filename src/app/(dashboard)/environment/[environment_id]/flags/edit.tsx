@@ -18,15 +18,41 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 
 // TODO: edit flag
 async function editFlagAction(session: Session, flag: Flag): Promise<null | Error> {
-    console.log("edit", flag, session)
+    try {
+        const res = await fetch(`/api/flag/edit`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                flag_id: flag.details.id,
+                sessionToken: session.user.access_token,
+                userId: session.user.id,
+                newName: flag.details.name,
+            }),
+            cache: "no-store",
+        })
+        if (!res.ok) {
+            return new Error("Failed to edit flag")
+        }
 
-    return null
+        return null
+    } catch (e) {
+        if (e instanceof Error) {
+            return Error(`Failed to edit flag: ${e.message}`)
+        } else {
+            console.error("editFlag", e)
+        }
+    }
+
+    return Error("Failed to edit flag")
 }
 
 export function EditFlag({session, flag}: {session: Session, flag: Flag}) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter()
+    const [openEdit, setOpenEdit] = useState(false);
 
     const FormSchema = z.object({
         flagName: z.string().min(2, {message: "Flag Name requires a minimum of 2 characters"}),
@@ -47,19 +73,22 @@ export function EditFlag({session, flag}: {session: Session, flag: Flag}) {
             }).catch((e) => {
                 if (e instanceof Error) {
                     setError(e.message);
+                    form.reset()
                     return
                 }
                 setError("Failed to edit flag");
+                form.reset()
                 return
             })
         } catch (e) {
             console.error(e)
             setError("Failed to edit flag")
+            form.reset()
         } finally {
             setLoading(false);
+            setOpenEdit(false);
         }
 
-        form.reset()
         router.refresh()
     }
 
@@ -85,7 +114,7 @@ export function EditFlag({session, flag}: {session: Session, flag: Flag}) {
     }
 
     return (
-      <Popover>
+      <Popover open={openEdit} onOpenChange={setOpenEdit}>
           <PopoverTrigger asChild>
               <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
                   <Pencil className={"h-5 w-5"} />

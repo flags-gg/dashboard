@@ -119,7 +119,7 @@ export const StyleProvider: React.FC<{ children: ReactNode, initialStyles?: Styl
     },
   };
 
-  const [styles, setStyles] = useState<StyleState>(initialStyles || defaultStyles);
+  const [styles, setStyles] = useState<StyleState>(initialStyles ?? defaultStyles);
   const [modifiedStyles, setModifiedStyles] = useState<Set<StyleKey>>(new Set());
   const [resetTimestamps, setResetTimestamps] = useState<{[K in StyleKey]?: number}>({});
 
@@ -148,7 +148,7 @@ export const StyleProvider: React.FC<{ children: ReactNode, initialStyles?: Styl
   };
 
   return (
-    <StyleContext.Provider value={{ styles, originalStyles: initialStyles || defaultStyles, modifiedStyles, resetTimestamps, updateStyle, resetStyle }}>
+    <StyleContext.Provider value={{ styles, originalStyles: initialStyles ?? defaultStyles, modifiedStyles, resetTimestamps, updateStyle, resetStyle }}>
       {children}
     </StyleContext.Provider>
   );

@@ -1,5 +1,6 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { StyleFetch } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 
 export async function POST(request: Request) {
   type StyleParams = {
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Failed to get style" }, { status: 500 })
   }
 
-  const data = await response.json()
+  const data = await response.json() as StyleFetch
   return NextResponse.json(data)
 }
 
