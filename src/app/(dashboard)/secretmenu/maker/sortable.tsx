@@ -1,8 +1,5 @@
-"use client"
-
 import {useSortable} from "@dnd-kit/sortable";
 
-// @ts-ignore
 export default function Sortable({item, index, onRemove}: {item: {id: string, icon: string}, index: number, onRemove: (id: number) => void}) {
   const {attributes, listeners, setNodeRef, transform, transition} = useSortable({
     id: item.id,
