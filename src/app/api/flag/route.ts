@@ -8,6 +8,7 @@ type UpdateFlagRequest = {
 }
 
 export async function POST(request: Request) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { flag }: UpdateFlagRequest = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {

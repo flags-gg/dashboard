@@ -1,6 +1,5 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {Card, CardContent, CardFooter} from "~/components/ui/card";
 import {DndContext, type DragEndEvent, rectIntersection} from "@dnd-kit/core";
 import {DirectionMap, LetterMap, NumberMap} from "./keymap";

@@ -9,6 +9,7 @@ type SecretMenuParams = {
 }
 
 export async function PUT(request: Request) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {menuId, sequence}: SecretMenuParams = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
@@ -42,6 +43,7 @@ export async function PUT(request: Request) {
 }
 
 export async function POST(request: Request) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {sequence, environmentId}: SecretMenuParams = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {

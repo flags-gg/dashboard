@@ -1,6 +1,6 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
-import { StyleFetch } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
+import { type StyleFetch } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 import { getServerAuthSession } from "~/server/auth";
 
 export async function POST(request: Request) {
@@ -40,13 +40,23 @@ export async function PUT(request: Request) {
     style: string
   }
 
+  type ParsedStyle = {
+    resetButton: string;
+    closeButton: string;
+    container: string;
+    flag: string;
+    buttonEnabled: string;
+    buttonDisabled: string;
+    header: string;
+  }
+
   const { menuId, styleId, style }: StyleParams = await request.json() as StyleParams
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  const styleJson = JSON.parse(style)
+  const styleJson = JSON.parse(style) as ParsedStyle
   const dataModel = {
     menu_id: menuId,
     custom_style: {

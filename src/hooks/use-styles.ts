@@ -1,5 +1,5 @@
 import { type Session } from "next-auth";
-import { type StyleFetch, StyleKey, StyleState } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
+import { type StyleFetch, type StyleState } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchStyles = async (session: Session, menuId: string): Promise<StyleFetch> => {
@@ -27,7 +27,8 @@ const transformStyles = (data: StyleFetch): { styles: StyleState; id: string } =
   const transformedStyles: StyleState = {} as StyleState;
 
   data.styles.forEach((style) => {
-    transformedStyles[style.name as StyleKey] = JSON.parse(style.value);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    transformedStyles[style.name] = JSON.parse(style.value);
   });
 
   return {
