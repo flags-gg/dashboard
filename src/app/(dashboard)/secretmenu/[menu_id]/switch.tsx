@@ -2,11 +2,13 @@
 
 import {type Session} from "next-auth";
 import {Switch} from "~/components/ui/switch";
+import { environmentAtom } from "~/lib/statemanager";
+import { useAtom } from "jotai";
 
 async function enableDisableMenu(session: Session, menu_id: string) {
   try {
-    const response = await fetch('/api/enableDisableMenu', {
-      method: 'POST',
+    const response = await fetch('/api/secretmenu', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -27,8 +29,10 @@ async function enableDisableMenu(session: Session, menu_id: string) {
 }
 
 export function MenuSwitch({session, menu_id}: { session: Session, menu_id: string }) {
+  const [selectedEnvironment] = useAtom(environmentAtom)
+
   return (
-    <Switch defaultChecked={true} name={"menu"} onCheckedChange={() => {
+    <Switch defaultChecked={selectedEnvironment.secret_menu.enabled} name={"menu"} onCheckedChange={() => {
       enableDisableMenu(session, menu_id).then(r => {
         console.info("Menu updated", r);
       }).catch((e) => {

@@ -41,3 +41,33 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const {menu_id} = await request.json();
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
+
+  try {
+    const apiUrl = `${env.API_SERVER}/secret-menu/${menu_id}/state`;
+    const response = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+      },
+      cache: 'no-store',
+    });
+    if (!response.ok) {
+      return NextResponse.json({message: "Failed to update secret menu"}, { status: 500 });
+    }
+
+    return NextResponse.json({message: 'Secret menu updated successfully'})
+  } catch (error) {
+    console.error('Error updating secret menu:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+  }
+}
