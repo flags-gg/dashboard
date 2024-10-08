@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
   const { menuId }: StyleParams = await request.json() as StyleParams
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
 
   const { menuId, styleId, style }: StyleParams = await request.json() as StyleParams
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

@@ -10,7 +10,7 @@ type EditFlag = {
 export async function POST(request: Request) {
   const { flag_id, newName }: EditFlag = await request.json() as EditFlag
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

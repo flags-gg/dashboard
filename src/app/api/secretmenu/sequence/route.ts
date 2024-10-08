@@ -11,7 +11,7 @@ type SecretMenuParams = {
 export async function PUT(request: Request) {
   const {menuId, sequence}: SecretMenuParams = await request.json();
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -44,7 +44,7 @@ export async function PUT(request: Request) {
 export async function POST(request: Request) {
   const {sequence, environmentId}: SecretMenuParams = await request.json();
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

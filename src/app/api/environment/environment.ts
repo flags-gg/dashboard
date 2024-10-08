@@ -5,11 +5,8 @@ import {type EnvironmentsData, type IEnvironment} from "~/lib/statemanager";
 export async function getEnvironments(session: Session, agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
   const apiUrl = `${env.API_SERVER}/agent/${agent_id}/environments`
 
-  if (!session || !session.user) {
-    return { data: null, error: new Error('No session found') }
-  }
-  if (!session.user.access_token || !session.user.id) {
-    return { data: null, error: new Error('No access token or user id found') }
+  if (!session?.user?.access_token) {
+    throw new Error('No access token found')
   }
 
   try {
@@ -35,11 +32,8 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
 export async function getEnvironment(session: Session, environment_id: string): Promise<{ data: IEnvironment | null, error: Error | null }> {
   const apiUrl = `${env.API_SERVER}/environment/${environment_id}`
 
-  if (!session || !session.user) {
-    return { data: null, error: new Error('No session found') }
-  }
-  if (!session.user.access_token || !session.user.id) {
-    return { data: null, error: new Error('No access token or user id found') }
+  if (!session?.user?.access_token) {
+    throw new Error('No access token found')
   }
 
   try {

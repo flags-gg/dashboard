@@ -9,7 +9,7 @@ type CreateProject = {
 export async function POST(request: Request) {
   const { name }: CreateProject = await request.json() as CreateProject
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

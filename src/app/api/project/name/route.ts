@@ -10,7 +10,7 @@ type UpdateProjectName = {
 export async function PUT(request: Request) {
   const { name, projectId }: UpdateProjectName = await request.json() as UpdateProjectName
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

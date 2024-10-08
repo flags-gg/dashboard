@@ -10,7 +10,7 @@ type UpdateFlagRequest = {
 export async function POST(request: Request) {
   const { flag }: UpdateFlagRequest = await request.json();
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

@@ -5,11 +5,8 @@ import {type IProject, type ProjectsData} from "~/lib/statemanager";
 export async function getProjects(session: Session): Promise<ProjectsData> {
   const apiUrl = `${env.API_SERVER}/projects`
 
-  if (!session || !session.user) {
-    throw new Error('No session found')
-  }
-  if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+  if (!session?.user?.access_token) {
+    throw new Error('No access token found')
   }
 
   const res = await fetch(apiUrl, {
@@ -29,11 +26,8 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
 export async function getProject(session: Session, project_id: string): Promise<IProject | Error> {
   const apiUrl = `${env.API_SERVER}/project/${project_id}`
 
-  if (!session || !session.user) {
-    throw new Error('No session found')
-  }
-  if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+  if (!session?.user?.access_token) {
+    throw new Error('No access token found')
   }
 
   try {

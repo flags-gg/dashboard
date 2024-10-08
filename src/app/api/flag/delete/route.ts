@@ -9,7 +9,7 @@ type DeleteFlag = {
 export async function DELETE(request: Request) {
   const { flag_id }: DeleteFlag = await request.json() as DeleteFlag
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

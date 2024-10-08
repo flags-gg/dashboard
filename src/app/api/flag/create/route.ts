@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const { name, environment_id, agent_id }: CreateFlag = await request.json() as CreateFlag
   const apiUrl = `${env.API_SERVER}/flag`
   const session = await getServerAuthSession();
-  if (!session) {
+  if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 

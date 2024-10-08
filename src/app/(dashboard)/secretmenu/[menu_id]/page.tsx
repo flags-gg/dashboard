@@ -20,7 +20,7 @@ export default async function SecretMenuSpecificPage({params}: {params: {menu_id
       <header className="col-span-2">
         <h1 className="text-2xl font-semibold">Secret Menu Updater</h1>
       </header>
-      <Maker session={session} menuId={params.menu_id} />
+      <Maker menuId={params.menu_id} />
       <InfoBox session={session} menu_id={params.menu_id} />
     </>
   )
