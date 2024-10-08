@@ -35,7 +35,7 @@ export default async function InfoBox({session, menu_id}: {session: Session, men
 
         <Info secretMenuInfo={secretMenuInfo} session={session} />
       </CardContent>
-      <InfoButtons session={session} menuId={menu_id} />
+      <InfoButtons menuId={menu_id} />
     </Card>
   )
 }
