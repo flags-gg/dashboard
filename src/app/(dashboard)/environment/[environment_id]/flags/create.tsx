@@ -32,8 +32,6 @@ async function createFlagAction(session: Session, environment_id: string, agent_
         environment_id: environment_id,
         agent_id: agent_id,
         name: name,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
       }),
       cache: "no-store",
     })

@@ -29,8 +29,6 @@ const createProject = async (session: Session, name: string): Promise<IProject> 
     },
     body: JSON.stringify({
       name: name,
-      sessionToken: session.user.access_token,
-      userId: session.user.id,
     }),
     cache: "no-store",
   });

@@ -1,9 +1,8 @@
 import {env} from "~/env";
 import {NextResponse} from 'next/server';
+import { getServerAuthSession } from "~/server/auth";
 
 type SecretMenuParams = {
-  sessionToken: string,
-  userId: string,
   menuId?: string
   environmentId?: string,
   sequence?: string[],
@@ -11,7 +10,11 @@ type SecretMenuParams = {
 
 export async function PUT(request: Request) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const {sessionToken, userId, menuId, sequence}: SecretMenuParams = await request.json();
+  const {menuId, sequence}: SecretMenuParams = await request.json();
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/sequence`;
@@ -19,8 +22,8 @@ export async function PUT(request: Request) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify({
         "sequence": sequence
@@ -41,7 +44,11 @@ export async function PUT(request: Request) {
 
 export async function POST(request: Request) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const {sessionToken, userId, sequence, environmentId}: SecretMenuParams = await request.json();
+  const {sequence, environmentId}: SecretMenuParams = await request.json();
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/secret-menu/${environmentId}`;
@@ -49,8 +56,8 @@ export async function POST(request: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       cache: 'no-store',
       body: JSON.stringify({

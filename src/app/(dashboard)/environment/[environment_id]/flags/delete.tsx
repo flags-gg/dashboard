@@ -18,8 +18,6 @@ async function deleteFlagAction(session: Session, flag_id: string): Promise<null
             },
             body: JSON.stringify({
                 flag_id: flag_id,
-                sessionToken: session.user.access_token,
-                userId: session.user.id,
             }),
             cache: "no-store",
         })

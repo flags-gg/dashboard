@@ -9,7 +9,7 @@ import {
 import {Button} from "~/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
 import Link from "next/link";
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
 
 export function UserNav({session}: {session: Session}) {

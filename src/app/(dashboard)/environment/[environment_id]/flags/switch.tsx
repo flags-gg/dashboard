@@ -14,8 +14,6 @@ async function updateFlag(session: Session, flag: Flag) {
       },
       body: JSON.stringify({
         flag: flag,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
       }),
       cache: 'no-store',
     })

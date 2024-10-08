@@ -1,15 +1,18 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { getServerAuthSession } from "~/server/auth";
 
 type EditFlag = {
   flag_id: string
-  sessionToken: string
-  userId: string
   newName: string
 }
 
 export async function POST(request: Request) {
-  const { flag_id, sessionToken, userId, newName }: EditFlag = await request.json() as EditFlag
+  const { flag_id, newName }: EditFlag = await request.json() as EditFlag
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/flag/${flag_id}`
@@ -18,8 +21,8 @@ export async function POST(request: Request) {
       method : 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify({
         name: newName,

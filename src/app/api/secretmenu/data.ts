@@ -5,11 +5,8 @@ import {env} from "~/env";
 export async function getSecretMenu(session: Session, menu_id: string): Promise<secretMenu> {
   const apiUrl = `${env.API_SERVER}/secret-menu/${menu_id}`
 
-  if (!session || !session.user) {
-    throw new Error('No session found')
-  }
-  if (!session.user.access_token || !session.user.id) {
-    throw new Error('No access token or user id found')
+  if (!session?.user?.access_token) {
+    throw new Error('No access token found')
   }
 
   const res = await fetch(apiUrl, {

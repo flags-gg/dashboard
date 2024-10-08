@@ -20,7 +20,7 @@ export default async function SecretMenuPage() {
       <header className="col-span-2">
         <h1 className="text-2xl font-semibold">Secret Menu Builder</h1>
       </header>
-      <Maker session={session} menuId={""} />
+      <Maker menuId={""} />
       <InfoBox session={session} />
     </>
   )

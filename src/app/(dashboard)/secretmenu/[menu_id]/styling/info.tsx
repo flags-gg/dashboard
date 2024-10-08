@@ -15,7 +15,7 @@ const styleNames: Record<string, string> = {
   header: "Header",
 }
 
-async function saveStyle({session, style, menuId, styleId}: {session: Session, style: string, menuId: string, styleId?: string}) {
+async function saveStyle({style, menuId, styleId}: {style: string, menuId: string, styleId?: string}) {
   try {
     const response = await fetch(`/api/secretmenu/style`, {
       method: "PUT",
@@ -23,8 +23,6 @@ async function saveStyle({session, style, menuId, styleId}: {session: Session, s
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
         menuId: menuId,
         styleId: styleId,
         style: style,
@@ -91,13 +89,13 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
             <Button onClick={() => {
               const style = JSON.stringify(styles)
               if (styleId) {
-                saveStyle({session, style, menuId: menuId, styleId: styleId}).then(() => {
+                saveStyle({style, menuId: menuId, styleId: styleId}).then(() => {
                   console.info("Style saved");
                 }).catch((e) => {
                   console.error("Error saving style", e);
                 })
               } else {
-                saveStyle({ session, style, menuId: menuId}).then(() => {
+                saveStyle({style, menuId: menuId}).then(() => {
                   console.info("Style saved");
                 }).catch((e) => {
                   console.error("Error saving style", e);

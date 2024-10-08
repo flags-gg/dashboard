@@ -1,6 +1,5 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {Card, CardContent, CardFooter} from "~/components/ui/card";
 import {DndContext, type DragEndEvent, rectIntersection} from "@dnd-kit/core";
 import {DirectionMap, LetterMap, NumberMap} from "./keymap";
@@ -17,17 +16,13 @@ interface SecretMenuData {
   sequence: string[]
 }
 
-async function createMenuId(session: Session): Promise<SecretMenuData | Error> {
+async function createMenuId(): Promise<SecretMenuData | Error> {
   try {
     const response = await fetch('/api/secretmenu/sequence', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
-      }),
       cache: 'no-store',
     })
     if (!response.ok) {
@@ -42,7 +37,7 @@ async function createMenuId(session: Session): Promise<SecretMenuData | Error> {
   }
 }
 
-async function getSequence(session: Session, menuId: string): Promise<SecretMenuData | Error> {
+async function getSequence(menuId: string): Promise<SecretMenuData | Error> {
   try {
     const response = await fetch('/api/secretmenu', {
       method: 'POST',
@@ -51,8 +46,6 @@ async function getSequence(session: Session, menuId: string): Promise<SecretMenu
       },
       body: JSON.stringify({
         menuId: menuId,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
       }),
       cache: 'no-store',
     })
@@ -68,7 +61,7 @@ async function getSequence(session: Session, menuId: string): Promise<SecretMenu
   }
 }
 
-async function saveSequence(session: Session, menu_id: string, sequence: string[]) {
+async function saveSequence(menu_id: string, sequence: string[]) {
   try {
     const response = await fetch('/api/secretmenu/sequence', {
       method: 'PUT',
@@ -76,8 +69,6 @@ async function saveSequence(session: Session, menu_id: string, sequence: string[
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
         menuId: menu_id,
         sequence: sequence,
       }),
@@ -94,12 +85,12 @@ async function saveSequence(session: Session, menu_id: string, sequence: string[
   }
 }
 
-export default function Maker({session, menuId}: {session: Session, menuId: string}) {
+export default function Maker({menuId}: {menuId: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    getSequence(session, menuId).then(resp => {
+    getSequence(menuId).then(resp => {
       if ("sequence" in resp && resp?.sequence) {
         setCodeSequence(resp.sequence)
       }
@@ -107,7 +98,7 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
       console.error("Error retrieving menu", e);
       setError("Error retrieving menu")
     })
-  }, [menuId, session])
+  }, [menuId])
 
   const setCodeSequence = (sequence: string[]) => {
     const newSequence = sequence.map((keyId) => {
@@ -196,9 +187,9 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
             const sequence = code.map((key) => key.keyCode)
 
             if (menuId === "") {
-              createMenuId(session).then((menuData) => {
+              createMenuId().then((menuData) => {
                 if ("menu_id" in menuData) {
-                  saveSequence(session, menuData.menu_id, sequence).catch((e) => {
+                  saveSequence(menuData.menu_id, sequence).catch((e) => {
                     console.error("Error saving menu", e);
                     setError("Error saving menu")
                   })
@@ -211,7 +202,7 @@ export default function Maker({session, menuId}: {session: Session, menuId: stri
               return
             }
 
-            saveSequence(session, menuId, sequence).catch((e) => {
+            saveSequence(menuId, sequence).catch((e) => {
               console.error("Error saving menu", e);
               setError("Error saving menu")
             })

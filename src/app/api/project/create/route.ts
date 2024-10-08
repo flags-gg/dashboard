@@ -1,14 +1,17 @@
 import {env} from "~/env";
 import {NextResponse} from "next/server";
+import { getServerAuthSession } from "~/server/auth";
 
 type CreateProject = {
   name: string
-  sessionToken: string
-  userId: string
 }
 
 export async function POST(request: Request) {
-  const { name, sessionToken, userId }: CreateProject = await request.json() as CreateProject
+  const { name }: CreateProject = await request.json() as CreateProject
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/project`
@@ -17,8 +20,8 @@ export async function POST(request: Request) {
       method : 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify({
         name: name,

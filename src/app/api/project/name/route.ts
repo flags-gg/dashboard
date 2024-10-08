@@ -1,15 +1,18 @@
 import {env} from "~/env";
 import {NextResponse} from "next/server";
+import { getServerAuthSession } from "~/server/auth";
 
 type UpdateProjectName = {
   name: string
   projectId: string
-  sessionToken: string
-  userId: string
 }
 
 export async function PUT(request: Request) {
-  const { name, projectId, sessionToken, userId }: UpdateProjectName = await request.json() as UpdateProjectName
+  const { name, projectId }: UpdateProjectName = await request.json() as UpdateProjectName
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/project/${projectId}`
@@ -18,8 +21,8 @@ export async function PUT(request: Request) {
       method : 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify({
         name: name,
