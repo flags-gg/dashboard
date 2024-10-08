@@ -23,8 +23,6 @@ async function saveStyle({session, style, menuId, styleId}: {session: Session, s
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
         menuId: menuId,
         styleId: styleId,
         style: style,

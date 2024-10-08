@@ -12,8 +12,6 @@ async function enableDisableEnvironment(session: Session, environment_id: string
       },
       body: JSON.stringify({
         environment_id: environment_id,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
       }),
     })
     if (!response.ok) {

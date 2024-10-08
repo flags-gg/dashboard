@@ -12,6 +12,7 @@ import {useAtom} from "jotai";
 import {Fragment} from "react";
 import {agentAtom, environmentAtom, projectAtom, secretMenuAtom} from "~/lib/statemanager";
 import {usePathname} from "next/navigation";
+import { useFlags } from "@flags-gg/react-library";
 
 function useBreadcrumbs() {
   const [project] = useAtom(projectAtom)
@@ -74,8 +75,11 @@ function useBreadcrumbs() {
     (pathSegments.includes("environment") || pathSegments.includes("secretmenu")) &&
     environment?.environment_id
   ) {
+    let title = environment.name || `Environment ${environment.environment_id}`;
+    title += " - Flags"
+
     breadcrumbs.push({
-      title: environment.name || `Environment ${environment.environment_id}`,
+      title: title,
       url: `/environment/${environment.environment_id}`,
     });
   }
@@ -88,11 +92,23 @@ function useBreadcrumbs() {
     });
   }
 
+  if (pathSegments.includes("secretmenu") && pathSegments.includes("styling") && secretMenu?.menu_id) {
+    breadcrumbs.push({
+      title: "Styling",
+      url: `/secretmenu/${secretMenu.menu_id}/styling`,
+    });
+  }
+
   return breadcrumbs
 }
 
 export default function BreadCrumbs() {
   const breadcrumbs = useBreadcrumbs()
+  const {is} = useFlags()
+
+  if (!is("breadcrumbs")?.enabled()) {
+    return <></>
+  }
 
   return (
     <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>

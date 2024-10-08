@@ -1,25 +1,28 @@
 import {env} from "~/env";
 import {NextResponse} from "next/server";
+import { getServerAuthSession } from "~/server/auth";
 
 type CreateFlag = {
   name: string
   environment_id: string
   agent_id: string
-  sessionToken: string
-  userId: string
 }
 
 export async function POST(request: Request) {
-  const { name, environment_id, agent_id, sessionToken, userId }: CreateFlag = await request.json() as CreateFlag
+  const { name, environment_id, agent_id }: CreateFlag = await request.json() as CreateFlag
   const apiUrl = `${env.API_SERVER}/flag`
+  const session = await getServerAuthSession();
+  if (!session) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const response = await fetch(apiUrl, {
       method : 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify({
         name: name,

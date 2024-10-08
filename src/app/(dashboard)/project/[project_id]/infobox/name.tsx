@@ -24,8 +24,6 @@ async function updateProjectName(session: Session, project_id: string, name: str
       },
       body: JSON.stringify({
         name: name,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
         projectId: project_id,
       }),
       cache: "no-store",

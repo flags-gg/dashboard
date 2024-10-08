@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
 import { env } from "~/env";
+import { getServerAuthSession } from "~/server/auth";
 
 type DeleteFlag = {
   flag_id: string
-  sessionToken: string
-  userId: string
 }
 
 export async function DELETE(request: Request) {
-  const { flag_id, sessionToken, userId }: DeleteFlag = await request.json() as DeleteFlag
+  const { flag_id }: DeleteFlag = await request.json() as DeleteFlag
+  const session = await getServerAuthSession();
+  if (!session) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/flag/${flag_id}`
@@ -17,8 +20,8 @@ export async function DELETE(request: Request) {
       method : 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       cache: 'no-store',
     })

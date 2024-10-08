@@ -1,16 +1,18 @@
 import { NextResponse } from 'next/server';
 import {env} from "~/env";
 import {type Flag} from "~/lib/statemanager";
+import { getServerAuthSession } from "~/server/auth";
 
 type UpdateFlagRequest = {
   flag: Flag,
-  sessionToken: string,
-  userId: string,
 }
 
 export async function POST(request: Request) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { flag, sessionToken, userId }: UpdateFlagRequest = await request.json();
+  const { flag }: UpdateFlagRequest = await request.json();
+  const session = await getServerAuthSession();
+  if (!session) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/flag/${flag.details.id}`;
@@ -19,8 +21,8 @@ export async function POST(request: Request) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify({
         enabled: !flag.enabled,

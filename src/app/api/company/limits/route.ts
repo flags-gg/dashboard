@@ -1,13 +1,12 @@
 import {env} from "~/env";
 import {NextResponse} from "next/server";
+import { getServerAuthSession } from "~/server/auth";
 
-type RequestLimits = {
-  company_id: string
-  sessionToken: string
-  userId: string
-}
 export async function POST(request: Request) {
-  const {sessionToken, userId}: RequestLimits = await request.json() as RequestLimits
+  const session = await getServerAuthSession();
+  if (!session) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
 
   try {
     const apiUrl = `${env.API_SERVER}/company/limits`
@@ -15,8 +14,8 @@ export async function POST(request: Request) {
     const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       cache: 'no-store'
     })

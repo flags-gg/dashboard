@@ -1,22 +1,26 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
 import { StyleFetch } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
+import { getServerAuthSession } from "~/server/auth";
 
 export async function POST(request: Request) {
   type StyleParams = {
-    sessionToken: string
-    userId: string
     menuId: string
   }
 
-  const { sessionToken, userId, menuId }: StyleParams = await request.json() as StyleParams
+  const { menuId }: StyleParams = await request.json() as StyleParams
+  const session = await getServerAuthSession();
+  if (!session) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
+
   const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/style`
   const response = await fetch(apiUrl, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'x-user-access-token': sessionToken,
-      'x-user-subject': userId,
+      'x-user-access-token': session.user.access_token,
+      'x-user-subject': session.user.id,
     },
     cache: 'no-store',
   })
@@ -31,14 +35,17 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   type StyleParams = {
-    sessionToken: string
-    userId: string
     menuId?: string
     styleId?: string
     style: string
   }
 
-  const { sessionToken, userId, menuId, styleId, style }: StyleParams = await request.json() as StyleParams
+  const { menuId, styleId, style }: StyleParams = await request.json() as StyleParams
+  const session = await getServerAuthSession();
+  if (!session) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
+
   const styleJson = JSON.parse(style)
   const dataModel = {
     menu_id: menuId,
@@ -64,8 +71,8 @@ export async function PUT(request: Request) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': sessionToken,
-        'x-user-subject': userId,
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
       },
       body: JSON.stringify(dataModel),
       cache: 'no-store',

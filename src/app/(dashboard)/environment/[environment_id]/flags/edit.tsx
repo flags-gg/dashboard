@@ -26,8 +26,6 @@ async function editFlagAction(session: Session, flag: Flag): Promise<null | Erro
             },
             body: JSON.stringify({
                 flag_id: flag.details.id,
-                sessionToken: session.user.access_token,
-                userId: session.user.id,
                 newName: flag.details.name,
             }),
             cache: "no-store",

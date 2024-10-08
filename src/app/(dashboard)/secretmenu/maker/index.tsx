@@ -24,10 +24,6 @@ async function createMenuId(session: Session): Promise<SecretMenuData | Error> {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
-      }),
       cache: 'no-store',
     })
     if (!response.ok) {
@@ -51,8 +47,6 @@ async function getSequence(session: Session, menuId: string): Promise<SecretMenu
       },
       body: JSON.stringify({
         menuId: menuId,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
       }),
       cache: 'no-store',
     })
@@ -76,8 +70,6 @@ async function saveSequence(session: Session, menu_id: string, sequence: string[
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
         menuId: menu_id,
         sequence: sequence,
       }),

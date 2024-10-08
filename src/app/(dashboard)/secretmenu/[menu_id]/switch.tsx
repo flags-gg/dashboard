@@ -12,8 +12,6 @@ async function enableDisableMenu(session: Session, menu_id: string) {
       },
       body: JSON.stringify({
         menu_id: menu_id,
-        sessionToken: session.user.access_token,
-        userId: session.user.id,
       }),
     })
     if (!response.ok) {
