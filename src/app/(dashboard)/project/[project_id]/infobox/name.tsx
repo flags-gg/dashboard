@@ -1,6 +1,5 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
@@ -15,7 +14,7 @@ import {type IProject, projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useToast} from "~/hooks/use-toast";
 
-async function updateProjectName(session: Session, project_id: string, name: string): Promise<IProject | Error> {
+async function updateProjectName(project_id: string, name: string): Promise<IProject | Error> {
   try {
     const res = await fetch(`/api/project/name`, {
       method: "PUT",
@@ -44,7 +43,7 @@ async function updateProjectName(session: Session, project_id: string, name: str
   return new Error("Failed to update project name")
 }
 
-export default function Name({session, project_id, name}: {session: Session, project_id: string, name: string}) {
+export default function Name({project_id, name}: {project_id: string, name: string}) {
   const [projectName, setProjectName] = useState(name)
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
   const [openEdit, setOpenEdit] = useState(false)
@@ -63,7 +62,7 @@ export default function Name({session, project_id, name}: {session: Session, pro
     setOpenEdit(false)
 
     try {
-      updateProjectName(session, project_id, data.name).then(() => {
+      updateProjectName( project_id, data.name).then(() => {
         setProjectName(data.name)
         setProjectInfo({...projectInfo, name: data.name})
         toast({

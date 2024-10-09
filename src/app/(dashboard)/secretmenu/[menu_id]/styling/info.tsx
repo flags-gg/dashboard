@@ -50,11 +50,11 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
   const {data, isLoading, error} = useStyles(session, menuId);
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div key={"styling-info-loading"}>Loading...</div>
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return <div key={"styling-info-error"}>Error: {error.message}</div>
   }
   if (!data) {
     throw new Error("No data returned");
@@ -78,11 +78,11 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
             <span>Reset modified styles:</span>
             <div className="flex flex-wrap gap-2 mt-2">
               {Array.from(modifiedStyles).map((styleKey) => (
-                <>
-                  <Button key={styleKey} onClick={() => resetStyle(styleKey)}>
+                <div key={`${styleKey}-container`}>
+                  <Button key={`${styleKey}-button`} onClick={() => resetStyle(styleKey)}>
                     {styleNames[styleKey]}
                   </Button>
-                </>
+                </div>
               ))}
             </div>
             <Separator />

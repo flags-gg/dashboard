@@ -33,8 +33,8 @@ export function MenuSwitch({session, menu_id}: { session: Session, menu_id: stri
 
   return (
     <Switch defaultChecked={selectedEnvironment.secret_menu.enabled} name={"menu"} onCheckedChange={() => {
-      enableDisableMenu(session, menu_id).then(r => {
-        console.info("Menu updated", r);
+      enableDisableMenu(session, menu_id).then(() => {
+        console.info("Menu updated");
       }).catch((e) => {
         console.error("Error updating menu", e);
       })
