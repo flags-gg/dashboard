@@ -70,7 +70,7 @@ export default function MenuHeader() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <h1 style={styles.header} className={"cursor-pointer"}>Secret Menu</h1>
+        <h3 style={styles.header} className={"cursor-pointer"}>Secret Menu</h3>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
