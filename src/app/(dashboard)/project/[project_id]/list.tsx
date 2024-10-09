@@ -4,6 +4,8 @@ import Link from "next/link";
 import {type AgentsData} from "~/lib/statemanager";
 import {getAgents} from "~/app/api/agent/agent";
 import {type Session} from "next-auth";
+import { Button } from "~/components/ui/button";
+import { Pencil } from "lucide-react";
 
 export default async function AgentsList({ session, project_id }: { session: Session, project_id: string }) {
   let agents: AgentsData;
