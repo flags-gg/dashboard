@@ -1,7 +1,6 @@
 "use client"
 
 import {Switch} from "~/components/ui/switch";
-import {type Session} from "next-auth";
 import { useAtom } from "jotai";
 import { environmentAtom } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";

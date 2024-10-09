@@ -1,6 +1,5 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
