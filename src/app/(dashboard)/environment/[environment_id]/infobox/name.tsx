@@ -1,7 +1,7 @@
 "use client"
 
 import { useAtom } from "jotai";
-import { environmentAtom } from "~/lib/statemanager";
+import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
 import { type Session } from "next-auth";
 import { useState } from "react";
 import { CardTitle } from "~/components/ui/card";
@@ -15,6 +15,36 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "~/hooks/use-toast";
 import Clone from "./clone"
+
+async function updateEnvironmentName(environment_id: string, name: string, enabled: boolean): Promise<IEnvironment | Error> {
+  try {
+    const res = await fetch(`/api/environment`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        environmentId: environment_id,
+        enabled: enabled,
+      }),
+      cache: "no-store",
+    })
+    if (!res.ok) {
+      return new Error("Failed to update environment name")
+    }
+
+    return await res.json() as IEnvironment
+  } catch (e) {
+    if (e instanceof Error) {
+      return Error(`Failed to update environment name: ${e.message}`)
+    } else {
+      console.error("updateEnvironmentName", e)
+    }
+  }
+
+  return new Error("Failed to update environment name")
+}
 
 export default function Name({session, environment_id}: {session: Session, environment_id: string}) {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
@@ -32,7 +62,26 @@ export default function Name({session, environment_id}: {session: Session, envir
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setOpenEdit(false)
-    setEnvironmentInfo({...environmentInfo, name: data.name})
+    try {
+      updateEnvironmentName(environment_id, data.name, environmentInfo.enabled).then(() => {
+        setEnvironmentInfo({...environmentInfo, name: data.name})
+        toast({
+          title: "Environment Name Updated",
+          description: "The environment name has been updated",
+        })
+      }).catch((e) => {
+        console.error("try - Error updating environment name", e)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
+        throw new Error(e.message)
+      })
+    } catch (e) {
+      console.error("Error updating environment name", e)
+
+      toast({
+        title: "Environment Name Error",
+        description: "There was an error updating the environment name",
+      })
+    }
   }
 
   return (

@@ -24,7 +24,7 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
         <Name session={session} environment_id={environment_id} />
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <Info environmentInfo={environmentInfo} session={session} />
+        <Info environmentInfo={environmentInfo} />
       </CardContent>
       <InfoButtons session={session} environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
     </Card>

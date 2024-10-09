@@ -34,7 +34,7 @@ export default async function InfoBox({session, project_id}: {session: Session, 
   return (
     <Card>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-        <Name session={session} project_id={project_id} name={projectInfo.name} />
+        <Name project_id={project_id} name={projectInfo.name} />
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
         <ProjectInfo projectInfo={projectInfo} session={session} flagServer={env.API_SERVER} />

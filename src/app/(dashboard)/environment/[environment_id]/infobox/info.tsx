@@ -5,11 +5,10 @@ import {
   type IEnvironment,
 } from "~/lib/statemanager";
 import {EnvironmentSwitch} from "./switch";
-import {type Session} from "next-auth";
 import {useAtom} from "jotai";
 import {useEffect} from "react";
 
-export default function Info({environmentInfo, session}: {environmentInfo: IEnvironment, session: Session}) {
+export default function Info({environmentInfo}: {environmentInfo: IEnvironment}) {
   const [, setSelectedEnvironment] = useAtom(environmentAtom)
   useEffect(() => {
     setSelectedEnvironment(environmentInfo)
@@ -24,7 +23,7 @@ export default function Info({environmentInfo, session}: {environmentInfo: IEnvi
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Enabled</span>
-          <span><EnvironmentSwitch session={session} environment_id={environmentInfo.environment_id} /></span>
+          <span><EnvironmentSwitch environment_id={environmentInfo.environment_id} /></span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Secret Menu</span>
