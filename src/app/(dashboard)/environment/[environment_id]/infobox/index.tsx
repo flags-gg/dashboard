@@ -1,12 +1,8 @@
 import { type Session } from "next-auth";
-import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
+import {Card, CardContent, CardHeader} from "~/components/ui/card";
 import {getEnvironment} from "~/app/api/environment/environment";
 import Info from "./info";
-import {Button} from "~/components/ui/button";
-import {Pencil} from "lucide-react";
-import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
-import {Label} from "~/components/ui/label";
-import {Input} from "~/components/ui/input";
+import Name from "./name";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 import InfoButtons from "./buttons";
 
@@ -25,33 +21,7 @@ export default async function InfoBox({session, environment_id}: {session: Sessi
   return (
     <Card>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-        <CardTitle className={"group flex items-center gap-2 text-lg"}>
-          {environmentInfo.name}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
-                <Pencil className={"h-5 w-5"} />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className={"grid gap-4"}>
-                <div className={"space-y-2"}>
-                  <h4 className={"font-medium leading-none"}>Environment Name</h4>
-                  <p className={"text-sm text-muted-foreground"}>Set the environment name to something</p>
-                </div>
-                <div className={"grid gap-2"}>
-                  <div className={"grid grid-cols-3 item-center gap-4"}>
-                    <Label htmlFor={"name"}>Name</Label>
-                    <Input id={"name"} type={"text"} defaultValue={environmentInfo.name} className={"col-span-2 h-8"} />
-                  </div>
-                </div>
-                <div className={"grid gap-2"}>
-                  <Button variant={"outline"}>Save</Button>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
-        </CardTitle>
+        <Name session={session} environment_id={environment_id} />
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
         <Info environmentInfo={environmentInfo} session={session} />
