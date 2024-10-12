@@ -45,13 +45,7 @@ tasks:
   build-images:
     cmds:
       - task: get-latest-tag
-        vars:
-          LATEST_TAG:
-            sh: cat .latest_tag
       - task: get-commit-hash
-        vars:
-          COMMIT_HASH:
-            sh: cat .commit_hash
       - |
         nerdctl build \
           --platform=amd64,arm64 \
@@ -83,10 +77,10 @@ tasks:
         sh: cat keycloak.secret
       KEYCLOAK_ISSUER: https://keys.chewedfeed.com/realms/flags-gg
       KEYCLOAK_ID: dashboard
-      STRIPE_KEY: tester
-      STRIPE_SECRET: tester
-      UPLOADTHING_TOKEN: tester
-      NEXTAUTH_SECRET: tester
+      STRIPE_KEY: stripe_key_tester
+      STRIPE_SECRET: stripe_secret_tester
+      UPLOADTHING_TOKEN: uploadthing_token_tester
+      NEXTAUTH_SECRET: nextauth_secret_tester
 
   build-push-latest:
     cmds:
@@ -130,7 +124,12 @@ tasks:
       - task: build-images
       - task: publish-images
       - task: deploy
+  build-publish:
+    cmds:
+      - task: get-latest-tag
+      - task: build-images
+      - task: publish-images
   build-deploy-latest:
-     cmds:
+    cmds:
       - task: build-push-latest
       - task: deploy-latest

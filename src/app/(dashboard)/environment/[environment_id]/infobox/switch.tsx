@@ -43,8 +43,11 @@ export function EnvironmentSwitch({environment_id}: { environment_id: string }) 
           description: "The environment has been updated",
         })
       }).catch((e) => {
-        console.error("try - Error updating environment enabled", e)
-        throw new Error(e.message)
+        if (e instanceof Error) {
+          throw new Error(`Failed to enable/disable environment: ${e.message}`)
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
+        throw new Error("Failed to enable/disable environment - unknown:", e)
       })
     } catch (e) {
       console.error("Error updating environment enabled", e)
