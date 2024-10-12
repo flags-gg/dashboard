@@ -18,7 +18,17 @@ export default function Clone({session, environment_id}: {session: Session, envi
   const {is} = useFlags();
   const {toast} = useToast();
 
+  console.info("environmentInfo", environmentInfo, environment_id)
+
   if (!is("clone env")?.enabled()) {
+    return <></>
+  }
+
+  if (!session) {
+    toast({
+      title: "Error loading session",
+      description: "Please try again later.",
+    });
     return <></>
   }
 
