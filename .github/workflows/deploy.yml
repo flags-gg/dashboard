@@ -71,6 +71,7 @@ jobs:
             NEXT_PUBLIC_FLAGS_SERVER=https://api.flags.gg/v1
             UPLOADTHING_APP_ID=${{ secrets.UPLOADTHING_APP_ID }}
             UPLOADTHING_SECRET=${{ secrets.UPLOADTHING_SECRET }}
+            UPLOADTHING_TOKEN=${{ secrets.UPLOADTHING_TOKEN }}
             STRIPE_KEY=${{ secrets.STRIPE_KEY }}
             STRIPE_SECRET=${{ secrets.STRIPE_SECRET }}
             NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
