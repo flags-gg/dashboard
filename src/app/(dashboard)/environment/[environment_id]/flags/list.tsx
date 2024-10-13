@@ -53,11 +53,7 @@ export default async function FlagsList({
           <TableBody>
             {flags?.map((flag: Flag) => (
               <TableRow key={flag.details.id}>
-                <TableCell>
-                  <Link href={`/flag/${flag.details.id}`}>
-                    {flag.details.name}
-                  </Link>
-                </TableCell>
+                <TableCell>{flag.details.name}</TableCell>
                 <TableCell colSpan={2}>
                   <FlagSwitch session={session} flag={flag} />
                 </TableCell>
