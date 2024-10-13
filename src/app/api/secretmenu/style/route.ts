@@ -14,8 +14,7 @@ export async function POST(request: Request) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/style`
-  const response = await fetch(apiUrl, {
+  const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}/style`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -76,8 +75,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}/style`
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}/style`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

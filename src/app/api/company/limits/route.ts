@@ -9,9 +9,7 @@ export async function POST() {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/company/limits`
-
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/company/limits`, {
       method: 'GET',
       headers: {
         'x-user-access-token': session.user.access_token,

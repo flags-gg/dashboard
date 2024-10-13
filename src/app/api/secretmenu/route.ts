@@ -20,8 +20,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/secret-menu/${menuId}`;
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -51,8 +50,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/secret-menu/${menu_id}/state`;
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/secret-menu/${menu_id}/state`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

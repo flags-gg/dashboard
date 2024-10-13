@@ -14,9 +14,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/project`
-
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/project`, {
       method : 'POST',
       headers: {
         'Content-Type': 'application/json',

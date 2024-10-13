@@ -10,14 +10,14 @@ type CreateFlag = {
 
 export async function POST(request: Request) {
   const { name, environment_id, agent_id }: CreateFlag = await request.json() as CreateFlag
-  const apiUrl = `${env.API_SERVER}/flag`
+
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
   try {
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/flag`, {
       method : 'POST',
       headers: {
         'Content-Type': 'application/json',
