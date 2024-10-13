@@ -26,3 +26,4 @@ keycloak.secret
 .latest_tag
 .next/cache/*
 .next/*
+secrets_file.json
