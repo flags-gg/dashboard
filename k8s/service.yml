@@ -8,7 +8,8 @@ metadata:
     name: dashboard
     app: dashboard
 spec:
-  replicas: 2
+  replicas: 1
+  revisionHistoryLimit: 2
   strategy:
     rollingUpdate:
       maxUnavailable: 1
@@ -25,11 +26,17 @@ spec:
       imagePullSecrets:
         - name: docker-registry-secret
       containers:
-        - name: frontend
+        - name: dashboard
           image: containers.chewed-k8s.net/flags-gg/dashboard:latest
           ports:
             - containerPort: 3000
               protocol: TCP
+          env:
+            - name: NEXTAUTH_URL
+              value: https://dashboard.flags.gg
+            - name: NEXTAUTH_URL_INTERNAL
+              value: https://$(DASHBOARD_PORT_3000_TCP_ADDR)
+
 ---
 apiVersion: v1
 kind: Service
