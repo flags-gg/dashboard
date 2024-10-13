@@ -14,9 +14,7 @@ export async function DELETE(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/flag/${flag_id}`
-
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/flag/${flag_id}`, {
       method : 'DELETE',
       headers: {
         'Content-Type': 'application/json',

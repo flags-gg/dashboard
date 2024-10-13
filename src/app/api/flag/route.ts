@@ -16,9 +16,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/flag/${flag.details.id}`;
-
-    const response = await fetch(apiUrl, {
+    const response = await fetch(`${env.API_SERVER}/flag/${flag.details.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

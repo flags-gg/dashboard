@@ -8,14 +8,13 @@ type GetFlags = {
 
 export async function POST(request: Request) {
   const { environment_id }: GetFlags = await request.json() as GetFlags
-  const apiUrl = `${env.API_SERVER}/environment/${environment_id}/flags`
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
   try {
-    const res = await fetch(apiUrl, {
+    const res = await fetch(`${env.API_SERVER}/environment/${environment_id}/flags`, {
       headers: {
         'x-user-access-token': session.user.access_token,
         'x-user-subject': session.user.id,

@@ -3,14 +3,12 @@ import {env} from "~/env";
 import {type EnvironmentsData, type IEnvironment} from "~/lib/statemanager";
 
 export async function getEnvironments(session: Session, agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
-  const apiUrl = `${env.API_SERVER}/agent/${agent_id}/environments`
-
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
 
   try {
-    const res = await fetch(apiUrl, {
+    const res = await fetch(`${env.API_SERVER}/agent/${agent_id}/environments`, {
       headers: {
         'x-user-access-token': session.user.access_token,
         'x-user-subject': session.user.id,
@@ -30,14 +28,12 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
 }
 
 export async function getEnvironment(session: Session, environment_id: string): Promise<{ data: IEnvironment | null, error: Error | null }> {
-  const apiUrl = `${env.API_SERVER}/environment/${environment_id}`
-
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
 
   try {
-    const res = await fetch(apiUrl, {
+    const res = await fetch(`${env.API_SERVER}/environment/${environment_id}`, {
       headers: {
         'x-user-access-token': session.user.access_token,
         'x-user-subject': session.user.id,

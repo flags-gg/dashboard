@@ -15,9 +15,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const apiUrl = `${env.API_SERVER}/project/${projectId}`
-
-    const respopnse = await fetch(apiUrl, {
+    const respopnse = await fetch(`${env.API_SERVER}/project/${projectId}`, {
       method : 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -3,13 +3,11 @@ import {env} from "~/env";
 import {type IProject, type ProjectsData} from "~/lib/statemanager";
 
 export async function getProjects(session: Session): Promise<ProjectsData> {
-  const apiUrl = `${env.API_SERVER}/projects`
-
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(apiUrl, {
+  const res = await fetch(`${env.API_SERVER}/projects`, {
     headers: {
       'x-user-access-token': session.user.access_token,
       'x-user-subject': session.user.id,
@@ -24,14 +22,12 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
 }
 
 export async function getProject(session: Session, project_id: string): Promise<IProject | Error> {
-  const apiUrl = `${env.API_SERVER}/project/${project_id}`
-
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
 
   try {
-    const res = await fetch(apiUrl, {
+    const res = await fetch(`${env.API_SERVER}/project/${project_id}`, {
       headers: {
         'x-user-access-token': session.user.access_token,
         'x-user-subject': session.user.id,

@@ -3,13 +3,11 @@ import {env} from "~/env";
 import {type AgentsData, type FlagAgent} from "~/lib/statemanager";
 
 export async function getAgents(session: Session, project_id: string): Promise<AgentsData> {
-  const apiUrl = `${env.API_SERVER}/project/${project_id}/agents`
-
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(apiUrl, {
+  const res = await fetch(`${env.API_SERVER}/project/${project_id}/agents`, {
     headers: {
       'x-user-access-token': session.user.access_token,
       'x-user-subject': session.user.id,
@@ -24,13 +22,11 @@ export async function getAgents(session: Session, project_id: string): Promise<A
 }
 
 export async function getAgent(session: Session, agent_id: string): Promise<FlagAgent> {
-  const apiUrl = `${env.API_SERVER}/agent/${agent_id}`
-
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(apiUrl, {
+  const res = await fetch(`${env.API_SERVER}/agent/${agent_id}`, {
     headers: {
       'x-user-access-token': session.user.access_token,
       'x-user-subject': session.user.id,
