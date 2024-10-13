@@ -36,6 +36,12 @@ spec:
               value: https://dashboard.flags.gg
             - name: NEXTAUTH_URL_INTERNAL
               value: https://$(DASHBOARD_PORT_3000_TCP_ADDR)
+            - name: NEXT_PUBLIC_FLAGS_AGENT
+              value: c778cf4b-83f1-4c53-951e-604102c84898
+            - name: NEXT_PUBLIC_FLAGS_PROJECT
+              value: b0c5020e-760e-4156-a88b-344fb725a9b7
+            - name: NEXT_PUBLIC_FLAGS_ENVIRONMENT
+              value: 81aca98e-3b01-4c3c-a4cf-c7eee26185c5
 
 ---
 apiVersion: v1
