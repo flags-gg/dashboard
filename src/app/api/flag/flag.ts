@@ -7,8 +7,6 @@ export async function getFlags(session: Session, environment_id: string): Promis
     throw new Error('No access token found')
   }
 
-  console.info("getFlags", `${env.API_SERVER}/environment/${environment_id}/flags`)
-
   const res = await fetch(`${env.API_SERVER}/environment/${environment_id}/flags`, {
     headers: {
       'x-user-access-token': session.user.access_token,

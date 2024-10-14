@@ -30,7 +30,6 @@ export async function POST(request: Request) {
       cache: 'no-store',
     });
     if (!response.ok) {
-      console.info("POST", "response", response);
       return NextResponse.json({message: "Failed to get secret menu"}, { status: 500 });
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

@@ -8,7 +8,7 @@ metadata:
     name: dashboard
     app: dashboard
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 2
   strategy:
     rollingUpdate:

@@ -4,6 +4,7 @@ import {type Session} from "next-auth";
 import {Switch} from "~/components/ui/switch";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
+import { useToast } from "~/hooks/use-toast";
 
 async function enableDisableMenu(session: Session, menu_id: string) {
   try {
@@ -30,13 +31,20 @@ async function enableDisableMenu(session: Session, menu_id: string) {
 
 export function MenuSwitch({session, menu_id}: { session: Session, menu_id: string }) {
   const [selectedEnvironment] = useAtom(environmentAtom)
+  const {toast} = useToast()
 
   return (
     <Switch defaultChecked={selectedEnvironment.secret_menu.enabled} name={"menu"} onCheckedChange={() => {
       enableDisableMenu(session, menu_id).then(() => {
-        console.info("Menu updated");
+        toast({
+          title: "Menu Updated",
+          description: "The menu has been updated",
+        })
       }).catch((e) => {
-        console.error("Error updating menu", e);
+        toast({
+          title: "Error Updating Menu",
+          description: `There was an error updating the menu: ${e}`,
+        })
       })
     }} />
   )

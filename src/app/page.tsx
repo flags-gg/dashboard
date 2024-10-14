@@ -10,8 +10,6 @@ export default async function Home() {
     redirect('/login')
   }
 
-  console.info("env", env)
-
   return (
     <>Dashboard</>
   )

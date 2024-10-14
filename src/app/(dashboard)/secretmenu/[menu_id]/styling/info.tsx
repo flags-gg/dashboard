@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { type Session } from "next-auth";
 import { Separator } from "~/components/ui/separator";
 import { useStyles } from "~/hooks/use-styles";
+import { useToast } from "~/hooks/use-toast";
 
 const styleNames: Record<string, string> = {
   resetButton: "Reset Button",
@@ -48,6 +49,7 @@ async function saveStyle({style, menuId, styleId}: {style: string, menuId: strin
 export default function Info({session, menuId}: {session: Session, menuId: string}) {
   const {resetStyle, modifiedStyles, styles} = useStyleContext();
   const {data, isLoading, error} = useStyles(session, menuId);
+  const {toast} = useToast();
 
   if (isLoading) {
     return <div key={"styling-info-loading"}>Loading...</div>
@@ -90,15 +92,27 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
               const style = JSON.stringify(styles)
               if (styleId) {
                 saveStyle({style, menuId: menuId, styleId: styleId}).then(() => {
-                  console.info("Style saved");
+                  toast({
+                    title: "Style Saved",
+                    description: "The style has been saved",
+                  })
                 }).catch((e) => {
-                  console.error("Error saving style", e);
+                  toast({
+                    title: "Error Saving Style",
+                    description: `There was an error saving the style: ${e}`,
+                  })
                 })
               } else {
                 saveStyle({style, menuId: menuId}).then(() => {
-                  console.info("Style saved");
+                  toast({
+                    title: "Style Saved",
+                    description: "The style has been saved",
+                  })
                 }).catch((e) => {
-                  console.error("Error saving style", e);
+                  toast({
+                    title: "Error Saving Style",
+                    description: `There was an error saving the style: ${e}`,
+                  })
                 })
               }
             }}>Save Custom Style</Button>
