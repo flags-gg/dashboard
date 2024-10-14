@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -9,6 +9,8 @@ import {env} from "~/env";
 
 export default function ClientProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
+
+  console.info("flagsStuff", `project: ${env.NEXT_PUBLIC_FLAGS_PROJECT}`, `agent: ${env.NEXT_PUBLIC_FLAGS_AGENT}`, `env: ${env.NEXT_PUBLIC_FLAGS_ENVIRONMENT}`)
 
   return (
     <ThemeProvider attribute="class" defaultTheme={"dark"} enableSystem disableTransitionOnChange>
