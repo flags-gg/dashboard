@@ -46,7 +46,7 @@ export default function InfoButtons({ session }: { session: Session }) {
 
   return (
     <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
-      {is("create agent")?.enabled() && <CreateAgent session={session} project_id={projectInfo.project_id} />}
+      {is("create agent")?.enabled() && <CreateAgent project_id={projectInfo.project_id} />}
       {is("update limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href="/company/limits">Update Limits</Link>}
     </CardFooter>
   );

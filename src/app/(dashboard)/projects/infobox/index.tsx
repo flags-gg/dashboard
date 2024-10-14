@@ -1,9 +1,12 @@
-import {type Session} from "next-auth";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 import ProjectsInfo from "./info";
 import InfoButtons from "./buttons";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "~/server/auth";
 
-export default async function InfoBox({session}: {session: Session}) {
+export default async function InfoBox() {
+  const session = await getServerSession(authOptions)
+
   if (!session) {
     throw new Error('No session found')
   }

@@ -1,4 +1,3 @@
-import {type Session} from 'next-auth'
 import {type Flag} from "~/lib/statemanager";
 import {Card} from "~/components/ui/card";
 import {
@@ -13,16 +12,10 @@ import { FlagSwitch } from "./switch";
 import { DeleteFlag } from "./delete";
 import { EditFlag } from "./edit";
 
-export default async function FlagsList({
-  session,
-  environment_id,
-}: {
-  session: Session;
-  environment_id: string;
-}) {
+export default async function FlagsList({ environment_id, }: { environment_id: string; }) {
   let flags: Flag[] = [];
   try {
-    await getFlags(session, environment_id).then((data) => {
+    await getFlags(environment_id).then((data) => {
       flags = data;
     }).catch((e) => {
       throw e;
@@ -54,11 +47,11 @@ export default async function FlagsList({
               <TableRow key={flag.details.id}>
                 <TableCell>{flag.details.name}</TableCell>
                 <TableCell colSpan={2}>
-                  <FlagSwitch session={session} flag={flag} />
+                  <FlagSwitch flag={flag} />
                 </TableCell>
                 <TableCell className={"gap-2 flex flex-row-reverse"}>
-                  <DeleteFlag session={session} flag={flag} />
-                  <EditFlag session={session} flag={flag} />
+                  <DeleteFlag flag={flag} />
+                  <EditFlag flag={flag} />
                 </TableCell>
               </TableRow>
             ))}

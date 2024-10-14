@@ -1,8 +1,9 @@
-import {type Session} from 'next-auth'
 import {env} from "~/env";
 import {type EnvironmentsData, type IEnvironment} from "~/lib/statemanager";
+import { getServerAuthSession } from "~/server/auth";
 
-export async function getEnvironments(session: Session, agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
+export async function getEnvironments(agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
+  const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
@@ -27,7 +28,8 @@ export async function getEnvironments(session: Session, agent_id: string): Promi
   }
 }
 
-export async function getEnvironment(session: Session, environment_id: string): Promise<{ data: IEnvironment | null, error: Error | null }> {
+export async function getEnvironment(environment_id: string): Promise<{ data: IEnvironment | null, error: Error | null }> {
+  const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }

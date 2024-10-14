@@ -1,8 +1,10 @@
-import {type Session} from "next-auth";
 import {type secretMenu} from "~/lib/statemanager";
 import {env} from "~/env";
+import { getServerAuthSession } from "~/server/auth";
 
-export async function getSecretMenu(session: Session, menu_id: string): Promise<secretMenu> {
+export async function getSecretMenu(menu_id: string): Promise<secretMenu> {
+  const session = await getServerAuthSession();
+
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }

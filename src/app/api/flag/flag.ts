@@ -1,8 +1,10 @@
-import {type Session} from 'next-auth'
 import {env} from "~/env";
 import {type Flag} from "~/lib/statemanager";
+import { getServerAuthSession } from "~/server/auth";
 
-export async function getFlags(session: Session, environment_id: string): Promise<Flag[]> {
+export async function getFlags(environment_id: string): Promise<Flag[]> {
+  const session = await getServerAuthSession();
+
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }

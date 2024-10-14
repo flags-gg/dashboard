@@ -1,6 +1,5 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {type Flag} from "~/lib/statemanager";
 import {useState} from "react";
 import {Button} from "~/components/ui/button";
@@ -9,7 +8,7 @@ import {LoadingSpinner} from "~/components/ui/loader";
 import { toast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-async function deleteFlagAction(session: Session, flag_id: string): Promise<null | Error> {
+async function deleteFlagAction(flag_id: string): Promise<null | Error> {
     try {
         const response = await fetch(`/api/flag/delete`, {
             method: "DELETE",
@@ -37,7 +36,7 @@ async function deleteFlagAction(session: Session, flag_id: string): Promise<null
     return Error("Failed to delete flag")
 }
 
-export function DeleteFlag({session, flag}: {session: Session, flag: Flag}) {
+export function DeleteFlag({flag}: {flag: Flag}) {
     const [loading, setLoading] = useState(false);
     const router = useRouter()
 
@@ -45,7 +44,7 @@ export function DeleteFlag({session, flag}: {session: Session, flag: Flag}) {
         setLoading(true);
 
         try {
-            deleteFlagAction(session, flag.details.id).then(() => {
+            deleteFlagAction(flag.details.id).then(() => {
                 setLoading(false);
                 router.refresh()
             }).catch((e) => {

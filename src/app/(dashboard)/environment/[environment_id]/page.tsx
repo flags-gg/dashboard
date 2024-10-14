@@ -12,7 +12,7 @@ export async function generateMetadata({params}: {params: {environment_id: strin
     redirect('/api/auth/signin')
   }
 
-  const { data: environmentInfo, error } = await getEnvironment(session, params.environment_id)
+  const { data: environmentInfo, error } = await getEnvironment(params.environment_id)
 
   if (error ?? !environmentInfo) {
     console.error('Failed to fetch environment:', error)
@@ -34,8 +34,8 @@ export default async function EnvironmentPage({params}: {params: {environment_id
       <header className={"col-span-2"}>
         <h1 className={"text-2xl font-semibold"}>Flags</h1>
       </header>
-      <FlagsList session={session} environment_id={params.environment_id} />
-      <InfoBox session={session} environment_id={params.environment_id} />
+      <FlagsList environment_id={params.environment_id} />
+      <InfoBox environment_id={params.environment_id} />
     </>
   )
 }

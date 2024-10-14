@@ -1,11 +1,6 @@
-import {type Session} from "next-auth";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 
-export default async function InfoBox({session}: {session: Session}) {
-  if (!session) {
-    throw new Error('No session found')
-  }
-
+export default async function InfoBox() {
   return (
     <Card>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>

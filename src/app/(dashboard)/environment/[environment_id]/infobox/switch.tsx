@@ -2,10 +2,10 @@
 
 import {Switch} from "~/components/ui/switch";
 import { useAtom } from "jotai";
-import { environmentAtom } from "~/lib/statemanager";
+import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
 
-async function enableDisableEnvironment(environment_id: string, name: string, enabled: boolean) {
+async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {
     const response = await fetch('/api/environment', {
       method: 'PUT',
@@ -13,9 +13,9 @@ async function enableDisableEnvironment(environment_id: string, name: string, en
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        environmentId: environment_id,
-        name: name,
-        enabled: enabled,
+        environmentId: environmentInfo.environment_id,
+        name: environmentInfo.name,
+        enabled: environmentInfo.enabled,
       }),
     })
     if (!response.ok) {
@@ -30,14 +30,15 @@ async function enableDisableEnvironment(environment_id: string, name: string, en
   }
 }
 
-export function EnvironmentSwitch({environment_id}: { environment_id: string }) {
+export function EnvironmentSwitch() {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const {toast} = useToast()
 
   const onSwitch = () => {
+    const updatedEnvironmentInfo = {...environmentInfo, enabled: !environmentInfo.enabled}
     try {
-      enableDisableEnvironment(environment_id, environmentInfo.name, !environmentInfo.enabled).then(() => {
-        setEnvironmentInfo({...environmentInfo, enabled: !environmentInfo.enabled})
+      setEnvironmentInfo(updatedEnvironmentInfo)
+      enableDisableEnvironment(updatedEnvironmentInfo).then(() => {
         toast({
           title: "Environment Updated",
           description: "The environment has been updated",
@@ -50,12 +51,18 @@ export function EnvironmentSwitch({environment_id}: { environment_id: string }) 
         throw new Error("Failed to enable/disable environment - unknown:", e)
       })
     } catch (e) {
-      console.error("Error updating environment enabled", e)
-
-      toast({
-        title: "Environment Error",
-        description: "There was an error updating the environment",
-      })
+      if (e instanceof Error) {
+        toast({
+          title: "Environment Error",
+          description: `There was an error updating the environment: ${e.message}`,
+        })
+      } else {
+        console.error("Error updating environment", e)
+        toast({
+          title: "Environment Error",
+          description: `There was an error updating the environment`,
+        })
+      }
     }
   }
 

@@ -2,7 +2,6 @@
 
 import {Button} from "~/components/ui/button";
 import {type Flag} from "~/lib/statemanager";
-import {type Session} from "next-auth";
 import {Pencil} from "lucide-react";
 import {useState} from "react";
 import {LoadingSpinner} from "~/components/ui/loader";
@@ -17,7 +16,7 @@ import { toast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 
 // TODO: edit flag
-async function editFlagAction(session: Session, flag: Flag): Promise<null | Error> {
+async function editFlagAction(flag: Flag): Promise<null | Error> {
     try {
         const res = await fetch(`/api/flag/edit`, {
             method: "POST",
@@ -46,7 +45,7 @@ async function editFlagAction(session: Session, flag: Flag): Promise<null | Erro
     return Error("Failed to edit flag")
 }
 
-export function EditFlag({session, flag}: {session: Session, flag: Flag}) {
+export function EditFlag({flag}: {flag: Flag}) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter()
@@ -65,7 +64,7 @@ export function EditFlag({session, flag}: {session: Session, flag: Flag}) {
         flag.details.name = data.flagName
 
         try {
-            editFlagAction(session, flag).then(() => {
+            editFlagAction(flag).then(() => {
                 setLoading(false);
                 router.refresh()
             }).catch((e) => {

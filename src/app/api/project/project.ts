@@ -1,8 +1,9 @@
-import {type Session} from 'next-auth'
 import {env} from "~/env";
 import {type IProject, type ProjectsData} from "~/lib/statemanager";
+import { getServerAuthSession } from "~/server/auth";
 
-export async function getProjects(session: Session): Promise<ProjectsData> {
+export async function getProjects(): Promise<ProjectsData> {
+  const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
@@ -21,7 +22,8 @@ export async function getProjects(session: Session): Promise<ProjectsData> {
   return res.json()
 }
 
-export async function getProject(session: Session, project_id: string): Promise<IProject | Error> {
+export async function getProject(project_id: string): Promise<IProject | Error> {
+  const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }

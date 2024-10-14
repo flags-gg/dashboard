@@ -21,8 +21,8 @@ export default async function ProjectsPage() {
       <header className={"col-span-2"}>
         <h1 className={"text-2xl font-semibold"}>Projects</h1>
       </header>
-      <List session={session} />
-      <InfoBox session={session} />
+      <List />
+      <InfoBox />
     </>
   )
 }
