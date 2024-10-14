@@ -2,7 +2,6 @@
 
 import { useAtom } from "jotai";
 import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
-import { type Session } from "next-auth";
 import { useState } from "react";
 import { CardTitle } from "~/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
@@ -46,7 +45,7 @@ async function updateEnvironmentName(environment_id: string, name: string, enabl
   return new Error("Failed to update environment name")
 }
 
-export default function Name({session, environment_id}: {session: Session, environment_id: string}) {
+export default function Name({environment_id}: {environment_id: string}) {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -110,7 +109,7 @@ export default function Name({session, environment_id}: {session: Session, envir
           </Form>
         </PopoverContent>
       </Popover>
-      <Clone session={session} environment_id={environment_id} />
+      <Clone environment_id={environment_id} />
     </CardTitle>
   )
 }

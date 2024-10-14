@@ -11,13 +11,13 @@ export async function generateMetadata({params}: {params: {agent_id: string}}): 
   if (!session) {
     redirect('/api/auth/signin')
   }
-  const agentInfo = await getAgent(session, params.agent_id)
-  if (!agentInfo) {
+  const agentInfo = await getAgent(params.agent_id)
+  if (!agentInfo?.project_info?.name) {
     redirect('/projects')
   }
 
   return {
-    title: `${agentInfo.project_info.name}: ${agentInfo.name} Environments - Flags.gg`,
+    title: `${agentInfo?.project_info?.name}: ${agentInfo?.name} Environments - Flags.gg`,
   }
 }
 
@@ -33,8 +33,8 @@ export default async function AgentPage({params}: {params: {agent_id: string}}) 
       <header className={"col-span-2"}>
         <h1 className={"text-2xl font-semibold"}>Agent Environments</h1>
       </header>
-      <EnvironmentsList session={session} agent_id={params.agent_id} />
-      <InfoBox session={session} agent_id={params.agent_id} />
+      <EnvironmentsList agent_id={params.agent_id} />
+      <InfoBox agent_id={params.agent_id} />
     </>
   )
 }

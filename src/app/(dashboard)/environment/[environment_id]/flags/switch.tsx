@@ -5,7 +5,7 @@ import {type Session} from "next-auth";
 import {type Flag} from "~/lib/statemanager";
 import {useState} from "react";
 
-async function updateFlag(session: Session, flag: Flag) {
+async function updateFlag(flag: Flag) {
   try {
     const response = await fetch('/api/flag', {
       method: 'POST',
@@ -29,7 +29,7 @@ async function updateFlag(session: Session, flag: Flag) {
   }
 }
 
-export function FlagSwitch({session, flag}: { session: Session, flag: Flag }) {
+export function FlagSwitch({flag}: { flag: Flag }) {
   const [isUpdating, setIsUpdating] = useState(false);
   const [flagData, setFlagData] = useState(flag);
 
@@ -40,7 +40,7 @@ export function FlagSwitch({session, flag}: { session: Session, flag: Flag }) {
 
     setIsUpdating(true);
     try {
-      await updateFlag(session, flagData);
+      await updateFlag(flagData);
     } catch (e) {
       console.error('Error updating flag:', e);
     } finally {

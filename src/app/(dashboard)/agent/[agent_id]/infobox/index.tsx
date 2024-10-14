@@ -1,4 +1,3 @@
-import { type Session } from "next-auth";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "~/components/ui/card";
 import CreateEnvironment from "~/app/(dashboard)/environment/create";
 import { type FlagAgent } from "~/lib/statemanager";
@@ -9,15 +8,18 @@ import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 
-export default async function InfoBox({session, agent_id}: {session: Session, agent_id: string}) {
-  if (!session) {
-    throw new Error('No session found')
-  }
-
+export default async function InfoBox({agent_id}: {agent_id: string}) {
   let allowedToCreateEnv = false
-  let agentInfo: FlagAgent
+  let agentInfo = {} as FlagAgent
   try {
-    agentInfo = await getAgent(session, agent_id)
+    const data = await getAgent(agent_id)
+    agentInfo.id = data?.id
+    agentInfo.name = data?.name
+    agentInfo.agent_id = data?.agent_id
+    agentInfo.request_limit = data?.request_limit
+    agentInfo.environment_limit = data?.environment_limit
+    agentInfo.environments = data?.environments
+    agentInfo.project_info = data?.project_info
   } catch (e) {
     console.error(e)
     return <InfoBoxError name={"Agent"} blurb={"agent"} />
@@ -48,7 +50,7 @@ export default async function InfoBox({session, agent_id}: {session: Session, ag
       </CardContent>
       {allowedToCreateEnv && (
         <CardFooter className={"p-3 border-t-2 items-center justify-center"}>
-          <CreateEnvironment session={session} agent_id={agent_id} />
+          <CreateEnvironment agent_id={agent_id} />
         </CardFooter>
       )}
     </Card>

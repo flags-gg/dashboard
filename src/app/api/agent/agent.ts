@@ -1,8 +1,10 @@
 import {type Session} from 'next-auth'
 import {env} from "~/env";
 import {type AgentsData, type FlagAgent} from "~/lib/statemanager";
+import { getServerAuthSession } from "~/server/auth";
 
-export async function getAgents(session: Session, project_id: string): Promise<AgentsData> {
+export async function getAgents(project_id: string): Promise<AgentsData> {
+  const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
@@ -21,7 +23,8 @@ export async function getAgents(session: Session, project_id: string): Promise<A
   return res.json()
 }
 
-export async function getAgent(session: Session, agent_id: string): Promise<FlagAgent> {
+export async function getAgent(agent_id: string): Promise<FlagAgent> {
+  const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }

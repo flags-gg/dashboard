@@ -1,7 +1,6 @@
 "use client"
 
 import {Button} from "~/components/ui/button";
-import {type Session} from "next-auth";
 import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +20,7 @@ import { toast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 
-async function createFlagAction(session: Session, environment_id: string, agent_id: string, name: string): Promise<Flag | Error> {
+async function createFlagAction(environment_id: string, agent_id: string, name: string): Promise<Flag | Error> {
   try {
     const res = await fetch(`/api/flag/create`, {
       method: "POST",
@@ -50,7 +49,7 @@ async function createFlagAction(session: Session, environment_id: string, agent_
   return Error("Failed to create flag")
 }
 
-export default function CreateFlag({ session, environment_id }: { session: Session, environment_id: string }) {
+export default function CreateFlag({ environment_id }: { environment_id: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [agentInfo] = useAtom(agentAtom)
   const router = useRouter()
@@ -67,7 +66,7 @@ export default function CreateFlag({ session, environment_id }: { session: Sessi
     setIsOpen(false)
 
     try {
-      createFlagAction(session, environment_id, agentInfo.agent_id, data.flagName).then((flag) => {
+      createFlagAction(environment_id, agentInfo.agent_id, data.flagName).then((flag) => {
         if (flag instanceof Error) {
           throw new Error("Failed to create flag")
         }

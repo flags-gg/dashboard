@@ -1,4 +1,3 @@
-import {type Session} from "next-auth";
 import {type secretMenu} from "~/lib/statemanager";
 import {getSecretMenu} from "~/app/api/secretmenu/data";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
@@ -6,14 +5,10 @@ import Info from "./info";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 import InfoButtons from "./buttons";
 
-export default async function InfoBox({session, menu_id}: {session: Session, menu_id: string}) {
-  if (!session) {
-    throw new Error('No session found')
-  }
-
+export default async function InfoBox({menu_id}: {menu_id: string}) {
   let secretMenuInfo: secretMenu
   try {
-    secretMenuInfo = await getSecretMenu(session, menu_id)
+    secretMenuInfo = await getSecretMenu(menu_id)
   } catch(e) {
     console.error(e)
     return <InfoBoxError name={"secret menu"} blurb={"secret menu"} />
@@ -33,7 +28,7 @@ export default async function InfoBox({session, menu_id}: {session: Session, men
           <span>Double click to remove them.</span>
         </div>
 
-        <Info secretMenuInfo={secretMenuInfo} session={session} />
+        <Info secretMenuInfo={secretMenuInfo} />
       </CardContent>
       <InfoButtons menuId={menu_id} />
     </Card>

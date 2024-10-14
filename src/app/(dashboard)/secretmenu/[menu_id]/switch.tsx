@@ -1,12 +1,11 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {Switch} from "~/components/ui/switch";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useToast } from "~/hooks/use-toast";
 
-async function enableDisableMenu(session: Session, menu_id: string) {
+async function enableDisableMenu(menu_id: string) {
   try {
     const response = await fetch('/api/secretmenu', {
       method: 'PUT',
@@ -29,13 +28,13 @@ async function enableDisableMenu(session: Session, menu_id: string) {
   }
 }
 
-export function MenuSwitch({session, menu_id}: { session: Session, menu_id: string }) {
+export function MenuSwitch({menu_id}: { menu_id: string }) {
   const [selectedEnvironment] = useAtom(environmentAtom)
   const {toast} = useToast()
 
   return (
     <Switch defaultChecked={selectedEnvironment.secret_menu.enabled} name={"menu"} onCheckedChange={() => {
-      enableDisableMenu(session, menu_id).then(() => {
+      enableDisableMenu(menu_id).then(() => {
         toast({
           title: "Menu Updated",
           description: "The menu has been updated",

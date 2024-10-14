@@ -1,15 +1,14 @@
 import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
 import {type ProjectsData} from "~/lib/statemanager";
 import {Card} from "~/components/ui/card";
-import {type Session} from "next-auth";
 import {getProjects} from "~/app/api/project/project";
 import Link from "next/link";
 import Image from "next/image";
 
-export default async function ProjectList({ session }: { session: Session }) {
+export default async function ProjectList() {
   let projects: ProjectsData;
   try {
-    projects = await getProjects(session);
+    projects = await getProjects();
   } catch (e) {
     console.error(e);
     return <div className="gap-3 col-span-2">

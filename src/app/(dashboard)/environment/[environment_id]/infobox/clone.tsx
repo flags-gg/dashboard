@@ -1,6 +1,5 @@
 "use client"
 
-import { type Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
 import { useToast } from "~/hooks/use-toast";
 import { environmentAtom } from "~/lib/statemanager";
@@ -11,7 +10,7 @@ import { Button } from "~/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 
-export default function Clone({session, environment_id}: {session: Session, environment_id: string}) {
+export default function Clone({environment_id}: {environment_id: string}) {
   const [environmentInfo] = useAtom(environmentAtom)
   const [openClone, setOpenClone] = useState(false);
 
@@ -21,14 +20,6 @@ export default function Clone({session, environment_id}: {session: Session, envi
   console.info("environmentInfo", environmentInfo, environment_id)
 
   if (!is("clone env")?.enabled()) {
-    return <></>
-  }
-
-  if (!session) {
-    toast({
-      title: "Error loading session",
-      description: "Please try again later.",
-    });
     return <></>
   }
 

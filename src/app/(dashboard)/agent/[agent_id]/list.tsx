@@ -1,11 +1,10 @@
-import {type Session} from "next-auth";
 import {Card} from "~/components/ui/card";
 import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
 import Link from "next/link";
 import {getEnvironments} from "~/app/api/environment/environment";
 
-export default async function EnvironmentsList({ session, agent_id }: { session: Session, agent_id: string }) {
-  const { data: environments, error } = await getEnvironments(session, agent_id);
+export default async function EnvironmentsList({ agent_id }: { agent_id: string }) {
+  const { data: environments, error } = await getEnvironments(agent_id);
 
   if (error ?? !environments) {
     console.error(error);

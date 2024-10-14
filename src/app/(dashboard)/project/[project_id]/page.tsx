@@ -11,7 +11,7 @@ export async function generateMetadata({params}: {params: {project_id: string}})
   if (!session) {
     redirect('/api/auth/signin')
   }
-  const projectInfo = await getProject(session, params.project_id)
+  const projectInfo = await getProject(params.project_id)
   if (!projectInfo) {
     redirect('/projects')
   }
@@ -32,8 +32,8 @@ export default async function ProjectPage({params}: {params: {project_id: string
       <header className={"col-span-2"}>
         <h1 className={"text-2xl font-semibold"}>Project Agents</h1>
       </header>
-      <List session={session} project_id={params.project_id} />
-      <InfoBox session={session} project_id={params.project_id} />
+      <List project_id={params.project_id} />
+      <InfoBox project_id={params.project_id} />
     </>
   );
 }
