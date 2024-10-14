@@ -1,4 +1,3 @@
-import {type Session} from 'next-auth'
 import {env} from "~/env";
 import {type AgentsData, type FlagAgent} from "~/lib/statemanager";
 import { getServerAuthSession } from "~/server/auth";

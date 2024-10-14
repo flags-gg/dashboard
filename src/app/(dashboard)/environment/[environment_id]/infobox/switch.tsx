@@ -30,7 +30,7 @@ async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   }
 }
 
-export function EnvironmentSwitch({environment_id}: { environment_id: string }) {
+export function EnvironmentSwitch() {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const {toast} = useToast()
 
@@ -51,10 +51,18 @@ export function EnvironmentSwitch({environment_id}: { environment_id: string }) 
         throw new Error("Failed to enable/disable environment - unknown:", e)
       })
     } catch (e) {
-      toast({
-        title: "Environment Error",
-        description: `There was an error updating the environment: ${e}`,
-      })
+      if (e instanceof Error) {
+        toast({
+          title: "Environment Error",
+          description: `There was an error updating the environment: ${e.message}`,
+        })
+      } else {
+        console.error("Error updating environment", e)
+        toast({
+          title: "Environment Error",
+          description: `There was an error updating the environment`,
+        })
+      }
     }
   }
 

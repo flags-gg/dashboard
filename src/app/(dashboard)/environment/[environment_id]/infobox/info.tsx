@@ -23,7 +23,7 @@ export default function Info({environmentInfo}: {environmentInfo: IEnvironment})
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Enabled</span>
-          <span><EnvironmentSwitch environment_id={environmentInfo.environment_id} /></span>
+          <span><EnvironmentSwitch /></span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Secret Menu</span>

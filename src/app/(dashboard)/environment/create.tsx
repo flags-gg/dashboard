@@ -48,7 +48,7 @@ async function createEnvironmentAction(agent_id: string, name: string): Promise<
   return Error("Failed to create environment")
 }
 
-export default function CreateEnvironment({ agent_id }: { agent_id: string }) {
+export default function CreateEnvironment() {
   const [isOpen, setIsOpen] = useState(false);
   const [agentInfo] = useAtom(agentAtom)
   const {toast} = useToast()

@@ -1,7 +1,6 @@
 "use client"
 
 import {Switch} from "~/components/ui/switch";
-import {type Session} from "next-auth";
 import {type Flag} from "~/lib/statemanager";
 import {useState} from "react";
 

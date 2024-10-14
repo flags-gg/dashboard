@@ -10,7 +10,7 @@ import {InfoBoxError} from "~/app/components/InfoBoxError";
 
 export default async function InfoBox({agent_id}: {agent_id: string}) {
   let allowedToCreateEnv = false
-  let agentInfo = {} as FlagAgent
+  const agentInfo = {} as FlagAgent
   try {
     const data = await getAgent(agent_id)
     agentInfo.id = data?.id
@@ -50,7 +50,7 @@ export default async function InfoBox({agent_id}: {agent_id: string}) {
       </CardContent>
       {allowedToCreateEnv && (
         <CardFooter className={"p-3 border-t-2 items-center justify-center"}>
-          <CreateEnvironment agent_id={agent_id} />
+          <CreateEnvironment />
         </CardFooter>
       )}
     </Card>

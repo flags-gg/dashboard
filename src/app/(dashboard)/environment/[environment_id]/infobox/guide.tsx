@@ -1,5 +1,4 @@
 import {Button} from "~/components/ui/button";
-import {type Session} from "next-auth";
 
 export default function Guide() {
   return (
