@@ -1,6 +1,12 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 
+export const flagsConfig = {
+  projectId: "",
+  agentId: "",
+  environmentId: "",
+}
+
 export const env = createEnv({
   /**
    * Specify your server-side environment variables schema here. This way you can ensure the app
@@ -70,8 +76,6 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAGS_AGENT: process.env.NEXT_PUBLIC_FLAGS_AGENT,
     NEXT_PUBLIC_FLAGS_PROJECT: process.env.NEXT_PUBLIC_FLAGS_PROJECT,
     NEXT_PUBLIC_FLAGS_ENVIRONMENT: process.env.NEXT_PUBLIC_FLAGS_ENVIRONMENT,
-
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

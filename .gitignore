@@ -27,3 +27,4 @@ keycloak.secret
 .next/cache/*
 .next/*
 secrets_file.json
+secrets_file.yaml
