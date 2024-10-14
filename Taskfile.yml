@@ -74,13 +74,21 @@ tasks:
       COMMIT_HASH:
         sh: cat .commit_hash
       KEYCLOAK_SECRET:
-        sh: cat keycloak.secret
+        sh: jq -r .KEYCLOAK_SECRET secrets_file.json
       KEYCLOAK_ISSUER: https://keys.chewedfeed.com/realms/flags-gg
       KEYCLOAK_ID: dashboard
-      STRIPE_KEY: stripe_key_tester
-      STRIPE_SECRET: stripe_secret_tester
-      UPLOADTHING_TOKEN: uploadthing_token_tester
-      NEXTAUTH_SECRET: nextauth_secret_tester
+      STRIPE_KEY:
+        sh: jq -r .STRIPE_KEY secrets_file.json
+      STRIPE_SECRET:
+        sh: jq -r .STRIPE_SECRET secrets_file.json
+      UPLOADTHING_TOKEN:
+        sh: jq -r .UPLOADTHING_TOKEN secrets_file.json
+      NEXTAUTH_SECRET:
+        sh: jq -r .NEXTAUTH_SECRET secrets_file.json
+      NEXTAUTH_URL:
+        sh: jq -r .NEXTAUTH_URL secrets_file.json
+      FLAGS_DASHBOARD_ENVIRONMENT_ID:
+        sh: jq -r .FLAGS_DASHBOARD_ENVIRONMENT_ID secrets_file.json
 
   build-push-latest:
     cmds:
@@ -94,7 +102,54 @@ tasks:
       COMMIT_HASH:
         sh: cat .commit_hash
       KEYCLOAK_SECRET:
-        sh: cat keycloak.secret
+        sh: jq -r .KEYCLOAK_SECRET secrets_file.json
+
+  build-test-images:
+    cmds:
+      - task: get-latest-tag
+      - task: get-commit-hash
+      - |
+        docker build \
+          --tag containers.chewed-k8s.net/{{.NAMESPACE}}/{{.SERVICE_NAME}}:tester \
+          --build-arg GIT_VERSION={{.LATEST_TAG}} \
+          --build-arg GIT_BUILD={{.COMMIT_HASH}} \
+          --build-arg SERVICE_NAME={{.SERVICE_NAME}} \
+          --build-arg KEYCLOAK_ISSUER={{.KEYCLOAK_ISSUER}} \
+          --build-arg KEYCLOAK_SECRET={{.KEYCLOAK_SECRET}} \
+          --build-arg KEYCLOAK_ID={{.KEYCLOAK_ID}} \
+          --build-arg FLAGS_SERVER="https://api.flags.gg/v1" \
+          --build-arg FLAGS_PROJECT_ID=b0c5020e-760e-4156-a88b-344fb725a9b7 \
+          --build-arg FLAGS_DASHBOARD_ID=c778cf4b-83f1-4c53-951e-604102c84898 \
+          --build-arg FLAGS_DASHBOARD_ENVIRONMENT_ID=81aca98e-3b01-4c3c-a4cf-c7eee26185c5 \
+          --build-arg NEXT_PUBLIC_FLAGS_SERVER=https://api.flags.gg/v1 \
+          --build-arg NEXTAUTH_URL=http://172.17.0.2:3000 \
+          --build-arg NEXTAUTH_URL_INTERNAL=http://172.17.0.2:3000 \
+          --build-arg NEXTAUTH_SECRET={{.NEXTAUTH_SECRET}} \
+          --build-arg UPLOADTHING_TOKEN={{.UPLOADTHING_TOKEN}} \
+          --build-arg STRIPE_KEY={{.STRIPE_KEY}} \
+          --build-arg STRIPE_SECRET={{.STRIPE_SECRET}} \
+          -f ./k8s/Containerfile .
+    vars:
+      LATEST_TAG:
+        sh: cat .latest_tag
+      COMMIT_HASH:
+        sh: cat .commit_hash
+      KEYCLOAK_SECRET:
+        sh: jq -r .KEYCLOAK_SECRET secrets_file.json
+      KEYCLOAK_ISSUER: https://keys.chewedfeed.com/realms/flags-gg
+      KEYCLOAK_ID: dashboard
+      STRIPE_KEY:
+        sh: jq -r .STRIPE_KEY secrets_file.json
+      STRIPE_SECRET:
+        sh: jq -r .STRIPE_SECRET secrets_file.json
+      UPLOADTHING_TOKEN:
+        sh: jq -r .UPLOADTHING_TOKEN secrets_file.json
+      NEXTAUTH_SECRET:
+        sh: jq -r .NEXTAUTH_SECRET secrets_file.json
+      NEXTAUTH_URL:
+        sh: jq -r .NEXTAUTH_URL secrets_file.json
+      FLAGS_DASHBOARD_ENVIRONMENT_ID:
+        sh: jq -r .FLAGS_DASHBOARD_ENVIRONMENT_ID secrets_file.json
 
   build:
     cmds:
@@ -133,3 +188,13 @@ tasks:
     cmds:
       - task: build-push-latest
       - task: deploy-latest
+
+  run-image:
+    cmds:
+      - docker image prune -f
+      - docker container prune -f
+      - docker run --rm -it --name tester containers.chewed-k8s.net/flags-gg/dashboard:tester
+  build-run-test:
+    cmds:
+      - task: build-test-images
+      - task: run-image

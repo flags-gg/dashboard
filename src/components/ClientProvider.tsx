@@ -5,21 +5,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {type ReactNode, useState} from 'react'
 import {ThemeProvider} from "~/components/theme-provider";
 import {FlagsProvider} from "@flags-gg/react-library";
-import {env} from "~/env";
+import {flagsConfig} from "~/env";
 
-export default function ClientProvider({ children }: { children: ReactNode }) {
+export default function ClientProvider({ children, flagConfig }: { children: ReactNode, flagConfig?: typeof flagsConfig }) {
   const [queryClient] = useState(() => new QueryClient())
-
-  console.info("flagsStuff", `project: ${env.NEXT_PUBLIC_FLAGS_PROJECT}`, `agent: ${env.NEXT_PUBLIC_FLAGS_AGENT}`, `env: ${env.NEXT_PUBLIC_FLAGS_ENVIRONMENT}`)
 
   return (
     <ThemeProvider attribute="class" defaultTheme={"dark"} enableSystem disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>
-        <FlagsProvider options={{
-          projectId: env.NEXT_PUBLIC_FLAGS_PROJECT,
-          agentId: env.NEXT_PUBLIC_FLAGS_AGENT,
-          environmentId: env.NEXT_PUBLIC_FLAGS_ENVIRONMENT,
-        }}>
+        <FlagsProvider options={flagConfig ?? flagsConfig}>
           {children}
           <ReactQueryDevtools initialIsOpen={false} />
         </FlagsProvider>

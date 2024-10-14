@@ -15,6 +15,7 @@ import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
 import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/toaster";
+import { env } from "~/env";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -31,11 +32,16 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const session = await getServerAuthSession();
+  const flagConfig = {
+    projectId: env.NEXT_PUBLIC_FLAGS_PROJECT ?? "",
+    agentId: env.NEXT_PUBLIC_FLAGS_AGENT ?? "",
+    environmentId: env.NEXT_PUBLIC_FLAGS_ENVIRONMENT ?? "",
+  }
 
   return (
     <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <ClientProvider>
+        <ClientProvider flagConfig={flagConfig}>
           <TooltipProvider>
             {session ? (
               <div className="flex min-h-screen w-full flex-col bg-muted/40">
