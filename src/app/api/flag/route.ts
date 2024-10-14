@@ -15,8 +15,6 @@ export async function POST(request: Request) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  console.info("flag/route", `${env.API_SERVER}/flag/${flag.details.id}`)
-
   try {
     const response = await fetch(`${env.API_SERVER}/flag/${flag.details.id}`, {
       method: 'PATCH',

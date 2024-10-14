@@ -1,7 +1,6 @@
 import {redirect} from "next/navigation";
 
-import { getServerAuthSession } from "~/server/auth";
-import { env } from "~/env";
+import { getServerAuthSession } from "~/server/auth"
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -9,8 +8,6 @@ export default async function Home() {
   if (!session) {
     redirect('/login')
   }
-
-  console.info("env", env)
 
   return (
     <>Dashboard</>

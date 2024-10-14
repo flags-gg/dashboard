@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import Link from "next/link";
 import { getFlags } from "~/app/api/flag/flag";
 import { FlagSwitch } from "./switch";
 import { DeleteFlag } from "./delete";
