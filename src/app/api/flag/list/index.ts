@@ -1,4 +1,4 @@
-import { Flag } from "~/lib/statemanager";
+import { type Flag } from "~/lib/statemanager";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
 

@@ -1,6 +1,5 @@
 "use client"
 
-import { useFlags } from "@flags-gg/react-library";
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
@@ -49,7 +48,6 @@ async function deleteEnvironment(environment_id: string): Promise<null | Error> 
 
 export default function Delete({environment_id}: {environment_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
-  const {is} = useFlags();
   const {toast} = useToast();
   const router = useRouter()
   const [environmentInfo] = useAtom(environmentAtom)
