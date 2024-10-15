@@ -33,7 +33,6 @@ async function enableDisableEnvironment(environmentInfo: IEnvironment) {
 export function EnvironmentSwitch() {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const {toast} = useToast()
-  console.info("envInfo", environmentInfo)
 
   const onSwitch = () => {
     const updatedEnvironmentInfo = {...environmentInfo, enabled: !environmentInfo.enabled}
