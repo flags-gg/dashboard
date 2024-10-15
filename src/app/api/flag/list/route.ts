@@ -1,6 +1,6 @@
-import { env } from "~/env";
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
+import { fetchFlags } from "~/app/api/flag/list/index";
 
 type GetFlags = {
   environment_id: string
@@ -14,18 +14,8 @@ export async function POST(request: Request) {
   }
 
   try {
-    const res = await fetch(`${env.API_SERVER}/environment/${environment_id}/flags`, {
-      headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
-      },
-      cache: 'no-store'
-    })
-    if (!res.ok) {
-      return NextResponse.json({ message: "Failed to fetch flags" }, { status: 500 });
-    }
-
-    return NextResponse.json(await res.json())
+    const flags = await fetchFlags(environment_id, session.user.access_token, session.user.id)
+    return NextResponse.json(flags)
   } catch (e) {
     console.error('Failed to fetch flags', e)
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
