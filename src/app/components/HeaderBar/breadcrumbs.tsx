@@ -12,7 +12,6 @@ import {useAtom} from "jotai";
 import {Fragment} from "react";
 import {agentAtom, environmentAtom, projectAtom, secretMenuAtom} from "~/lib/statemanager";
 import {usePathname} from "next/navigation";
-import { useFlags } from "@flags-gg/react-library";
 
 function useBreadcrumbs() {
   const [project] = useAtom(projectAtom)
@@ -104,11 +103,6 @@ function useBreadcrumbs() {
 
 export default function BreadCrumbs() {
   const breadcrumbs = useBreadcrumbs()
-  const {is} = useFlags()
-
-  if (!is("breadcrumbs")?.enabled()) {
-    return <></>
-  }
 
   return (
     <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>

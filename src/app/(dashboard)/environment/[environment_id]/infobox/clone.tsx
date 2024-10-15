@@ -14,7 +14,7 @@ export default function Clone({environment_id}: {environment_id: string}) {
   const [openClone, setOpenClone] = useState(false);
   const {is} = useFlags();
 
-  console.info("environmentInfo", environmentInfo, environment_id)
+  console.info("clone environmentInfo", environmentInfo, environment_id)
 
   if (!is("clone env")?.enabled()) {
     return <></>
@@ -25,7 +25,9 @@ export default function Clone({environment_id}: {environment_id: string}) {
       <PopoverTrigger asChild>
         <Tooltip>
           <TooltipTrigger>
-            <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
+            <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"} style={{
+              marginTop: "-0.4rem",
+            }}>
               <Copy className={"h-5 w-5"} />
             </Button>
           </TooltipTrigger>

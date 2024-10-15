@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { getFlags } from "~/app/api/flag/flag";
+import { getFlags } from "~/app/api/flag/list";
 import { FlagSwitch } from "./switch";
 import { DeleteFlag } from "./delete";
 import { EditFlag } from "./edit";

@@ -13,7 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "~/hooks/use-toast";
-import Clone from "./clone"
 
 async function updateEnvironmentName(environment_id: string, name: string, enabled: boolean): Promise<IEnvironment | Error> {
   try {
@@ -109,7 +108,6 @@ export default function Name({environment_id}: {environment_id: string}) {
           </Form>
         </PopoverContent>
       </Popover>
-      <Clone environment_id={environment_id} />
     </CardTitle>
   )
 }

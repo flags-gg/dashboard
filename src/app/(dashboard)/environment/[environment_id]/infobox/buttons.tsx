@@ -12,14 +12,12 @@ export default function InfoButtons({environmentId, menuId}: {environmentId: str
 
   return (
     <CardFooter className={"p-3 border-t-2 gap-2 items-center justify-center"}>
-      {is("create flag")?.enabled() && <CreateFlag environment_id={environmentId} />}
+      <CreateFlag environment_id={environmentId} />
       {is("view guide")?.enabled() && <Guide />}
-      {is("secret menu")?.enabled() && (
-        menuId ? (
-          <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}`}>Secret Menu</Link>
-        ) : (
-          <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/`}>Secret Menu</Link>
-        )
+      {menuId ? (
+        <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}`}>Secret Menu</Link>
+      ) : (
+        <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/`}>Secret Menu</Link>
       )}
     </CardFooter>
   );

@@ -13,14 +13,12 @@ import {
 import {Tooltip, TooltipContent, TooltipTrigger} from "~/components/ui/tooltip";
 import {useAtom} from "jotai";
 import {projectAtom, agentAtom, environmentAtom, secretMenuAtom} from "~/lib/statemanager";
-import { useFlags } from "@flags-gg/react-library";
 
 export default function SideBar() {
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
-  const {is} = useFlags()
 
   return (
     <aside className={"fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex"}>
@@ -80,7 +78,7 @@ export default function SideBar() {
               </Link>
             </li>
           )}
-          {is("flags")?.enabled() && selectedEnvironment.environment_id && (
+          {selectedEnvironment.environment_id && (
             <li>
               <Link href={`/environment/${selectedEnvironment.environment_id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
                 <Tooltip>

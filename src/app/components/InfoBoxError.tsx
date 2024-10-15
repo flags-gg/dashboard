@@ -7,7 +7,9 @@ export async function InfoBoxError({ name, blurb }: { name: string, blurb: strin
           <CardTitle className={"group flex items-center gap-2 text-lg capitalize"}>Error Loading {name}</CardTitle>
         </CardHeader>
         <CardContent className={"p-6 text-sm"}>
-          <p>There was an error loading the {blurb} information. Please try again later.</p>
+          <p>There was an error loading the {name} information. Please try again later.</p>
+          <p>If this error persists, please contact support.</p>
+          <p>Error: {blurb}</p>
         </CardContent>
       </Card>
   );
