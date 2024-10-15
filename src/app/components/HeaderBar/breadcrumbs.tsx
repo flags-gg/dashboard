@@ -104,11 +104,6 @@ function useBreadcrumbs() {
 
 export default function BreadCrumbs() {
   const breadcrumbs = useBreadcrumbs()
-  const {is} = useFlags()
-
-  if (!is("breadcrumbs")?.enabled()) {
-    return <></>
-  }
 
   return (
     <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>

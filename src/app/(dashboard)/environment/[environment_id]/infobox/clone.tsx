@@ -14,7 +14,7 @@ export default function Clone({environment_id}: {environment_id: string}) {
   const [openClone, setOpenClone] = useState(false);
   const {is} = useFlags();
 
-  console.info("environmentInfo", environmentInfo, environment_id)
+  console.info("clone environmentInfo", environmentInfo, environment_id)
 
   if (!is("clone env")?.enabled()) {
     return <></>
