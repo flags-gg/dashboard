@@ -81,10 +81,17 @@ export default function Delete({environment_id}: {environment_id: string}) {
                   router.push(`/agent/${agentInfo.agent_id}?ts=${Date.now()}`)
                 }).catch((e) => {
                   if (e instanceof Error) {
-                    throw new Error(`Failed to delete environment: ${e.message}`)
+                    toast({
+                      title: "Error Deleting Environment",
+                      description: `There was an error deleting the environment: ${e.message}`,
+                    })
+                    return
                   }
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-                  throw new Error("Failed to delete environment - unknown:", e)
+
+                  toast({
+                    title: "Error Deleting Environment",
+                    description: `There was an unknown error deleting the environment: ${e}`,
+                  })
                 })
               }}>Delete</Button>
             </div>
