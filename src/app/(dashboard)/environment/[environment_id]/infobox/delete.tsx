@@ -58,11 +58,9 @@ export default function Delete({environment_id}: {environment_id: string}) {
       <TooltipTrigger>
         <Dialog open={openDelete} onOpenChange={setOpenDelete}>
           <DialogTrigger asChild>
-            <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"} style={{
-              marginTop: "-0.4rem",
-            }}>
-              <Trash2 className={"h-5 w-5"} />
-            </Button>
+            <Trash2 className={"h-5 w-5"} style={{
+              marginTop: "0.4rem",
+            }} />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

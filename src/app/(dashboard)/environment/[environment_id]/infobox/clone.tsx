@@ -85,11 +85,9 @@ export default function Clone({environment_id}: {environment_id: string}) {
       <TooltipTrigger>
         <Dialog open={openClone} onOpenChange={setOpenClone}>
           <DialogTrigger asChild>
-            <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"} style={{
-              marginTop: "-0.4rem",
-            }}>
-              <Copy className={"h-5 w-5"} />
-            </Button>
+            <Copy className={"h-5 w-5"} style={{
+              marginTop: "0.4rem",
+            }}/>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
