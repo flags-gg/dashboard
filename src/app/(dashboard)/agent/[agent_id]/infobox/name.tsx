@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { agentAtom, type FlagAgent } from "~/lib/statemanager";
+import { agentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useToast } from "~/hooks/use-toast";
 import { z } from "zod";

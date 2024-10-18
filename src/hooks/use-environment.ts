@@ -1,4 +1,4 @@
-import { IEnvironment } from "~/lib/statemanager";
+import { type IEnvironment } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchEnvironment = async (environmentId: string): Promise<IEnvironment | null> => {
