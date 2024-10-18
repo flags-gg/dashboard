@@ -5,6 +5,7 @@ import {getAgent} from "~/app/api/agent/agent";
 import AgentInfo from "./info";
 import {InfoBoxError} from "~/app/components/InfoBoxError";
 import Name from "./name";
+import Delete from "./delete";
 
 export default async function InfoBox({agent_id}: {agent_id: string}) {
   let allowedToCreateEnv = false
@@ -29,7 +30,12 @@ export default async function InfoBox({agent_id}: {agent_id: string}) {
   return (
     <Card>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-        <Name agent_id={agentInfo.agent_id} name={agentInfo.name} />
+        <div className={"grid gap-0.5"}>
+          <Name agent_id={agentInfo.agent_id} name={agentInfo.name} />
+        </div>
+        <div className={"ml-auto flex items-center gap-1"}>
+          <Delete agent_id={agentInfo.agent_id} />
+        </div>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
         <AgentInfo agentInfo={agentInfo} />
