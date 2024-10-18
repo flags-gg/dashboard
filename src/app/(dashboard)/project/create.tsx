@@ -21,7 +21,7 @@ import { Input } from "~/components/ui/input";
 import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const createProject = async (session: Session, name: string): Promise<IProject> => {
+const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
     method: "POST",
     headers: {
@@ -51,7 +51,7 @@ export default function CreateProject({ session }: { session: Session }) {
   const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
 
   const createProjectMutation = useMutation({
-    mutationFn: (name: string) => createProject(session, name),
+    mutationFn: (name: string) => createProject(name),
     onSuccess: (data) => {
       queryClient.invalidateQueries({queryKey: ['companyLimits', session.user.id]}).catch(console.error);
       toast({
