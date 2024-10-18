@@ -19,7 +19,7 @@ export default function Info({environmentId}: {environmentId: string}) {
     }
   }, [environmentInfo, setSelectedEnvironment])
 
-  if (error || !environmentInfo) {
+  if (error ?? !environmentInfo) {
     return (
       <Alert>
         <AlertTitle>Error loading environment</AlertTitle>
