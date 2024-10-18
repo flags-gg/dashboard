@@ -2,17 +2,31 @@
 
 import {
   environmentAtom,
-  type IEnvironment,
 } from "~/lib/statemanager";
 import {EnvironmentSwitch} from "./switch";
 import {useAtom} from "jotai";
 import {useEffect} from "react";
+import { useEnvironment } from "~/hooks/use-environment";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 
-export default function Info({environmentInfo}: {environmentInfo: IEnvironment}) {
+export default function Info({environmentId}: {environmentId: string}) {
+  const { data: environmentInfo, error } = useEnvironment(environmentId)
+
   const [, setSelectedEnvironment] = useAtom(environmentAtom)
   useEffect(() => {
-    setSelectedEnvironment(environmentInfo)
+    if (environmentInfo) {
+      setSelectedEnvironment(environmentInfo)
+    }
   }, [environmentInfo, setSelectedEnvironment])
+
+  if (error || !environmentInfo) {
+    return (
+      <Alert>
+        <AlertTitle>Error loading environment</AlertTitle>
+        <AlertDescription>There was an error loading the environment</AlertDescription>
+      </Alert>
+    )
+  }
 
   return (
     <div className={"grid gap-3"}>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
 import { env } from "~/env";
+import { IEnvironment } from "~/lib/statemanager";
 
 export async function PUT(request: Request) {
   type UpdateEnvironmentName = {
@@ -71,6 +72,35 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: 'Environment deleted successfully' })
   } catch (e) {
     console.error('Failed to delete environment', e)
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+  }
+}
+
+export async function GET(request: Request) {
+  const {searchParams} = new URL(request.url)
+  const environmentId = searchParams.get('environmentId')
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
+
+  try {
+    const response = await fetch(`${env.API_SERVER}/environment/${environmentId}`, {
+      method: 'GET',
+      headers: {
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+      },
+      cache: 'no-store'
+    })
+    if (!response.ok) {
+      return NextResponse.json({ message: 'Failed to fetch environment' }, { status: 500 })
+    }
+
+    const data = await response.json() as IEnvironment
+    return NextResponse.json(data)
+  } catch (e) {
+    console.error('Failed to fetch environment', e)
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
   }
 }
