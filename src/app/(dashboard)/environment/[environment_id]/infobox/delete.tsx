@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -54,49 +53,45 @@ export default function Delete({environment_id}: {environment_id: string}) {
   const [agentInfo] = useAtom(agentAtom)
 
   return (
-    <Tooltip>
-      <TooltipTrigger>
-        <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-          <DialogTrigger asChild>
-            <Trash2 className={"h-5 w-5"} style={{
-              marginTop: "0.4rem",
-            }} />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Delete Environment {environmentInfo.name}</DialogTitle>
-              <DialogDescription>Are you sure you want to delete this environment?</DialogDescription>
-            </DialogHeader>
-            <div className={"flex justify-between"}>
-              <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
-              <Button variant={"destructive"} onClick={() => {
-                setOpenDelete(false)
-                deleteEnvironment(environment_id).then(() => {
-                  toast({
-                    title: "Environment Deleted",
-                    description: "The environment has been deleted",
-                  })
-                  router.push(`/agent/${agentInfo.agent_id}?ts=${Date.now()}`)
-                }).catch((e) => {
-                  if (e instanceof Error) {
-                    toast({
-                      title: "Error Deleting Environment",
-                      description: `There was an error deleting the environment: ${e.message}`,
-                    })
-                    return
-                  }
-
-                  toast({
-                    title: "Error Deleting Environment",
-                    description: `There was an unknown error deleting the environment: ${e}`,
-                  })
+    <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+      <DialogTrigger asChild>
+        <Trash2 className={"h-5 w-5"} style={{
+          marginTop: "0.4rem",
+          cursor: "pointer",
+        }} />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete Environment {environmentInfo.name}</DialogTitle>
+          <DialogDescription>Are you sure you want to delete this environment?</DialogDescription>
+        </DialogHeader>
+        <div className={"flex justify-between"}>
+          <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
+          <Button variant={"destructive"} onClick={() => {
+            setOpenDelete(false)
+            deleteEnvironment(environment_id).then(() => {
+              toast({
+                title: "Environment Deleted",
+                description: "The environment has been deleted",
+              })
+              router.push(`/agent/${agentInfo.agent_id}?ts=${Date.now()}`)
+            }).catch((e) => {
+              if (e instanceof Error) {
+                toast({
+                  title: "Error Deleting Environment",
+                  description: `There was an error deleting the environment: ${e.message}`,
                 })
-              }}>Delete</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </TooltipTrigger>
-      <TooltipContent sideOffset={4}>Delete Environment</TooltipContent>
-    </Tooltip>
+                return
+              }
+
+              toast({
+                title: "Error Deleting Environment",
+                description: `There was an unknown error deleting the environment: ${e}`,
+              })
+            })
+          }}>Delete</Button>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
