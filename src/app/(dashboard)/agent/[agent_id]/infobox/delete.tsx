@@ -18,7 +18,7 @@ import { Button } from "~/components/ui/button";
 
 async function deleteAgent(agent_id: string): Promise<null | Error> {
   try {
-    const response = await fetch(`/api/agent/delete`, {
+    const response = await fetch(`/api/agent`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -73,7 +73,7 @@ export default function Delete({agent_id}: {agent_id: string}) {
                 title: "Agent Deleted",
                 description: "The agent has been deleted",
               })
-              router.push(`/projects/${agentInfo.project_info.project_id}?ts=${Date.now()}`)
+              router.push(`/project/${agentInfo.project_info.project_id}?ts=${Date.now()}`)
             }).catch((e) => {
               if (e instanceof Error) {
                 toast({
