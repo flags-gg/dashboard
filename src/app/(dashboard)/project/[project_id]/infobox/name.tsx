@@ -60,9 +60,10 @@ export default function Name({project_id, name}: {project_id: string, name: stri
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setOpenEdit(false)
+    form.reset()
 
     try {
-      updateProjectName( project_id, data.name).then(() => {
+      updateProjectName(project_id, data.name).then(() => {
         setProjectName(data.name)
         setProjectInfo({...projectInfo, name: data.name})
         toast({

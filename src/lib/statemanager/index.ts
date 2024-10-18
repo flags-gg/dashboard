@@ -46,6 +46,7 @@ export const projectAtom = atomWithStorage<IProject>("projectAtom", {
 export interface FlagAgent {
   id: string;
   name: string;
+  enabled: boolean;
   agent_id: string;
   request_limit: number;
   environment_limit: number;
@@ -58,6 +59,7 @@ export interface FlagAgent {
 export const agentAtom = atomWithStorage<FlagAgent>("agentAtom", {
   id: '',
   name: '',
+  enabled: false,
   agent_id: '',
   request_limit: 0,
   environment_limit: 0,
