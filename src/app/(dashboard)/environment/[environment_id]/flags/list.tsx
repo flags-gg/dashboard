@@ -23,7 +23,7 @@ export default async function FlagsList({ environment_id, }: { environment_id: s
   } catch (e) {
     console.error("flags", e);
     return (
-      <div className="col-span-2 gap-3">
+      <div className={"col-span-2 gap-3"}>
         <Card className={"mb-3 p-3"}>
           Error Loading Flags
         </Card>
@@ -32,7 +32,7 @@ export default async function FlagsList({ environment_id, }: { environment_id: s
   }
 
   return (
-    <div className="col-span-2 gap-3">
+    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>

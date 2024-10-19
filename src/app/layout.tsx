@@ -16,6 +16,7 @@ import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/toaster";
 import { env } from "~/env";
+import { SidebarProvider } from "~/components/ui/sidebar";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -42,23 +43,25 @@ export default async function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <ClientProvider flagConfig={flagConfig}>
-          <TooltipProvider>
-            {session ? (
-              <div className="flex min-h-screen w-full flex-col bg-muted/40">
-                <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-                <SideBar />
-                <div className={"flex flex-col sm:gap-4 sm:py-4 sm:pl-14"}>
-                  <HeaderBar />
-                  <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3" suppressHydrationWarning={true}>
-                    {children}
-                  </main>
-                  <Toaster />
+            <TooltipProvider>
+              {session ? (
+                <div className="flex min-h-screen w-full flex-col bg-muted/40">
+                  <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+                  <SidebarProvider>
+                    <SideBar />
+                    <div className={"flex flex-col sm:py-4"}>
+                      <HeaderBar />
+                      <main className="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3" suppressHydrationWarning={true}>
+                        {children}
+                      </main>
+                      <Toaster />
+                    </div>
+                  </SidebarProvider>
                 </div>
-              </div>
-            ) : (
-              children
-            )}
-          </TooltipProvider>
+              ) : (
+                children
+              )}
+            </TooltipProvider>
         </ClientProvider>
       </body>
     </html>

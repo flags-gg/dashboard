@@ -10,103 +10,127 @@ import {
   SquareMenu,
   VenetianMask
 } from "lucide-react";
-import {Tooltip, TooltipContent, TooltipTrigger} from "~/components/ui/tooltip";
 import {useAtom} from "jotai";
 import {projectAtom, agentAtom, environmentAtom, secretMenuAtom} from "~/lib/statemanager";
+import { useFlags } from "@flags-gg/react-library";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
+  SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem
+} from "~/components/ui/sidebar";
 
 export default function SideBar() {
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
+  const {is} = useFlags();
 
   return (
-    <aside className={"fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex"}>
-      <nav className={"flex flex-col items-center gap-4 px-2 sm:py-5"}>
-        <ul>
-          <li>
-            <Link href={"/"} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-              <Home className={"h-5 w-5"} />
-              <span className={"sr-only"}>Home</span>
-            </Link>
-          </li>
-          <li>
-            <Link href={"/company"} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Building2 className={"h-5 w-5"} />
-                  <span className={"sr-only"}>Company</span>
-                </TooltipTrigger>
-                <TooltipContent sideOffset={4}>Company</TooltipContent>
-              </Tooltip>
-            </Link>
-          </li>
-          <li>
-            <Link href={"/projects"} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <SquareGanttChart className={"h-5 w-5"} />
-                  <span className={"sr-only"}>Projects</span>
-                </TooltipTrigger>
-                <TooltipContent sideOffset={4}>Projects</TooltipContent>
-              </Tooltip>
-            </Link>
-          </li>
-          {selectedProject.project_id && (
-            <li>
-              <Link href={`/project/${selectedProject.project_id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <SquareKanban className={"h-5 w-5"} />
-                    <span className={"sr-only"}>{selectedProject.name}</span>
-                  </TooltipTrigger>
-                  <TooltipContent sideOffset={4}>{selectedProject.name}</TooltipContent>
-                </Tooltip>
-              </Link>
-            </li>
-          )}
-          {selectedAgent.agent_id && (
-            <li>
-              <Link href={`/agent/${selectedAgent.agent_id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <VenetianMask className={"h-5 w-5"} />
-                    <span className={"sr-only"}>{selectedAgent.name}</span>
-                  </TooltipTrigger>
-                  <TooltipContent sideOffset={4}>{selectedAgent.name}</TooltipContent>
-                </Tooltip>
-              </Link>
-            </li>
-          )}
-          {selectedEnvironment.environment_id && (
-            <li>
-              <Link href={`/environment/${selectedEnvironment.environment_id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Container className={"h-5 w-5"} />
-                    <span className={"sr-only"}>{selectedEnvironment.name}</span>
-                  </TooltipTrigger>
-                  <TooltipContent sideOffset={4}>{selectedEnvironment.name}</TooltipContent>
-                </Tooltip>
-              </Link>
-            </li>
-          )}
-          {selectedMenu.menu_id && (
-            <li>
-              <Link href={`/secretmenu/${selectedMenu.menu_id}`} className={"flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <SquareMenu className={"h-5 w-5"} />
-                    <span className={"sr-only"}>Secret Menu Config</span>
-                  </TooltipTrigger>
-                  <TooltipContent sideOffset={4}>Secret Menu Config</TooltipContent>
-                </Tooltip>
-              </Link>
-            </li>
-          )}
-        </ul>
-      </nav>
-    </aside>
+    <Sidebar>
+      <SidebarHeader />
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem key={"dashboard"}>
+                <SidebarMenuButton asChild>
+                  <Link href={"/"}>
+                    <Home className={"h-5 w-5"} />
+                    <span>Home</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        {is("show company")?.enabled() && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Company</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem key={"company"}>
+                  <SidebarMenuButton asChild>
+                    <Link href={"/company"}>
+                      <Building2 className={"h-5 w-5"} />
+                      <span>Company</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+        <SidebarGroup>
+          <SidebarGroupLabel>Projects</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem key={"projects"}>
+                <SidebarMenuButton asChild>
+                  <Link href={"/projects"}>
+                    <SquareGanttChart className={"h-5 w-5"} />
+                    <span>Projects</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        {selectedProject.project_id && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Project Options</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem key={`project-${selectedProject.project_id}`}>
+                  <SidebarMenuButton asChild>
+                    <Link href={`/project/${selectedProject.project_id}`}>
+                      <SquareKanban className={"h-5 w-5"} />
+                      <span>Project</span>
+                    </Link>
+                  </SidebarMenuButton>
+                  <SidebarMenuBadge>{selectedProject.name}</SidebarMenuBadge>
+                </SidebarMenuItem>
+                {selectedAgent.agent_id && (
+                  <SidebarMenuItem key={`agent-${selectedAgent.agent_id}`}>
+                    <SidebarMenuButton asChild>
+                      <Link href={`/agent/${selectedAgent.agent_id}`}>
+                        <VenetianMask className={"h-5 w-5"} />
+                        <span>Agent</span>
+                      </Link>
+                    </SidebarMenuButton>
+                    <SidebarMenuBadge>{selectedAgent.name}</SidebarMenuBadge>
+                  </SidebarMenuItem>
+                )}
+                {selectedEnvironment.environment_id && (
+                  <SidebarMenuItem key={`environment-${selectedEnvironment.environment_id}`}>
+                    <SidebarMenuButton asChild>
+                      <Link href={`/environment/${selectedEnvironment.environment_id}`}>
+                        <Container className={"h-5 w-5"} />
+                        <span>Environment</span>
+                      </Link>
+                    </SidebarMenuButton>
+                    <SidebarMenuBadge>{selectedEnvironment.name}</SidebarMenuBadge>
+                  </SidebarMenuItem>
+                )}
+                {selectedMenu.menu_id && (
+                  <SidebarMenuItem key={`secretmenu-${selectedMenu.menu_id}`}>
+                    <SidebarMenuButton asChild>
+                      <Link href={`/secretmenu/${selectedMenu.menu_id}`}>
+                        <SquareMenu className={"h-5 w-5"} />
+                        <span>Secret Menu Config</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+      </SidebarContent>
+      <SidebarFooter />
+    </Sidebar>
   )
 }
 

@@ -162,7 +162,7 @@ export default function Maker({menuId}: {menuId: string}) {
   }
 
   return (
-    <div className="col-span-2 gap-3">
+    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
       <Card className={"mb-3"}>
         <CardContent className={"p-6 text-sm"}>
           <DndContext onDragEnd={handleDragEnd} collisionDetection={rectIntersection}>

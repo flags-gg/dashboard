@@ -11,7 +11,7 @@ export default async function ProjectList() {
     projects = await getProjects();
   } catch (e) {
     console.error(e);
-    return <div className="gap-3 col-span-2">
+    return <div className={"gap-3 col-span-2"}>
       <Card className={"mb-3 p-3"}>
         Error loading projects
       </Card>
@@ -19,7 +19,7 @@ export default async function ProjectList() {
   }
 
   return (
-    <div className="gap-3 col-span-2">
+    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>
@@ -34,7 +34,7 @@ export default async function ProjectList() {
           <TableBody>
             {projects.projects.map(project => (
               <TableRow key={project.id}>
-                <TableCell className={"place-content-center justify-center"} style={{paddingLeft: "3%"}}>
+                <TableCell className={"place-content-center justify-center"} style={{ paddingLeft: "3%" }}>
                   <Link href={`/project/${project.project_id}`}>
                     {project.logo && <Image src={project.logo} alt={project.name} width={50} height={50} />}
                   </Link>

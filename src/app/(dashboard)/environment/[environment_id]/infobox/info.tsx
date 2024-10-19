@@ -8,9 +8,10 @@ import {useAtom} from "jotai";
 import {useEffect} from "react";
 import { useEnvironment } from "~/hooks/use-environment";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export default function Info({environmentId}: {environmentId: string}) {
-  const { data: environmentInfo, error } = useEnvironment(environmentId)
+  const { data: environmentInfo, error, isLoading } = useEnvironment(environmentId)
 
   const [, setSelectedEnvironment] = useAtom(environmentAtom)
   useEffect(() => {
@@ -18,6 +19,10 @@ export default function Info({environmentId}: {environmentId: string}) {
       setSelectedEnvironment(environmentInfo)
     }
   }, [environmentInfo, setSelectedEnvironment])
+
+  if (isLoading) {
+    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+  }
 
   if (error ?? !environmentInfo) {
     return (
