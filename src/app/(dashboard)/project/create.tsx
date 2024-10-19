@@ -20,6 +20,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Skeleton } from "~/components/ui/skeleton";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
