@@ -66,7 +66,5 @@ export function EnvironmentSwitch() {
     }
   }
 
-  return (
-    <Switch defaultChecked={environmentInfo.enabled} name={"environment"} onCheckedChange={onSwitch} />
-  )
+  return<Switch defaultChecked={environmentInfo.enabled} name={"environment"} onCheckedChange={onSwitch} />
 }

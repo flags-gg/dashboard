@@ -5,6 +5,7 @@ import { type Session } from "next-auth";
 import { Separator } from "~/components/ui/separator";
 import { useStyles } from "~/hooks/use-styles";
 import { useToast } from "~/hooks/use-toast";
+import { Skeleton } from "~/components/ui/skeleton";
 
 const styleNames: Record<string, string> = {
   resetButton: "Reset Button",
@@ -52,7 +53,7 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
   const {toast} = useToast();
 
   if (isLoading) {
-    return <div key={"styling-info-loading"}>Loading...</div>
+    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
   }
 
   if (error) {

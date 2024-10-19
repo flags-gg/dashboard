@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
+import { put } from "./project";
 
 export async function DELETE(request: Request) {
   type DeleteProject = {
@@ -33,4 +34,8 @@ export async function DELETE(request: Request) {
     console.error('Failed to delete environment', e)
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
   }
+}
+
+export async function PUT(request: Request) {
+  return put(request)
 }

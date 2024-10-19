@@ -8,6 +8,7 @@ import PageContainer from "./pageContainer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useStyles } from "~/hooks/use-styles";
 import { useToast } from "~/hooks/use-toast";
+import { Skeleton } from "~/components/ui/skeleton";
 
 type ClientWrapperProps = {
   session: Session;
@@ -19,7 +20,7 @@ function StyleWrapper({ session, menuId }: ClientWrapperProps) {
   const { toast } = useToast();
 
   if (isLoading) {
-    return <div className="col-span-2 gap-3">Loading...</div>;
+    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />;
   }
 
   if (error) {

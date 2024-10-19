@@ -20,6 +20,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Skeleton } from "~/components/ui/skeleton";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
@@ -79,7 +80,7 @@ export default function CreateProject({ session }: { session: Session }) {
     createProjectMutation.mutate(data.projectName);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Skeleton className="h-[125px] w-[250px] rounded-xl" />;
   if (error) return <div>Error: {error.message}</div>;
 
   const projectsLeft = companyLimits?.projects?.allowed && companyLimits?.projects?.used ? companyLimits.projects.allowed - companyLimits.projects.used : 0;

@@ -4,6 +4,7 @@ import {Card} from "~/components/ui/card";
 import {getProjects} from "~/app/api/project/project";
 import Link from "next/link";
 import Image from "next/image";
+import { ShieldPlus } from "lucide-react";
 
 export default async function ProjectList() {
   let projects: ProjectsData;
@@ -36,7 +37,7 @@ export default async function ProjectList() {
               <TableRow key={project.id}>
                 <TableCell className={"place-content-center justify-center"} style={{ paddingLeft: "3%" }}>
                   <Link href={`/project/${project.project_id}`}>
-                    {project.logo && <Image src={project.logo} alt={project.name} width={50} height={50} />}
+                    {project.logo ? <Image src={project.logo} alt={project.name} width={50} height={50} /> : <ShieldPlus className={"h-5 w-5"} />}
                   </Link>
                 </TableCell>
                 <TableCell>
