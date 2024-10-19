@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { put } from "./agent";
 
 export async function DELETE(request: Request) {
   type DeleteAgent = {
@@ -31,5 +32,9 @@ export async function DELETE(request: Request) {
     console.error('Failed to delete agent', e)
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
   }
+}
+
+export async function PUT(request: Request) {
+  return put(request)
 }
 
