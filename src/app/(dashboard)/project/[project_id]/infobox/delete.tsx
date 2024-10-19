@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { projectAtom } from "~/lib/statemanager";
-import { useAtom } from "jotai";
 import {
   Dialog,
   DialogContent,
@@ -50,7 +48,6 @@ export default function Delete({project_id}: {project_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
   const {toast} = useToast();
   const router = useRouter()
-  const [projectInfo] = useAtom(projectAtom);
 
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
