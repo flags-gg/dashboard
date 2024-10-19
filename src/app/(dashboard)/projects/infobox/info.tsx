@@ -3,13 +3,14 @@
 import { type Session } from "next-auth";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { useToast } from "~/hooks/use-toast";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export default function ProjectsInfo({ session }: { session: Session }) {
   const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
   const { toast } = useToast();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
   }
 
   if (error) {

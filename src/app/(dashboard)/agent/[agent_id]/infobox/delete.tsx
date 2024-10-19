@@ -54,10 +54,7 @@ export default function Delete({agent_id}: {agent_id: string}) {
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogTrigger asChild>
-        <Trash2 className={"h-5 w-5"} style={{
-          marginTop: "0.4rem",
-          cursor: "pointer",
-        }} />
+        <Trash2 className={"h-5 w-5 mt-1.5 cursor-pointer"}/>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

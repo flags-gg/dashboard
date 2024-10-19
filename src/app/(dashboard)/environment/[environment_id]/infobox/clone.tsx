@@ -21,6 +21,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useFlags } from "@flags-gg/react-library";
 
 async function cloneEnvironmentAction(environment_id: string, agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -58,6 +59,7 @@ export default function Clone({environment_id}: {environment_id: string}) {
   const [openClone, setOpenClone] = useState(false);
   const {toast} = useToast();
   const router = useRouter()
+  const {is} = useFlags();
 
   const FormSchema = z.object({
     name: z.string().min(2, {message: "Name is required a minimum of 2 characters"}),
@@ -80,14 +82,16 @@ export default function Clone({environment_id}: {environment_id: string}) {
     })
   }
 
+  if (!is("clone env")?.enabled()) {
+    return <></>
+  }
+
   return (
     <Tooltip>
       <TooltipTrigger>
         <Dialog open={openClone} onOpenChange={setOpenClone}>
           <DialogTrigger asChild>
-            <Copy className={"h-5 w-5"} style={{
-              marginTop: "0.4rem",
-            }}/>
+            <Copy className={"h-5 w-5 mt-1.5"} />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

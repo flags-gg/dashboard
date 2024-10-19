@@ -11,7 +11,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
   } catch (e) {
     console.error(e);
     return (
-      <div className="gap-3 col-span-2">
+      <div className={"gap-3 col-span-2"}>
         <Card className={"mb-3 p-3"}>
           <p>Failed to load agents</p>
         </Card>
@@ -20,7 +20,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
   }
 
   return (
-    <div className="gap-3 col-span-2">
+    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>
