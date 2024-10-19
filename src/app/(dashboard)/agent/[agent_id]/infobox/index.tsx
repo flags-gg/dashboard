@@ -19,6 +19,7 @@ export default async function InfoBox({agent_id}: {agent_id: string}) {
     agentInfo.environment_limit = data?.environment_limit
     agentInfo.environments = data?.environments
     agentInfo.project_info = data?.project_info
+    agentInfo.enabled = data?.enabled
   } catch (e) {
     console.error(e)
     return <InfoBoxError name={"Agent"} blurb={"agent"} />

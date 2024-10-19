@@ -4,6 +4,7 @@ import {agentAtom} from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { type FlagAgent } from "~/lib/statemanager";
 import {useEffect} from "react";
+import { AgentSwitch } from "./switch";
 
 export default function AgentInfo({agentInfo}: {agentInfo: FlagAgent}) {
   const [, setSelectedAgent] = useAtom(agentAtom);
@@ -29,6 +30,10 @@ export default function AgentInfo({agentInfo}: {agentInfo: FlagAgent}) {
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Request Limit</span>
           <span>{agentInfo.request_limit.toLocaleString()}</span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Enabled</span>
+          <span><AgentSwitch /></span>
         </li>
       </ul>
     </div>
