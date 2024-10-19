@@ -8,6 +8,7 @@ import Name from "./name";
 import InfoButtons from "./buttons";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
+import Delete from "./delete";
 
 export default async function InfoBox({project_id}: {project_id: string}) {
   const session = await getServerSession(authOptions)
@@ -36,7 +37,12 @@ export default async function InfoBox({project_id}: {project_id: string}) {
   return (
     <Card>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-        <Name project_id={project_id} name={projectInfo.name} />
+        <div className={"grid gap-0.5"}>
+          <Name project_id={project_id} name={projectInfo.name} />
+        </div>
+        <div className={"ml-auto flex items-center gap-1"}>
+          <Delete project_id={project_id} />
+        </div>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
         <ProjectInfo projectInfo={projectInfo} session={session} flagServer={env.API_SERVER} />
