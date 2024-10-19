@@ -10,6 +10,7 @@ import { useFlags } from "@flags-gg/react-library";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
+import { ProgressIndicator } from "@radix-ui/react-progress";
 
 export default function InfoButtons({ session }: { session: Session }) {
   const [projectInfo] = useAtom(projectAtom);
@@ -22,7 +23,7 @@ export default function InfoButtons({ session }: { session: Session }) {
   }
 
   if (isLoading) {
-    return <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">Loading...</CardFooter>;
+    return <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center"><ProgressIndicator className="h-5 w-5" /></CardFooter>;
   }
 
   if (error) {

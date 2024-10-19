@@ -29,6 +29,7 @@ export interface IProject {
   agent_limit: number;
   agents_used?: number;
   logo: string;
+  enabled: boolean;
 }
 export type ProjectsData = {
   projects: IProject[]
@@ -40,7 +41,8 @@ export const projectAtom = atomWithStorage<IProject>("projectAtom", {
   project_id: '',
   agent_limit: 0,
   agents_used: 0,
-  logo: ''
+  logo: '',
+  enabled: false,
 })
 
 export interface FlagAgent {

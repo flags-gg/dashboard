@@ -16,6 +16,9 @@ import {UploadButton} from "~/utils/uploadthing";
 import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
 import Image from "next/image";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
+import { ShieldPlus } from "lucide-react";
+import { ProjectSwitch } from "./switch";
+import { Skeleton } from "~/components/ui/skeleton";
 
 interface IError {
   message: string
@@ -88,7 +91,15 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+  }
+
+  let imageElement
+  if (imageURL) {
+    imageElement =
+      <Image src={imageURL} alt={selectedProject.name} width={50} height={50} className={"cursor-pointer"} />
+  } else {
+    imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
   }
 
   return (
@@ -111,12 +122,14 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
           <span>{agentsUsed}</span>
         </li>
         <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Enabled</span>
+          <span><ProjectSwitch /></span>
+        </li>
+        <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Logo</span>
           <Dialog open={iconOpen} onOpenChange={setIconOpen}>
             <DialogTrigger asChild>
-              <Image src={imageURL} alt={selectedProject.name} width={50} height={50} style={{
-                "cursor": "pointer",
-              }} />
+              {imageElement}
             </DialogTrigger>
             <DialogContent className={"sm:max-w-[425px]"}>
               <DialogHeader>
