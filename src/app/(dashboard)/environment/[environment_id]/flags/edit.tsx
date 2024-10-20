@@ -4,7 +4,6 @@ import {Button} from "~/components/ui/button";
 import {type Flag} from "~/lib/statemanager";
 import {Pencil} from "lucide-react";
 import {useState} from "react";
-import {LoadingSpinner} from "~/components/ui/loader";
 import { Popover } from "@radix-ui/react-popover";
 import { PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { Input } from "~/components/ui/input";
@@ -14,6 +13,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { LoadingSpinner } from "~/components/ui/loader";
 
 // TODO: edit flag
 async function editFlagAction(flag: Flag): Promise<null | Error> {
