@@ -4,6 +4,7 @@ import {Switch} from "~/components/ui/switch";
 import { useAtom } from "jotai";
 import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
+import { LoadingSpinner } from "~/components/ui/loader";
 
 async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {
@@ -33,6 +34,10 @@ async function enableDisableEnvironment(environmentInfo: IEnvironment) {
 export function EnvironmentSwitch() {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const {toast} = useToast()
+
+  if (environmentInfo?.environment_id === undefined) {
+    return <LoadingSpinner className={"h-5 w-5"} />
+  }
 
   const onSwitch = () => {
     const updatedEnvironmentInfo = {...environmentInfo, enabled: !environmentInfo.enabled}
