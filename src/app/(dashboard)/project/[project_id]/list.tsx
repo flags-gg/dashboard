@@ -32,7 +32,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
             </TableRow>
           </TableHeader>
           <TableBody>
-            {agents.agents.map(agent => (
+            {agents?.agents?.map(agent => (
               <TableRow key={agent.id}>
                 <TableCell>
                   <Link href={`/agent/${agent.agent_id}`}>{agent.name}</Link>
