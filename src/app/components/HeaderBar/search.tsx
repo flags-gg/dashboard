@@ -89,7 +89,7 @@ export function SearchBox() {
     </div>
   }
 
-  if (projectsError || agentsError || environmentsError) {
+  if (projectsError ?? agentsError ?? environmentsError) {
     toast({
       title: "Error loading search data",
       description: "Please try again later.",
