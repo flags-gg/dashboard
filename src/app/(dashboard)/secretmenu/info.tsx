@@ -2,7 +2,7 @@ import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 
 export default async function InfoBox() {
   return (
-    <Card>
+    <Card className={"max-h-fit"}>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
         <CardTitle className={"group flex items-center gap-2 text-lg"}>
           Create Secret Menu

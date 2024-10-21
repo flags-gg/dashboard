@@ -29,12 +29,12 @@ export default async function AgentPage({params}: {params: {agent_id: string}}) 
   }
 
   return (
-    <>
-      <header className={"col-span-2"}>
+    <div className={"grid grid-cols-3 gap-3"}>
+      <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Agent Environments</h1>
       </header>
       <EnvironmentsList agent_id={params.agent_id} />
       <InfoBox agent_id={params.agent_id} />
-    </>
+    </div>
   )
 }

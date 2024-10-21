@@ -16,7 +16,7 @@ export default async function InfoBox({environment_id}: {environment_id: string}
   }
 
   return (
-    <Card>
+    <Card className={"max-h-fit"}>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
         <div className={"grid gap-0.5"}>
           <Name environment_id={environment_id} />
@@ -26,7 +26,7 @@ export default async function InfoBox({environment_id}: {environment_id: string}
           <Delete environment_id={environment_id} />
         </div>
       </CardHeader>
-      <CardContent className={"p-6 text-sm"}>
+      <CardContent className={"p-2 text-sm"}>
         <Info environmentId={environmentInfo.environment_id} />
       </CardContent>
       <InfoButtons environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
