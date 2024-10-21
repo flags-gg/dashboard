@@ -20,7 +20,7 @@ export default async function ProjectList() {
   }
 
   return (
-    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
+    <div className={"col-span-2"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>

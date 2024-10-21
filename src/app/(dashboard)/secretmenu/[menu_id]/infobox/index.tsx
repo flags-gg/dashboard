@@ -15,7 +15,7 @@ export default async function InfoBox({menu_id}: {menu_id: string}) {
   }
 
   return (
-    <Card>
+    <Card className={"max-h-fit"}>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
         <CardTitle className={"group flex items-center gap-2 text-lg"}>
           {secretMenuInfo.environment_details.name} Secret Menu

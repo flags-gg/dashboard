@@ -36,8 +36,9 @@ export default function Info({environmentId}: {environmentId: string}) {
   return (
     <div className={"grid gap-3"}>
       <ul className={"grid gap-3"}>
-        <li className={"flex items-center justify-between"}>
+        <li className={"flex items-stretch justify-items-end"}>
           <span className={"text-muted-foreground"}>Environment ID</span>
+          &nbsp;
           <span>{environmentInfo.environment_id}</span>
         </li>
         <li className={"flex items-center justify-between"}>

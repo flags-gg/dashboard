@@ -28,12 +28,12 @@ export default async function ProjectPage({params}: {params: {project_id: string
   }
 
   return (
-    <>
-      <header className={"col-span-2"}>
+    <div className={"grid grid-cols-3 gap-3"}>
+      <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Project Agents</h1>
       </header>
       <List project_id={params.project_id} />
       <InfoBox project_id={params.project_id} />
-    </>
+    </div>
   );
 }

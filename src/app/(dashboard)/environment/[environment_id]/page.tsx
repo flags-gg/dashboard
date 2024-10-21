@@ -30,12 +30,12 @@ export default async function EnvironmentPage({params}: {params: {environment_id
   }
 
   return (
-    <>
-      <header className={"col-span-2"}>
+    <div className={"grid grid-cols-3 gap-3"}>
+      <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Flags</h1>
       </header>
       <FlagsList environment_id={params.environment_id} />
       <InfoBox environment_id={params.environment_id} />
-    </>
+    </div>
   )
 }

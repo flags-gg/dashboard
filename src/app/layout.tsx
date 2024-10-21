@@ -45,13 +45,13 @@ export default async function RootLayout({
         <ClientProvider flagConfig={flagConfig}>
             <TooltipProvider>
               {session ? (
-                <div className="flex min-h-screen w-full flex-col bg-muted/40">
+                <div className="relative flex min-h-screen flex-col bg-muted/40">
                   <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
                   <SidebarProvider>
                     <SideBar />
-                    <div className={"flex flex-col sm:py-4"}>
+                    <div className={"flex flex-col sm:py-4 size-full"}>
                       <HeaderBar />
-                      <main className="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3" suppressHydrationWarning={true}>
+                      <main className="flex-1 size-full p-3" suppressHydrationWarning={true}>
                         {children}
                       </main>
                       <Toaster />
