@@ -1,5 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
+type UserGroup = {
+  id: string;
+  name: string;
+}
+
 type UserDetails = {
   avatar: string;
   first_name: string;
@@ -7,6 +12,7 @@ type UserDetails = {
   job_title: string;
   location: string;
   timezone: string;
+  group: UserGroup;
 }
 async function getUserDetails(): Promise<UserDetails> {
   const res = await fetch(`/api/user/details`, {

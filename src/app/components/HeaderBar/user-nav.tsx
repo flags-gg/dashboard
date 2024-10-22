@@ -12,7 +12,7 @@ import Link from "next/link";
 import { type Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
 import { useToast } from "~/hooks/use-toast";
-import { useUserDetails } from "~/hooks/use-user-account";
+import { useUserDetails } from "~/hooks/use-user-details";
 
 export function UserNav({session}: {session: Session}) {
   const user = session?.user;
@@ -42,7 +42,6 @@ export function UserNav({session}: {session: Session}) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align={"end"}>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         {is("user account")?.enabled() && <DropdownMenuItem>
           <Link href={"/user/account"}>Account</Link>
         </DropdownMenuItem>
@@ -51,6 +50,15 @@ export function UserNav({session}: {session: Session}) {
           <Link href={"/user/settings"}>Settings</Link>
         </DropdownMenuItem>
         }
+        {is("show company")?.enabled() && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Company</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link href={"/company"}>Settings</Link>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link href={"/api/auth/signout"}>Sign out</Link>

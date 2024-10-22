@@ -2,7 +2,7 @@
 
 import { Button } from "~/components/ui/button";
 import { type Session } from "next-auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -47,6 +47,7 @@ const FormSchema = z.object({
 
 export default function CreateProject({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [createdProject, setCreatedProject] = useState<IProject | null>(null);
   const queryClient = useQueryClient();
 
   const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
@@ -59,7 +60,7 @@ export default function CreateProject({ session }: { session: Session }) {
         title: "Project Created",
         description: "Project has been created",
       });
-      window.location.href = `/project/${data.project_id}`;
+      setCreatedProject(data);
     },
     onError: (error) => {
       console.error(error);
@@ -69,6 +70,10 @@ export default function CreateProject({ session }: { session: Session }) {
       });
     },
   });
+
+  useEffect(() => {
+    window.location.href = `/project/${createdProject?.project_id}`;
+  }, [createdProject]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
