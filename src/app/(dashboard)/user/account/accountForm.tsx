@@ -1,6 +1,6 @@
 "use client"
 
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useUserDetails } from "~/hooks/use-user-account";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -25,7 +25,7 @@ export default function AccountForm({session}: {session: Session}) {
   const [firstName, setFirstName] = useState<string>();
   const [lastName, setLastName] = useState<string>();
   const [location, setLocation] = useState<string>();
-  const [timezone, setTimezone] = useState<string>();
+  const [, setTimezone] = useState<string>();
 
   useEffect(() => {
     setFirstName(userData?.first_name);

@@ -2,7 +2,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
 
-export async function GET(request: Request) {
+export async function GET() {
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
