@@ -43,7 +43,7 @@ export default function Info({environmentId}: {environmentId: string}) {
         </TableRow>
         <TableRow>
           <TableCell>Enabled</TableCell>
-          <TableCell className={"text-right"}><EnvironmentSwitch /></TableCell>
+          <TableCell className={"text-right"}><EnvironmentSwitch environmentId={environmentInfo.environment_id} /></TableCell>
         </TableRow>
         <TableRow>
           <TableCell>Secret Menu</TableCell>

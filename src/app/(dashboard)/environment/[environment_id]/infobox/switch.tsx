@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
 import { LoadingSpinner } from "~/components/ui/loader";
+import { useEnvironment } from "~/hooks/use-environment";
 
 async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {
@@ -31,11 +32,20 @@ async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   }
 }
 
-export function EnvironmentSwitch() {
+export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
+  const {data: environmentData, isLoading, error} = useEnvironment(environmentId)
   const {toast} = useToast()
 
-  if (environmentInfo?.environment_id === undefined) {
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to fetch environment",
+      variant: "destructive",
+    });
+  }
+
+  if (isLoading) {
     return <LoadingSpinner className={"h-5 w-5"} />
   }
 
@@ -71,5 +81,5 @@ export function EnvironmentSwitch() {
     }
   }
 
-  return<Switch defaultChecked={environmentInfo.enabled} name={"environment"} onCheckedChange={onSwitch} />
+  return<Switch defaultChecked={environmentData?.enabled} name={"environment"} onCheckedChange={onSwitch} />
 }
