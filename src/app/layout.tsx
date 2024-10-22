@@ -51,7 +51,7 @@ export default async function RootLayout({
                     <SideBar />
                     <div className={"flex flex-col sm:py-4 size-full"}>
                       <HeaderBar />
-                      <main className="flex-1 size-full p-3" suppressHydrationWarning={true}>
+                      <main className="flex-1 size-full p-4" suppressHydrationWarning={true}>
                         {children}
                       </main>
                       <Toaster />
