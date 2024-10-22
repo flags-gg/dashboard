@@ -64,6 +64,15 @@ export default function AccountForm({ session }: { session: Session }) {
         description: "The account has been updated successfully",
       });
     } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          title: "Error",
+          description: `Failed to update account details: ${error.message}`,
+          variant: "destructive",
+        });
+        return
+      }
+
       toast({
         title: "Error",
         description: "Failed to update account details",

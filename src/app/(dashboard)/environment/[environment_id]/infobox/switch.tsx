@@ -37,6 +37,14 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
   const {data: environmentData, isLoading, error} = useEnvironment(environmentId)
   const {toast} = useToast()
 
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to fetch environment",
+      variant: "destructive",
+    });
+  }
+
   if (isLoading) {
     return <LoadingSpinner className={"h-5 w-5"} />
   }

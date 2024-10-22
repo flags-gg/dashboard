@@ -37,6 +37,14 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   const {data: projectData, isLoading, error} = useProject(projectId)
   const {toast} = useToast()
 
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to fetch project",
+      variant: "destructive",
+    });
+  }
+
   if (isLoading) {
     return <LoadingSpinner className={"h-5 w-5"} />
   }

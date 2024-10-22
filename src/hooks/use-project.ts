@@ -1,4 +1,4 @@
-import { IProject } from "~/lib/statemanager";
+import { type IProject } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchProject = async (projectId: string): Promise<IProject | null> => {
