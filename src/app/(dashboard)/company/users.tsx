@@ -1,3 +1,5 @@
+"use client"
+
 import {Card} from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { PencilIcon } from "lucide-react";
@@ -16,14 +18,16 @@ export default function Users() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableCell>Test</TableCell>
-          <TableCell>Tester</TableCell>
-          <TableCell>User</TableCell>
-          <TableCell className={"text-right"}>
-            <Button variant="outline" color="primary">
-              <PencilIcon />
-            </Button>
-          </TableCell>
+          <TableRow>
+            <TableCell>Test</TableCell>
+            <TableCell>Tester</TableCell>
+            <TableCell>User</TableCell>
+            <TableCell className={"text-right"}>
+              <Button variant="outline" color="primary">
+                <PencilIcon />
+              </Button>
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </Card>

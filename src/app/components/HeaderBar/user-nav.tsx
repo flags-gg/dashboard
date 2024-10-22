@@ -12,7 +12,7 @@ import Link from "next/link";
 import { type Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
 import { useToast } from "~/hooks/use-toast";
-import { useUserDetails } from "~/hooks/use-user-account";
+import { useUserDetails } from "~/hooks/use-user-details";
 
 export function UserNav({session}: {session: Session}) {
   const user = session?.user;

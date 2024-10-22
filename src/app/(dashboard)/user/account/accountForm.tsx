@@ -2,7 +2,7 @@
 
 import { type Session } from "next-auth";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { useUserDetails } from "~/hooks/use-user-account";
+import { useUserDetails } from "~/hooks/use-user-details";
 import { Skeleton } from "~/components/ui/skeleton";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
