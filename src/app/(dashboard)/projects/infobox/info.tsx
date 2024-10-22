@@ -4,10 +4,26 @@ import { type Session } from "next-auth";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { useToast } from "~/hooks/use-toast";
 import { Skeleton } from "~/components/ui/skeleton";
+import { agentAtom, environmentAtom, projectAtom, secretMenuAtom } from "~/lib/statemanager";
+import { useEffect } from "react";
+import { useResetAtom } from "jotai/utils";
 
 export default function ProjectsInfo({ session }: { session: Session }) {
   const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
   const { toast } = useToast();
+
+  // reset selected state
+  const resetProject = useResetAtom(projectAtom);
+  const resetAgent = useResetAtom(agentAtom);
+  const resetEnvironment = useResetAtom(environmentAtom);
+  const resetSecretMenu = useResetAtom(secretMenuAtom);
+  useEffect(() => {
+    resetProject();
+    resetAgent();
+    resetEnvironment();
+    resetSecretMenu();
+  }, [session, resetProject, resetAgent, resetEnvironment, resetSecretMenu]);
+
 
   if (isLoading) {
     return <Skeleton className="h-[125px] w-[250px] rounded-xl" />

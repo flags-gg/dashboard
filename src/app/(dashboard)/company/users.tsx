@@ -4,8 +4,11 @@ import {Card} from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { PencilIcon } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+import { useFlags } from "@flags-gg/react-library";
 
 export default function Users() {
+  const {is} = useFlags();
+
   return (
     <Card>
       <Table>
@@ -23,9 +26,11 @@ export default function Users() {
             <TableCell>Tester</TableCell>
             <TableCell>User</TableCell>
             <TableCell className={"text-right"}>
-              <Button variant="outline" color="primary">
-                <PencilIcon />
-              </Button>
+              {is("alter user")?.enabled() && (
+                <Button variant="outline" color="primary">
+                  <PencilIcon />
+                </Button>
+              )}
             </TableCell>
           </TableRow>
         </TableBody>

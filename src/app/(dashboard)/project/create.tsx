@@ -72,7 +72,9 @@ export default function CreateProject({ session }: { session: Session }) {
   });
 
   useEffect(() => {
-    window.location.href = `/project/${createdProject?.project_id}`;
+    if (createdProject !== null) {
+      window.location.href = `/project/${createdProject?.project_id}`;
+    }
   }, [createdProject]);
 
   const form = useForm<z.infer<typeof FormSchema>>({

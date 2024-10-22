@@ -1,7 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
-import { put } from "./project";
+import { put, getProject } from "./project";
 
 export async function DELETE(request: Request) {
   type DeleteProject = {
@@ -38,4 +38,19 @@ export async function DELETE(request: Request) {
 
 export async function PUT(request: Request) {
   return put(request)
+}
+
+export async function GET(request: Request) {
+  const {searchParams} = new URL(request.url)
+  const projectId = searchParams.get('projectId')
+
+  if (!projectId) {
+    return NextResponse.json({ message: 'No projectId provided' }, { status: 400 })
+  }
+  const data = await getProject(projectId)
+  if (!data) {
+    return NextResponse.json({ message: 'No project found' }, { status: 404 })
+  }
+
+  return NextResponse.json(data)
 }

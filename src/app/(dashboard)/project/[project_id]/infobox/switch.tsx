@@ -5,6 +5,7 @@ import {useAtom} from "jotai";
 import {projectAtom} from "~/lib/statemanager";
 import {useToast} from "~/hooks/use-toast";
 import { LoadingSpinner } from "~/components/ui/loader";
+import { useProject } from "~/hooks/use-project";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
   try {
@@ -31,17 +32,17 @@ async function enableDisableProject(project_id: string, enabled: boolean, name: 
   }
 }
 
-export function ProjectSwitch() {
+export function ProjectSwitch({projectId}: {projectId: string}) {
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
+  const {data: projectData, isLoading, error} = useProject(projectId)
   const {toast} = useToast()
 
-  if (projectInfo?.project_id === undefined) {
+  if (isLoading) {
     return <LoadingSpinner className={"h-5 w-5"} />
   }
 
   const onSwitch = () => {
     const updatedProjectInfo = {...projectInfo, enabled: !projectInfo.enabled}
-    console.info("updatedProjectInfo", updatedProjectInfo, projectInfo)
 
     try {
       enableDisableProject(updatedProjectInfo.project_id, updatedProjectInfo.enabled, updatedProjectInfo.name).then(() => {
@@ -74,5 +75,5 @@ export function ProjectSwitch() {
     }
   }
 
-  return <Switch defaultChecked={projectInfo.enabled} name={"project"} onCheckedChange={onSwitch} />
+  return <Switch defaultChecked={projectData?.enabled} name={"project"} onCheckedChange={onSwitch} />
 }
