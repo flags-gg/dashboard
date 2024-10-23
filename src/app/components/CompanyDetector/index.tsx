@@ -48,7 +48,7 @@ export default function CompanyDetector({session}: {session: Session}) {
   }, [companyInfoData, setCompanyInfo]);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  if (companyInfoData?.company.enabled) {
+  if (companyInfoData?.company?.invite_code) {
     return null;
   }
 

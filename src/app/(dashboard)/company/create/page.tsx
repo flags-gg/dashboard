@@ -8,6 +8,8 @@ export default function CompanyCreate() {
   const [, setCompanyCreation] = useAtom(companyCreationAtom);
   const [userInfo] = useAtom(userAtom)
 
+  console.info("userInfo", userInfo)
+
   useEffect(() => {
     setCompanyCreation(true);
   }, [setCompanyCreation]);

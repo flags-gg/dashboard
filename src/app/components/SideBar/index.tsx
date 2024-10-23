@@ -29,7 +29,7 @@ export default function SideBar() {
 
   const {is} = useFlags();
 
-  if (!companyInfo?.company.enabled) {
+  if (!companyInfo?.company.invite_code) {
     return <Sidebar>
       <SidebarContent>
         <SidebarGroup>

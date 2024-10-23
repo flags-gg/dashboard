@@ -87,7 +87,7 @@ export function SearchBox() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  if (!companyInfo?.company.enabled) {
+  if (!companyInfo?.company?.invite_code) {
     return <div className={"relative ml-auto flex-1 md:grow-0"}></div>;
   }
 
