@@ -1,9 +1,10 @@
 "use client"
 
-import { companyCreationAtom, companyInfoAtom } from "~/lib/statemanager";
+import { companyCreationAtom, companyInfoAtom, userAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { type Session } from "next-auth";
 
 export async function getCompanyInfo() {
   const res = await fetch(`/api/company/info`, {
@@ -20,9 +21,17 @@ export async function getCompanyInfo() {
   return res.json();
 }
 
-export default function CompanyDetector() {
+export default function CompanyDetector({session}: {session: Session}) {
   const [, setCompanyInfo] = useAtom(companyInfoAtom);
   const [companyCreation] = useAtom(companyCreationAtom);
+  const [, setUserInfo] = useAtom(userAtom)
+
+  useEffect(() => {
+    setUserInfo({
+      email: session?.user?.email ?? "",
+      domain: session?.user?.email?.split("@")[1] ?? "",
+    })
+  }, [session, setUserInfo])
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {data: companyInfoData} = useQuery({

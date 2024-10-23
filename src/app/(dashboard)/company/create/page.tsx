@@ -2,10 +2,12 @@
 
 import { useEffect } from "react";
 import { useAtom } from "jotai";
-import { companyCreationAtom } from "~/lib/statemanager";
+import { companyCreationAtom, userAtom } from "~/lib/statemanager";
 
 export default function CompanyCreate() {
   const [, setCompanyCreation] = useAtom(companyCreationAtom);
+  const [userInfo] = useAtom(userAtom)
+
   useEffect(() => {
     setCompanyCreation(true);
   }, [setCompanyCreation]);

@@ -164,3 +164,12 @@ export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", 
 })
 
 export const companyCreationAtom = atomWithStorage<boolean>("companyCreationAtom", false)
+
+export interface IUserInfo {
+  email: string
+  domain: string
+}
+export const userAtom = atomWithStorage("userAtom", {
+  email: '',
+  domain: '',
+})
