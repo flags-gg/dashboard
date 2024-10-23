@@ -17,7 +17,7 @@ export default [
   }},
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  pluginReact?.configs?.flat?.recommended,
   {settings: {react: {version: "detect"}}},
   {ignores: [".next/*", "*.cjs", "tailwind.config.ts", "*/components/ui/*"]},
   {rules:
