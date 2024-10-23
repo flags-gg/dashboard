@@ -145,3 +145,22 @@ export interface Flag {
     id: string,
   }
 }
+
+export interface ICompanyInfo {
+  company: {
+    name: string,
+    domain: string,
+    enabled: boolean,
+    id: string,
+  }
+}
+export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", {
+  company: {
+    name: '',
+    domain: '',
+    enabled: false,
+    id: '',
+  }
+})
+
+export const companyCreationAtom = atomWithStorage<boolean>("companyCreationAtom", false)

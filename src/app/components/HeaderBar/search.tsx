@@ -12,9 +12,10 @@ import {
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
-import { type AgentsData, type EnvironmentsData, type ProjectsData } from "~/lib/statemanager";
+import { type AgentsData, companyInfoAtom, type EnvironmentsData, type ProjectsData } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "~/hooks/use-toast";
+import { useAtom } from "jotai";
 
 async function getProjects() {
   const res = await fetch(`/api/project/list`, {
@@ -68,6 +69,13 @@ export function SearchBox() {
   const {toast} = useToast();
   const {is} = useFlags();
   const [isOpen, setIsOpen] = useState(false);
+  const [companyInfo] = useAtom(companyInfoAtom);
+
+  if (!companyInfo?.company.enabled) {
+    return <div className={"relative ml-auto flex-1 md:grow-0"}></div>;
+  }
+
+
   const {data: projectsData, error: projectsError} = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
