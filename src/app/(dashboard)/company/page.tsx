@@ -4,7 +4,6 @@ import {Separator} from "~/components/ui/separator";
 import Users from "~/app/(dashboard)/company/users";
 
 export default function Company() {
-
   return (
     <div className="grid auto-rows-max items-start gap-4 col-span-3">
       <div className="grid gap-4 grid-cols-3">

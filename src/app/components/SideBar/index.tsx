@@ -4,14 +4,14 @@ import Link from "next/link";
 import {
   Building2,
   Container,
-  Home,
+  Home, HousePlus,
   SquareGanttChart,
   SquareKanban,
   SquareMenu,
   VenetianMask
 } from "lucide-react";
 import {useAtom} from "jotai";
-import {projectAtom, agentAtom, environmentAtom, secretMenuAtom} from "~/lib/statemanager";
+import { projectAtom, agentAtom, environmentAtom, secretMenuAtom, companyInfoAtom } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import {
   Sidebar,
@@ -25,7 +25,46 @@ export default function SideBar() {
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
+  const [companyInfo] = useAtom(companyInfoAtom);
+
   const {is} = useFlags();
+
+  if (!companyInfo?.company.enabled) {
+    return <Sidebar>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem key={"dashboard"}>
+                <SidebarMenuButton asChild>
+                  <Link href={"/"}>
+                    <Home className={"h-5 w-5"} />
+                    <span>Home</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Company</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem key={"company"}>
+                <SidebarMenuButton asChild>
+                  <Link href={"/company/create"}>
+                    <HousePlus className={"h-5 w-5"} />
+                    <span>Create Company</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
+  }
 
   return (
     <Sidebar>
