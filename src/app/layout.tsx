@@ -17,7 +17,6 @@ import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/toaster";
 import { env } from "~/env";
 import { SidebarProvider } from "~/components/ui/sidebar";
-import CompanyDetector from "~/app/components/CompanyDetector";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -51,7 +50,6 @@ export default async function RootLayout({
                   <SidebarProvider>
                     <SideBar />
                     <div className={"flex flex-col sm:py-4 size-full"}>
-                      <CompanyDetector session={session} />
                       <HeaderBar />
                       <main className="flex-1 size-full p-4" suppressHydrationWarning={true}>
                         {children}

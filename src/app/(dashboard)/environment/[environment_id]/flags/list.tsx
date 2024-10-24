@@ -32,7 +32,7 @@ export default async function FlagsList({ environment_id, }: { environment_id: s
   }
 
   return (
-    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
+    <div className={"gap-3 col-span-2 min-w-[40rem]"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>
