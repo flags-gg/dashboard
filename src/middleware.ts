@@ -7,7 +7,7 @@ import { env } from "~/env";
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
-  if (path === '/') {
+  if (path === '/' || path === '/user/account') {
     return NextResponse.next()
   }
 
