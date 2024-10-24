@@ -173,7 +173,7 @@ tasks:
       LATEST_TAG:
         sh: cat .latest_tag
 
-  # Extras
+  # Build
   build-deploy:
     cmds:
       - task: build-images
@@ -189,6 +189,14 @@ tasks:
       - task: build-push-latest
       - task: deploy-latest
 
+  # Cleanup
+  clean-images:
+    cmds:
+      - docker image prune -f
+      - docker rmi `docker image ls | grep -E "flags-gg" | awk '{print $1":"$2}'`
+      - docker container prune -f
+
+  # Run
   run-image:
     cmds:
       - docker image prune -f

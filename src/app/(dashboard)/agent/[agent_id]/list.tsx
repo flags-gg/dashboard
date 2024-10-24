@@ -18,7 +18,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
   }
 
   return (
-    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
+    <div className={"gap-3 col-span-2 min-w-[40rem]"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>
@@ -29,7 +29,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {environments.environments.map(environment => (
+            {environments?.environments?.map(environment => (
               <TableRow key={environment.id}>
                 <TableCell>
                   <Link href={`/environment/${environment.environment_id}`}>{environment.name}</Link>

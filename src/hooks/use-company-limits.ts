@@ -2,17 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import { type Session } from 'next-auth';
 import { type CompanyLimits } from '~/lib/statemanager';
 
-const fetchCompanyLimits = async (session: Session): Promise<CompanyLimits> => {
+const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
   const res = await fetch(`/api/company/limits`, {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${session.user.access_token}`,
     },
-    body: JSON.stringify({
-      sessionToken: session.user.access_token,
-      userId: session.user.id,
-    }),
     cache: 'no-store',
   });
 
@@ -27,7 +22,7 @@ const fetchCompanyLimits = async (session: Session): Promise<CompanyLimits> => {
 export const useCompanyLimits = (session: Session) => {
   return useQuery<CompanyLimits, Error>({
     queryKey: ['companyLimits', session.user.id],
-    queryFn: () => fetchCompanyLimits(session),
+    queryFn: () => fetchCompanyLimits(),
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

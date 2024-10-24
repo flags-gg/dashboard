@@ -20,7 +20,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
   }
 
   return (
-    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
+    <div className={"gap-3 col-span-2 min-w-[40rem]"}>
       <Card className={"mb-3"}>
         <Table>
           <TableHeader>

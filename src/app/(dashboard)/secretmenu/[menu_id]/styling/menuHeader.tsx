@@ -89,7 +89,7 @@ export default function MenuHeader() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {positionOptions.map((option) => (
+                    {positionOptions?.map((option) => (
                       <SelectItem key={`${field.name} - ${option}`} value={option}>
                         {option}
                       </SelectItem>

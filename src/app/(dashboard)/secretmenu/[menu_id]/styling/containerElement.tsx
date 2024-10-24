@@ -106,7 +106,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {positionOptions.map((option) => (
+                      {positionOptions?.map((option) => (
                         <SelectItem key={`${field.name}-${option}`} value={option}>
                           {option}
                         </SelectItem>
@@ -115,7 +115,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                   </Select>
                   <FormMessage />
                 </FormItem>)} />
-              {["top", "left"].map((field) => (
+              {["top", "left"]?.map((field) => (
                 <FormField key={field} control={form.control} name={field as "top" | "left"} render={({ field: fieldProps }) => (
                   <FormItem>
                     <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>
@@ -153,7 +153,7 @@ export default function ContainerElement({children}: {children: ReactNode}) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {borderStyleOptions.map((option) => (
+                      {borderStyleOptions?.map((option) => (
                         <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                           {option}
                         </SelectItem>

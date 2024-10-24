@@ -150,7 +150,7 @@ export interface ICompanyInfo {
   company: {
     name: string,
     domain: string,
-    enabled: boolean,
+    invite_code: string,
     id: string,
   }
 }
@@ -158,9 +158,18 @@ export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", 
   company: {
     name: '',
     domain: '',
-    enabled: false,
+    invite_code: '',
     id: '',
   }
 })
 
 export const companyCreationAtom = atomWithStorage<boolean>("companyCreationAtom", false)
+
+export interface IUserInfo {
+  email: string
+  domain: string
+}
+export const userAtom = atomWithStorage("userAtom", {
+  email: '',
+  domain: '',
+})

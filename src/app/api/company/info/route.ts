@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { type FlagAgent } from "~/lib/statemanager";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
+import { type ICompanyInfo } from "~/lib/statemanager";
 
 export async function GET() {
   const session = await getServerAuthSession();
@@ -22,7 +22,9 @@ export async function GET() {
       return NextResponse.json({ message: 'Failed to fetch company info' }, { status: 500 })
     }
 
-    const data = await response.json() as FlagAgent[]
+    const data = await response.json() as ICompanyInfo
+    console.info("companyInfo data", data)
+
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch company info', e)

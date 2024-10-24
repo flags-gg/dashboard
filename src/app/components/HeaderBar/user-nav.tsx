@@ -16,7 +16,7 @@ import { useUserDetails } from "~/hooks/use-user-details";
 export function UserNav({session}: {session: Session}) {
   const user = session?.user;
   const userName = user?.name ?? "";
-  const shortName = userName.split(" ").map((n) => n[0]).join("");
+  const shortName = userName.split(" ")?.map((n) => n[0]).join("");
   const {is} = useFlags();
 
   const { data: userData } = useUserDetails(user?.id ?? "");
