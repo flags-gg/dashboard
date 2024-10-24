@@ -104,7 +104,7 @@ export default function Flag({children}: {children: ReactNode}) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {displayOptions.map((option) => (
+                        {displayOptions?.map((option) => (
                           <SelectItem key={`${field.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>
@@ -123,7 +123,7 @@ export default function Flag({children}: {children: ReactNode}) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {alignItemsOptions.map((option) => (
+                        {alignItemsOptions?.map((option) => (
                           <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>
@@ -142,7 +142,7 @@ export default function Flag({children}: {children: ReactNode}) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {justifyContentOptions.map((option) => (
+                        {justifyContentOptions?.map((option) => (
                           <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>
@@ -182,7 +182,7 @@ export default function Flag({children}: {children: ReactNode}) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {borderStyleOptions.map((option) => (
+                        {borderStyleOptions?.map((option) => (
                           <SelectItem key={`${fieldProps.name}-${option}`} value={option}>
                             {option}
                           </SelectItem>

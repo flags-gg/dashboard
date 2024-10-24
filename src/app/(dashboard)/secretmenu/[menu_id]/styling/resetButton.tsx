@@ -88,7 +88,7 @@ export default function ResetButton() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {positionOptions.map((option) => (
+                    {positionOptions?.map((option) => (
                       <SelectItem key={option} value={option}>
                         {option}
                       </SelectItem>
@@ -97,7 +97,7 @@ export default function ResetButton() {
                 </Select>
                 <FormMessage />
               </FormItem> )} />
-            {["top", "left"].map((field) => (
+            {["top", "left"]?.map((field) => (
               <FormField key={field} control={form.control} name={field as "top" | "left"} render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>

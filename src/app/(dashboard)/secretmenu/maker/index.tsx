@@ -101,7 +101,7 @@ export default function Maker({menuId}: {menuId: string}) {
   }, [menuId])
 
   const setCodeSequence = (sequence: string[]) => {
-    const newSequence = sequence.map((keyId) => {
+    const newSequence = sequence?.map((keyId) => {
       const direction = DirectionMap.find((k) => k.id === keyId)
       const letter = LetterMap.find((k) => k.id === keyId)
       const number = NumberMap.find((k) => k.id === keyId)
@@ -167,15 +167,15 @@ export default function Maker({menuId}: {menuId: string}) {
         <CardContent className={"p-6 text-sm"}>
           <DndContext onDragEnd={handleDragEnd} collisionDetection={rectIntersection}>
             <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
-              {DirectionMap.map((key) => (
+              {DirectionMap?.map((key) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
               <Separator />
-              {LetterMap.map((key) => (
+              {LetterMap?.map((key) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
               <Separator />
-              {NumberMap.map((key) => (
+              {NumberMap?.map((key) => (
                 <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
               ))}
             </div>
@@ -184,7 +184,7 @@ export default function Maker({menuId}: {menuId: string}) {
         </CardContent>
         <CardFooter>
           <Button onClick={() => {
-            const sequence = code.map((key) => key.keyCode)
+            const sequence = code?.map((key) => key.keyCode)
 
             if (menuId === "") {
               createMenuId().then((menuData) => {

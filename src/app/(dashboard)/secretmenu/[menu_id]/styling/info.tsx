@@ -80,7 +80,7 @@ export default function Info({session, menuId}: {session: Session, menuId: strin
           <div className="mt-4 space-y-2">
             <span>Reset modified styles:</span>
             <div className="flex flex-wrap gap-2 mt-2">
-              {Array.from(modifiedStyles).map((styleKey) => (
+              {Array.from(modifiedStyles)?.map((styleKey) => (
                 <div key={`${styleKey}-container`}>
                   <Button key={`${styleKey}-button`} onClick={() => resetStyle(styleKey)}>
                     {styleNames[styleKey]}

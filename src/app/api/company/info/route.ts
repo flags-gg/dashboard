@@ -23,6 +23,8 @@ export async function GET() {
     }
 
     const data = await response.json() as ICompanyInfo
+    console.info("companyInfo data", data)
+
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch company info', e)

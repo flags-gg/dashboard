@@ -151,7 +151,7 @@ export default function AccountForm({ session }: { session: Session }) {
                       <SelectValue placeholder="Select a timezone" />
                     </SelectTrigger>
                     <SelectContent>
-                      {options.map((option) => (
+                      {options?.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
                           {option.label}
                         </SelectItem>

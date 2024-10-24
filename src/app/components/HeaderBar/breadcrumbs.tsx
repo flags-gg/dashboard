@@ -27,6 +27,11 @@ function useBreadcrumbs() {
     url: "/",
   }]
 
+  if (pathSegments[0] === "company") {
+    breadcrumbs.push({ title: "Company", url: "/company" });
+    return breadcrumbs
+  }
+
   if (pathSegments[0] === "projects") {
     breadcrumbs.push({ title: "Projects", url: "/projects" });
     return breadcrumbs
@@ -107,7 +112,7 @@ export default function BreadCrumbs() {
   return (
     <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>
       <BreadcrumbList key={"breadcrumbs-list"}>
-        {breadcrumbs.map((crumb, index) => (
+        {breadcrumbs?.map((crumb, index) => (
           <Fragment key={`${crumb.url}-container`}>
             {index > 0 && <BreadcrumbSeparator key={`${crumb.url}-separator`} />}
             <BreadcrumbItem key={`${crumb.url}-item`}>

@@ -86,7 +86,7 @@ export default function CloseButton() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {positionOptions.map((option) => (
+                    {positionOptions?.map((option) => (
                       <SelectItem key={option} value={option}>
                         {option}
                       </SelectItem>
@@ -95,7 +95,7 @@ export default function CloseButton() {
                 </Select>
                 <FormMessage />
               </FormItem>)} />
-            {["top", "right"].map((field) => (
+            {["top", "right"]?.map((field) => (
               <FormField key={field} control={form.control} name={field as "top" | "right"} render={({ field: fieldProps }) => (
                 <FormItem>
                   <FormLabel>{field.charAt(0).toUpperCase() + field.slice(1)}</FormLabel>

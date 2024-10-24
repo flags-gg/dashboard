@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import {type ProjectsData} from "~/lib/statemanager";
 import {Card} from "~/components/ui/card";
 import {getProjects} from "~/app/api/project/project";
@@ -25,15 +25,15 @@ export default async function ProjectList() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Project ID</TableCell>
-              <TableCell>Agent Limit</TableCell>
-              <TableCell>Agents Used</TableCell>
+              <TableHead></TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Project ID</TableHead>
+              <TableHead>Agent Limit</TableHead>
+              <TableHead>Agents Used</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {projects.projects.map(project => (
+            {projects?.projects?.map(project => (
               <TableRow key={project.id}>
                 <TableCell className={"place-content-center justify-center"} style={{ paddingLeft: "3%" }}>
                   <Link href={`/project/${project.project_id}`}>

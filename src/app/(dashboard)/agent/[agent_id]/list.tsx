@@ -29,7 +29,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {environments.environments.map(environment => (
+            {environments?.environments?.map(environment => (
               <TableRow key={environment.id}>
                 <TableCell>
                   <Link href={`/environment/${environment.environment_id}`}>{environment.name}</Link>

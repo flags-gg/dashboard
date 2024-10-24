@@ -15,12 +15,14 @@ export async function getCompanyInfo() {
     throw new Error('Failed to fetch company info')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
 
 export function useCompanyRedirect() {
   const router = useRouter()
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { data: companyInfo, isLoading } = useQuery({
     queryKey: ['companyInfo'],
     queryFn: getCompanyInfo,
@@ -30,7 +32,9 @@ export function useCompanyRedirect() {
   useEffect(() => {
     if (isLoading) return
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const path = window.location.pathname
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const hasCompany = companyInfo?.company?.invite_code
 
     if (hasCompany && path === '/company/create') {
@@ -42,5 +46,6 @@ export function useCompanyRedirect() {
     }
   }, [companyInfo, isLoading, router])
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   return { companyInfo, isLoading }
 }
