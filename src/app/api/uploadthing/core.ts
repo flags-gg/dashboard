@@ -10,6 +10,7 @@ export const ourFileRouter = {
       const session = await getServerAuthSession();
 
       if (!session?.user?.id) {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw new UploadThingError("Unauthorized");
       } else {
         return { userId: session.user.id };
