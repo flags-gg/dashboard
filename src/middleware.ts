@@ -7,7 +7,7 @@ import { env } from "~/env";
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
-  if (path === '/') {
+  if (path === '/' || path === '/user/account') {
     return NextResponse.next()
   }
 
@@ -15,6 +15,11 @@ export async function middleware(req: NextRequest) {
     const token = await getToken({ req })
     if (!token) {
       return NextResponse.redirect(new URL('/api/auth/signin', req.url))
+    }
+
+    const companyInfoReq = req.cookies.get("companyInfo")
+    if (companyInfoReq) {
+      return NextResponse.next()
     }
 
     const companyRes = await fetch(`${env.API_SERVER}/company`, {
@@ -34,6 +39,11 @@ export async function middleware(req: NextRequest) {
 
     const companyInfo = await companyRes.json() as ICompanyInfo
     const hasCompany = Boolean(companyInfo?.company?.invite_code)
+
+    if (companyInfo) {
+      const resp = NextResponse.next()
+      resp.cookies.set("companyInfo", JSON.stringify(companyInfo))
+    }
 
     if (!hasCompany) {
       return NextResponse.redirect(new URL('/company/create', req.url))
