@@ -45,20 +45,25 @@ export default function AccountForm({ session }: { session: Session }) {
   // Set form values when user data loads
   useEffect(() => {
     if (userData) {
+      const matchingTimezone = options.find(
+        (option) => option.value === userData.timezone ||
+          option.value === `UTC/${userData.timezone}` ||
+          option.value === userData.timezone.replace('_', '/')
+      );
+
       form.reset({
         firstName: userData.first_name,
         lastName: userData.last_name,
         location: userData.location,
-        timezone: userData.timezone || "UTC",
+        timezone: matchingTimezone ? matchingTimezone.value : "UTC",
       });
     }
-  }, [userData, form]);
+  }, [userData, form, options]);
 
   const onSubmit = async (data: FormValues) => {
     try {
-
-      console.info("data", data);
-
+      console.info("submitted data", data)
+      
       toast({
         title: "Account Updated",
         description: "The account has been updated successfully",
@@ -82,10 +87,15 @@ export default function AccountForm({ session }: { session: Session }) {
   };
 
   if (isLoading) {
-    return <Skeleton className="h-[20rem] w-[50rem] rounded-xl" />;
+    return <Skeleton className="h-[20rem] w-[50rem] w-min-[50rem] rounded-xl" />;
   }
 
   if (isError) {
+    toast({
+      title: "Error loading user details",
+      description: "Please try again later.",
+    });
+
     return (
       <div className="text-red-500">
         Error loading user details. Please try again later.

@@ -2,6 +2,7 @@ import AccountForm from "./accountForm";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "~/server/auth";
 import { redirect } from "next/navigation";
+import InfoBox from "./infobox";
 
 export default async function AccountPage() {
   const session = await getServerSession(authOptions)
@@ -15,6 +16,7 @@ export default async function AccountPage() {
         <h1 className={"text-2xl font-semibold"}>User Account</h1>
       </header>
       <AccountForm session={session} />
+      <InfoBox />
     </div>
   )
 }
