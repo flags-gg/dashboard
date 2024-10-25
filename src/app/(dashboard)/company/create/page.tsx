@@ -49,12 +49,12 @@ export default function CompanyCreate() {
   useEffect(() => {
     setCompanyCreation(true);
     injectUser().then((user) => {
-      console.info("inject user data")
+      console.info("inject user data", user)
     }).catch((e) => {
       console.error("error in injectUser", e)
     })
     addToCompanyIfExists(userInfo.domain).then((company) => {
-      console.info("added to domain", userInfo.domain)
+      console.info("added to domain", userInfo.domain, company)
     }).catch((e) => {
       console.error("error in addToCompanyIfExists", e)
     })
