@@ -7,11 +7,12 @@ import { type Metadata } from "next";
 import { getAgent } from "~/app/api/agent/agent";
 
 export async function generateMetadata({params}: {params: {agent_id: string}}): Promise<Metadata> {
+  const {agent_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
   }
-  const agentInfo = await getAgent(params.agent_id)
+  const agentInfo = await getAgent(agent_id)
   if (!agentInfo?.project_info?.name) {
     redirect('/projects')
   }
@@ -22,6 +23,7 @@ export async function generateMetadata({params}: {params: {agent_id: string}}): 
 }
 
 export default async function AgentPage({params}: {params: {agent_id: string}}) {
+  const {agent_id} = await params
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -33,8 +35,8 @@ export default async function AgentPage({params}: {params: {agent_id: string}}) 
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Agent Environments</h1>
       </header>
-      <EnvironmentsList agent_id={params.agent_id} />
-      <InfoBox agent_id={params.agent_id} />
+      <EnvironmentsList agent_id={agent_id} />
+      <InfoBox agent_id={agent_id} />
     </div>
   )
 }

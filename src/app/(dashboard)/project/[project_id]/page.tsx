@@ -7,11 +7,12 @@ import { type Metadata } from "next";
 import { getProject } from "~/app/api/project/project";
 
 export async function generateMetadata({params}: {params: {project_id: string}}): Promise<Metadata> {
+  const {project_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
   }
-  const projectInfo = await getProject(params.project_id)
+  const projectInfo = await getProject(project_id)
   if (!projectInfo) {
     redirect('/projects')
   }
@@ -22,6 +23,7 @@ export async function generateMetadata({params}: {params: {project_id: string}})
 }
 
 export default async function ProjectPage({params}: {params: {project_id: string}}) {
+  const {project_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
@@ -32,8 +34,8 @@ export default async function ProjectPage({params}: {params: {project_id: string
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Project Agents</h1>
       </header>
-      <List project_id={params.project_id} />
-      <InfoBox project_id={params.project_id} />
+      <List project_id={project_id} />
+      <InfoBox project_id={project_id} />
     </div>
   );
 }
