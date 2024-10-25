@@ -22,10 +22,12 @@ export async function middleware(req: NextRequest) {
       return NextResponse.next()
     }
 
+
     const companyRes = await fetch(`${env.API_SERVER}/company`, {
       method: 'GET',
       headers: {
-        'x-user-access-token': token.access_token ?? '',
+        'Content-Type': 'application/json',
+        'x-user-access-token': token.access_token as string ?? '',
         'x-user-subject': token.sub ?? '',
       },
       cache: 'no-store',
