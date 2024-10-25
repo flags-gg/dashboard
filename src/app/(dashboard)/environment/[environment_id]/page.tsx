@@ -6,7 +6,7 @@ import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getEnvironment } from "~/app/api/environment/environment";
 
-export async function generateMetadata({params}: {params: {environment_id: string}}): Promise<Metadata> {
+export async function generateMetadata({params}: {params: Promise<{environment_id: string}>}): Promise<Metadata> {
   const {environment_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -24,7 +24,7 @@ export async function generateMetadata({params}: {params: {environment_id: strin
   }
 }
 
-export default async function EnvironmentPage({params}: {params: {environment_id: string}}) {
+export default async function EnvironmentPage({params}: {params: Promise<{environment_id: string}>}) {
   const {environment_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {

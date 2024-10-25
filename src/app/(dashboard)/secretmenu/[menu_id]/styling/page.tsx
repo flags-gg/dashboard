@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "SecretMenu Style Builder - Flags.gg",
 }
 
-export default async function Styling({params}: {params: {menu_id: string}}) {
+export default async function Styling({params}: {params: Promise<{menu_id: string}>}) {
   const {menu_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "SecretMenu Builder - Flags.gg",
 }
 
-export default async function SecretMenuSpecificPage({params}: {params: {menu_id: string}}) {
+export default async function SecretMenuSpecificPage({params}: {params: Promise<{menu_id: string}>}) {
   const {menu_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {

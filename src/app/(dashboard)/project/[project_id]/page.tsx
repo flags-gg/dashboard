@@ -6,7 +6,7 @@ import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getProject } from "~/app/api/project/project";
 
-export async function generateMetadata({params}: {params: {project_id: string}}): Promise<Metadata> {
+export async function generateMetadata({params}: {params: Promise<{project_id: string}>}): Promise<Metadata> {
   const {project_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -22,7 +22,7 @@ export async function generateMetadata({params}: {params: {project_id: string}})
   }
 }
 
-export default async function ProjectPage({params}: {params: {project_id: string}}) {
+export default async function ProjectPage({params}: {params: Promise<{project_id: string}>}) {
   const {project_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
