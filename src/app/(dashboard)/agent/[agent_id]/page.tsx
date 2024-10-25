@@ -6,7 +6,7 @@ import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getAgent } from "~/app/api/agent/agent";
 
-export async function generateMetadata({params}: {params: {agent_id: string}}): Promise<Metadata> {
+export async function generateMetadata({params}: {params: Promise<{agent_id: string}>}): Promise<Metadata> {
   const {agent_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -22,7 +22,7 @@ export async function generateMetadata({params}: {params: {agent_id: string}}): 
   }
 }
 
-export default async function AgentPage({params}: {params: {agent_id: string}}) {
+export default async function AgentPage({params}: {params: Promise<{agent_id: string}>}) {
   const {agent_id} = await params
   const session = await getServerSession(authOptions)
 
