@@ -7,12 +7,13 @@ import { type Metadata } from "next";
 import { getEnvironment } from "~/app/api/environment/environment";
 
 export async function generateMetadata({params}: {params: {environment_id: string}}): Promise<Metadata> {
+  const {environment_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
   }
 
-  const { data: environmentInfo, error } = await getEnvironment(params.environment_id)
+  const { data: environmentInfo, error } = await getEnvironment(environment_id)
 
   if (error ?? !environmentInfo) {
     console.error('Failed to fetch environment:', error)
@@ -24,6 +25,7 @@ export async function generateMetadata({params}: {params: {environment_id: strin
 }
 
 export default async function EnvironmentPage({params}: {params: {environment_id: string}}) {
+  const {environment_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
@@ -34,8 +36,8 @@ export default async function EnvironmentPage({params}: {params: {environment_id
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Flags</h1>
       </header>
-      <FlagsList environment_id={params.environment_id} />
-      <InfoBox environment_id={params.environment_id} />
+      <FlagsList environment_id={environment_id} />
+      <InfoBox environment_id={environment_id} />
     </div>
   )
 }

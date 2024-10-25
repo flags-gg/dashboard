@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function SecretMenuSpecificPage({params}: {params: {menu_id: string}}) {
+  const {menu_id} = await params
   const session = await getServerSession(authOptions)
   if (!session) {
     redirect('/api/auth/signin')
@@ -20,8 +21,8 @@ export default async function SecretMenuSpecificPage({params}: {params: {menu_id
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Secret Menu Updater</h1>
       </header>
-      <Maker menuId={params.menu_id} />
-      <InfoBox menu_id={params.menu_id} />
+      <Maker menuId={menu_id} />
+      <InfoBox menu_id={menu_id} />
     </div>
   )
 }
