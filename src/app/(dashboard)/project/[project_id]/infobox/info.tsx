@@ -45,7 +45,7 @@ function uploadImage({projectId, imageUrl}: uploadImageProps): Error | void {
   })
 }
 
-export default function ProjectInfo({session, project_id}: {session: Session, project_id: string}) {
+export default function ProjectInfo({session}: {session: Session}) {
   if (!session) {
     throw new Error('No session found')
   }
