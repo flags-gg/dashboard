@@ -14,6 +14,7 @@ import {
 import { UploadButton } from "~/utils/uploadthing";
 import Image from "next/image";
 import { useUserDetails } from "~/hooks/use-user-details";
+import { useToast } from "~/hooks/use-toast";
 
 interface IError {
   message: string
@@ -43,6 +44,7 @@ export default function UserImage({session}: {session: Session}) {
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [showError, setShowError] = useState(false)
   const [imageURL, setImageURL] = useState("")
+  const {toast} = useToast()
 
   const { data: userData } = useUserDetails(session?.user?.id ?? "");
   useEffect(() => {
@@ -57,6 +59,13 @@ export default function UserImage({session}: {session: Session}) {
       <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={50} width={50} className={"cursor-pointer"} />
   } else {
     imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
+  }
+
+  if (showError) {
+    toast({
+      title: errorInfo.title,
+      description: errorInfo.message,
+    })
   }
 
   return (
