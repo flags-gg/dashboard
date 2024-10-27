@@ -16,7 +16,6 @@ import {
   agentAtom,
   environmentAtom,
   secretMenuAtom,
-  companyInfoAtom,
   companyCreationAtom
 } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
