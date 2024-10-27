@@ -42,6 +42,8 @@ spec:
               value: b0c5020e-760e-4156-a88b-344fb725a9b7
             - name: NEXT_PUBLIC_FLAGS_ENVIRONMENT
               value: 246a09ff-0931-4776-89a9-f2109ad80b7f
+            - name: KEYCLOAK_ISSUER
+              value: https://keys.chewedfeed.com/realms/flags-gg/
 
 ---
 apiVersion: v1

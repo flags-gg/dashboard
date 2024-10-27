@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
+import { UserDetails } from "~/hooks/use-user-details";
 
 export async function GET() {
   const session = await getServerAuthSession();
@@ -18,10 +19,11 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
+      console.info("response", response, response.status)
       return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 500 })
     }
 
-    const data = await response.json() as { real_name: string, image: string }
+    const data = await response.json() as UserDetails
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch user details', e)
