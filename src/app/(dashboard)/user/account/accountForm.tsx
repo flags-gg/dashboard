@@ -87,7 +87,11 @@ export default function AccountForm({ session }: { session: Session }) {
   };
 
   if (isLoading) {
-    return <Skeleton className="h-[20rem] w-[50rem] w-min-[50rem] rounded-xl" />;
+    return (
+      <div className={"col-span-2"}>
+        <Skeleton className="h-[20rem] w-[50rem] rounded-xl" />
+      </div>
+    )
   }
 
   if (isError) {

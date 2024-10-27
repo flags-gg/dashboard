@@ -1,11 +1,10 @@
 import AccountForm from "./accountForm";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth";
 import { redirect } from "next/navigation";
 import InfoBox from "./infobox";
 
 export default async function AccountPage() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerAuthSession()
   if (!session) {
     redirect('/api/auth/signin')
   }

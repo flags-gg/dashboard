@@ -1,6 +1,5 @@
-import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
-import { authOptions } from "~/server/auth"
+import { getServerAuthSession } from "~/server/auth";
 import List from "./list";
 import InfoBox from "./infobox";
 import { type Metadata } from "next";
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ProjectsPage() {
-  const session = await getServerSession(authOptions)
+  const session = await getServerAuthSession()
 
   if (!session) {
     redirect('/api/auth/signin')

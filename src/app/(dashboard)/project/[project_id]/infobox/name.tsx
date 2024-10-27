@@ -4,7 +4,7 @@ import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
 import {CardTitle} from "~/components/ui/card";
-import {useState} from "react";
+import { useEffect, useState } from "react";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import {Input} from "~/components/ui/input";
 import {type IProject, projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useToast} from "~/hooks/use-toast";
+import { useProject } from "~/hooks/use-project";
 
 async function updateProjectName(project_id: string, name: string): Promise<IProject | Error> {
   try {
@@ -43,11 +44,19 @@ async function updateProjectName(project_id: string, name: string): Promise<IPro
   return new Error("Failed to update project name")
 }
 
-export default function Name({project_id, name}: {project_id: string, name: string}) {
-  const [projectName, setProjectName] = useState(name)
+export default function Name({project_id}: {project_id: string}) {
+  const [projectName, setProjectName] = useState("Project Name")
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
   const [openEdit, setOpenEdit] = useState(false)
   const {toast} = useToast()
+  const {data: projectData} = useProject(project_id)
+
+  useEffect(() => {
+    if (projectData) {
+      setProjectName(projectData.name)
+      setProjectInfo(projectData)
+    }
+  }, [projectData])
 
   const FormSchema = z.object({
     name: z.string().min(2, {message: "Name is required a minimum of 2 characters"}),
