@@ -23,7 +23,7 @@ export default async function InfoBox({project_id}: {project_id: string}) {
         </div>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <ProjectInfo project_id={project_id} session={session} />
+        <ProjectInfo session={session} />
       </CardContent>
       <InfoButtons session={session} />
     </Card>
