@@ -49,10 +49,10 @@ export async function middleware(req: NextRequest) {
 
     if (!hasCompany) {
       return NextResponse.redirect(new URL('/company/create', req.url))
-    }
-
-    if (hasCompany && path === '/company/create') {
-      return NextResponse.redirect(new URL('/company', req.url))
+    } else {
+      if (path === '/company/create') {
+        return NextResponse.redirect(new URL('/company', req.url))
+      }
     }
 
     return NextResponse.next()

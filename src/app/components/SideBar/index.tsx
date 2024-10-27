@@ -11,7 +11,14 @@ import {
   VenetianMask
 } from "lucide-react";
 import {useAtom} from "jotai";
-import { projectAtom, agentAtom, environmentAtom, secretMenuAtom, companyInfoAtom } from "~/lib/statemanager";
+import {
+  projectAtom,
+  agentAtom,
+  environmentAtom,
+  secretMenuAtom,
+  companyInfoAtom,
+  companyCreationAtom
+} from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import {
   Sidebar,
@@ -19,17 +26,23 @@ import {
   SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem
 } from "~/components/ui/sidebar";
+import { useUserDetails } from "~/hooks/use-user-details";
 
 export default function SideBar() {
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
-  const [companyInfo] = useAtom(companyInfoAtom);
+  const [companyCreation, setCompanyCreation] = useAtom(companyCreationAtom);
 
   const {is} = useFlags();
+  const { data: userData } = useUserDetails("unknown");
+  if (userData?.company_invite_code && !companyCreation) {
+    setCompanyCreation(true);
+    window.location.href = `/company/create`
+  }
 
-  if (!companyInfo?.company.invite_code) {
+  if (!userData?.company_invite_code) {
     return <Sidebar>
       <SidebarContent>
         <SidebarGroup>

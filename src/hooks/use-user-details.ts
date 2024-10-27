@@ -5,7 +5,7 @@ type UserGroup = {
   name: string;
 }
 
-type UserDetails = {
+export type UserDetails = {
   avatar: string;
   first_name: string;
   last_name: string;
@@ -13,6 +13,7 @@ type UserDetails = {
   location: string;
   timezone: string;
   group: UserGroup;
+  company_invite_code: string;
 }
 async function getUserDetails(): Promise<UserDetails> {
   const res = await fetch(`/api/user/details`, {
