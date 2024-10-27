@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {InfoButtons} from "./buttons";
+import UserImage from "./userImage";
 
 export default async function InfoBox() {
   const session = await getServerAuthSession()
@@ -15,7 +16,7 @@ export default async function InfoBox() {
         <CardTitle className={"group flex items-center gap-2 text-lg"}>User Options</CardTitle>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        Avatar
+        <UserImage session={session} />
       </CardContent>
       <InfoButtons />
     </Card>

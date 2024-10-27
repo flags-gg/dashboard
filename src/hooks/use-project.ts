@@ -17,6 +17,10 @@ const fetchProject = async (projectId: string): Promise<IProject | null> => {
 }
 
 export const useProject = (projectId: string) => {
+  if (!projectId) {
+    return { data: null, isLoading: false, error: "No projectId provided" }
+  }
+
   return useQuery<IProject | null, Error>({
     queryKey: ['project', projectId],
     queryFn: () => fetchProject(projectId),

@@ -1,7 +1,7 @@
 "use client"
 
 import {type Session} from "next-auth";
-import {type IProject, projectAtom} from "~/lib/statemanager";
+import {projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useEffect, useState} from "react";
 import {
@@ -26,21 +26,16 @@ interface IError {
 }
 
 interface uploadImageProps {
-  flagServer: string
   projectId: string
-  accessToken: string
-  userId: string
   imageUrl: string
 }
-function uploadImage({flagServer, projectId, accessToken, userId, imageUrl}: uploadImageProps): Error | void {
-  fetch(`${flagServer}/project/${projectId}/image`, {
+function uploadImage({projectId, imageUrl}: uploadImageProps): Error | void {
+  fetch(`/api/project/image`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "x-user-access-token": accessToken,
-      "x-user-subject": userId,
     },
-    body: JSON.stringify({image: imageUrl}),
+    body: JSON.stringify({image: imageUrl, project_id: projectId}),
   }).then((response) => {
     if (!response.ok) {
       return new Error(`HTTP error! status: ${response.status}`);
@@ -50,21 +45,22 @@ function uploadImage({flagServer, projectId, accessToken, userId, imageUrl}: upl
   })
 }
 
-export default function ProjectInfo({session, projectInfo, flagServer}: {session: Session, projectInfo: IProject, flagServer: string}) {
+export default function ProjectInfo({session, project_id}: {session: Session, project_id: string}) {
   if (!session) {
     throw new Error('No session found')
   }
-
+  const [projectInfo] = useAtom(projectAtom)
   const [selectedProject, setSelectedProject] = useAtom(projectAtom)
-  useEffect(() => {
-    setSelectedProject(projectInfo)
-  }, [projectInfo, setSelectedProject])
-
   const [iconOpen, setIconOpen] = useState(false)
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
-  const [imageURL, setImageURL] = useState(projectInfo.logo)
+  const [imageURL, setImageURL] = useState("")
   const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
+
+  useEffect(() => {
+    setSelectedProject(projectInfo)
+    setImageURL(projectInfo.logo)
+  }, [projectInfo, setSelectedProject, setImageURL])
 
   if (error) {
     setShowError(true)
@@ -152,10 +148,7 @@ export default function ProjectInfo({session, projectInfo, flagServer}: {session
                       return
                     }
                     const upload = uploadImage({
-                      flagServer: flagServer,
                       projectId: projectInfo.project_id,
-                      accessToken: session.user.access_token!,
-                      userId: session.user.id,
                       imageUrl: res[0].url,
                     })
                     if (upload instanceof Error) {

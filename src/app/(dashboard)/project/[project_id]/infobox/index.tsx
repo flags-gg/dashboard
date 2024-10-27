@@ -1,51 +1,29 @@
 import {Card, CardContent, CardHeader} from "~/components/ui/card";
-import {type IProject} from "~/lib/statemanager";
 import ProjectInfo from "./info";
-import {getProject} from "~/app/api/project/project";
-import {env} from "~/env";
-import {InfoBoxError} from "~/app/components/InfoBoxError";
 import Name from "./name";
 import InfoButtons from "./buttons";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth";
 import Delete from "./delete";
+import { redirect } from "next/navigation";
 
 export default async function InfoBox({project_id}: {project_id: string}) {
-  const session = await getServerSession(authOptions)
-  if (!session) {
-    throw new Error('No session found')
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    redirect('/api/auth/signin')
   }
-
-  let projectInfo: IProject | null = null
-  try {
-    const data = await getProject(project_id)
-    if (data instanceof Error) {
-      console.error(data)
-      return <InfoBoxError name={"project"} blurb={"project"} />
-    }
-    projectInfo = data
-  } catch (e) {
-    console.error(e)
-    return <InfoBoxError name={"project"} blurb={"project"} />
-  }
-
-  if (!projectInfo) {
-    return <InfoBoxError name={"project"} blurb={"project"} />
-  }
-
 
   return (
     <Card>
       <CardHeader className={"flex flex-row items-start bg-muted/50"}>
         <div className={"grid gap-0.5"}>
-          <Name project_id={project_id} name={projectInfo.name} />
+          <Name project_id={project_id} />
         </div>
         <div className={"ml-auto flex items-center gap-1"}>
           <Delete project_id={project_id} />
         </div>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <ProjectInfo projectInfo={projectInfo} session={session} flagServer={env.API_SERVER} />
+        <ProjectInfo project_id={project_id} session={session} />
       </CardContent>
       <InfoButtons session={session} />
     </Card>

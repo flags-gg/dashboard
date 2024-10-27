@@ -1,5 +1,4 @@
-import {authOptions} from "~/server/auth";
-import {getServerSession} from "next-auth/next";
+import { getServerAuthSession } from "~/server/auth";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
 import Maker from "../maker";
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function SecretMenuSpecificPage({params}: {params: Promise<{menu_id: string}>}) {
   const {menu_id} = await params
-  const session = await getServerSession(authOptions)
+  const session = await getServerAuthSession()
   if (!session) {
     redirect('/api/auth/signin')
   }

@@ -1,5 +1,4 @@
-import {getServerSession} from "next-auth/next";
-import {authOptions} from "~/server/auth";
+import { getServerAuthSession } from "~/server/auth";
 import EnvironmentsList from "./list";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
@@ -8,7 +7,7 @@ import { getAgent } from "~/app/api/agent/agent";
 
 export async function generateMetadata({params}: {params: Promise<{agent_id: string}>}): Promise<Metadata> {
   const {agent_id} = await params
-  const session = await getServerSession(authOptions)
+  const session = await getServerAuthSession()
   if (!session) {
     redirect('/api/auth/signin')
   }
@@ -24,7 +23,7 @@ export async function generateMetadata({params}: {params: Promise<{agent_id: str
 
 export default async function AgentPage({params}: {params: Promise<{agent_id: string}>}) {
   const {agent_id} = await params
-  const session = await getServerSession(authOptions)
+  const session = await getServerAuthSession()
 
   if (!session) {
     redirect('/api/auth/signin')
