@@ -22,7 +22,7 @@ export default function Info({environmentId}: {environmentId: string}) {
   }, [environmentInfo, setSelectedEnvironment])
 
   if (isLoading) {
-    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+    return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
   if (error ?? !environmentInfo) {

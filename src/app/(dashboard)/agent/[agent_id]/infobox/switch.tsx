@@ -5,6 +5,7 @@ import { agentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useToast } from "~/hooks/use-toast";
 import { LoadingSpinner } from "~/components/ui/loader";
+import { useAgent } from "~/hooks/use-agent";
 
 async function enableDisableAgent(agent_id: string, enabled: boolean, agentName: string) {
   try {
@@ -31,11 +32,12 @@ async function enableDisableAgent(agent_id: string, enabled: boolean, agentName:
   }
 }
 
-export function AgentSwitch() {
+export function AgentSwitch({agent_id}: {agent_id: string}) {
   const [agentInfo, setAgentInfo] = useAtom(agentAtom)
+  const {data: agentData, isLoading} = useAgent(agent_id)
   const {toast} = useToast()
 
-  if (agentInfo?.agent_id === undefined) {
+  if (isLoading) {
     return <LoadingSpinner className={"h-5 w-5"} />
   }
 
@@ -74,6 +76,6 @@ export function AgentSwitch() {
   }
 
   return (
-    <Switch defaultChecked={agentInfo.enabled} name={"agent"} onCheckedChange={onSwitch} />
+    <Switch defaultChecked={agentData?.enabled} name={"agent"} onCheckedChange={onSwitch} />
   )
 }

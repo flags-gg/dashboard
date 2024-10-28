@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { useAgent } from "~/hooks/use-agent";
 
 async function createEnvironmentAction(agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -48,11 +49,11 @@ async function createEnvironmentAction(agent_id: string, name: string): Promise<
   return Error("Failed to create environment")
 }
 
-export default function CreateEnvironment() {
+export default function CreateEnvironment({agent_id}: {agent_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [agentInfo] = useAtom(agentAtom)
   const {toast} = useToast()
   const router = useRouter()
+  const {data: agentInfo} = useAgent(agent_id)
 
   const FormSchema = z.object({
     environmentName: z.string().min(2, {message: "Environment Name is required a minimum of 2 characters"}),
@@ -66,7 +67,7 @@ export default function CreateEnvironment() {
     setIsOpen(false)
 
     try {
-      createEnvironmentAction(agentInfo.agent_id, data.environmentName).then(() => {
+      createEnvironmentAction(agent_id, data.environmentName).then(() => {
         toast({
           title: "Environment Created",
           description: "The environment has been created",
@@ -84,6 +85,14 @@ export default function CreateEnvironment() {
     }
 
     form.reset()
+  }
+
+  if (!agentInfo) {
+    return null
+  }
+
+  if (!agentInfo?.environments || agentInfo?.environment_limit <= agentInfo?.environments.length) {
+    return null
   }
 
   return (

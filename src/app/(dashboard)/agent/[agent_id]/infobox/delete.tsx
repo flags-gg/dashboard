@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import { agentAtom } from "~/lib/statemanager";
+import { agentAtom, FlagAgent } from "~/lib/statemanager";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,7 @@ import {
 } from "~/components/ui/dialog";
 import { Trash2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { useAgent } from "~/hooks/use-agent";
 
 async function deleteAgent(agent_id: string): Promise<null | Error> {
   try {
@@ -49,7 +50,18 @@ export default function Delete({agent_id}: {agent_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
   const {toast} = useToast();
   const router = useRouter()
-  const [agentInfo] = useAtom(agentAtom);
+  const [AgentInfo, setAgentInfo] = useState<FlagAgent | null>(null)
+  const {data: agentData, isLoading} = useAgent(agent_id)
+
+  useEffect(() => {
+    if (agentData) {
+      setAgentInfo(agentData)
+    }
+  }, [agentData, setAgentInfo])
+
+  if (isLoading) {
+    return null
+  }
 
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
@@ -58,7 +70,7 @@ export default function Delete({agent_id}: {agent_id: string}) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Agent {agentInfo.name}</DialogTitle>
+          <DialogTitle>Delete Agent {AgentInfo?.name}</DialogTitle>
           <DialogDescription>Are you sure you want to delete this agent?</DialogDescription>
         </DialogHeader>
         <div className={"flex justify-between"}>
@@ -70,7 +82,7 @@ export default function Delete({agent_id}: {agent_id: string}) {
                 title: "Agent Deleted",
                 description: "The agent has been deleted",
               })
-              router.push(`/project/${agentInfo.project_info.project_id}?ts=${Date.now()}`)
+              router.push(`/project/${AgentInfo?.project_info?.project_id}?ts=${Date.now()}`)
             }).catch((e) => {
               if (e instanceof Error) {
                 toast({

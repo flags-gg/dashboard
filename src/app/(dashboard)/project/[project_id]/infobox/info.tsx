@@ -87,7 +87,7 @@ export default function ProjectInfo({session}: {session: Session}) {
   }
 
   if (isLoading) {
-    return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+    return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
   let imageElement
