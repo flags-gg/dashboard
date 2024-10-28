@@ -12,15 +12,21 @@ const fetchAgent = async (agentId: string): Promise<FlagAgent | null> => {
   if (!res.ok) {
     throw new Error('Failed to fetch agent')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return res.json()
+  const data = await res.json() as FlagAgent
+  return data ?? null;
 }
 
 export const useAgent = (agentId: string) => {
   return useQuery<FlagAgent | null, Error>({
     queryKey: ['agent', agentId],
     queryFn: () => fetchAgent(agentId),
-    retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
-  })
+    enabled: Boolean(agentId),
+    retry: (failureCount, error) => {
+      if (error.message.includes('404')) {
+        return false;
+      }
+      return failureCount < 3;
+    }
+  });
 }

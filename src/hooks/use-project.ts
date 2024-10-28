@@ -12,7 +12,6 @@ const fetchProject = async (projectId: string): Promise<IProject | null> => {
   if (!res.ok) {
     throw new Error('Failed to fetch project')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   const data = await res.json() as IProject;
   return data ?? null;
 }
