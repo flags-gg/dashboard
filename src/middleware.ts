@@ -48,6 +48,9 @@ export async function middleware(req: NextRequest) {
     }
 
     if (!hasCompany) {
+      if (path === '/company/create') {
+        return NextResponse.next()
+      }
       return NextResponse.redirect(new URL('/company/create', req.url))
     } else {
       if (path === '/company/create') {

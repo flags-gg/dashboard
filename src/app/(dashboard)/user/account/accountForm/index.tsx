@@ -63,7 +63,7 @@ export default function AccountForm({ session }: { session: Session }) {
   const onSubmit = async (data: FormValues) => {
     try {
       console.info("submitted data", data)
-      
+
       toast({
         title: "Account Updated",
         description: "The account has been updated successfully",
