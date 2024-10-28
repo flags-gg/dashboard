@@ -44,6 +44,8 @@ spec:
               value: 246a09ff-0931-4776-89a9-f2109ad80b7f
             - name: KEYCLOAK_ISSUER
               value: https://keys.chewedfeed.com/realms/flags-gg/
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
 
 ---
 apiVersion: v1
