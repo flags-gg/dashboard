@@ -2,8 +2,6 @@
 
 import {Button} from "~/components/ui/button";
 import { useState } from "react";
-import { useAtom } from "jotai";
-import { agentAtom } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import {
