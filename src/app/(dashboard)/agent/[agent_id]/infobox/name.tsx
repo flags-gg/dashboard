@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { agentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useToast } from "~/hooks/use-toast";
@@ -13,6 +13,8 @@ import { Button } from "~/components/ui/button";
 import { Pencil } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { useAgent } from "~/hooks/use-agent";
+import { LoadingSpinner } from "~/components/ui/loader";
 
 async function updateAgentName(agent_id: string, name: string, enabled: boolean): Promise<null | Error> {
   try {
@@ -43,18 +45,26 @@ async function updateAgentName(agent_id: string, name: string, enabled: boolean)
   return new Error("Failed to update agent name")
 }
 
-export default function Name({agent_id, name}: {agent_id: string, name: string}) {
-  const [agentName, setAgentName] = useState(name);
+export default function Name({agent_id}: {agent_id: string}) {
+  const [agentName, setAgentName] = useState("Agent Name");
   const [agentInfo, setAgentInfo] = useAtom(agentAtom)
   const [openEdit, setOpenEdit] = useState(false);
   const {toast} = useToast()
+
+  const {data: agentData, isLoading} = useAgent(agent_id)
+  useEffect(() => {
+    if (agentData) {
+      setAgentName(agentData.name)
+      setAgentInfo(agentData)
+    }
+  }, [agentData, setAgentInfo])
 
   const FormSchema = z.object({
     name: z.string().min(2, {message: "Name is required to be at least 2 characters"}),
   })
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
-      name: agentInfo.name,
+      name: agentName,
     },
     resolver: zodResolver(FormSchema),
   });
@@ -88,6 +98,10 @@ export default function Name({agent_id, name}: {agent_id: string, name: string})
         description: "There was an unknown error updating the agent name",
       })
     }
+  }
+
+  if (isLoading) {
+    return <LoadingSpinner className={"h-5 w-5"} />
   }
 
   return (
