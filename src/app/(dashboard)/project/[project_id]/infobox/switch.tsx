@@ -37,9 +37,6 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   const {data: projectData, isLoading, error} = useProject(projectId)
   const {toast} = useToast()
 
-  console.info("ProjectSwitch", projectData, isLoading, error)
-  console.info("projectInfo", projectInfo)
-
   if (error) {
     toast({
       title: "Error loading project",
