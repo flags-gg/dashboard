@@ -56,7 +56,7 @@ export default function UserImage({session}: {session: Session}) {
   let imageElement
   if (imageURL) {
     imageElement =
-      <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={50} width={50} className={"cursor-pointer"} />
+      <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={200} width={200} className={"cursor-pointer"} />
   } else {
     imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
   }

@@ -19,7 +19,7 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.info("response", response, response.status)
+      console.info("user response", response, response.status)
       return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 500 })
     }
 

@@ -29,8 +29,6 @@ export async function POST(request: Request) {
       cache: 'no-store',
     })
 
-    console.info("response", response)
-
     if (!response.ok) {
       return NextResponse.json({ message: 'Failed to create environment' }, { status: 500 })
     }
