@@ -34,10 +34,21 @@ async function enableDisableProject(project_id: string, enabled: boolean, name: 
 
 export function ProjectSwitch({projectId}: {projectId: string}) {
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
-  const {data: projectData} = useProject(projectId)
+  const {data: projectData, isLoading, error} = useProject(projectId)
   const {toast} = useToast()
 
-  if (!projectData) {
+  console.info("ProjectSwitch", projectData, isLoading, error)
+  console.info("projectInfo", projectInfo)
+
+  if (error) {
+    toast({
+      title: "Error loading project",
+      description: "Please try again later.",
+    });
+    return null
+  }
+
+  if (!projectData || isLoading) {
     return <LoadingSpinner className={"h-5 w-5"} />
   }
 

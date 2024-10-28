@@ -12,18 +12,21 @@ const fetchProject = async (projectId: string): Promise<IProject | null> => {
   if (!res.ok) {
     throw new Error('Failed to fetch project')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return res.json()
+  const data = await res.json() as IProject;
+  return data ?? null;
 }
 
 export const useProject = (projectId: string) => {
-  if (!projectId) {
-    return { data: null, isLoading: false, error: "No projectId provided" }
-  }
-
   return useQuery<IProject | null, Error>({
     queryKey: ['project', projectId],
     queryFn: () => fetchProject(projectId),
     staleTime: 5 * 60 * 1000, // 5 minutes
-  })
+    enabled: Boolean(projectId),
+    retry: (failureCount, error) => {
+      if (error.message.includes('404')) {
+        return false;
+      }
+      return failureCount < 3;
+    }
+  });
 }

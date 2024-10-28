@@ -40,6 +40,16 @@ tasks:
     vars:
       COMMIT_HASH:
         sh: cat .commit_hash
+  publish-hash:
+    cmds:
+      - task: get-commit-hash
+        vars:
+          COMMIT_HASH:
+            sh: cat .commit_hash
+      - nerdctl push containers.chewed-k8s.net/{{.NAMESPACE}}/{{.SERVICE_NAME}}:{{.COMMIT_HASH}} --all-platforms
+    vars:
+      COMMIT_HASH:
+        sh: cat .commit_hash
 
   # Build Commands
   build-images:
@@ -188,6 +198,12 @@ tasks:
     cmds:
       - task: build-push-latest
       - task: deploy-latest
+  build-deploy-hash:
+    cmds:
+      - task: get-commit-hash
+      - task: build-hash
+      - task: publish-hash
+      - task: deploy
 
   # Cleanup
   clean-images:

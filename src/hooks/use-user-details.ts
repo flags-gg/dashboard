@@ -15,7 +15,7 @@ export type UserDetails = {
   group: UserGroup;
   company_invite_code: string;
 }
-async function getUserDetails(): Promise<UserDetails> {
+async function getUserDetails(): Promise<UserDetails | null> {
   const res = await fetch(`/api/user/details`, {
     method: "GET",
     headers: {
@@ -28,7 +28,8 @@ async function getUserDetails(): Promise<UserDetails> {
     throw new Error("Failed to fetch user details");
   }
 
-  return await res.json() as UserDetails;
+  const data = await res.json() as UserDetails;
+  return data ?? null;
 }
 
 export function useUserDetails(userId: string) {
@@ -36,5 +37,12 @@ export function useUserDetails(userId: string) {
     queryKey: ["userDetails", userId],
     queryFn: getUserDetails,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: Boolean(userId),
+    retry: (failureCount, error) => {
+      if (error.message.includes('404')) {
+        return false;
+      }
+      return failureCount < 3;
+    }
   });
 }
