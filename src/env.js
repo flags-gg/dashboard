@@ -38,6 +38,8 @@ export const env = createEnv({
     STRIPE_KEY: z.string(),
     STRIPE_SECRET: z.string(),
 
+    COMMIT_HASH: z.string().optional(),
+
     API_SERVER: z.string().default("https://api.flags.gg/v1"),
   },
 
@@ -70,6 +72,8 @@ export const env = createEnv({
 
     STRIPE_KEY: process.env.STRIPE_KEY,
     STRIPE_SECRET: process.env.STRIPE_SECRET,
+
+    COMMIT_HASH: process.env.COMMIT_HASH,
 
     API_SERVER: process.env.API_SERVER,
 

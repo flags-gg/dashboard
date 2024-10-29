@@ -4,6 +4,8 @@ import { type ICompanyInfo } from "~/lib/statemanager";
 import {getToken} from "next-auth/jwt";
 import { env } from "~/env";
 
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
+
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
 
@@ -17,34 +19,45 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/api/auth/signin', req.url))
     }
 
-    const companyInfoReq = req.cookies.get("companyInfo")
-    if (companyInfoReq) {
-      return NextResponse.next()
-    }
+    const cacheKey = `companyInfo-${token.sub}`
+    const cache = await caches.open('company-info-cache')
+    const cachedResponse = await cache.match(cacheKey)
 
-
-    const companyRes = await fetch(`${env.API_SERVER}/company`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-user-access-token': token.access_token as string ?? '',
-        'x-user-subject': token.sub ?? '',
-      },
-      cache: 'no-store',
-    })
-    if (!companyRes.ok) {
-      if (path === '/company/create') {
-        return NextResponse.next()
+    let companyInfo: ICompanyInfo | null = null
+    if (cachedResponse) {
+      companyInfo = await cachedResponse.json()
+    } else {
+      const companyRes = await fetch(`${env.API_SERVER}/company`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-access-token': token.access_token as string ?? '',
+          'x-user-subject': token.sub ?? '',
+        },
+        cache: 'no-store',
+      })
+      if (!companyRes.ok) {
+        if (path === '/company/create') {
+          return NextResponse.next()
+        }
+        return NextResponse.redirect(new URL("/company/create", req.url))
       }
-      return NextResponse.redirect(new URL("/company/create", req.url))
+      companyInfo = await companyRes.json() as ICompanyInfo
+      const cacheResponse = new Response(JSON.stringify(companyInfo), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': `public, max-age=${CACHE_DURATION}`,
+        },
+      })
+      await cache.put(cacheKey, cacheResponse)
     }
 
-    const companyInfo = await companyRes.json() as ICompanyInfo
     const hasCompany = Boolean(companyInfo?.company?.invite_code)
 
     if (companyInfo) {
       const resp = NextResponse.next()
       resp.cookies.set("companyInfo", JSON.stringify(companyInfo))
+      return resp
     }
 
     if (!hasCompany) {
@@ -61,6 +74,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next()
   } catch (e) {
     console.error("error in middleware", e)
+    const cache = await caches.open('company-info-cache')
+    await cache.delete(`companyInfo-${req.cookies.get("next-auth.session-token")}`)
   }
 
   return NextResponse.next()

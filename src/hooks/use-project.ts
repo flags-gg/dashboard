@@ -1,5 +1,6 @@
-import { type IProject } from "~/lib/statemanager";
+import { commitHashAtom, type IProject } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 
 const fetchProject = async (projectId: string): Promise<IProject | null> => {
   const res = await fetch(`/api/project?projectId=${projectId}`, {
@@ -17,8 +18,10 @@ const fetchProject = async (projectId: string): Promise<IProject | null> => {
 }
 
 export const useProject = (projectId: string) => {
+  const [commitHash] = useAtom(commitHashAtom)
+
   return useQuery<IProject | null, Error>({
-    queryKey: ['project', projectId],
+    queryKey: ['project', projectId, commitHash],
     queryFn: () => fetchProject(projectId),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(projectId),

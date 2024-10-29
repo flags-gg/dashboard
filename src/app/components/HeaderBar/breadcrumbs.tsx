@@ -9,8 +9,8 @@ import {
 } from "~/components/ui/breadcrumb";
 import Link from "next/link";
 import {useAtom} from "jotai";
-import {Fragment} from "react";
-import {agentAtom, environmentAtom, projectAtom, secretMenuAtom} from "~/lib/statemanager";
+import { Fragment, useEffect } from "react";
+import { agentAtom, commitHashAtom, environmentAtom, projectAtom, secretMenuAtom } from "~/lib/statemanager";
 import {usePathname} from "next/navigation";
 
 function useBreadcrumbs() {
@@ -106,8 +106,12 @@ function useBreadcrumbs() {
   return breadcrumbs
 }
 
-export default function BreadCrumbs() {
+export default function BreadCrumbs({commitHash}: {commitHash: string}) {
   const breadcrumbs = useBreadcrumbs()
+  const [, setCommitHash] = useAtom(commitHashAtom)
+  useEffect(() => {
+    setCommitHash(commitHash)
+  }, [commitHash, setCommitHash])
 
   return (
     <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>

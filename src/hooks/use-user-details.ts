@@ -1,4 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
+import { commitHashAtom } from "~/lib/statemanager";
+import { useAtom } from "jotai";
 
 type UserGroup = {
   id: string;
@@ -33,8 +35,10 @@ async function getUserDetails(): Promise<UserDetails | null> {
 }
 
 export function useUserDetails(userId: string) {
+  const [commitHash] = useAtom(commitHashAtom)
+
   return useQuery({
-    queryKey: ["userDetails", userId],
+    queryKey: ["userDetails", userId, commitHash],
     queryFn: getUserDetails,
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(userId),
