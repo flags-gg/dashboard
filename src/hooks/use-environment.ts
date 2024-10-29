@@ -1,5 +1,6 @@
-import { type IEnvironment } from "~/lib/statemanager";
+import { commitHashAtom, type IEnvironment } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 
 const fetchEnvironment = async (environmentId: string): Promise<IEnvironment | null> => {
   const res = await fetch(`/api/environment?environmentId=${environmentId}`, {
@@ -17,8 +18,10 @@ const fetchEnvironment = async (environmentId: string): Promise<IEnvironment | n
 }
 
 export const useEnvironment = (environmentId: string) => {
+  const [commitHash] = useAtom(commitHashAtom)
+
   return useQuery<IEnvironment | null, Error>({
-    queryKey: ['environment', environmentId],
+    queryKey: ['environment', environmentId, commitHash],
     queryFn: () => fetchEnvironment(environmentId),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(environmentId),

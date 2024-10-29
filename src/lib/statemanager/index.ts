@@ -173,3 +173,5 @@ export const userAtom = atomWithStorage("userAtom", {
   email: '',
   domain: '',
 })
+
+export const commitHashAtom = atomWithStorage<string>("commitHashAtom", "")

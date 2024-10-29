@@ -1,5 +1,6 @@
-import { type FlagAgent } from "~/lib/statemanager";
+import { commitHashAtom, type FlagAgent } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 
 const fetchAgent = async (agentId: string): Promise<FlagAgent | null> => {
   const res = await fetch(`/api/agent?agentId=${agentId}`, {
@@ -17,8 +18,10 @@ const fetchAgent = async (agentId: string): Promise<FlagAgent | null> => {
 }
 
 export const useAgent = (agentId: string) => {
+  const [commitHash] = useAtom(commitHashAtom)
+
   return useQuery<FlagAgent | null, Error>({
-    queryKey: ['agent', agentId],
+    queryKey: ['agent', agentId, commitHash],
     queryFn: () => fetchAgent(agentId),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(agentId),
