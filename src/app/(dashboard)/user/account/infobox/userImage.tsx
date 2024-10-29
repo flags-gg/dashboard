@@ -1,7 +1,6 @@
 "use client"
 
 import { Session } from "next-auth";
-import { ShieldPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import { UploadButton } from "~/utils/uploadthing";
 import Image from "next/image";
 import { useUserDetails } from "~/hooks/use-user-details";
 import { useToast } from "~/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 interface IError {
   message: string
@@ -58,7 +58,14 @@ export default function UserImage({session}: {session: Session}) {
     imageElement =
       <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={200} width={200} className={"cursor-pointer"} />
   } else {
-    imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
+    const userName = session?.user?.name ?? "";
+    const shortName = userName.split(" ")?.map((n) => n[0]).join("");
+    imageElement = (
+      <Avatar className={"cursor-pointer"}>
+        <AvatarImage src={userData?.avatar} alt={"User Image"} />
+        <AvatarFallback>{shortName}</AvatarFallback>
+      </Avatar>
+    );
   }
 
   if (showError) {
