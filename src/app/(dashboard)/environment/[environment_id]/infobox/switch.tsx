@@ -62,7 +62,6 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
         if (e instanceof Error) {
           throw new Error(`Failed to enable/disable environment: ${e.message}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         throw new Error("Failed to enable/disable environment - unknown:", e)
       })
     } catch (e) {

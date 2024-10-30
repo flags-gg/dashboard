@@ -3,8 +3,10 @@ import globals from "globals";
 // @ts-expect-error
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 import pluginReact from "eslint-plugin-react";
+
+// @ts-expect-error - eslint-plugin-next is not typed
+import pluginNext from '@next/eslint-plugin-next';
 
 export default [
   {files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"]},
@@ -30,5 +32,10 @@ export default [
   ]},
   {rules: {
     "react/react-in-jsx-scope": "off",
+    ...pluginNext.configs.recommended.rules,
+    ...pluginNext.configs['core-web-vitals'].rules,
+  }},
+  {plugins: {
+      '@next/next': pluginNext,
   }},
 ];

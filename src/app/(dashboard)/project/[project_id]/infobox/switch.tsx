@@ -63,7 +63,6 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
         if (e instanceof Error) {
           throw new Error(`Failed to enable/disable project: ${e.message}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         throw new Error("Failed to enable/disable project - unknown:", e)
       })
     } catch (e) {

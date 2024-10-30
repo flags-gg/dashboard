@@ -56,7 +56,6 @@ export function AgentSwitch({agent_id}: {agent_id: string}) {
         if (e instanceof Error) {
           throw new Error(`Failed to enable/disable agent: ${e.message}`)
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         throw new Error("Failed to enable/disable agent - unknown:", e)
       })
     } catch (e) {

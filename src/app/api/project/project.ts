@@ -19,7 +19,6 @@ export async function getProjects(): Promise<ProjectsData> {
   if (!res.ok) {
     throw new Error('Failed to fetch projects')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
 
@@ -55,7 +54,6 @@ export async function put(request: Request) {
     enabled: boolean
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {projectId, name, enabled}: UpdateProjectName = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
