@@ -4,8 +4,8 @@ import { Switch } from "~/components/ui/switch";
 import {useAtom} from "jotai";
 import {projectAtom} from "~/lib/statemanager";
 import {useToast} from "~/hooks/use-toast";
-import { LoadingSpinner } from "~/components/ui/loader";
 import { useProject } from "~/hooks/use-project";
+import { NewLoader } from "~/components/ui/new-loader";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
   try {
@@ -46,7 +46,7 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   }
 
   if (!projectData || isLoading) {
-    return <LoadingSpinner className={"h-5 w-5"} />
+    return <NewLoader />
   }
 
   const onSwitch = () => {

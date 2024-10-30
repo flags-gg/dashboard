@@ -4,8 +4,8 @@ import {Switch} from "~/components/ui/switch";
 import { useAtom } from "jotai";
 import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
-import { LoadingSpinner } from "~/components/ui/loader";
 import { useEnvironment } from "~/hooks/use-environment";
+import { NewLoader } from "~/components/ui/new-loader";
 
 async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {
@@ -46,7 +46,7 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
   }
 
   if (isLoading) {
-    return <LoadingSpinner className={"h-5 w-5"} />
+    return <NewLoader />
   }
 
   const onSwitch = () => {

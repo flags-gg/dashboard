@@ -20,7 +20,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { LoadingSpinner } from "~/components/ui/loader";
+import { NewLoader } from "~/components/ui/new-loader";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
@@ -87,7 +87,7 @@ export default function CreateProject({ session }: { session: Session }) {
     createProjectMutation.mutate(data.projectName);
   };
 
-  if (isLoading) return <LoadingSpinner className={"h-5 w-5"} />;
+  if (isLoading) return <NewLoader />;
   if (error) return <div>Error: {error.message}</div>;
 
   const projectsLeft = companyLimits?.projects?.allowed && companyLimits?.projects?.used ? companyLimits.projects.allowed - companyLimits.projects.used : 0;
