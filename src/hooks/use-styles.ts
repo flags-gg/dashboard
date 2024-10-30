@@ -29,7 +29,6 @@ const transformStyles = (data: StyleFetch): { styles: StyleState; id: string } =
   const transformedStyles: StyleState = {} as StyleState;
 
   data.styles.forEach((style) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     transformedStyles[style.name] = JSON.parse(style.value);
   });
 

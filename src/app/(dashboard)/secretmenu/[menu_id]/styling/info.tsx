@@ -34,7 +34,6 @@ async function saveStyle({style, menuId, styleId}: {style: string, menuId: strin
     if (!response.ok) {
       return new Error("Failed to save style")
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await response.json()
   } catch (e) {
     if (e instanceof Error) {

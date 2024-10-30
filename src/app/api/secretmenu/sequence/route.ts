@@ -9,7 +9,6 @@ type SecretMenuParams = {
 }
 
 export async function PUT(request: Request) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {menuId, sequence}: SecretMenuParams = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
@@ -33,7 +32,6 @@ export async function PUT(request: Request) {
       return NextResponse.json({message: "Failed to save secret menu sequence"}, { status: 500 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return response
   } catch (error) {
     console.error('Error saving secret menu sequence:', error);
@@ -42,7 +40,6 @@ export async function PUT(request: Request) {
 }
 
 export async function POST(request: Request) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {sequence, environmentId}: SecretMenuParams = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
@@ -67,7 +64,6 @@ export async function POST(request: Request) {
       return NextResponse.json({message: "Failed to get secret menu"}, { status: 500 });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return response
   } catch (error) {
     console.error('Error getting secret menu:', error);

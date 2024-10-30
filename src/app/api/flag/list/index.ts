@@ -13,7 +13,6 @@ export async function fetchFlags(environment_id: string, accessToken: string, us
   if (!res.ok) {
     throw new Error('Failed to fetch flags')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
 

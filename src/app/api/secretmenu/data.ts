@@ -19,6 +19,5 @@ export async function getSecretMenu(menu_id: string): Promise<secretMenu> {
   if (!res.ok) {
     throw new Error('Failed to fetch secret menu')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }

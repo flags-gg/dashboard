@@ -81,7 +81,6 @@ export default function Name({project_id}: {project_id: string}) {
         })
       }).catch((e) => {
         console.error("try - Error updating project name", e)
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         throw new Error(e.message)
       })
     } catch (e) {

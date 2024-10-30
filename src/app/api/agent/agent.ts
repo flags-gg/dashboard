@@ -19,7 +19,6 @@ export async function getAgents(project_id: string): Promise<AgentsData> {
   if (!res.ok) {
     throw new Error('Failed to fetch agents')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
 
@@ -39,7 +38,6 @@ export async function getAgent(agent_id: string): Promise<FlagAgent> {
   if (!res.ok) {
     throw new Error('Failed to fetch agent')
   }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return res.json()
 }
 
@@ -50,7 +48,6 @@ export async function put(request: Request) {
     enabled: boolean
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {agentId, name, enabled}: UpdateAgentName = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {

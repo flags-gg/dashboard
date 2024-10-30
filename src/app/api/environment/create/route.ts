@@ -32,7 +32,6 @@ export async function POST(request: Request) {
     if (!response.ok) {
       return NextResponse.json({ message: 'Failed to create environment' }, { status: 500 })
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const body = await response.json()
     console.info("create env", body)
 

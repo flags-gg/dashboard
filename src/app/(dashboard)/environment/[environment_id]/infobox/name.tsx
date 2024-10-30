@@ -69,7 +69,6 @@ export default function Name({environment_id}: {environment_id: string}) {
         })
       }).catch((e) => {
         console.error("try - Error updating environment name", e)
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
         throw new Error(e.message)
       })
     } catch (e) {

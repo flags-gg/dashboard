@@ -29,7 +29,6 @@ async function createMenuId(): Promise<SecretMenuData | Error> {
       console.error("createMenuId response", response);
       return new Error('Failed to create secret menu ID')
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await response.json()
   } catch (e) {
     console.error("createMenuId", 'Error creating secret menu:', e)
@@ -53,7 +52,6 @@ async function getSequence(menuId: string): Promise<SecretMenuData | Error> {
       console.error("getMenu response", response);
       return new Error('Failed to get secret menu')
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await response.json()
   } catch (e) {
     console.error("getMenu", 'Error getting secret menu:', e)
@@ -77,7 +75,6 @@ async function saveSequence(menu_id: string, sequence: string[]) {
     if (!response.ok) {
       return new Error('Failed to save secret menu sequence')
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return await response.json()
   } catch (e) {
     console.error('Error saving secret menu sequence:', e)
