@@ -123,8 +123,8 @@ importers:
         specifier: ^0.0.1
         version: 0.0.1
       stripe:
-        specifier: ^17.2.1
-        version: 17.2.1
+        specifier: ^17.3.0
+        version: 17.3.0
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
@@ -3751,8 +3751,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  stripe@17.2.1:
-    resolution: {integrity: sha512-Mwb0SitV/UjxTLSUiTlUQ0VDE/gfyQ7OHDGdvDdvKIH4CNNqobPKlzlWhoZHFFU0OA/YsZyBtPULK4JG86BAAg==}
+  stripe@17.3.0:
+    resolution: {integrity: sha512-WACmytj1MssbIwGwPfAomo61jgldb2B/cB6A3W/Bqs9zId1olVcAa8X7HERkqpw4190GSsbvrD7KnkZogatyvw==}
     engines: {node: '>=12.*'}
 
   styled-jsx@5.1.6:
@@ -8120,7 +8120,7 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  stripe@17.2.1:
+  stripe@17.3.0:
     dependencies:
       '@types/node': 22.8.4
       qs: 6.13.0
