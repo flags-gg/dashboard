@@ -1,4 +1,12 @@
-/** @type {import("eslint").Linter.Config} */
+import eslint from '@eslint/js';
+import tseslint from "typescript-eslint";
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+);
+
+
 const config = {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -11,7 +19,8 @@ const config = {
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/stylistic-type-checked"
+    "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:@next/next/recommended",
   ],
   "rules": {
     "react-compiler/react-compiler": "error",
