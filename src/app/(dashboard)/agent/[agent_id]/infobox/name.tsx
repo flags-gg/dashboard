@@ -14,7 +14,7 @@ import { Pencil } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useAgent } from "~/hooks/use-agent";
-import { LoadingSpinner } from "~/components/ui/loader";
+import { NewLoader } from "~/components/ui/new-loader";
 
 async function updateAgentName(agent_id: string, name: string, enabled: boolean): Promise<null | Error> {
   try {
@@ -101,7 +101,7 @@ export default function Name({agent_id}: {agent_id: string}) {
   }
 
   if (isLoading) {
-    return <LoadingSpinner className={"h-5 w-5"} />
+    return <NewLoader />
   }
 
   return (
