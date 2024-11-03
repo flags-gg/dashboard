@@ -44,12 +44,42 @@ jobs:
           registry: containers.chewed-k8s.net
           username: robot$flags-gg+github
           password: ${{ secrets.CONTAINERS_KEY }}
-      - name: Build and Push
-        id: docker_build
+      - name: Build and Push x86
+        id: docker_build_x86
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
+          builder: ${{ steps.buildx.outputs.name }}
+          file: ./k8s/Containerfile
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          push: true
+          build-args: |
+            GIT_VERSION=${{ startsWith(github.ref, 'refs/tags/') && steps.extract_tag.outputs.tag || github.sha }}
+            GIT_BUILD=${{ github.sha }}
+            SERVICE_NAME=dashboard
+            KEYCLOAK_ID=${{ secrets.KEYCLOAK_ID }}
+            KEYCLOAK_ISSUER=${{ secrets.KEYCLOAK_ISSUER }}
+            KEYCLOAK_SECRET=${{ secrets.KEYCLOAK_SECRET }}
+            FLAGS_PROJECT_ID=b0c5020e-760e-4156-a88b-344fb725a9b7
+            FLAGS_DASHBOARD_ID=c778cf4b-83f1-4c53-951e-604102c84898
+            FLAGS_DASHBOARD_ENVIRONMENT_ID=246a09ff-0931-4776-89a9-f2109ad80b7f
+            FLAGS_SERVER=https://api.flags.gg/v1
+            NEXT_PUBLIC_FLAGS_SERVER=https://api.flags.gg/v1
+            UPLOADTHING_APP_ID=${{ secrets.UPLOADTHING_APP_ID }}
+            UPLOADTHING_SECRET=${{ secrets.UPLOADTHING_SECRET }}
+            UPLOADTHING_TOKEN=${{ secrets.UPLOADTHING_TOKEN }}
+            STRIPE_KEY=${{ secrets.STRIPE_KEY }}
+            STRIPE_SECRET=${{ secrets.STRIPE_SECRET }}
+            NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+            NEXTAUTH_URL=http://localhost:3000
+      - name: Build and Push arm
+        id: docker_build_arm
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/arm64
           builder: ${{ steps.buildx.outputs.name }}
           file: ./k8s/Containerfile
           tags: ${{ steps.meta.outputs.tags }}
