@@ -37,10 +37,6 @@ export function UserNav({session}: {session: Session}) {
           <Link href={"/user/account"}>Account</Link>
         </DropdownMenuItem>
         }
-        {is("user settings")?.enabled() && <DropdownMenuItem>
-          <Link href={"/user/settings"}>Settings</Link>
-        </DropdownMenuItem>
-        }
         {is("show company")?.enabled() && (
           <>
             <DropdownMenuSeparator />
