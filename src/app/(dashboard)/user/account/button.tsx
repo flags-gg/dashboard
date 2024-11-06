@@ -1,6 +1,6 @@
 "use client";
 
-import {UploadButton} from "~/utils/uploadthing";
+import {UploadButton} from "~/lib/utils/uploadthing";
 
 export default function Button() {
   return <UploadButton

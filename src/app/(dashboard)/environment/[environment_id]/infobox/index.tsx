@@ -2,7 +2,7 @@ import {Card, CardContent, CardHeader} from "~/components/ui/card";
 import {getEnvironment} from "~/app/api/environment/environment";
 import Info from "./info";
 import Name from "./name";
-import {InfoBoxError} from "~/app/components/InfoBoxError";
+import {InfoBoxError} from "~/components/InfoBoxError";
 import InfoButtons from "./buttons";
 import Clone from "./clone"
 import Delete from "./delete"
