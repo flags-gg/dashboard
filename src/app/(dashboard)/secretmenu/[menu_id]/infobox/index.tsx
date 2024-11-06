@@ -2,7 +2,7 @@ import {type secretMenu} from "~/lib/statemanager";
 import {getSecretMenu} from "~/app/api/secretmenu/data";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 import Info from "./info";
-import {InfoBoxError} from "~/app/components/InfoBoxError";
+import {InfoBoxError} from "~/components/InfoBoxError";
 import InfoButtons from "./buttons";
 
 export default async function InfoBox({menu_id}: {menu_id: string}) {

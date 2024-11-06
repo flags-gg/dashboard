@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import {UploadButton} from "~/utils/uploadthing";
+import {UploadButton} from "~/lib/utils/uploadthing";
 import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
 import Image from "next/image";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
