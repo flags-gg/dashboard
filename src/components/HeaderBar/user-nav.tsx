@@ -33,7 +33,7 @@ export function UserNav({session}: {session: Session}) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align={"end"}>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        {is("user account")?.enabled() && <DropdownMenuItem>
+        {is("user account")?.enabled() && <DropdownMenuItem asChild className={"cursor-pointer"}>
           <Link href={"/user/account"}>Account</Link>
         </DropdownMenuItem>
         }
@@ -41,13 +41,13 @@ export function UserNav({session}: {session: Session}) {
           <>
             <DropdownMenuSeparator />
             <DropdownMenuLabel>Company</DropdownMenuLabel>
-            <DropdownMenuItem>
+            <DropdownMenuItem asChild className={"cursor-pointer"}>
               <Link href={"/company"}>Settings</Link>
             </DropdownMenuItem>
           </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild className={"cursor-pointer"}>
           <Link href={"/api/auth/signout"}>Sign out</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
