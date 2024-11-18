@@ -26,7 +26,8 @@ export default [
     ".next/*",
     "*.cjs",
     "tailwind.config.ts",
-    "*/components/ui/*"
+    "*/components/ui/*",
+    "node_modules/*",
   ]},
   {rules: {
     "react/react-in-jsx-scope": "off",

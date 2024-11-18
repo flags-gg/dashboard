@@ -4,6 +4,7 @@ import BreadCrumbs from "./breadcrumbs";
 import { getServerAuthSession } from "~/server/auth";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { env } from "~/env";
+import { ThemeChooser } from "./themeChooser";
 
 export default async function HeaderBar() {
   const session = await getServerAuthSession();
@@ -18,6 +19,7 @@ export default async function HeaderBar() {
       <SidebarTrigger />
       <BreadCrumbs commitHash={commitHash} />
       <SearchBox />
+      <ThemeChooser />
       <UserNav session={session} />
     </header>
   )

@@ -3,15 +3,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {type ReactNode, useState} from 'react'
-import {ThemeProvider} from "~/components/theme-provider";
+import { ThemeProvider, useTheme } from "next-themes";
 import {FlagsProvider} from "@flags-gg/react-library";
 import {flagsConfig} from "~/env";
 
 export default function ClientProvider({ children, flagConfig }: { children: ReactNode, flagConfig?: typeof flagsConfig }) {
   const [queryClient] = useState(() => new QueryClient())
+  const {theme} = useTheme()
 
   return (
-    <ThemeProvider attribute="class" defaultTheme={"dark"} enableSystem disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme={theme} enableSystem disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>
         <FlagsProvider options={flagConfig ?? flagsConfig}>
           {children}
