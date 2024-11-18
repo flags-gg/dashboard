@@ -30,6 +30,8 @@ export default [
     "node_modules/*",
   ]},
   {rules: {
+    'no-unused-expressions': 'error',
+    '@typescript-eslint/no-unused-expressions': 'off',
     "react/react-in-jsx-scope": "off",
     ...pluginNext.configs.recommended.rules,
     ...pluginNext.configs['core-web-vitals'].rules,
