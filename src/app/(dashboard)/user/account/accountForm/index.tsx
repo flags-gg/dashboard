@@ -18,17 +18,11 @@ const formSchema = z.object({
   firstName: z.string().min(2, {message: "First Name is required a minimum of 2 characters"}),
   lastName: z.string().min(2, {message: "Last Name is required a minimum of 2 characters"}),
   location: z.string().min(2, {message: "Location is required a minimum of 2 characters"}),
-  timezone: z.string().min(2, {message: "Timezone is required a minimum of 2 characters"}),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
 export default function AccountForm({ session }: { session: Session }) {
-  const { options } = useTimezoneSelect({
-    labelStyle: "original",
-    ...allTimezones,
-  });
-
   const { data: userData, isLoading, isError } = useUserDetails(session?.user?.id ?? "");
   const { toast } = useToast();
 
@@ -38,27 +32,19 @@ export default function AccountForm({ session }: { session: Session }) {
       firstName: "",
       lastName: "",
       location: "",
-      timezone: "UTC",
     },
   });
 
   // Set form values when user data loads
   useEffect(() => {
     if (userData) {
-      const matchingTimezone = options.find(
-        (option) => option.value === userData.timezone ||
-          option.value === `UTC/${userData.timezone}` ||
-          option.value === userData.timezone.replace('_', '/')
-      );
-
       form.reset({
         firstName: userData.first_name,
         lastName: userData.last_name,
         location: userData.location,
-        timezone: matchingTimezone ? matchingTimezone.value : "UTC",
       });
     }
-  }, [userData, form, options]);
+  }, [userData, form]);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -95,11 +81,6 @@ export default function AccountForm({ session }: { session: Session }) {
   }
 
   if (isError) {
-    toast({
-      title: "Error loading user details",
-      description: "Please try again later.",
-    });
-
     return (
       <div className="text-red-500">
         Error loading user details. Please try again later.
@@ -145,33 +126,6 @@ export default function AccountForm({ session }: { session: Session }) {
                 <FormLabel>Location</FormLabel>
                 <FormControl>
                   <Input placeholder="Location" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="timezone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Timezone</FormLabel>
-                <FormControl>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a timezone" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {options?.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
