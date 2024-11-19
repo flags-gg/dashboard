@@ -11,8 +11,6 @@ import { useToast } from "~/hooks/use-toast";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { useEffect } from "react";
-import { allTimezones, useTimezoneSelect } from "react-timezone-select";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
 const formSchema = z.object({
   firstName: z.string().min(2, {message: "First Name is required a minimum of 2 characters"}),

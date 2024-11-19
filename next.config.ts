@@ -6,7 +6,7 @@ import type {NextConfig} from "next";
 import "./app/env"
 
 /** @type {import("next").NextConfig} */
-export default nextConfig: NextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -23,3 +23,5 @@ export default nextConfig: NextConfig = {
   },
   output: "standalone",
 };
+
+export default nextConfig;
