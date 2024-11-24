@@ -13,7 +13,7 @@ import { Button } from "~/components/ui/button";
 import { useEffect } from "react";
 
 const formSchema = z.object({
-  knownAs: z.string().min(2, {message: "Known As is required a minimum of 2 characters"}),
+  knownAs: z.string().min(2, {message: "Known As requires a minimum of 2 characters"}),
   firstName: z.string().min(2, {message: "First Name is required a minimum of 2 characters"}),
   lastName: z.string().min(2, {message: "Last Name is required a minimum of 2 characters"}),
   location: z.string().min(2, {message: "Location is required a minimum of 2 characters"}),
