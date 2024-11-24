@@ -13,6 +13,7 @@ import { Button } from "~/components/ui/button";
 import { useEffect } from "react";
 
 const formSchema = z.object({
+  knownAs: z.string().min(2, {message: "Known As requires a minimum of 2 characters"}),
   firstName: z.string().min(2, {message: "First Name is required a minimum of 2 characters"}),
   lastName: z.string().min(2, {message: "Last Name is required a minimum of 2 characters"}),
   location: z.string().min(2, {message: "Location is required a minimum of 2 characters"}),
@@ -27,6 +28,7 @@ export default function AccountForm({ session }: { session: Session }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      knownAs: "",
       firstName: "",
       lastName: "",
       location: "",
@@ -37,12 +39,24 @@ export default function AccountForm({ session }: { session: Session }) {
   useEffect(() => {
     if (userData) {
       form.reset({
+        knownAs: userData.known_as,
         firstName: userData.first_name,
         lastName: userData.last_name,
         location: userData.location,
       });
+      return
     }
-  }, [userData, form]);
+
+    if (session?.user?.name) {
+      const [firstName, lastName] = session.user.name.split(" ");
+      form.reset({
+        knownAs: session.user.name,
+        firstName,
+        lastName,
+        location: "",
+      });
+    }
+  }, [userData, form, session]);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -78,18 +92,23 @@ export default function AccountForm({ session }: { session: Session }) {
     )
   }
 
-  if (isError) {
-    return (
-      <div className="text-red-500">
-        Error loading user details. Please try again later.
-      </div>
-    );
-  }
-
   return (
     <div className="col-span-2">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+          <FormField
+            control={form.control}
+            name="knownAs"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Wish to be known as</FormLabel>
+                <FormControl>
+                  <Input placeholder="Known As" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="firstName"

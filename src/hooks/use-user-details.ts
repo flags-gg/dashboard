@@ -8,6 +8,7 @@ type UserGroup = {
 }
 
 export type UserDetails = {
+  known_as: string;
   avatar: string;
   first_name: string;
   last_name: string;

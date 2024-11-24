@@ -1,5 +1,5 @@
 import {SearchBox} from "./search";
-import {UserNav} from "./user-nav";
+import {UserNav} from "./userNav";
 import BreadCrumbs from "./breadcrumbs";
 import { getServerAuthSession } from "~/server/auth";
 import { SidebarTrigger } from "~/components/ui/sidebar";
