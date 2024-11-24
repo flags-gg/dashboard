@@ -16,10 +16,13 @@ import { useUserDetails } from "~/hooks/use-user-details";
 export function UserNav({session}: {session: Session}) {
   const user = session?.user;
   const userName = user?.name ?? "";
-  const shortName = userName.split(" ")?.map((n) => n[0]).join("");
+  let shortName = userName.split(" ")?.map((n) => n[0]).join("");
   const {is} = useFlags();
 
   const { data: userData } = useUserDetails(user?.id ?? "");
+  if (userData?.known_as) {
+    shortName = userData?.known_as.split(" ")?.map((n) => n[0]).join("");
+  }
 
   return (
     <DropdownMenu>

@@ -71,6 +71,10 @@ export function SearchBox() {
   const [isOpen, setIsOpen] = useState(false);
   const [companyInfo] = useAtom(companyInfoAtom);
 
+  if (companyInfo?.company?.invite_code === "") {
+    return <div className={"relative ml-auto flex-1 md:grow-0"}></div>;
+  }
+
   const {data: projectsData, error: projectsError} = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
@@ -87,13 +91,10 @@ export function SearchBox() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  if (!companyInfo?.company?.invite_code) {
-    return <div className={"relative ml-auto flex-1 md:grow-0"}></div>;
-  }
 
   if (!is("search")?.enabled()) {
-    return <div className={"relative ml-auto flex-1 md:grow-0"}>
-    </div>
+    console.info("search disabled")
+    return <div className={"relative ml-auto flex-1 md:grow-0"}></div>
   }
 
   if (projectsError ?? agentsError ?? environmentsError) {
