@@ -41,13 +41,23 @@ export function UserNav({session}: {session: Session}) {
         </DropdownMenuItem>
         }
         {is("show company")?.enabled() && (
-          <>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>Company</DropdownMenuLabel>
-            <DropdownMenuItem asChild className={"cursor-pointer"}>
-              <Link href={"/company"}>Settings</Link>
-            </DropdownMenuItem>
-          </>
+          userData ? (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>Company</DropdownMenuLabel>
+              <DropdownMenuItem asChild className={"cursor-pointer"}>
+                <Link href={"/company"}>Settings</Link>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>Company</DropdownMenuLabel>
+              <DropdownMenuItem asChild className={"cursor-pointer"}>
+                <Link href={"/company/create"}>Create Company</Link>
+              </DropdownMenuItem>
+            </>
+         )
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className={"cursor-pointer"}>

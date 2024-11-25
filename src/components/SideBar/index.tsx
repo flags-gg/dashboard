@@ -41,6 +41,8 @@ export default function SideBar() {
     window.location.href = `/company/create`
   }
 
+  console.info("userData", userData)
+
   if (!userData?.company_invite_code) {
     return <Sidebar>
       <SidebarContent>
