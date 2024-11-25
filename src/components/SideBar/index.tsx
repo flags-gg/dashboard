@@ -26,9 +26,10 @@ import {
   SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem
 } from "~/components/ui/sidebar";
 import { useUserDetails } from "~/hooks/use-user-details";
+import { getProject } from "~/app/api/project/project";
 
 export default function SideBar() {
-  const [selectedProject] = useAtom(projectAtom);
+  const [selectedProject, setSelectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
@@ -40,8 +41,6 @@ export default function SideBar() {
     setCompanyCreation(true);
     window.location.href = `/company/create`
   }
-
-  console.info("userData", userData)
 
   if (!userData?.company_invite_code) {
     return <Sidebar>

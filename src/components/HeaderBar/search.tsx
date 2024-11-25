@@ -76,38 +76,53 @@ export function SearchBox({session}: {session: Session}) {
   const {is} = useFlags();
   const [isOpen, setIsOpen] = useState(false);
   const [companyInfo] = useAtom(companyInfoAtom);
-  const user = session?.user;
+  const [error, setError] = useState("");
+
+  const {data: projectsData, error: projectsError} = useQuery({
+      queryKey: ["projects", session?.user?.id],
+      queryFn: getProjects,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      enabled: Boolean(session?.user?.id),
+  });
+  if (projectsError) {
+    setError(projectsError.message);
+  }
+
+  const { data: agentsData, error: agentsError } = useQuery({
+    queryKey: ["agents", session?.user?.id],
+    queryFn: getAgents,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: Boolean(session?.user?.id),
+  });
+  if (agentsError) {
+    setError(agentsError.message);
+  }
+
+  const { data: environmentsData, error: environmentsError } = useQuery({
+    queryKey: ["environments", session?.user?.id],
+    queryFn: getEnvironments,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: Boolean(session?.user?.id),
+  });
+  if (environmentsError) {
+    setError(environmentsError.message);
+  }
 
   if (companyInfo?.company?.invite_code === "") {
     return <div className={"relative ml-auto flex-1 md:grow-0"}></div>;
   }
 
   if (!is("search")?.enabled()) {
-    console.info("search disabled")
     return <div className={"relative ml-auto flex-1 md:grow-0"}></div>
   }
 
-  const {data: projectsData, error: projectsError} = useQuery({
-    queryKey: ["projects", user?.id],
-    queryFn: getProjects,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-  const {data: agentsData, error: agentsError} = useQuery({
-    queryKey: ["agents", user?.id],
-    queryFn: getAgents,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-  const {data: environmentsData, error: environmentsError} = useQuery({
-    queryKey: ["environments", user?.id],
-    queryFn: getEnvironments,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  });
-
-  if (projectsError ?? agentsError ?? environmentsError) {
+  if (error) {
+    console.info("error", error)
     toast({
       title: "Error loading search data",
-      description: "Please try again later.",
+      description: error,
     });
+    return <div className={"relative ml-auto flex-1 md:grow-0"}></div>
   }
 
   return (
@@ -134,19 +149,21 @@ export function SearchBox({session}: {session: Session}) {
         />
         <CommandList>
           <CommandEmpty>No Results</CommandEmpty>
-          <CommandGroup heading="Projects">
-            {projectsData?.projects?.map((project) => (
-              <CommandItem key={project.project_id} onSelect={() => {
-                setIsOpen(false)
-                window.location.href = `/project/${project?.project_id}`
-              }}><span className={"font-bold"}>{project?.name}</span></CommandItem>
-            ))}
-          </CommandGroup>
+          {projectsData && (
+            <CommandGroup heading="Projects">
+              {projectsData.projects?.map((project) => (
+                <CommandItem key={project.project_id} onSelect={() => {
+                  setIsOpen(false)
+                  window.location.href = `/project/${project?.project_id}`
+                }}><span className={"font-bold"}>{project?.name}</span></CommandItem>
+              ))}
+            </CommandGroup>
+          )}
           {agentsData && (
             <>
               <CommandSeparator />
               <CommandGroup heading="Agents">
-                {agentsData?.agents?.map((agent) => (
+                {agentsData.agents?.map((agent) => (
                   <CommandItem key={agent?.agent_id} onSelect={() => {
                     setIsOpen(false)
                     window.location.href = `/agent/${agent?.agent_id}`
@@ -159,7 +176,7 @@ export function SearchBox({session}: {session: Session}) {
             <>
               <CommandSeparator />
               <CommandGroup heading="Environments">
-                {environmentsData?.environments?.map((environment) => (
+                {environmentsData.environments?.map((environment) => (
                   <CommandItem key={environment?.environment_id} onSelect={() => {
                     setIsOpen(false)
                     window.location.href = `/environment/${environment?.environment_id}`
