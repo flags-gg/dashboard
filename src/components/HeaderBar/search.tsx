@@ -16,7 +16,6 @@ import {
   type AgentsData,
   companyInfoAtom,
   type EnvironmentsData,
-  ICompanyInfo,
   type ProjectsData
 } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
