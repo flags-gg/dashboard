@@ -82,7 +82,7 @@ export function SearchBox({session}: {session: Session}) {
       queryKey: ["projects", session?.user?.id],
       queryFn: getProjects,
       staleTime: 5 * 60 * 1000, // 5 minutes
-      enabled: Boolean(session?.user?.id),
+      enabled: Boolean(session?.user?.id) && Boolean(companyInfo?.company?.invite_code),
   });
   if (projectsError) {
     setError(projectsError.message);
@@ -92,7 +92,7 @@ export function SearchBox({session}: {session: Session}) {
     queryKey: ["agents", session?.user?.id],
     queryFn: getAgents,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(session?.user?.id),
+    enabled: Boolean(session?.user?.id) && Boolean(companyInfo?.company?.invite_code),
   });
   if (agentsError) {
     setError(agentsError.message);
@@ -102,7 +102,7 @@ export function SearchBox({session}: {session: Session}) {
     queryKey: ["environments", session?.user?.id],
     queryFn: getEnvironments,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(session?.user?.id),
+    enabled: Boolean(session?.user?.id) && Boolean(companyInfo?.company?.invite_code),
   });
   if (environmentsError) {
     setError(environmentsError.message);
