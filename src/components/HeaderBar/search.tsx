@@ -9,7 +9,7 @@ import {
   CommandList,
   CommandSeparator
 } from "~/components/ui/command";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import {

@@ -26,10 +26,9 @@ import {
   SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem
 } from "~/components/ui/sidebar";
 import { useUserDetails } from "~/hooks/use-user-details";
-import { getProject } from "~/app/api/project/project";
 
 export default function SideBar() {
-  const [selectedProject, setSelectedProject] = useAtom(projectAtom);
+  const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
