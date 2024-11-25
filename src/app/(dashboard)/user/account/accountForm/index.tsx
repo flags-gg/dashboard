@@ -22,7 +22,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function AccountForm({ session }: { session: Session }) {
-  const { data: userData, isLoading, isError } = useUserDetails(session?.user?.id ?? "");
+  const { data: userData, isLoading } = useUserDetails(session?.user?.id ?? "");
   const { toast } = useToast();
 
   const form = useForm<FormValues>({

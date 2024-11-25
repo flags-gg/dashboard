@@ -19,20 +19,25 @@ export type UserDetails = {
   company_invite_code: string;
 }
 async function getUserDetails(): Promise<UserDetails | null> {
-  const res = await fetch(`/api/user/details`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
+  try {
+    const res = await fetch(`/api/user/details`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch user details");
+    if (!res.ok) {
+      throw new Error("Failed to fetch user details");
+    }
+
+    const data = await res.json() as UserDetails;
+    return data ?? null;
+  } catch (e) {
+    console.error("user details error", e)
+    return null
   }
-
-  const data = await res.json() as UserDetails;
-  return data ?? null;
 }
 
 export function useUserDetails(userId: string) {
