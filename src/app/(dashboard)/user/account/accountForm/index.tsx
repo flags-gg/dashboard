@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "~/hooks/use-toast";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   knownAs: z.string().min(2, {message: "Known As requires a minimum of 2 characters"}),
@@ -23,6 +23,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function AccountForm({ session }: { session: Session }) {
   const { data: userData, isLoading } = useUserDetails(session?.user?.id ?? "");
+  const [fromKeycloak, setFromKeycloak] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<FormValues>({
@@ -55,12 +56,30 @@ export default function AccountForm({ session }: { session: Session }) {
         lastName,
         location: "",
       });
+      setFromKeycloak(true);
     }
   }, [userData, form, session]);
 
   const onSubmit = async (data: FormValues) => {
     try {
-      console.info("submitted data", data)
+      data.email = session.user.email
+
+      const res = await fetch("/api/user/details", {
+        method: fromKeycloak ? "POST" : "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        cache: "no-store",
+      });
+      if (!res.ok) {
+        toast({
+          title: "Error",
+          description: "Failed to update account details",
+          variant: "destructive",
+        });
+        return
+      }
 
       toast({
         title: "Account Updated",
