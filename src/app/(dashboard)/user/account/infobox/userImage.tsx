@@ -56,13 +56,13 @@ export default function UserImage({session}: {session: Session}) {
   let imageElement
   if (imageURL) {
     imageElement =
-      <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={200} width={200} className={"cursor-pointer"} />
+      <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={200} width={200} className={"cursor-pointer"} priority={true} />
   } else {
     const userName = session?.user?.name ?? "";
     const shortName = userName.split(" ")?.map((n) => n[0]).join("");
     imageElement = (
-      <Avatar className={"cursor-pointer"}>
-        <AvatarImage src={userData?.avatar} alt={"User Image"} />
+      <Avatar className={"cursor-pointer h-28 w-28"}>
+        <AvatarImage src={userData?.avatar} alt={"User Image"} height="200px" width="200px" className={"h-28 w-28"} />
         <AvatarFallback>{shortName}</AvatarFallback>
       </Avatar>
     );

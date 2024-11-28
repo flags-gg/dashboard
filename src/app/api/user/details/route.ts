@@ -19,7 +19,7 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.info("user response", response, response.status)
+      console.info("user response", response, response.status, `${env.API_SERVER}/user`)
       return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 500 })
     }
 
@@ -31,11 +31,47 @@ export async function GET() {
   }
 }
 
-export async function PUT() {
+export async function PUT(request: Request) {
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
+  const {firstName, lastName, knownAs, email} = await request.json();
+
+  try {
+    const response = await fetch(`${env.API_SERVER}/user`, {
+      method: 'PUT',
+      headers: {
+        'x-user-access-token': session.user.access_token,
+        'x-user-subject': session.user.id,
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+      body: JSON.stringify({
+        "emailAddress": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "knownAs": knownAs,
+      }),
+    })
+    if (!response.ok) {
+      console.error('Failed to update user details', response)
+      return NextResponse.json({ message: 'Failed to update user details' }, { status: 500 })
+    }
+
+    return NextResponse.json({ message: 'User details updated' })
+  } catch (e) {
+    console.error('Failed to update user details', e)
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+  }
+}
+
+export async function POST(request: Request) {
+  const session = await getServerAuthSession();
+  if (!session?.user?.access_token) {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
+  const {firstName, lastName, knownAs, email} = await request.json();
 
   try {
     const response = await fetch(`${env.API_SERVER}/user`, {
@@ -46,8 +82,15 @@ export async function PUT() {
         'Content-Type': 'application/json',
       },
       cache: 'no-store',
+      body: JSON.stringify({
+        "emailAddress": email,
+        "firstName": firstName,
+        "lastName": lastName,
+        "knownAs": knownAs,
+      }),
     })
     if (!response.ok) {
+      console.error('Failed to update user details', response)
       return NextResponse.json({ message: 'Failed to update user details' }, { status: 500 })
     }
 
