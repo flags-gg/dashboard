@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 async function deleteAccount(): Promise<null | Error> {
   try {
@@ -41,12 +42,13 @@ async function deleteAccount(): Promise<null | Error> {
 export function InfoButtons() {
   const [openDelete, setOpenDelete] = useState(false);
   const {toast} = useToast();
+  const router = useRouter();
 
   return (
     <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
       <Dialog open={openDelete} onOpenChange={setOpenDelete}>
         <DialogTrigger asChild>
-          <Button variant="destructive" className="w-full">
+          <Button variant="destructive" className={"w-full cursor-pointer"}>
             Delete Account
           </Button>
         </DialogTrigger>
@@ -56,14 +58,15 @@ export function InfoButtons() {
             <DialogDescription>Are you sure you want to delete your account?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={() => {
+            <Button className={"cursor-pointer"} onClick={() => setOpenDelete(false)}>Cancel</Button>
+            <Button variant="destructive" className={"cursor-pointer"} onClick={() => {
               setOpenDelete(false)
               deleteAccount().then(() => {
                 toast({
                   title: "Account deleted",
                   description: "Your account has been deleted",
                 });
+                router.push("/api/auth/signout")
               }).catch((error) => {
                 if (error instanceof Error) {
                   toast({
