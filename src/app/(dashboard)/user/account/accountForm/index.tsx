@@ -62,7 +62,7 @@ export default function AccountForm({ session }: { session: Session }) {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      // @ts-ignore
+      // @ts-expect-error email doesn't exist on session.user
       data.email = session.user.email
 
       const res = await fetch("/api/user/details", {
