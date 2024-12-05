@@ -15,8 +15,7 @@ import {
   projectAtom,
   agentAtom,
   environmentAtom,
-  secretMenuAtom,
-  companyCreationAtom
+  secretMenuAtom, companyCreationAtom
 } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import {
@@ -25,23 +24,17 @@ import {
   SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem
 } from "~/components/ui/sidebar";
-import { useUserDetails } from "~/hooks/use-user-details";
 
 export default function SideBar() {
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
-  const [companyCreation, setCompanyCreation] = useAtom(companyCreationAtom);
 
   const {is} = useFlags();
-  const { data: userData } = useUserDetails("unknown");
-  if (userData?.company_invite_code && !companyCreation) {
-    setCompanyCreation(true);
-    window.location.href = `/company/create`
-  }
+  const [companyNotCreated] = useAtom(companyCreationAtom);
 
-  if (!userData?.company_invite_code) {
+  if (companyNotCreated) {
     return <Sidebar>
       <SidebarContent>
         <SidebarGroup>
