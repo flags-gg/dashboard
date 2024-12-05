@@ -16,6 +16,8 @@ export default function Company({session}: {session: Session}) {
     }
   }, [userData])
 
+  console.info("userData-company", userData)
+
   if (!companyCreated) {
     if (location.pathname === "/company/create") {
       return null

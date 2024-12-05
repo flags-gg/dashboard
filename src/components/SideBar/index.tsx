@@ -32,9 +32,9 @@ export default function SideBar() {
   const [selectedMenu] = useAtom(secretMenuAtom);
 
   const {is} = useFlags();
-  const [companyNotCreated] = useAtom(companyCreationAtom);
+  const [companyCreated] = useAtom(companyCreationAtom);
 
-  if (companyNotCreated) {
+  if (!companyCreated) {
     return <Sidebar>
       <SidebarContent>
         <SidebarGroup>
