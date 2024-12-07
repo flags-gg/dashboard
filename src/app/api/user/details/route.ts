@@ -20,7 +20,7 @@ export async function GET() {
     })
     if (!response.ok) {
       console.info("user response", response, response.status, `${env.API_SERVER}/user`)
-      return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 500 })
+      return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 404 })
     }
 
     const data = await response.json() as UserDetails

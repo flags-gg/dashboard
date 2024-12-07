@@ -12,8 +12,12 @@ import Link from "next/link";
 import { type Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
 import { useUserDetails } from "~/hooks/use-user-details";
+import { useAtom } from "jotai";
+import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 
 export function UserNav({session}: {session: Session}) {
+  const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
+
   const user = session?.user;
   const userName = user?.name ?? "";
   let shortName = userName.split(" ")?.map((n) => n[0]).join("");
@@ -41,7 +45,7 @@ export function UserNav({session}: {session: Session}) {
         </DropdownMenuItem>
         }
         {is("show company")?.enabled() && (
-          userData ? (
+          hasCompletedOnboarding && (
             <>
               <DropdownMenuSeparator />
               <DropdownMenuLabel>Company</DropdownMenuLabel>
@@ -49,15 +53,7 @@ export function UserNav({session}: {session: Session}) {
                 <Link href={"/company"}>Settings</Link>
               </DropdownMenuItem>
             </>
-          ) : (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuLabel>Company</DropdownMenuLabel>
-              <DropdownMenuItem asChild className={"cursor-pointer"}>
-                <Link href={"/company/create"}>Create Company</Link>
-              </DropdownMenuItem>
-            </>
-         )
+          )
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className={"cursor-pointer"}>

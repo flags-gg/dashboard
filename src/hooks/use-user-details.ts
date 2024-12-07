@@ -49,6 +49,8 @@ export function useUserDetails(userId: string) {
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(userId),
     retry: (failureCount, error) => {
+      console.info("user details retry", failureCount, error)
+
       if (error.message.includes('404')) {
         return false;
       }
