@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { Metadata } from "next";
+import StepOne from "./stepOne";
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await getServerAuthSession()
@@ -24,8 +25,7 @@ export default async function Onboarding() {
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Onboarding</h1>
       </header>
-      {/*<StepOne />*/}
-      {/*<InfoBox  />*/}
+      <StepOne session={session} />
     </div>
   )
 }

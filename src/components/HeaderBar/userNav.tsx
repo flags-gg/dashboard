@@ -17,15 +17,19 @@ import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 
 export function UserNav({session}: {session: Session}) {
   const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
+  const {is} = useFlags();
 
   const user = session?.user;
   const userName = user?.name ?? "";
   let shortName = userName.split(" ")?.map((n) => n[0]).join("");
-  const {is} = useFlags();
+  let userAvatar = user?.image ?? ""
 
-  const { data: userData } = useUserDetails(user?.id ?? "");
-  if (userData?.known_as) {
-    shortName = userData?.known_as.split(" ")?.map((n) => n[0]).join("");
+  if (hasCompletedOnboarding) {
+    const { data: userData } = useUserDetails(user?.id ?? "");
+    if (userData?.known_as) {
+      shortName = userData?.known_as.split(" ")?.map((n) => n[0]).join("");
+      userAvatar = userData?.avatar ?? ""
+    }
   }
 
   return (
@@ -33,7 +37,7 @@ export function UserNav({session}: {session: Session}) {
       <DropdownMenuTrigger asChild>
         <Button variant={"outline"} size={"icon"} className={"overflow-hidden rounded-full"}>
           <Avatar className={"h-8 w-8"}>
-            <AvatarImage src={userData?.avatar} alt={userName} />
+            <AvatarImage src={userAvatar} alt={userName} />
             <AvatarFallback>{shortName}</AvatarFallback>
           </Avatar>
         </Button>
