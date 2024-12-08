@@ -12,61 +12,72 @@ import { Separator } from "~/components/ui/separator";
 import { Session } from "next-auth";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
+import { getUserDetails } from "~/hooks/use-user-details";
+import { useEffect } from "react";
+import { useAtom } from "jotai";
+import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 
-export default function StepOne({session}: {session: Session}) {
-  const firstName = session?.user?.name?.split(" ")[0] ?? ""
-  const lastName = session?.user?.name?.split(" ")[1] ?? ""
-  const email = session?.user.email ?? ""
+export default function StepTwo({session}: {session: Session}) {
   const {toast} = useToast()
   const router = useRouter()
+  const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
 
-  const formSchema = z.object({
-    knownAs: z.string().min(2, {message: "Known as is required a minimum of 2 characters"}),
-    firstName: z.string().min(2, {message: "First name is required a minimum of 2 characters"}).default(firstName),
-    lastName: z.string().min(2, {message: "Last name is required a minimum of 2 characters"}).default(lastName),
-    email: z.string().email({message: "Email is not valid"}).default(email),
+  if (!session?.user?.id) {
+    router.push("/api/auth/signin")
+  }
+
+  // they have somehow got to the second step without completing the first step
+  useEffect(() => {
+    getUserDetails().then(userData => {
+      if (!userData?.known_as) {
+        router.push("/onboarding/stepone")
+      }
+    }).catch(err => {
+      console.error("Error getting user details", err)
+    })
+  }, [])
+
+  const companyCodeSchema = z.object({
+    companyCode: z.string().min(2, {message: "Company Invite Code is required a minimum of 2 characters"}),
   })
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const companyCodeForm = useForm<z.infer<typeof companyCodeSchema>>({
+    resolver: zodResolver(companyCodeSchema),
     defaultValues: {
-      knownAs: "",
-      firstName: firstName,
-      lastName: lastName,
-      email: email ? email : "",
+      companyCode: "",
     },
   })
-
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const companyCodeOnSubmit = async (data: z.infer<typeof companyCodeSchema>) => {
     try {
-      const userValues = {
-        knownAs: data.knownAs,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-      }
+      const domain = session?.user.email?.split("@")[1]
 
-      const res = await fetch("/api/user/details", {
-        method: "POST",
+      const companyCodeValues = {
+        invite_code: data.companyCode,
+        domain: domain,
+      }
+      const res = await fetch("/api/company/user", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userValues),
+        body: JSON.stringify(companyCodeValues),
         cache: "no-store",
       })
       if (!res.ok) {
-        new Error("Failed to create account")
+        new Error("Failed to create company")
       }
 
       toast({
-        title: "Account Created",
-        description: "First step of account creation has been completed",
+        title: "Company Created",
+        description: "Last step of onboarding has been completed",
       })
-      router.push("/onboarding/stepTwo")
+      setOnboardingComplete(true)
+      router.push("/")
     } catch (e) {
       if (e instanceof Error) {
         toast({
           title: "Error",
-          description: `Failed to create first step of account: ${e.message}`,
+          description: `Failed to completed last step of onboarding: ${e.message}`,
           variant: "destructive",
         })
         return
@@ -74,7 +85,61 @@ export default function StepOne({session}: {session: Session}) {
 
       toast({
         title: "Error",
-        description: "Failed to create first step of account for unknown reason",
+        description: "Failed to completed last step of onboarding for unknown reason",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const companyFormSchema = z.object({
+    companyName: z.string().min(2, {message: "Company Name is required a minimum of 2 characters"}),
+    companyDomain: z.string().min(2, {message: "Company Domain is required a minimum of 2 characters"}),
+  })
+  const companyForm = useForm<z.infer<typeof companyFormSchema>>({
+    resolver: zodResolver(companyFormSchema),
+    defaultValues: {
+      companyName: "",
+      companyDomain: "",
+    },
+  })
+  const companyOnSubmit = async (data: z.infer<typeof companyFormSchema>) => {
+    try {
+      const companyValues = {
+        companyName: "",
+        companyDomain: "",
+      }
+
+      const res = await fetch("/api/company/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(companyValues),
+        cache: "no-store",
+      })
+      if (!res.ok) {
+        new Error("Failed to create company")
+      }
+
+      toast({
+        title: "Company Created",
+        description: "Last step of onboarding has been completed",
+      })
+      // setOnboardingComplete(true)
+      // router.push("/")
+    } catch (e) {
+      if (e instanceof Error) {
+        toast({
+          title: "Error",
+          description: `Failed to completed last step of onboarding: ${e.message}`,
+          variant: "destructive",
+        })
+        return
+      }
+
+      toast({
+        title: "Error",
+        description: "Failed to completed last step of onboarding for unknown reason",
         variant: "destructive",
       })
     }
@@ -87,71 +152,74 @@ export default function StepOne({session}: {session: Session}) {
           Step Two
         </CardTitle>
         <CardContent className={"p-6 text-sm"}>
-          <p>Welcome to Flags.gg, the first step is to create a Flags.gg account.</p>
+          <p>Welcome to Flags.gg, the last step is to create a Flags.gg company.</p>
           <p>This will allow you to create projects, agents, and environments.</p>
+          <br />
+          <p>Do you have a Flags.gg company invite code? If so, enter it below.</p>
           <br />
           <Separator />
           <br />
 
-
-
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className={"w-2/3 space-y-6"}>
-              <FormField
-                control={form.control}
-                name="knownAs"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>What do you wish to be known as</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Known As" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem className={"hidden"}>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="First Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem className={"hidden"}>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Last Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className={"hidden"}>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Continue</Button>
-            </form>
-          </Form>
+          <Accordion type={"single"} collapsible={true} className={"w-full"}>
+            <AccordionItem value={"companyCode"}>
+              <AccordionTrigger>Company Invite Code</AccordionTrigger>
+              <AccordionContent>
+                <Form {...companyCodeForm}>
+                  <form onSubmit={companyCodeForm.handleSubmit(companyCodeOnSubmit)} className={"w-2/3 space-y-6"}>
+                    <FormField
+                      control={companyCodeForm.control}
+                      name="companyCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input placeholder="Company Invite Code" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit">Continue</Button>
+                  </form>
+                </Form>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value={"companyDetails"}>
+              <AccordionTrigger>Company Details</AccordionTrigger>
+              <AccordionContent>
+                <Form {...companyForm}>
+                  <form onSubmit={companyForm.handleSubmit(companyOnSubmit)} className={"w-2/3 space-y-6"}>
+                    <FormField
+                      control={companyForm.control}
+                      name="companyName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>What do you wish your company to be known as</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Company Name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={companyForm.control}
+                      name="companyDomain"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company Domain</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Company Domain" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit">Continue</Button>
+                  </form>
+                </Form>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </CardContent>
       </Card>
       <Card>

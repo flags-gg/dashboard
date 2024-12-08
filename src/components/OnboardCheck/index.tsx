@@ -13,12 +13,14 @@ export default function OnboardCheck() {
     if (!hasCompletedOnboarding) {
       if (hasCookie("hasCompletedOnboarding")) {
         setHasCompletedOnboarding(true)
+        console.info("cookie onboarded")
         return
       }
 
       getUserDetails().then((user) => {
         if (user?.onboarded) {
           setHasCompletedOnboarding(true)
+          console.info("details onboarded")
         }
       }).catch((e) => {
         console.error("error in getUserDetails", e)
@@ -26,5 +28,5 @@ export default function OnboardCheck() {
     }
   }, [hasCompletedOnboarding])
 
-  return <div></div>
+  return <></>
 }

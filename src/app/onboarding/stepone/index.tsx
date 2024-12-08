@@ -12,6 +12,8 @@ import { Separator } from "~/components/ui/separator";
 import { Session } from "next-auth";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { getUserDetails } from "~/hooks/use-user-details";
+import { useEffect } from "react";
 
 export default function StepOne({session}: {session: Session}) {
   const firstName = session?.user?.name?.split(" ")[0] ?? ""
@@ -19,6 +21,20 @@ export default function StepOne({session}: {session: Session}) {
   const email = session?.user.email ?? ""
   const {toast} = useToast()
   const router = useRouter()
+
+  if (!session?.user?.id) {
+    router.push("/api/auth/signin")
+  }
+  // they have done the first step, but haven't completed the second step
+  useEffect(() => {
+    getUserDetails().then(userData => {
+      if (userData?.known_as) {
+        router.push("/onboarding/steptwo")
+      }
+    }).catch(err => {
+      console.error("Error getting user details", err)
+    })
+  }, [])
 
   const formSchema = z.object({
     knownAs: z.string().min(2, {message: "Known as is required a minimum of 2 characters"}),
@@ -59,14 +75,14 @@ export default function StepOne({session}: {session: Session}) {
 
       toast({
         title: "Account Created",
-        description: "First step of account creation has been completed",
+        description: "First step of onboarding has been completed",
       })
       router.push("/onboarding/stepTwo")
     } catch (e) {
       if (e instanceof Error) {
         toast({
           title: "Error",
-          description: `Failed to create first step of account: ${e.message}`,
+          description: `Failed to complete first step of onboarding: ${e.message}`,
           variant: "destructive",
         })
         return
@@ -74,7 +90,7 @@ export default function StepOne({session}: {session: Session}) {
 
       toast({
         title: "Error",
-        description: "Failed to create first step of account for unknown reason",
+        description: "Failed to complete first step of onboarding for unknown reason",
         variant: "destructive",
       })
     }
