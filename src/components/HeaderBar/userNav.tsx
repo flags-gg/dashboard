@@ -24,12 +24,10 @@ export function UserNav({session}: {session: Session}) {
   let shortName = userName.split(" ")?.map((n) => n[0]).join("");
   let userAvatar = user?.image ?? ""
 
-  if (hasCompletedOnboarding) {
-    const { data: userData } = useUserDetails(user?.id ?? "");
-    if (userData?.known_as) {
-      shortName = userData?.known_as.split(" ")?.map((n) => n[0]).join("");
-      userAvatar = userData?.avatar ?? ""
-    }
+  const { data: userData } = useUserDetails(user?.id ?? "");
+  if (userData?.known_as) {
+    shortName = userData?.known_as.split(" ")?.map((n) => n[0]).join("");
+    userAvatar = userData?.avatar ?? ""
   }
 
   return (
