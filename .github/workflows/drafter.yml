@@ -26,8 +26,6 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
   update_release_draft:
-    needs:
-      - qodana
     runs-on: ubuntu-latest
     permissions:
       contents: write
