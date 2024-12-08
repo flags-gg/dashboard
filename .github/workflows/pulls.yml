@@ -20,7 +20,7 @@ jobs:
         with:
           version: 9
       - run: pnpm install --frozen-lockfile
-      #- run: pnpm test
+      - run: pnpm lint
   qodana:
     needs: test
     runs-on: ubuntu-latest
