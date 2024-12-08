@@ -90,7 +90,10 @@ export default function CreateProject({ session }: { session: Session }) {
   if (isLoading) return <NewLoader />;
   if (error) return <div>Error: {error.message}</div>;
 
-  const projectsLeft = companyLimits?.projects?.allowed && companyLimits?.projects?.used ? companyLimits.projects.allowed - companyLimits.projects.used : 0;
+  let projectsLeft = 0;
+  if (companyLimits?.projects?.allowed !== undefined && companyLimits?.projects?.used !== undefined) {
+    projectsLeft = companyLimits.projects.allowed - companyLimits.projects.used;
+  }
   if (projectsLeft <= 0) {
     return null;
   }
