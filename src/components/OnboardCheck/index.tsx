@@ -16,8 +16,7 @@ export default function OnboardCheck() {
         return
       }
 
-      const res = getUserDetails();
-      res.then((user) => {
+      getUserDetails().then((user) => {
         if (user?.onboarded) {
           setHasCompletedOnboarding(true)
         }

@@ -84,7 +84,7 @@ export default function StepOne({session}: {session: Session}) {
     <>
       <Card className={"gap-3 col-span-2 min-w-[40rem] p-3"}>
         <CardTitle className={"group flex items-center gap-2 text-lg"}>
-          Step One
+          Step Two
         </CardTitle>
         <CardContent className={"p-6 text-sm"}>
           <p>Welcome to Flags.gg, the first step is to create a Flags.gg account.</p>
@@ -92,6 +92,9 @@ export default function StepOne({session}: {session: Session}) {
           <br />
           <Separator />
           <br />
+
+
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className={"w-2/3 space-y-6"}>
               <FormField

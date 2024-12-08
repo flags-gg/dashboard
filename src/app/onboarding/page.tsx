@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerAuthSession } from "~/server/auth";
 import { Metadata } from "next";
-import StepOne from "./stepOne";
+import StepOne from "./stepone";
 
 export async function generateMetadata(): Promise<Metadata> {
   const session = await getServerAuthSession()
