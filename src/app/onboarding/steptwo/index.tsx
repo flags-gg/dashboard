@@ -30,11 +30,12 @@ export default function StepTwo({session}: {session: Session}) {
   // they have somehow got to the second step without completing the first step
   useEffect(() => {
     getUserDetails().then(userData => {
-      if (!userData?.known_as) {
-        router.push("/onboarding/stepone")
+      if (!userData?.created) {
+        router.push("/onboarding")
       }
     }).catch(err => {
-      console.error("Error getting user details", err)
+      console.info("User not setup yet", err)
+      router.push("/onboarding")
     })
   }, [])
 

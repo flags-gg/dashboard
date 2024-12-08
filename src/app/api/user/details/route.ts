@@ -19,7 +19,6 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.info("user response", response, response.status, `${env.API_SERVER}/user`)
       return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 404 })
     }
 

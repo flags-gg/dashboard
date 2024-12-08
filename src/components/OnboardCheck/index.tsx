@@ -23,7 +23,7 @@ export default function OnboardCheck() {
           console.info("details onboarded")
         }
       }).catch((e) => {
-        console.error("error in getUserDetails", e)
+        console.info("error in getUserDetails", e)
       })
     }
   }, [hasCompletedOnboarding])

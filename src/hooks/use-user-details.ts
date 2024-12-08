@@ -17,6 +17,7 @@ export type UserDetails = {
   timezone: string;
   group: UserGroup;
   onboarded: boolean;
+  created: boolean;
 }
 export async function getUserDetails(): Promise<UserDetails> {
   const res = await fetch(`/api/user/details`, {
@@ -48,8 +49,6 @@ export function useUserDetails(userId: string) {
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(userId),
     retry: (failureCount, error) => {
-      console.info("user details retry", failureCount, error)
-
       if (error.message.includes('404')) {
         return false;
       }

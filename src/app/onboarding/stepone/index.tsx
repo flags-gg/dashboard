@@ -28,11 +28,11 @@ export default function StepOne({session}: {session: Session}) {
   // they have done the first step, but haven't completed the second step
   useEffect(() => {
     getUserDetails().then(userData => {
-      if (userData?.known_as) {
+      if (userData?.created) {
         router.push("/onboarding/steptwo")
       }
     }).catch(err => {
-      console.error("Error getting user details", err)
+      console.info("User not setup yet", err)
     })
   }, [])
 
@@ -77,7 +77,7 @@ export default function StepOne({session}: {session: Session}) {
         title: "Account Created",
         description: "First step of onboarding has been completed",
       })
-      router.push("/onboarding/stepTwo")
+      router.push("/onboarding/steptwo")
     } catch (e) {
       if (e instanceof Error) {
         toast({
