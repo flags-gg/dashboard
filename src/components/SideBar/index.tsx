@@ -16,7 +16,7 @@ import {
   agentAtom,
   environmentAtom,
   secretMenuAtom,
-  companyCreationAtom, hasCompletedOnboardingAtom
+  hasCompletedOnboardingAtom
 } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import {
