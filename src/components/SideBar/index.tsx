@@ -16,7 +16,7 @@ import {
   agentAtom,
   environmentAtom,
   secretMenuAtom,
-  companyCreationAtom
+  companyCreationAtom, hasCompletedOnboardingAtom
 } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import {
@@ -25,23 +25,17 @@ import {
   SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem
 } from "~/components/ui/sidebar";
-import { useUserDetails } from "~/hooks/use-user-details";
 
 export default function SideBar() {
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
-  const [companyCreation, setCompanyCreation] = useAtom(companyCreationAtom);
 
   const {is} = useFlags();
-  const { data: userData } = useUserDetails("unknown");
-  if (userData?.company_invite_code && !companyCreation) {
-    setCompanyCreation(true);
-    window.location.href = `/company/create`
-  }
+  const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
 
-  if (!userData?.company_invite_code) {
+  if (!hasCompletedOnboarding) {
     return <Sidebar>
       <SidebarContent>
         <SidebarGroup>
@@ -60,14 +54,14 @@ export default function SideBar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Company</SidebarGroupLabel>
+          <SidebarGroupLabel>Onboarding</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem key={"company"}>
+              <SidebarMenuItem key={"onboarding"}>
                 <SidebarMenuButton asChild>
-                  <Link href={"/company/create"}>
+                  <Link href={"/onboarding"}>
                     <HousePlus className={"h-5 w-5"} />
-                    <span>Create Company</span>
+                    <span>OnBoard</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

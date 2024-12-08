@@ -38,12 +38,12 @@ export default function AccountForm({ session }: { session: Session }) {
 
   // Set form values when user data loads
   useEffect(() => {
-    if (userData) {
+    if (userData?.known_as !== "") {
       form.reset({
-        knownAs: userData.known_as,
-        firstName: userData.first_name,
-        lastName: userData.last_name,
-        location: userData.location,
+        knownAs: userData?.known_as,
+        firstName: userData?.first_name,
+        lastName: userData?.last_name,
+        location: userData?.location,
       });
       return
     }
@@ -58,7 +58,7 @@ export default function AccountForm({ session }: { session: Session }) {
       });
       setFromKeycloak(true);
     }
-  }, [userData, form, session]);
+  }, [userData, session]);
 
   const onSubmit = async (data: FormValues) => {
     try {

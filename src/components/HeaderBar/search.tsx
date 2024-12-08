@@ -14,8 +14,7 @@ import { Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import {
   type AgentsData,
-  companyInfoAtom,
-  type EnvironmentsData,
+  type EnvironmentsData, hasCompletedOnboardingAtom,
   type ProjectsData
 } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
@@ -75,14 +74,14 @@ export function SearchBox({session}: {session: Session}) {
   const {toast} = useToast();
   const {is} = useFlags();
   const [isOpen, setIsOpen] = useState(false);
-  const [companyInfo] = useAtom(companyInfoAtom);
+  const [isOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const [error, setError] = useState("");
 
   const {data: projectsData, error: projectsError} = useQuery({
       queryKey: ["projects", session?.user?.id],
       queryFn: getProjects,
       staleTime: 5 * 60 * 1000, // 5 minutes
-      enabled: Boolean(session?.user?.id) && Boolean(companyInfo?.company?.invite_code),
+      enabled: Boolean(session?.user?.id) && Boolean(isOnboarded),
   });
   if (projectsError) {
     setError(projectsError.message);
@@ -92,7 +91,7 @@ export function SearchBox({session}: {session: Session}) {
     queryKey: ["agents", session?.user?.id],
     queryFn: getAgents,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(session?.user?.id) && Boolean(companyInfo?.company?.invite_code),
+    enabled: Boolean(session?.user?.id) && Boolean(isOnboarded),
   });
   if (agentsError) {
     setError(agentsError.message);
@@ -102,13 +101,13 @@ export function SearchBox({session}: {session: Session}) {
     queryKey: ["environments", session?.user?.id],
     queryFn: getEnvironments,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(session?.user?.id) && Boolean(companyInfo?.company?.invite_code),
+    enabled: Boolean(session?.user?.id) && Boolean(isOnboarded),
   });
   if (environmentsError) {
     setError(environmentsError.message);
   }
 
-  if (companyInfo?.company?.invite_code === "") {
+  if (!isOnboarded) {
     return <div className={"relative ml-auto flex-1 md:grow-0"}></div>;
   }
 

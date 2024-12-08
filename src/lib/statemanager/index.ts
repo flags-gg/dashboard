@@ -164,6 +164,8 @@ export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", 
 })
 
 export const companyCreationAtom = atomWithStorage<boolean>("companyCreationAtom", false)
+export const userCreationAtom = atomWithStorage<boolean>("userCreationAtom", false)
+export const hasCompletedOnboardingAtom = atomWithStorage<boolean>("hasCompletedOnboardingAtom", false)
 
 export interface IUserInfo {
   email: string

@@ -13,6 +13,10 @@ import {
   DialogTrigger
 } from "~/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
+import { deleteCookie } from "cookies-next";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function deleteAccount(): Promise<null | Error> {
   try {
@@ -41,8 +45,10 @@ async function deleteAccount(): Promise<null | Error> {
 
 export function InfoButtons() {
   const [openDelete, setOpenDelete] = useState(false);
+  const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
   const {toast} = useToast();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return (
     <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
@@ -66,6 +72,9 @@ export function InfoButtons() {
                   title: "Account deleted",
                   description: "Your account has been deleted",
                 });
+                setOnboardingComplete(false)
+                deleteCookie("hasCompletedOnboarding")
+                queryClient.clear()
                 router.push("/api/auth/signout")
               }).catch((error) => {
                 if (error instanceof Error) {

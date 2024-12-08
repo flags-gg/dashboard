@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
 
 export async function PUT(request: Request) {
-  const { domain }: { domain: string } = await request.json() as { domain: string }
+  const { domain, invite_code }: { domain: string, invite_code: string } = await request.json() as { domain: string, invite_code: string }
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     return new NextResponse('Unauthorized', { status: 401 })
@@ -18,7 +18,8 @@ export async function PUT(request: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        domain: domain
+        domain: domain,
+        invite_code: invite_code,
       }),
       cache: 'no-store',
     })

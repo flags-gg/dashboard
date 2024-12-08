@@ -17,7 +17,7 @@ import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/toaster";
 import { env } from "~/env";
 import { SidebarProvider } from "~/components/ui/sidebar";
-import CompanyDetector from "~/components/companyDetector";
+import OnboardCheck from "~/components/OnboardCheck";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -48,7 +48,7 @@ export default async function RootLayout({
               {session ? (
                 <div className="relative flex min-h-screen flex-col bg-muted/40">
                   <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-                  <CompanyDetector />
+                  <OnboardCheck />
                   <SidebarProvider>
                     <SideBar />
                     <div className={"flex flex-col sm:py-4 size-full"}>
