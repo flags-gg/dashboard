@@ -92,6 +92,12 @@ export default function StepTwo({session}: {session: Session}) {
     }
   }
 
+  const blockedDomains = ["gmail.com", "google.com", "yahoo.com", "hotmail.com", "outlook.com"]
+  let domain = session?.user.email?.split("@")[1]
+  if (domain != undefined && blockedDomains.includes(domain)) {
+    domain = ""
+  }
+
   const companyFormSchema = z.object({
     companyName: z.string().min(2, {message: "Company Name is required a minimum of 2 characters"}),
     companyDomain: z.string().min(2, {message: "Company Domain is required a minimum of 2 characters"}),
@@ -100,14 +106,14 @@ export default function StepTwo({session}: {session: Session}) {
     resolver: zodResolver(companyFormSchema),
     defaultValues: {
       companyName: "",
-      companyDomain: "",
+      companyDomain: domain,
     },
   })
   const companyOnSubmit = async (data: z.infer<typeof companyFormSchema>) => {
     try {
       const companyValues = {
-        companyName: "",
-        companyDomain: "",
+        companyName: data.companyName,
+        companyDomain: data.companyDomain,
       }
 
       const res = await fetch("/api/company/create", {
@@ -126,8 +132,8 @@ export default function StepTwo({session}: {session: Session}) {
         title: "Company Created",
         description: "Last step of onboarding has been completed",
       })
-      // setOnboardingComplete(true)
-      // router.push("/")
+      setOnboardingComplete(true)
+      router.push("/")
     } catch (e) {
       if (e instanceof Error) {
         toast({
