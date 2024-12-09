@@ -4,7 +4,7 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
+  BreadcrumbList, BreadcrumbPage,
   BreadcrumbSeparator
 } from "~/components/ui/breadcrumb";
 import Link from "next/link";
@@ -109,6 +109,7 @@ function useBreadcrumbs() {
 export default function BreadCrumbs({commitHash}: {commitHash: string}) {
   const breadcrumbs = useBreadcrumbs()
   const [, setCommitHash] = useAtom(commitHashAtom)
+  const pathname = usePathname()
   useEffect(() => {
     setCommitHash(commitHash)
   }, [commitHash, setCommitHash])
@@ -120,9 +121,13 @@ export default function BreadCrumbs({commitHash}: {commitHash: string}) {
           <Fragment key={`${crumb.url}-container`}>
             {index > 0 && <BreadcrumbSeparator key={`${crumb.url}-separator`} />}
             <BreadcrumbItem key={`${crumb.url}-item`}>
-              <BreadcrumbLink key={`${crumb.url}-link-parent`} asChild>
-                <Link href={crumb.url} key={`${crumb.url}-link`}>{crumb.title}</Link>
-              </BreadcrumbLink>
+              {pathname === crumb.url ? (
+                <BreadcrumbPage className={"cursor-default"}>{crumb.title}</BreadcrumbPage>
+              ) : (
+                <BreadcrumbLink key={`${crumb.url}-link-parent`} asChild>
+                  <Link href={crumb.url} key={`${crumb.url}-link`}>{crumb.title}</Link>
+                </BreadcrumbLink>
+              )}
             </BreadcrumbItem>
           </Fragment>
         ))}
