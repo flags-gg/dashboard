@@ -29,15 +29,26 @@ async function enableDisableMenu(menu_id: string) {
 }
 
 export function MenuSwitch({menu_id}: { menu_id: string }) {
-  const [selectedEnvironment] = useAtom(environmentAtom)
+  const [selectedEnvironment, setSelectedEnvironment] = useAtom(environmentAtom)
   const {toast} = useToast()
 
+  console.info("selectedEnvironment", selectedEnvironment)
+
   return (
-    <Switch defaultChecked={selectedEnvironment.secret_menu.enabled} name={"menu"} onCheckedChange={() => {
+    <Switch checked={selectedEnvironment?.secret_menu?.enabled} name={"menu"} onCheckedChange={() => {
       enableDisableMenu(menu_id).then(() => {
         toast({
           title: "Menu Updated",
           description: "The menu has been updated",
+        })
+        setSelectedEnvironment((prev) => {
+          return {
+            ...prev,
+            secret_menu: {
+              ...prev.secret_menu,
+              enabled: !prev.secret_menu.enabled,
+            }
+          }
         })
       }).catch((e) => {
         toast({

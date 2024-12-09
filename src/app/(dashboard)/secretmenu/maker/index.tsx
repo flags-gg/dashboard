@@ -56,7 +56,6 @@ async function getSequence(menuId: string): Promise<SecretMenuData | Error> {
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.error("getMenu response", response);
       return new Error('Failed to get secret menu')
     }
     return await response.json()
