@@ -9,6 +9,9 @@ import {useEffect, useState} from "react";
 import {arrayMove} from "@dnd-kit/sortable";
 import {Separator} from "~/components/ui/separator";
 import {Button} from "~/components/ui/button";
+import { toast, useToast } from "~/hooks/use-toast";
+import { useAtom } from "jotai";
+import { environmentAtom } from "~/lib/statemanager";
 
 interface SecretMenuData {
   menu_id: string,
@@ -16,13 +19,17 @@ interface SecretMenuData {
   sequence: string[]
 }
 
-async function createMenuId(): Promise<SecretMenuData | Error> {
+async function createMenuId(envId: string, sequence: string[]): Promise<SecretMenuData | Error> {
   try {
     const response = await fetch('/api/secretmenu/sequence', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        sequence: sequence,
+        environmentId: envId,
+      }),
       cache: 'no-store',
     })
     if (!response.ok) {
@@ -85,6 +92,8 @@ async function saveSequence(menu_id: string, sequence: string[]) {
 export default function Maker({menuId}: {menuId: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [selectedEnvironment] = useAtom(environmentAtom)
+  const {toast} = useToast()
 
   useEffect(() => {
     getSequence(menuId).then(resp => {
@@ -184,13 +193,11 @@ export default function Maker({menuId}: {menuId: string}) {
             const sequence = code?.map((key) => key.keyCode)
 
             if (menuId === "") {
-              createMenuId().then((menuData) => {
-                if ("menu_id" in menuData) {
-                  saveSequence(menuData.menu_id, sequence).catch((e) => {
-                    console.error("Error saving menu", e);
-                    setError("Error saving menu")
-                  })
-                }
+              createMenuId(selectedEnvironment.environment_id, sequence).then(() => {
+                toast({
+                  title: "Menu Saved",
+                  description: "Saved the menu"
+                })
               }).catch((e) => {
                 console.error("Error creating menu", e);
                 setError("Error creating menu")
