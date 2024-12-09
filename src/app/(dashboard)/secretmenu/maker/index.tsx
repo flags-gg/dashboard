@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import {arrayMove} from "@dnd-kit/sortable";
 import {Separator} from "~/components/ui/separator";
 import {Button} from "~/components/ui/button";
-import { toast, useToast } from "~/hooks/use-toast";
+import { useToast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { environmentAtom } from "~/lib/statemanager";
 
