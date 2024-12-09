@@ -61,12 +61,13 @@ export async function POST(request: Request) {
       }),
     });
     if (!response.ok) {
-      return NextResponse.json({message: "Failed to get secret menu"}, { status: 500 });
+      console.info("failed to create it")
+      return NextResponse.json({message: "Failed to create secret menu"}, { status: 500 });
     }
 
     return response
   } catch (error) {
-    console.error('Error getting secret menu:', error);
+    console.error('Error creating secret menu:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }
