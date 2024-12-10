@@ -10,8 +10,10 @@ import { useEnvironment } from "~/hooks/use-environment";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableRow } from "~/components/ui/table";
+import Link from "next/link";
+import { buttonVariants } from "~/components/ui/button";
 
-export default function Info({environmentId}: {environmentId: string}) {
+export default function Info({environmentId, menuId}: {environmentId: string, menuId: string}) {
   const { data: environmentInfo, error, isLoading } = useEnvironment(environmentId)
 
   const [, setSelectedEnvironment] = useAtom(environmentAtom)
