@@ -49,7 +49,15 @@ export default function Info({environmentId, menuId}: {environmentId: string, me
         </TableRow>
         <TableRow>
           <TableCell>Secret Menu</TableCell>
-          <TableCell className={"text-right"}>{environmentInfo.secret_menu.enabled ? "Enabled" : "Disabled"}</TableCell>
+          <TableCell className={"text-right"}>{menuId ? (
+            environmentInfo?.secret_menu?.enabled ? (
+              <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}`}>Enabled</Link>
+              ) : (
+              <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/${menuId}`}>Disabled</Link>
+            )
+          ) : (
+            <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/`}>Create</Link>
+          )}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
