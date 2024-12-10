@@ -27,9 +27,9 @@ export default async function InfoBox({environment_id}: {environment_id: string}
         </div>
       </CardHeader>
       <CardContent className={"p-2 text-sm"}>
-        <Info environmentId={environmentInfo.environment_id} />
+        <Info environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
       </CardContent>
-      <InfoButtons environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
+      <InfoButtons environmentId={environmentInfo.environment_id} />
     </Card>
   );
 }

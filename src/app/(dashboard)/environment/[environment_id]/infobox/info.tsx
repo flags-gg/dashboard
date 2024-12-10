@@ -10,8 +10,10 @@ import { useEnvironment } from "~/hooks/use-environment";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableRow } from "~/components/ui/table";
+import Link from "next/link";
+import { buttonVariants } from "~/components/ui/button";
 
-export default function Info({environmentId}: {environmentId: string}) {
+export default function Info({environmentId, menuId}: {environmentId: string, menuId: string}) {
   const { data: environmentInfo, error, isLoading } = useEnvironment(environmentId)
 
   const [, setSelectedEnvironment] = useAtom(environmentAtom)
@@ -47,7 +49,15 @@ export default function Info({environmentId}: {environmentId: string}) {
         </TableRow>
         <TableRow>
           <TableCell>Secret Menu</TableCell>
-          <TableCell className={"text-right"}>{environmentInfo.secret_menu.enabled ? "Enabled" : "Disabled"}</TableCell>
+          <TableCell className={"text-right"}>{menuId ? (
+            environmentInfo?.secret_menu?.enabled ? (
+              <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}`}>Enabled</Link>
+              ) : (
+              <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/${menuId}`}>Disabled</Link>
+            )
+          ) : (
+            <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/`}>Create</Link>
+          )}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
