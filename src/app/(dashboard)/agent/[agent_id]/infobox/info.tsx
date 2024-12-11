@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import { AgentSwitch } from "./switch";
 import { useAgent } from "~/hooks/use-agent";
 import { Skeleton } from "~/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 
 export default function AgentInfo({agent_id}: {agent_id: string}) {
   const [, setSelectedAgent] = useAtom(agentAtom);
@@ -26,7 +27,16 @@ export default function AgentInfo({agent_id}: {agent_id: string}) {
       <ul className={"grid gap-3"}>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Agent ID</span>
-          <span>{agentInfo?.agent_id}</span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className={"cursor-pointer"}>{agentInfo?.agent_id.slice(0, 11)}...</p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{agentInfo?.agent_id}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Environment Limit</span>

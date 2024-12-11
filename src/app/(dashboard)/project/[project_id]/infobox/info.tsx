@@ -19,6 +19,7 @@ import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { ShieldPlus } from "lucide-react";
 import { ProjectSwitch } from "./switch";
 import { Skeleton } from "~/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 
 interface IError {
   message: string
@@ -50,7 +51,7 @@ export default function ProjectInfo({session}: {session: Session}) {
     throw new Error('No session found')
   }
   const [projectInfo] = useAtom(projectAtom)
-  const [selectedProject, setSelectedProject] = useAtom(projectAtom)
+  const [, setSelectedProject] = useAtom(projectAtom)
   const [iconOpen, setIconOpen] = useState(false)
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
@@ -93,7 +94,7 @@ export default function ProjectInfo({session}: {session: Session}) {
   let imageElement
   if (imageURL) {
     imageElement =
-      <Image src={imageURL} alt={selectedProject.name} width={50} height={50} className={"cursor-pointer"} />
+      <Image src={imageURL} alt={projectInfo.name} width={50} height={50} className={"cursor-pointer"} />
   } else {
     imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
   }
@@ -103,11 +104,20 @@ export default function ProjectInfo({session}: {session: Session}) {
       <ul className={"grid gap-3"}>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Project ID</span>
-          <span>{projectInfo.project_id}</span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className={"cursor-pointer"}>{projectInfo.project_id.slice(0, 11)}...</p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{projectInfo.project_id}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Name</span>
-          <span>{selectedProject.name}</span>
+          <span>{projectInfo.name}</span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Max Agents</span>

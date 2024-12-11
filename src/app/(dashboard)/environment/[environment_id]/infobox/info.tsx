@@ -9,9 +9,9 @@ import {useEffect} from "react";
 import { useEnvironment } from "~/hooks/use-environment";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Skeleton } from "~/components/ui/skeleton";
-import { Table, TableBody, TableCell, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import { buttonVariants } from "~/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 
 export default function Info({environmentId, menuId}: {environmentId: string, menuId: string}) {
   const { data: environmentInfo, error, isLoading } = useEnvironment(environmentId)
@@ -37,29 +37,38 @@ export default function Info({environmentId, menuId}: {environmentId: string, me
   }
 
   return (
-    <Table>
-      <TableBody>
-        <TableRow>
-          <TableCell>Environment ID</TableCell>
-          <TableCell className={"text-right"}>{environmentInfo.environment_id}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Enabled</TableCell>
-          <TableCell className={"text-right"}><EnvironmentSwitch environmentId={environmentInfo.environment_id} /></TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>Secret Menu</TableCell>
-          <TableCell className={"text-right"}>{menuId ? (
+    <div className={"grid gap-3"}>
+      <ul className={"grid gap-3"}>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Environment ID</span>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className={"cursor-pointer"}>{environmentInfo?.environment_id.slice(0, 11)}...</p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{environmentInfo?.environment_id}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Enabled</span>
+          <span><EnvironmentSwitch environmentId={environmentInfo.environment_id} /></span>
+        </li>
+        <li className={"flex items-center justify-between"}>
+          <span className={"text-muted-foreground"}>Secret Menu</span>
+          <span>{menuId ? (
             environmentInfo?.secret_menu?.enabled ? (
-              <Link className={buttonVariants({variant: "default"})} href={`/secretmenu/${menuId}`}>Enabled</Link>
-              ) : (
-              <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/${menuId}`}>Disabled</Link>
+              <Link className={buttonVariants({ variant: "default" })} href={`/secretmenu/${menuId}`}>Enabled</Link>
+            ) : (
+              <Link className={buttonVariants({ variant: "secondary" })} href={`/secretmenu/${menuId}`}>Disabled</Link>
             )
           ) : (
-            <Link className={buttonVariants({variant: "secondary"})} href={`/secretmenu/`}>Create</Link>
-          )}</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+            <Link className={buttonVariants({ variant: "secondary" })} href={`/secretmenu/`}>Create</Link>
+          )}</span>
+        </li>
+      </ul>
+    </div>
   );
 }
