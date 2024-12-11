@@ -22,7 +22,7 @@ export default function Guide() {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="outline" className={"w-full"}>
-          Flags.gg Settings
+          Client Settings
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
