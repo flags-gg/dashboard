@@ -18,6 +18,7 @@ export type UserDetails = {
   group: UserGroup;
   onboarded: boolean;
   created: boolean;
+  subject: string;
 }
 export async function getUserDetails(): Promise<UserDetails> {
   const res = await fetch(`/api/user/details`, {
