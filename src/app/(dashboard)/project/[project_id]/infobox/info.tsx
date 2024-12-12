@@ -15,11 +15,11 @@ import {
 import {UploadButton} from "~/lib/utils/uploadthing";
 import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
 import Image from "next/image";
-import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { ShieldPlus } from "lucide-react";
 import { ProjectSwitch } from "./switch";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { useProjectLimits } from "~/hooks/use-project-limits";
 
 interface IError {
   message: string
@@ -56,7 +56,7 @@ export default function ProjectInfo({session}: {session: Session}) {
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [imageURL, setImageURL] = useState("")
-  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
+  const { data: projectLimits, isLoading, error } = useProjectLimits(projectInfo.project_id);
 
   useEffect(() => {
     setSelectedProject(projectInfo)
@@ -71,12 +71,7 @@ export default function ProjectInfo({session}: {session: Session}) {
     });
   }
 
-  let agentsUsed = 0
-  for (const agent of companyLimits?.agents?.used ?? []) {
-    if (agent.project_id === projectInfo.project_id) {
-      agentsUsed = agent.used
-    }
-  }
+  let agentsUsed = projectLimits?.used ?? 0
 
   if (showError) {
     return (
@@ -121,7 +116,7 @@ export default function ProjectInfo({session}: {session: Session}) {
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Max Agents</span>
-          <span>{companyLimits?.agents?.allowed ?? 0}</span>
+          <span>{projectLimits?.allowed ?? 0}</span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Agents Used</span>

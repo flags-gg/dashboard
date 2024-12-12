@@ -35,6 +35,11 @@ export type ProjectsData = {
   projects: IProject[]
 }
 
+export type AgentLimits = {
+  allowed: number;
+  used: number;
+}
+
 export const projectAtom = atomWithStorage<IProject>("projectAtom", {
   id: '',
   name: '',
