@@ -71,8 +71,6 @@ export default function ProjectInfo({session}: {session: Session}) {
     });
   }
 
-  let agentsUsed = projectLimits?.used ?? 0
-
   if (showError) {
     return (
       <Alert>
@@ -120,7 +118,7 @@ export default function ProjectInfo({session}: {session: Session}) {
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Agents Used</span>
-          <span>{agentsUsed}</span>
+          <span>{projectLimits?.used ?? 0}</span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Enabled</span>
