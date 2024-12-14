@@ -16,6 +16,7 @@ import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { Copy } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
+import Image from "next/image";
 
 interface IError {
   message: string
@@ -58,7 +59,7 @@ export default function Info() {
   useEffect(() => {
     if (companyInfo?.company?.logo !== "") {
       imageElement =
-        <img src={companyInfo?.company?.logo} alt={companyInfo?.company?.name} width={50} height={50} className={"cursor-pointer"} />
+        <Image src={companyInfo?.company?.logo ?? ""} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
     }
   }, [companyInfo])
 
