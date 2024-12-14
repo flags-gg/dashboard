@@ -157,6 +157,16 @@ export interface ICompanyInfo {
     domain: string,
     invite_code: string,
     id: string,
+    logo: string,
+  },
+  payment_plan: {
+    name: string,
+    price: number,
+    custom: boolean,
+    team_members: number,
+    projects: number,
+    agents: number,
+    environments: number,
   }
 }
 export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", {
@@ -165,6 +175,16 @@ export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", 
     domain: '',
     invite_code: '',
     id: '',
+    logo: '',
+  },
+  payment_plan: {
+    name: '',
+    price: 0,
+    custom: false,
+    team_members: 0,
+    projects: 0,
+    agents: 0,
+    environments: 0,
   }
 })
 

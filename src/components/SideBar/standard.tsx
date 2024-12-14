@@ -71,10 +71,10 @@ export default function Standard() {
               <SidebarMenu>
                 <SidebarMenuItem key={"docs"}>
                   <SidebarMenuButton asChild>
-                    <Link href={"https://docs.flags.gg"}>
+                    <a href={"https://docs.flags.gg"} target={"_blank"}>
                       <Book className={"h-5 w-5"} />
                       <span>Docs</span>
-                    </Link>
+                    </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>
