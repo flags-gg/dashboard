@@ -175,6 +175,16 @@ export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", 
     domain: '',
     invite_code: '',
     id: '',
+    logo: '',
+  },
+  payment_plan: {
+    name: '',
+    price: 0,
+    custom: false,
+    team_members: 0,
+    projects: 0,
+    agents: 0,
+    environments: 0,
   }
 })
 
