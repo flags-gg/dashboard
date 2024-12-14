@@ -71,7 +71,7 @@ export default function Standard() {
               <SidebarMenu>
                 <SidebarMenuItem key={"docs"}>
                   <SidebarMenuButton asChild>
-                    <a href={"https://docs.flags.gg"} target={"_blank"}>
+                    <a href={"https://docs.flags.gg"} target={"_blank"} rel={"noreferrer"}>
                       <Book className={"h-5 w-5"} />
                       <span>Docs</span>
                     </a>
