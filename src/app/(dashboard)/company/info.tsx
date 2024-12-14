@@ -103,7 +103,7 @@ export default function Info() {
                   <p className={"w-[20rem]"}>
                     {companyInfo?.company?.invite_code}
                     <Copy className={"h-5 w-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={() => {
-                      navigator.clipboard.writeText(`${companyInfo?.company?.invite_code}`).then(r => {
+                      navigator.clipboard.writeText(`${companyInfo?.company?.invite_code}`).then(() => {
                         toast({
                           title: "Flags.gg Invite Code Copied",
                           description: "The Flags.gg invite code have been copied to your clipboard",
@@ -153,7 +153,7 @@ export default function Info() {
                         })
                       }
                       setIconOpen(false)
-                      imageElement = <img src={res[0].url} alt={companyInfo?.company?.name} width={50} height={50} className={"cursor-pointer"} />
+                      imageElement = <Image src={res[0].url} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
                     }}
                     onUploadError={(error: Error) => {
                       setShowError(true)
