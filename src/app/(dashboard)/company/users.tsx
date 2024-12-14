@@ -16,8 +16,6 @@ export default function Users() {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
-  console.info("users", users)
-
   return (
     <Card>
       <Table>
