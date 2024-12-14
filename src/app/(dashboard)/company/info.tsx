@@ -13,6 +13,9 @@ import {
   DialogTrigger
 } from "~/components/ui/dialog";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Copy } from "lucide-react";
+import { useToast } from "~/hooks/use-toast";
 
 interface IError {
   message: string
@@ -20,11 +23,15 @@ interface IError {
 }
 
 interface uploadImageProps {
-  companyId: string
+  companyId: string | undefined
   imageUrl: string
 }
 
 function uploadImage({companyId, imageUrl}: uploadImageProps): Error | void {
+  if (!companyId) {
+    return new Error("No company ID provided")
+  }
+
   fetch(`/api/company/image`, {
     method: "PUT",
     headers: {
@@ -45,17 +52,19 @@ export default function Info() {
   const [iconOpen, setIconOpen] = useState(false)
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
-  const [imageURL, setImageURL] = useState("")
+  const {toast} = useToast();
+
+  let imageElement = <span className={"text-muted-foreground"}>No Logo</span>
+  useEffect(() => {
+    if (companyInfo?.company?.logo !== "") {
+      imageElement =
+        <img src={companyInfo?.company?.logo} alt={companyInfo?.company?.name} width={50} height={50} className={"cursor-pointer"} />
+    }
+  }, [companyInfo])
 
   if (isLoading) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
-
-  useEffect(() => {
-    if (companyInfo?.company?.logo !== "") {
-      setImageURL(companyInfo?.company?.logo as string)
-    }
-  }, [companyInfo, setImageURL])
 
   if (showError) {
     return (
@@ -64,14 +73,6 @@ export default function Info() {
         <AlertDescription>{errorInfo.message}</AlertDescription>
       </Alert>
     )
-  }
-
-  let imageElement
-  if (imageURL) {
-    imageElement =
-      <img src={imageURL} alt={companyInfo?.company?.name} width={50} height={50} className={"cursor-pointer"} />
-  } else {
-    imageElement = <span className={"text-muted-foreground"}>No Logo</span>
   }
 
   return (
@@ -92,7 +93,26 @@ export default function Info() {
           </li>
           <li className={"flex items-center justify-between"}>
             <span className={"text-muted-foreground"}>Invite Code</span>
-            <span>{companyInfo?.company?.invite_code}</span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className={"cursor-pointer"}>{companyInfo?.company?.invite_code.slice(0, 12)}...</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className={"w-[20rem]"}>
+                    {companyInfo?.company?.invite_code}
+                    <Copy className={"h-5 w-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={() => {
+                      navigator.clipboard.writeText(`${companyInfo?.company?.invite_code}`).then(r => {
+                        toast({
+                          title: "Flags.gg Invite Code Copied",
+                          description: "The Flags.gg invite code have been copied to your clipboard",
+                        })
+                      })
+                    }} />
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </li>
           <li className={"flex items-center justify-between"}>
             <span className={"text-muted-foreground"}>Logo</span>
@@ -121,7 +141,7 @@ export default function Info() {
                         return
                       }
                       const upload = uploadImage({
-                        companyId: companyInfo?.id,
+                        companyId: companyInfo?.company?.id,
                         imageUrl: res[0].url,
                       })
                       if (upload instanceof Error) {
@@ -132,7 +152,7 @@ export default function Info() {
                         })
                       }
                       setIconOpen(false)
-                      setImageURL(res[0].url)
+                      imageElement = <img src={res[0].url} alt={companyInfo?.company?.name} width={50} height={50} className={"cursor-pointer"} />
                     }}
                     onUploadError={(error: Error) => {
                       setShowError(true)
