@@ -58,8 +58,8 @@ export default function Info() {
 
   let imageElement = <span className={"text-muted-foreground cursor-pointer"}>No Logo</span>
   useEffect(() => {
-    if (companyInfo?.company?.logo.String !== "" && companyInfo?.company?.logo.String !== undefined) {
-      setImageURL(companyInfo?.company?.logo.String)
+    if (companyInfo?.company?.logo?.String !== undefined && companyInfo?.company?.logo?.String !== null && companyInfo?.company?.logo?.String !== "") {
+      setImageURL(companyInfo?.company?.logo?.String)
     }
   }, [companyInfo, setImageURL])
 
