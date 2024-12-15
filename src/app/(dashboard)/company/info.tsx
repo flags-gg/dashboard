@@ -53,15 +53,19 @@ export default function Info() {
   const [iconOpen, setIconOpen] = useState(false)
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
+  const [imageURL, setImageURL] = useState("")
   const {toast} = useToast();
 
-  let imageElement = <span className={"text-muted-foreground"}>No Logo</span>
+  let imageElement = <span className={"text-muted-foreground cursor-pointer"}>No Logo</span>
   useEffect(() => {
-    if (companyInfo?.company?.logo !== "") {
-      imageElement =
-        <Image src={companyInfo?.company?.logo ?? ""} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
+    if (companyInfo?.company?.logo.String !== "" && companyInfo?.company?.logo.String !== undefined) {
+      setImageURL(companyInfo?.company?.logo.String)
     }
-  }, [companyInfo])
+  }, [companyInfo, setImageURL])
+
+  if (imageURL && imageURL !== "") {
+    imageElement = <Image src={imageURL} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
+  }
 
   if (isLoading) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
@@ -154,6 +158,7 @@ export default function Info() {
                       }
                       setIconOpen(false)
                       imageElement = <Image src={res[0].url} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
+                      setImageURL(res[0].url)
                     }}
                     onUploadError={(error: Error) => {
                       setShowError(true)

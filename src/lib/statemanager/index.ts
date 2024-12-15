@@ -157,7 +157,10 @@ export interface ICompanyInfo {
     domain: string,
     invite_code: string,
     id: string,
-    logo: string,
+    logo: {
+      String: string,
+      Valid: boolean,
+    },
   },
   payment_plan: {
     name: string,
@@ -175,7 +178,10 @@ export const companyInfoAtom = atomWithStorage<ICompanyInfo>("companyInfoAtom", 
     domain: '',
     invite_code: '',
     id: '',
-    logo: '',
+    logo: {
+      String: '',
+      Valid: false,
+    },
   },
   payment_plan: {
     name: '',
