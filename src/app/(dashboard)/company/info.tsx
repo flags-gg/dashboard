@@ -84,7 +84,7 @@ export default function Info() {
     <Card>
       <CardHeader className={"pb-2"}>
         <CardTitle>Info</CardTitle>
-        <CardDescription>Update your company details here</CardDescription>
+        <CardDescription>&nbsp;</CardDescription>
       </CardHeader>
       <CardContent>
         <ul className={"grid gap-3"}>
