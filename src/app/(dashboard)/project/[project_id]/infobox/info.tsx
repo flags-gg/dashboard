@@ -84,12 +84,10 @@ export default function ProjectInfo({session}: {session: Session}) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
-  let imageElement
-  if (imageURL) {
+  let imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
+  if (imageURL && imageURL !== "") {
     imageElement =
       <Image src={imageURL} alt={projectInfo.name} width={50} height={50} className={"cursor-pointer"} />
-  } else {
-    imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
   }
 
   return (
