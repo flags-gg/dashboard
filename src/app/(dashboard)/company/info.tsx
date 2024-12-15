@@ -80,6 +80,15 @@ export default function Info() {
     )
   }
 
+  const copyInviteCode = () => {
+    navigator.clipboard.writeText(companyInfo?.company?.invite_code ?? "").then(() => {
+      toast({
+        title: "Flags.gg Invite Code Copied",
+        description: "The Flags.gg invite code have been copied to your clipboard",
+      })
+    })
+  }
+
   return (
     <Card>
       <CardHeader className={"pb-2"}>
@@ -101,19 +110,12 @@ export default function Info() {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <p className={"cursor-pointer"}>{companyInfo?.company?.invite_code.slice(0, 12)}...</p>
+                  <p className={"cursor-pointer"} onClick={copyInviteCode}>{companyInfo?.company?.invite_code.slice(0, 12)}...</p>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className={"w-[20rem]"}>
                     {companyInfo?.company?.invite_code}
-                    <Copy className={"h-5 w-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={() => {
-                      navigator.clipboard.writeText(`${companyInfo?.company?.invite_code}`).then(() => {
-                        toast({
-                          title: "Flags.gg Invite Code Copied",
-                          description: "The Flags.gg invite code have been copied to your clipboard",
-                        })
-                      })
-                    }} />
+                    <Copy className={"h-5 w-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyInviteCode} />
                   </p>
                 </TooltipContent>
               </Tooltip>
