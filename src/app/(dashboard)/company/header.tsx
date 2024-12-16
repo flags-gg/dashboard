@@ -10,8 +10,6 @@ export default function Header() {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
-  console.log(companyInfo)
-
   return (
     <header className={"col-span-3"}>
       <h1 className={"text-2xl font-semibold"}>{companyInfo?.company?.name}</h1>
