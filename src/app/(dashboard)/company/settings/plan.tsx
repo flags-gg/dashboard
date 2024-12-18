@@ -21,8 +21,8 @@ export default function Plan() {
   const {data: companyInfo, isLoading} = useCompanyDetails();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const {toast} = useToast();
-  const [errorInfo, setErrorInfo] = useState({} as IError);
-  const [showError, setShowError] = useState(false);
+  const [errorInfo] = useState({} as IError);
+  const [showError] = useState(false);
 
   if (isLoading) {
     return <NewLoader />
@@ -42,7 +42,7 @@ export default function Plan() {
     <ul className={"grid gap-3"}>
       <li className={"flex items-center justify-between"}>
         <span>Plan</span>
-        <span>{companyInfo?.payment_plan?.custom ? <span className={"text-sm text-gray-500"}>Free</span> : (
+        <span>{companyInfo?.payment_plan?.custom ? <span className={"text-sm text-gray-500"}>Custom</span> : (
           <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
             <DialogTrigger asChild>
               <Button className={"cursor-pointer capitalize"}>{companyInfo?.payment_plan?.name}</Button>
@@ -54,10 +54,10 @@ export default function Plan() {
               <DialogDescription>
                 Upgrade your plan to increase your allowances.
               </DialogDescription>
-              <div className={"grid gap-4 py-4"}>
+              <DialogFooter className={"justify-between"}>
                 <Button onClick={() => setUpgradeOpen(false)}>Cancel</Button>
                 <Button onClick={() => setUpgradeOpen(false)}>Upgrade</Button>
-              </div>
+              </DialogFooter>
             </DialogContent>
           </Dialog>
         )}</span>
