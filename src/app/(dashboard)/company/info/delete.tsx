@@ -14,6 +14,7 @@ import {
   DialogTrigger
 } from "~/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import { useFlags } from "@flags-gg/react-library";
 
 async function deleteCompany(): Promise<null | Error> {
   try {
@@ -45,6 +46,11 @@ export default function DeleteButton() {
   const {toast} = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const {is} = useFlags();
+
+  if (!is("company delete")?.enabled()) {
+    return <></>
+  }
 
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>

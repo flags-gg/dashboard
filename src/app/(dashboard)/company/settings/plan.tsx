@@ -36,8 +36,6 @@ export default function Plan() {
     })
   }
 
-  console.info("companyInfo", companyInfo)
-
   return (
     <ul className={"grid gap-3"}>
       <li className={"flex items-center justify-between"}>
