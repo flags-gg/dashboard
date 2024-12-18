@@ -1,4 +1,5 @@
 "use client"
+
 import {Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter} from "~/components/ui/card";
 import { useCompanyDetails } from "~/hooks/use-company-details";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -16,7 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/comp
 import { Copy } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import Image from "next/image";
-import DeleteCompany from "./settings/delete"
+import DeleteCompany from "./delete"
 
 interface IError {
   message: string
