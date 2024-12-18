@@ -27,5 +27,6 @@ export const useProjectLimits = (projectId: string) => {
     queryFn: () => fetchProjectLimits(projectId),
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: !!projectId,
   });
 };

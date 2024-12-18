@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { Copy } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
@@ -58,8 +57,8 @@ export default function Info() {
 
   let imageElement = <span className={"text-muted-foreground cursor-pointer"}>No Logo</span>
   useEffect(() => {
-    if (companyInfo?.company?.logo?.String !== undefined && companyInfo?.company?.logo?.String !== null && companyInfo?.company?.logo?.String !== "") {
-      setImageURL(companyInfo?.company?.logo?.String)
+    if (companyInfo?.company?.logo !== undefined && companyInfo?.company?.logo !== "") {
+      setImageURL(companyInfo?.company?.logo)
     }
   }, [companyInfo, setImageURL])
 
@@ -72,12 +71,11 @@ export default function Info() {
   }
 
   if (showError) {
-    return (
-      <Alert>
-        <AlertTitle>{errorInfo.title}</AlertTitle>
-        <AlertDescription>{errorInfo.message}</AlertDescription>
-      </Alert>
-    )
+    toast({
+      title: errorInfo.title,
+      description: errorInfo.message,
+      duration: 5000,
+    })
   }
 
   const copyInviteCode = () => {

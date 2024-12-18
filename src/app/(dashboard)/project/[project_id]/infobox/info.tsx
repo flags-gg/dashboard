@@ -13,13 +13,13 @@ import {
   DialogTrigger
 } from "~/components/ui/dialog";
 import {UploadButton} from "~/lib/utils/uploadthing";
-import {Alert, AlertDescription, AlertTitle} from "~/components/ui/alert";
 import Image from "next/image";
 import { ShieldPlus } from "lucide-react";
 import { ProjectSwitch } from "./switch";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { useProjectLimits } from "~/hooks/use-project-limits";
+import { useToast } from "~/hooks/use-toast";
 
 interface IError {
   message: string
@@ -46,7 +46,7 @@ function uploadImage({projectId, imageUrl}: uploadImageProps): Error | void {
   })
 }
 
-export default function ProjectInfo({session}: {session: Session}) {
+export default function ProjectInfo({session, project_id}: {session: Session, project_id: string}) {
   if (!session) {
     throw new Error('No session found')
   }
@@ -56,7 +56,8 @@ export default function ProjectInfo({session}: {session: Session}) {
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [imageURL, setImageURL] = useState("")
-  const { data: projectLimits, isLoading, error } = useProjectLimits(projectInfo.project_id);
+  const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
+  const {toast} = useToast()
 
   useEffect(() => {
     setSelectedProject(projectInfo)
@@ -72,12 +73,11 @@ export default function ProjectInfo({session}: {session: Session}) {
   }
 
   if (showError) {
-    return (
-      <Alert>
-        <AlertTitle>{errorInfo.title}</AlertTitle>
-        <AlertDescription>{errorInfo.message}</AlertDescription>
-      </Alert>
-    )
+    toast({
+      title: errorInfo.title,
+      description: errorInfo.message,
+      duration: 5000,
+    })
   }
 
   if (isLoading) {
@@ -98,10 +98,10 @@ export default function ProjectInfo({session}: {session: Session}) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <p className={"cursor-pointer"}>{projectInfo.project_id.slice(0, 11)}...</p>
+                <p className={"cursor-pointer"}>{project_id.slice(0, 11)}...</p>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{projectInfo.project_id}</p>
+                <p>{project_id}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -149,7 +149,7 @@ export default function ProjectInfo({session}: {session: Session}) {
                       return
                     }
                     const upload = uploadImage({
-                      projectId: projectInfo.project_id,
+                      projectId: project_id,
                       imageUrl: res[0].url,
                     })
                     if (upload instanceof Error) {
