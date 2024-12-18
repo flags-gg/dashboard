@@ -39,7 +39,7 @@ export default function InfoButtons({ session }: { session: Session }) {
   }
 
   const maxAgents = companyLimits?.agents?.allowed ?? 0;
-  const usedAgents = companyLimits?.agents?.used?.find(project => project.project_id === projectInfo.project_id)?.used ?? 0;
+  const usedAgents = projectInfo.agents_used ?? 0;
 
   if (maxAgents === 0 || usedAgents >= maxAgents) {
     return (
