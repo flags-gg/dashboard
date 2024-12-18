@@ -1,5 +1,5 @@
 "use client"
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "~/components/ui/card";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter} from "~/components/ui/card";
 import { useCompanyDetails } from "~/hooks/use-company-details";
 import { Skeleton } from "~/components/ui/skeleton";
 import { UploadButton } from "~/lib/utils/uploadthing";
@@ -16,6 +16,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/comp
 import { Copy } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import Image from "next/image";
+import DeleteCompany from "./settings/delete"
 
 interface IError {
   message: string
@@ -93,7 +94,7 @@ export default function Info() {
         <CardTitle>Info</CardTitle>
         <CardDescription>&nbsp;</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={"min-h-[12rem]"}>
         <ul className={"grid gap-3"}>
           <li className={"flex items-center justify-between"}>
             <span className={"text-muted-foreground"}>Name</span>
@@ -174,6 +175,9 @@ export default function Info() {
           </li>
         </ul>
       </CardContent>
+      <CardFooter>
+        <DeleteCompany />
+      </CardFooter>
     </Card>
   )
 }
