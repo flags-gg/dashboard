@@ -10,21 +10,70 @@ import { useCompanyUsers } from "~/hooks/use-company-users";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
 import { useCompanyDetails } from "~/hooks/use-company-details";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { toast } from "~/hooks/use-toast";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 
 async function sendInvite(name: string, email_address: string): Promise<null | Error> {
-  
+  try {
+    const res = await fetch(`/api/company/invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email_address,
+      }),
+    })
+    if (!res.ok) {
+      return new Error('Failed to send invite')
+    }
+    return null
+  } catch (e) {
+    console.error('Failed to send invite', e)
+    return new Error('Internal Server Error')
+  }
 }
 
 export default function Users() {
   const {is} = useFlags();
   const {data: users, isLoading: usersLoading} = useCompanyUsers();
   const {data: companyInfo, isLoading: infoLoading} = useCompanyDetails()
+  const [inviteOpen, setInviteOpen] = useState(false)
+
+  const FormSchema = z.object({
+    name: z.string().min(2, { message: "Name of the person needs to be at least 2 characters long" }),
+    email_address: z.string().email({ message: "Invalid email address" }),
+  })
+  const form  = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+      email_address: "",
+    },
+  })
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    setInviteOpen(false)
+    sendInvite(data.name, data.email_address).then(() => {
+      toast({
+        title: "Invite Sent",
+        description: "Invite Sent",
+      })
+    }).catch((e) => {
+      throw new Error(`Failed to send invite: ${e}`)
+    })
+    form.reset()
+  }
 
   if (usersLoading || infoLoading) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
@@ -51,19 +100,39 @@ export default function Users() {
             {is("group permissions")?.enabled() && (<TableHead>Group</TableHead>)}
             {is("alter user")?.enabled() && (<TableHead className={"text-right"}>Actions</TableHead>)}
             {is("company invite")?.enabled() && addUserAllowed && (<TableHead className={"text-right align-middle pt-3 absolute inset-y-0 right-0"}>
-              <Dialog>
+              <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
                 <DialogTrigger>
                   <PlusSquareIcon className={"cursor-pointer"} />
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>
-                      Invite Header
+                      Invite someone to your company
                     </DialogTitle>
                   </DialogHeader>
-                  <DialogDescription>
-                    Invite Form Here
-                  </DialogDescription>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className={"w-2/3 space-y-6"}>
+                      <FormField control={form.control} name={"name"} render={({field}) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder={"Name of the person"} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+                      <FormField control={form.control} name={"email_address"} render={({field}) => (
+                        <FormItem>
+                          <FormLabel>Email Address</FormLabel>
+                          <FormControl>
+                            <Input placeholder={"Email Address"} {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
+                      <Button type={"submit"}>Send Invite</Button>
+                    </form>
+                  </Form>
                 </DialogContent>
               </Dialog>
             </TableHead>)}
