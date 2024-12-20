@@ -30,6 +30,11 @@ export default function StepTwo({session}: {session: Session}) {
   // they have somehow got to the second step without completing the first step
   useEffect(() => {
     getUserDetails().then(userData => {
+      if (userData?.onboarded) {
+        setOnboardingComplete(true)
+        router.push("/")
+      }
+
       if (!userData?.created) {
         router.push("/onboarding")
       }
