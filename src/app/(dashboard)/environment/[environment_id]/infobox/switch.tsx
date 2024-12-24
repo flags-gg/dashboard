@@ -2,10 +2,11 @@
 
 import {Switch} from "~/components/ui/switch";
 import { useAtom } from "jotai";
-import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
+import { environmentAtom } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
 import { useEnvironment } from "~/hooks/use-environment";
 import { NewLoader } from "~/components/ui/new-loader";
+import { IEnvironment } from "~/lib/interfaces";
 
 async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {

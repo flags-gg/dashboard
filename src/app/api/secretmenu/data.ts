@@ -1,8 +1,8 @@
-import {type secretMenu} from "~/lib/statemanager";
+import {SecretMenu} from "~/lib/interfaces";
 import {env} from "~/env";
 import { getServerAuthSession } from "~/server/auth";
 
-export async function getSecretMenu(menu_id: string): Promise<secretMenu> {
+export async function getSecretMenu(menu_id: string): Promise<SecretMenu> {
   const session = await getServerAuthSession();
 
   if (!session?.user?.access_token) {

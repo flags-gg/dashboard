@@ -2,7 +2,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { env } from "~/env";
 import { NextResponse } from "next/server";
 import { put } from "./agent";
-import { FlagAgent } from "~/lib/statemanager";
+import { FlagAgent } from "~/lib/interfaces";
 
 export async function DELETE(request: Request) {
   type DeleteAgent = {

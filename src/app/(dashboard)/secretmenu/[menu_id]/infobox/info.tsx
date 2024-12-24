@@ -1,14 +1,14 @@
 "use client"
 
 import {
-  type secretMenu,
   secretMenuAtom
 } from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useEffect} from "react";
 import {MenuSwitch} from "../switch";
+import { SecretMenu } from "~/lib/interfaces";
 
-export default function Info({secretMenuInfo}: {secretMenuInfo: secretMenu}) {
+export default function Info({secretMenuInfo}: {secretMenuInfo: SecretMenu}) {
   const [, setSelectedSecretMenu] = useAtom(secretMenuAtom)
   useEffect(() => {
     setSelectedSecretMenu(secretMenuInfo)

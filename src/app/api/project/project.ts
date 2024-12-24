@@ -1,5 +1,5 @@
 import {env} from "~/env";
-import {type IProject, type ProjectsData} from "~/lib/statemanager";
+import { IProject, ProjectsData} from "~/lib/interfaces";
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 

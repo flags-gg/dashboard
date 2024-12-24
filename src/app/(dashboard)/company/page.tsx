@@ -11,6 +11,7 @@ export default function Company() {
       <div className="grid gap-4 grid-cols-3">
         <Header />
         <Info />
+        <div>&nbsp;</div>
         <Settings />
       </div>
       <Separator />

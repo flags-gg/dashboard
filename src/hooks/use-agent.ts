@@ -1,6 +1,7 @@
-import { commitHashAtom, type FlagAgent } from "~/lib/statemanager";
+import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { FlagAgent } from "~/lib/interfaces";
 
 const fetchAgent = async (agentId: string): Promise<FlagAgent | null> => {
   const res = await fetch(`/api/agent?agentId=${agentId}`, {

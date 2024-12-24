@@ -1,6 +1,7 @@
-import { commitHashAtom, AgentLimits } from "~/lib/statemanager";
+import { commitHashAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useQuery } from "@tanstack/react-query";
+import { type AgentLimits } from "~/lib/interfaces";
 
 const fetchProjectLimits = async (projectId: string): Promise<AgentLimits> => {
   const res = await fetch(`/api/project/limits/?project_id=${projectId}`, {

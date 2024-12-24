@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { type Session } from 'next-auth';
-import { commitHashAtom, type CompanyLimits } from "~/lib/statemanager";
+import { commitHashAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
+import { CompanyLimits } from "~/lib/interfaces";
 
 const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
   const res = await fetch(`/api/company/limits`, {

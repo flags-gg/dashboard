@@ -1,5 +1,5 @@
 import {env} from "~/env";
-import {type AgentsData, type FlagAgent} from "~/lib/statemanager";
+import {AgentsData, FlagAgent} from "~/lib/interfaces";
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 

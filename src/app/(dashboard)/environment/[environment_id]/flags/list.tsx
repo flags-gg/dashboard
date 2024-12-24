@@ -1,4 +1,4 @@
-import {type Flag} from "~/lib/statemanager";
+import { Flag } from "~/lib/interfaces";
 import {Card} from "~/components/ui/card";
 import {
   Table,

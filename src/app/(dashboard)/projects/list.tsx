@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-import {type ProjectsData} from "~/lib/statemanager";
+import {ProjectsData} from "~/lib/interfaces";
 import {Card} from "~/components/ui/card";
 import {getProjects} from "~/app/api/project/project";
 import Link from "next/link";

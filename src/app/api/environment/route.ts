@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
 import { env } from "~/env";
-import { type IEnvironment } from "~/lib/statemanager";
+import { IEnvironment } from "~/lib/interfaces";
 
 export async function PUT(request: Request) {
   type UpdateEnvironmentName = {

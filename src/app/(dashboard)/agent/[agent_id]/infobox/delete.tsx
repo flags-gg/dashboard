@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { FlagAgent } from "~/lib/statemanager";
+import { FlagAgent } from "~/lib/interfaces";
 import {
   Dialog,
   DialogContent,

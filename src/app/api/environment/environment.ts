@@ -1,6 +1,6 @@
 import {env} from "~/env";
-import {type EnvironmentsData, type IEnvironment} from "~/lib/statemanager";
 import { getServerAuthSession } from "~/server/auth";
+import { EnvironmentsData, IEnvironment } from "~/lib/interfaces";
 
 export async function getEnvironments(agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
   const session = await getServerAuthSession();

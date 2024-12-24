@@ -10,10 +10,11 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "~/components/ui/form";
 import {Input} from "~/components/ui/input";
-import {type IProject, projectAtom} from "~/lib/statemanager";
+import {projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useToast} from "~/hooks/use-toast";
 import { useProject } from "~/hooks/use-project";
+import { IProject } from "~/lib/interfaces";
 
 async function updateProjectName(project_id: string, name: string): Promise<IProject | Error> {
   try {

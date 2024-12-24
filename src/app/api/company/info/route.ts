@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
-import { type ICompanyInfo } from "~/lib/statemanager";
+import { ICompanyInfo } from "~/lib/interfaces";
 
 export async function GET() {
   const session = await getServerAuthSession();
