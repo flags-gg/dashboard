@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
-import { ICompanyInfo } from "~/lib/interfaces";
+import { env } from "~/env";
 
 export async function GET() {
   const session = await getServerAuthSession();
@@ -10,7 +9,7 @@ export async function GET() {
   }
 
   try {
-    const response = await fetch(`${env.API_SERVER}/company`, {
+    const response = await fetch(`${env.API_SERVER}/company/pricing`, {
       method: 'GET',
       headers: {
         'x-user-access-token': session.user.access_token,
@@ -19,12 +18,12 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to fetch company info' }, { status: 500 })
+      return NextResponse.json({ message: 'Failed to fetch company limits' }, { status: 500 })
     }
 
-    return NextResponse.json(await response.json() as ICompanyInfo)
+    return NextResponse.json(await response.json())
   } catch (e) {
-    console.error('Failed to fetch company info', e)
+    console.error('Failed to fetch company limits', e)
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
   }
 }
