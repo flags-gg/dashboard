@@ -12,15 +12,12 @@ import {
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
-import {
-  type AgentsData,
-  type EnvironmentsData, hasCompletedOnboardingAtom,
-  type ProjectsData
-} from "~/lib/statemanager";
+import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { Session } from "next-auth";
+import { AgentsData, EnvironmentsData, ProjectsData } from "~/lib/interfaces";
 
 async function getProjects() {
   const res = await fetch(`/api/project/list`, {

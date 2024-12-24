@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { type IEnvironment } from "~/lib/statemanager";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
+import { IEnvironment } from "~/lib/interfaces";
 
 export async function GET() {
   const session = await getServerAuthSession();

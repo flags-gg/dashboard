@@ -1,7 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
-import { AgentLimits } from "~/lib/statemanager";
+import { AgentLimits } from "~/lib/interfaces";
 
 export async function GET(request: Request) {
   const session = await getServerAuthSession();
