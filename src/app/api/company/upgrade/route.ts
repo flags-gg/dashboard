@@ -3,21 +3,21 @@ import { env } from "~/env"
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 
-export const stripe = new Stripe(env.STRIPE_SECRET, {
-  apiVersion: "2024-12-18.acacia",
-  typescript: true,
-  appInfo: {
-    name: "Flags.gg",
-    url: "https://flags.gg",
-  }
-})
-
 export async function POST(request: Request) {
   const {priceId}: {priceId: string} = await request.json();
   const session = await getServerAuthSession();
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
+
+  const stripe = new Stripe(env.STRIPE_SECRET, {
+    apiVersion: "2024-12-18.acacia",
+    typescript: true,
+    appInfo: {
+      name: "Flags.gg",
+      url: "https://flags.gg",
+    }
+  })
 
   try {
     const stripeSession = await stripe.checkout.sessions.create({
@@ -51,8 +51,6 @@ export async function PUT(request: Request) {
   if (!session?.user?.access_token) {
     throw new Error('No access token found')
   }
-
-  console.info("Upgrading plan", sessionId)
 
   try {
     const response = await fetch(`${env.API_SERVER}/company/upgrade`, {

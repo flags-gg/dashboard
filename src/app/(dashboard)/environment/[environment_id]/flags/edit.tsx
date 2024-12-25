@@ -1,7 +1,7 @@
 "use client"
 
 import {Button} from "~/components/ui/button";
-import {type Flag} from "~/lib/statemanager";
+import {type Flag} from "~/lib/interfaces";
 import {Pencil} from "lucide-react";
 import {useState} from "react";
 import { Popover } from "@radix-ui/react-popover";

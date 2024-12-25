@@ -1,6 +1,6 @@
 "use client"
 
-import {type Flag} from "~/lib/statemanager";
+import {type Flag} from "~/lib/interfaces";
 import {useState} from "react";
 import {Button} from "~/components/ui/button";
 import {Trash2} from "lucide-react";
