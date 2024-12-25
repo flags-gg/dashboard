@@ -1,5 +1,5 @@
 import { useCompanyDetails } from "~/hooks/use-company-details";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useToast } from "~/hooks/use-toast";
 import { NewLoader } from "~/components/ui/new-loader";
 import {
@@ -12,6 +12,10 @@ import {
 import { Button } from "~/components/ui/button";
 import { useUpgradeChoices } from "~/hooks/use-upgrade-choices";
 import { Card, CardFooter, CardHeader, CardTitle, CardContent } from "~/components/ui/card";
+import { useFlags } from "@flags-gg/react-library";
+import { UpgradeChoice } from "~/lib/interfaces";
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface IError {
   message: string
@@ -19,12 +23,47 @@ interface IError {
 }
 
 export default function Plan() {
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
+
   const {data: companyInfo, isLoading: detailsLoading} = useCompanyDetails();
   const {data: upgradeChoices, isLoading: choicesLoading} = useUpgradeChoices();
+  const [choicesOpen, setChoicesOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [upgradeChoice, setUpgradeChoice] = useState<UpgradeChoice | null>(null)
+
   const {toast} = useToast();
   const [errorInfo] = useState({} as IError);
   const [showError] = useState(false);
+  const {is} = useFlags();
+
+  const fetchClientSecret = useCallback(async () => {
+    let priceId: string | undefined = undefined
+
+    if (is("dev prices")?.enabled()) {
+      priceId = upgradeChoice?.stripe?.dev_price_id
+    } else {
+      priceId = upgradeChoice?.stripe?.price_id
+    }
+
+    const res = await fetch(`/api/company/upgrade`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        priceId: priceId,
+      }),
+      cache: "no-store",
+    })
+    if (!res.ok) {
+      return ""
+    }
+
+    const resp = await res.json() as { clientSecret: string }
+
+    return resp.clientSecret
+  }, [upgradeChoice])
+  const stripeOptions = { fetchClientSecret }
 
   if (detailsLoading || choicesLoading) {
     return <NewLoader />
@@ -44,11 +83,11 @@ export default function Plan() {
         <li className={"flex items-center justify-between"}>
           <span>Plan</span>
           <span>{companyInfo?.payment_plan?.custom ? <span className={"text-sm text-gray-500"}>Custom</span> : (
-            <Button className={"cursor-pointer capitalize"} onClick={() => setUpgradeOpen(true)}>{companyInfo?.payment_plan?.name}</Button>
+            <Button className={"cursor-pointer capitalize"} onClick={() => setChoicesOpen(true)}>{companyInfo?.payment_plan?.name}</Button>
           )}</span>
         </li>
       </ul>
-      <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
+      <Dialog open={choicesOpen} onOpenChange={setChoicesOpen}>
         <DialogContent className={"grid gap-3 grid-cols-3 min-w-[90rem]"}>
           <DialogHeader className={"col-span-4"}>
             <DialogTitle>Upgrade your plan</DialogTitle>
@@ -80,10 +119,26 @@ export default function Plan() {
                 </table>
               </CardContent>
               <CardFooter  key={`upgrade-cardfooter-${choice.title}`} className={"p-3 border-t-2 items-center justify-center"}>
-                <Button  key={`upgrade-card-button-${choice.title}`} onClick={() => setUpgradeOpen(false)}>{choice.price ? `$${choice.price} Upgrade` : "Custom"}</Button>
+                <Button  key={`upgrade-card-button-${choice.title}`} onClick={() => {
+                  setUpgradeChoice(choice)
+                  setChoicesOpen(false)
+                  setUpgradeOpen(true)
+                }}>{choice.price ? `$${choice.price} Upgrade` : "Custom"}</Button>
               </CardFooter>
             </Card>
           ))}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Upgrade your plan</DialogTitle>
+            <DialogDescription>&nbsp;</DialogDescription>
+          </DialogHeader>
+          <EmbeddedCheckoutProvider stripe={stripePromise} options={stripeOptions}>
+            <EmbeddedCheckout />
+          </EmbeddedCheckoutProvider>
         </DialogContent>
       </Dialog>
     </>

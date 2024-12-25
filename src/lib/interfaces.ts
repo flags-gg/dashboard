@@ -118,3 +118,16 @@ export interface IUserInfo {
   email: string
   domain: string
 }
+
+export interface UpgradeChoice {
+  title: string;
+  agents: number;
+  environments: number;
+  team_members: number;
+  price?: number;
+  stripe?: {
+    price_id?: string;
+    dev_price_id?: string;
+  }
+}
+

@@ -1,14 +1,8 @@
 import { useAtom } from "jotai";
 import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
+import { UpgradeChoice } from "~/lib/interfaces";
 
-interface UpgradeChoice {
-  title: string;
-  agents: number;
-  environments: number;
-  team_members: number;
-  price?: number;
-}
 interface UpgradeChoices {
   prices: UpgradeChoice[];
 }
