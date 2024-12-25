@@ -8,24 +8,24 @@ permissions:
   contents: read
 
 jobs:
-#  qodana:
-#    runs-on: ubuntu-latest
-#    permissions:
-#      contents: write
-#      pull-requests: write
-#      checks: write
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          persist-credentials: false
-#          ref: ${{ github.event.pull_request.head.sha }}
-#          fetch-depth: 0
-#      - name: 'Qodana Scan'
-#        uses: JetBrains/qodana-action@v2023.3.2
-#        with:
-#          upload-result: true
-#        env:
-#          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+  qodana:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2023.3.2
+        with:
+          upload-result: true
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
   update_release_draft:
     runs-on: ubuntu-latest
     permissions:
