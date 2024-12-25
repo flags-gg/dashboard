@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { type IProject } from "~/lib/statemanager";
+import { IProject } from "~/lib/interfaces";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
 

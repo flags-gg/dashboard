@@ -15,10 +15,11 @@ import {
 } from "~/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { agentAtom, type Flag } from "~/lib/statemanager";
+import { agentAtom } from "~/lib/statemanager";
 import { toast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
+import { Flag } from "~/lib/interfaces";
 
 async function createFlagAction(environment_id: string, agent_id: string, name: string): Promise<Flag | Error> {
   try {

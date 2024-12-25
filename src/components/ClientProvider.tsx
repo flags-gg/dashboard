@@ -6,7 +6,6 @@ import {type ReactNode, useState} from 'react'
 import { ThemeProvider, useTheme } from "next-themes";
 import {FlagsProvider} from "@flags-gg/react-library";
 import {flagsConfig} from "~/env";
-
 export default function ClientProvider({ children, flagConfig }: { children: ReactNode, flagConfig?: typeof flagsConfig }) {
   const [queryClient] = useState(() => new QueryClient())
   const {theme} = useTheme()

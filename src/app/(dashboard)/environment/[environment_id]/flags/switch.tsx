@@ -1,8 +1,8 @@
 "use client"
 
-import {Switch} from "~/components/ui/switch";
-import {type Flag} from "~/lib/statemanager";
+import {Switch} from "~/components/ui/switch"
 import {useState} from "react";
+import { Flag } from "~/lib/interfaces";
 
 async function updateFlag(flag: Flag) {
   try {

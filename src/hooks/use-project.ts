@@ -1,6 +1,7 @@
-import { commitHashAtom, type IProject } from "~/lib/statemanager";
+import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { IProject } from "~/lib/interfaces";
 
 const fetchProject = async (projectId: string): Promise<IProject | null> => {
   const res = await fetch(`/api/project?projectId=${projectId}`, {

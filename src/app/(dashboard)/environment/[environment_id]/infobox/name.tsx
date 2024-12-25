@@ -1,7 +1,7 @@
 "use client"
 
 import { useAtom } from "jotai";
-import { environmentAtom, type IEnvironment } from "~/lib/statemanager";
+import { environmentAtom } from "~/lib/statemanager";
 import { useState } from "react";
 import { CardTitle } from "~/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useToast } from "~/hooks/use-toast";
+import { IEnvironment } from "~/lib/interfaces";
 
 async function updateEnvironmentName(environment_id: string, name: string, enabled: boolean): Promise<IEnvironment | Error> {
   try {

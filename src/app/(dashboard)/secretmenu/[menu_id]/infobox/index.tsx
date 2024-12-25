@@ -1,4 +1,4 @@
-import {type secretMenu} from "~/lib/statemanager";
+import {SecretMenu} from "~/lib/interfaces";
 import {getSecretMenu} from "~/app/api/secretmenu/data";
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 import Info from "./info";
@@ -6,7 +6,7 @@ import {InfoBoxError} from "~/components/InfoBoxError";
 import InfoButtons from "./buttons";
 
 export default async function InfoBox({menu_id}: {menu_id: string}) {
-  let secretMenuInfo: secretMenu
+  let secretMenuInfo: SecretMenu
   try {
     secretMenuInfo = await getSecretMenu(menu_id)
   } catch(e) {

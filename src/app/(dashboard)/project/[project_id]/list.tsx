@@ -1,7 +1,7 @@
 import {Card} from "~/components/ui/card";
 import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
 import Link from "next/link";
-import {type AgentsData} from "~/lib/statemanager";
+import {AgentsData} from "~/lib/interfaces";
 import {getAgents} from "~/app/api/agent/agent";
 
 export default async function AgentsList({ project_id }: { project_id: string }) {

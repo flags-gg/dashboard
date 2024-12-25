@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { type FlagAgent } from "~/lib/statemanager";
+import { FlagAgent } from "~/lib/interfaces";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
 

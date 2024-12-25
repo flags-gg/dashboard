@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import {env} from "~/env";
-import {type Flag} from "~/lib/statemanager";
+import {Flag} from "~/lib/interfaces";
 import { getServerAuthSession } from "~/server/auth";
 
 type UpdateFlagRequest = {

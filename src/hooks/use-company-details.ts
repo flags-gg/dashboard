@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
-import { commitHashAtom, ICompanyInfo } from "~/lib/statemanager";
+import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
+import { ICompanyInfo } from "~/lib/interfaces";
 
 const fetchCompanyDetails = async (): Promise<ICompanyInfo> => {
   const res = await fetch(`/api/company/info`, {

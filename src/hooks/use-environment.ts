@@ -1,6 +1,7 @@
-import { commitHashAtom, type IEnvironment } from "~/lib/statemanager";
+import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
+import { IEnvironment } from "~/lib/interfaces";
 
 const fetchEnvironment = async (environmentId: string): Promise<IEnvironment | null> => {
   const res = await fetch(`/api/environment?environmentId=${environmentId}`, {
