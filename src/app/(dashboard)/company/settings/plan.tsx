@@ -37,7 +37,7 @@ export default function Plan() {
   const {is} = useFlags();
 
   const fetchClientSecret = useCallback(async () => {
-    let priceId: string | undefined = undefined
+    let priceId: string | undefined
 
     if (is("dev prices")?.enabled()) {
       priceId = upgradeChoice?.stripe?.dev_price_id
