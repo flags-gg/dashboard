@@ -67,7 +67,7 @@
     "@types/eslint": "^9.6.1",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.3",
+    "@types/node": "^22.10.4",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@typescript-eslint/eslint-plugin": "^8.19.0",
