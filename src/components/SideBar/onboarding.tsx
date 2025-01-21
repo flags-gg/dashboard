@@ -5,7 +5,7 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarGroupLabel, SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem
@@ -24,6 +24,9 @@ export default function Onboarding() {
 
   return(
     <Sidebar>
+      <SidebarHeader>
+        Flags.gg
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>

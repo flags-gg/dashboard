@@ -47,7 +47,9 @@ export default function Standard() {
 
   return (
     <Sidebar>
-      <SidebarHeader />
+      <SidebarHeader>
+        Flags.gg
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
