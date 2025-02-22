@@ -74,6 +74,8 @@ jobs:
             STRIPE_SECRET=${{ secrets.STRIPE_SECRET }}
             NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
             NEXTAUTH_URL=http://localhost:3000
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+            CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
 
 #  deploy:
 #    runs-on: ubuntu-latest
