@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "~/hooks/use-toast";
+import { Suspense } from "react";
 
 async function setUpgraded(sessionId: string): Promise<null | Error> {
   try {
@@ -31,7 +32,7 @@ async function setUpgraded(sessionId: string): Promise<null | Error> {
   return new Error("Failed to set upgraded")
 }
 
-export default function Upgrade() {
+function UpgradePage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const sessionId = searchParams.get("session_id")
@@ -52,11 +53,16 @@ export default function Upgrade() {
     router.push("/company")
   })
 
+  return <h1 className={"text-2xl font-semibold"}>Upgraded Plan</h1>
+}
 
+export default function Upgrade() {
   return (
     <div className={"grid grid-cols-3 gap-3"}>
       <header className={"col-span-3"}>
-        <h1 className={"text-2xl font-semibold"}>Upgraded Plan</h1>
+        <Suspense>
+          <UpgradePage />
+        </Suspense>
       </header>
     </div>
   )
