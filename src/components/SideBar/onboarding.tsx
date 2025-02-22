@@ -13,9 +13,14 @@ import {
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import { HousePlus, Home } from "lucide-react";
+import { HousePlus, Home, Book } from "lucide-react";
+import { useFlags } from "@flags-gg/react-library";
+import { useUser } from "@clerk/nextjs";
 
 export default function Onboarding() {
+  const {is} = useFlags();
+  const {user} = useUser();
+
   const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
 
   if (hasCompletedOnboarding) {
@@ -43,21 +48,40 @@ export default function Onboarding() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Onboarding</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem key={"onboarding"}>
-                <SidebarMenuButton asChild>
-                  <Link href={"/onboarding"}>
-                    <HousePlus className={"h-5 w-5"} />
-                    <span>OnBoard</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {is("docs")?.enabled() && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Docs</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem key={"docs"}>
+                  <SidebarMenuButton asChild>
+                    <a href={"https://docs.flags.gg"} target={"_blank"} rel={"noreferrer"}>
+                      <Book className={"h-5 w-5"} />
+                      <span>Docs</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
+        {user && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Onboarding</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem key={"onboarding"}>
+                  <SidebarMenuButton asChild>
+                    <Link href={"/onboarding"}>
+                      <HousePlus className={"h-5 w-5"} />
+                      <span>OnBoard</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
       </SidebarContent>
     </Sidebar>
   );

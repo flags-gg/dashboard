@@ -1,18 +1,17 @@
+import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
-import { getServerAuthSession } from "~/server/auth";
 import { EnvironmentsData, IEnvironment } from "~/lib/interfaces";
 
 export async function getEnvironments(agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
   try {
     const res = await fetch(`${env.API_SERVER}/agent/${agent_id}/environments`, {
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store'
     })
@@ -29,16 +28,15 @@ export async function getEnvironments(agent_id: string): Promise<{ data: Environ
 }
 
 export async function getEnvironment(environment_id: string): Promise<{ data: IEnvironment | null, error: Error | null }> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
   try {
     const res = await fetch(`${env.API_SERVER}/environment/${environment_id}`, {
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store'
     })
