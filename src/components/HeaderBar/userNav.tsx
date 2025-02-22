@@ -1,82 +1,30 @@
 "use client"
 
-import Link from "next/link";
 import { useFlags } from "@flags-gg/react-library";
 import { useAtom } from "jotai";
-import { SignedIn, SignedOut, SignInButton, useAuth, UserButton, useUser } from "@clerk/nextjs";
-
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel,
-} from "~/components/ui/dropdown-menu";
-import {Button} from "~/components/ui/button";
-import {Avatar, AvatarFallback, AvatarImage} from "~/components/ui/avatar";
-import { useUserDetails } from "~/hooks/use-user-details";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
+import { useRouter } from "next/navigation";
+import { Building2 } from "lucide-react";
 
 export function UserNav() {
   const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
   const {is} = useFlags();
+  const router = useRouter()
 
-  const {user} = useUser();
-
-  let userAvatar = ""
-  let shortName = ""
-  let userName = ""
-
-  // let userName = user?.name ?? "";
-  // let shortName = userName.split(" ")?.map((n) => n[0]).join("");
-  // let userAvatar = user?.image ?? ""
-  //
-  // const { data: userData } = useUserDetails(user?.id ?? "");
-  // if (userData?.known_as) {
-  //   shortName = userData?.known_as.split(" ")?.map((n) => n[0]).join("");
-  //   userAvatar = userData?.avatar ?? ""
-  // }
-
-  // return (
-  //   <DropdownMenu>
-  //     <DropdownMenuTrigger asChild>
-  //       <Button variant={"outline"} size={"icon"} className={"overflow-hidden rounded-full"}>
-  //         <Avatar className={"h-8 w-8"}>
-  //           <AvatarImage src={userAvatar} alt={userName} />
-  //           <AvatarFallback>{shortName}</AvatarFallback>
-  //         </Avatar>
-  //       </Button>
-  //     </DropdownMenuTrigger>
-  //     <DropdownMenuContent align={"end"}>
-  //       <DropdownMenuLabel>My Account</DropdownMenuLabel>
-  //       {is("user account")?.enabled() && <DropdownMenuItem asChild className={"cursor-pointer"}>
-  //         <Link href={"/user/account"}>Account</Link>
-  //       </DropdownMenuItem>
-  //       }
-  //       {is("show company")?.enabled() && (
-  //         hasCompletedOnboarding && (
-  //           <>
-  //             <DropdownMenuSeparator />
-  //             <DropdownMenuLabel>Company</DropdownMenuLabel>
-  //             <DropdownMenuItem asChild className={"cursor-pointer"}>
-  //               <Link href={"/company"}>Settings</Link>
-  //             </DropdownMenuItem>
-  //           </>
-  //         )
-  //       )}
-  //       <DropdownMenuSeparator />
-  //       <DropdownMenuItem asChild className={"cursor-pointer"}>
-  //         <Link href={"/api/auth/signout"}>Sign out</Link>
-  //       </DropdownMenuItem>
-  //     </DropdownMenuContent>
-  //   </DropdownMenu>
-  // )
   return (
     <div>
       <SignedOut>
         <SignInButton />
       </SignedOut>
       <SignedIn>
-        <UserButton />
+        <UserButton>
+          <UserButton.MenuItems>
+            {is("show company")?.enabled() && (
+              hasCompletedOnboarding && <UserButton.Action labelIcon={<Building2 width={"1rem"} height={"1rem"} />} label={"Company"} onClick={() => router.push("/company")} />
+            )}
+          </UserButton.MenuItems>
+        </UserButton>
       </SignedIn>
     </div>
   )

@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
-import { getServerAuthSession } from "~/server/auth";
-import { fetchFlags } from "~/app/api/flag/list/index";
 import { currentUser } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
+import { fetchFlags } from "~/app/api/flag/list/index";
 
 type GetFlags = {
   environment_id: string

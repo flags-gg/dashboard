@@ -1,8 +1,7 @@
-import {env} from "~/env";
-import { IProject, ProjectsData} from "~/lib/interfaces";
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
+import {env} from "~/env";
+import { IProject, ProjectsData} from "~/lib/interfaces";
 
 export async function getProjects(): Promise<ProjectsData> {
   const user = await currentUser();

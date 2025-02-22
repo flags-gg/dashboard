@@ -1,8 +1,7 @@
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { UserDetails } from "~/hooks/use-user-details";
 import { env } from "~/env";
-import { currentUser } from "@clerk/nextjs/server";
 
 export async function GET() {
   const user = await currentUser();

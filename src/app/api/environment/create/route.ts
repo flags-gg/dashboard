@@ -1,7 +1,6 @@
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
-import { env } from "~/env";
 import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env";
 
 type CreateEnv = {
   name: string

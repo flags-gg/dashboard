@@ -1,8 +1,7 @@
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { AgentLimits } from "~/lib/interfaces";
-import { currentUser } from "@clerk/nextjs/server";
 
 export async function GET(request: Request) {
   const user = await currentUser();

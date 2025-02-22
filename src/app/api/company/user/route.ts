@@ -1,7 +1,6 @@
-import { env } from "~/env";
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from "~/server/auth";
 import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env";
 
 export async function PUT(request: Request) {
   const { domain, invite_code }: { domain: string, invite_code: string } = await request.json() as { domain: string, invite_code: string }

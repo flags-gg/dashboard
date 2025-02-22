@@ -1,7 +1,6 @@
-import { env } from "~/env";
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from "~/server/auth";
 import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env";
 
 export async function POST(request: Request) {
   const { companyName, companyDomain }: { companyName: string, companyDomain: string } = await request.json() as { companyName: string, companyDomain: string }

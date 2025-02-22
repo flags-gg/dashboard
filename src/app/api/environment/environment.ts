@@ -1,7 +1,6 @@
-import {env} from "~/env";
-import { getServerAuthSession } from "~/server/auth";
-import { EnvironmentsData, IEnvironment } from "~/lib/interfaces";
 import { currentUser } from "@clerk/nextjs/server";
+import {env} from "~/env";
+import { EnvironmentsData, IEnvironment } from "~/lib/interfaces";
 
 export async function getEnvironments(agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
   const user = await currentUser();

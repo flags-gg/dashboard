@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { env } from "~/env";
-import { getServerAuthSession } from "~/server/auth";
-import { IEnvironment } from "~/lib/interfaces";
 import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env";
+import { IEnvironment } from "~/lib/interfaces";
 
 export async function GET() {
   const user = await currentUser();

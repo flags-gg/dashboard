@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
+import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
 import {Flag} from "~/lib/interfaces";
-import { getServerAuthSession } from "~/server/auth";
-import { currentUser } from "@clerk/nextjs/server";
 
 type UpdateFlagRequest = {
   flag: Flag,

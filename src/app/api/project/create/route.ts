@@ -1,7 +1,6 @@
-import {env} from "~/env";
 import {NextResponse} from "next/server";
-import { getServerAuthSession } from "~/server/auth";
 import { currentUser } from "@clerk/nextjs/server";
+import {env} from "~/env";
 
 type CreateProject = {
   name: string

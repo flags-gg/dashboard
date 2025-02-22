@@ -1,8 +1,7 @@
 import Stripe from "stripe"
-import { env } from "~/env"
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env"
 
 export async function POST(request: Request) {
   const {priceId}: {priceId: string} = await request.json();

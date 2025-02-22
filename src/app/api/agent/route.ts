@@ -1,9 +1,10 @@
-import { getServerAuthSession } from "~/server/auth";
-import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
+
+import { env } from "~/env";
 import { put } from "./agent";
 import { FlagAgent } from "~/lib/interfaces";
-import { currentUser } from "@clerk/nextjs/server";
+
 
 export async function DELETE(request: Request) {
   type DeleteAgent = {

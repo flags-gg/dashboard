@@ -1,8 +1,7 @@
-import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
 import { put, getProject } from "./project";
-import { currentUser } from "@clerk/nextjs/server";
 
 export async function DELETE(request: Request) {
   type DeleteProject = {

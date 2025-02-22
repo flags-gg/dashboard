@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { IEnvironment } from "~/lib/interfaces";
-import { currentUser } from "@clerk/nextjs/server";
 
 export async function PUT(request: Request) {
   type UpdateEnvironmentName = {

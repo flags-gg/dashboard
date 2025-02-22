@@ -1,8 +1,8 @@
-import {env} from "~/env";
-import {AgentsData, FlagAgent} from "~/lib/interfaces";
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
+
+import {env} from "~/env";
+import {AgentsData, FlagAgent} from "~/lib/interfaces";
 
 export async function getAgents(project_id: string): Promise<AgentsData> {
   const user = await currentUser();

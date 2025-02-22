@@ -1,7 +1,8 @@
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
-import { env } from "~/env";
 import { currentUser } from "@clerk/nextjs/server";
+
+import { env } from "~/env";
+
 
 export async function POST(request: Request) {
   const { projectId, name }: { projectId: string, name: string } = await request.json() as { projectId: string, name: string }

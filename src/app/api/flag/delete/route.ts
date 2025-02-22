@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { env } from "~/env";
-import { getServerAuthSession } from "~/server/auth";
 import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env";
 
 type DeleteFlag = {
   flag_id: string
