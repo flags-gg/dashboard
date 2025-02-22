@@ -35,6 +35,8 @@ export const env = createEnv({
     COMMIT_HASH: z.string().optional(),
 
     API_SERVER: z.string().default("https://api.flags.gg/v1"),
+
+    CLERK_SECRET_KEY: z.string().optional(),
   },
 
   /**
@@ -46,6 +48,8 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAGS_AGENT: z.string().optional(),
     NEXT_PUBLIC_FLAGS_PROJECT: z.string().optional(),
     NEXT_PUBLIC_FLAGS_ENVIRONMENT: z.string().optional(),
+
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().optional(),
   },
 
   /**
@@ -74,6 +78,9 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAGS_AGENT: process.env.NEXT_PUBLIC_FLAGS_AGENT,
     NEXT_PUBLIC_FLAGS_PROJECT: process.env.NEXT_PUBLIC_FLAGS_PROJECT,
     NEXT_PUBLIC_FLAGS_ENVIRONMENT: process.env.NEXT_PUBLIC_FLAGS_ENVIRONMENT,
+
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

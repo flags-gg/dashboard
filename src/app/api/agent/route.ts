@@ -1,25 +1,27 @@
-import { getServerAuthSession } from "~/server/auth";
-import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
+
+import { env } from "~/env";
 import { put } from "./agent";
 import { FlagAgent } from "~/lib/interfaces";
+
 
 export async function DELETE(request: Request) {
   type DeleteAgent = {
     agentId: string
   }
   const { agentId }: DeleteAgent = await request.json() as DeleteAgent
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    throw new Error('No access token found')
+  const user = await currentUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 })
   }
 
   try {
     const response = await fetch(`${env.API_SERVER}/agent/${agentId}`, {
       method: 'DELETE',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'Content-Type': 'application/json',
+        'x-user-subject': user.id,
       },
       cache: 'no-store',
     })
@@ -42,8 +44,8 @@ export async function PUT(request: Request) {
 export async function GET(request: Request) {
   const {searchParams} = new URL(request.url)
   const agentId = searchParams.get('agentId')
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -51,8 +53,8 @@ export async function GET(request: Request) {
     const response = await fetch(`${env.API_SERVER}/agent/${agentId}`, {
       method: 'GET',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'Content-Type': 'application/json',
+        'x-user-subject': user.id,
       },
       cache: 'no-store'
     })

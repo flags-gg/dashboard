@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { IEnvironment } from "~/lib/interfaces";
 
@@ -11,8 +11,8 @@ export async function PUT(request: Request) {
   }
 
   const { name, environmentId, enabled }: UpdateEnvironmentName = await request.json() as UpdateEnvironmentName
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -21,8 +21,7 @@ export async function PUT(request: Request) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: name,
@@ -49,8 +48,8 @@ export async function DELETE(request: Request) {
   }
 
   const { environmentId }: DeleteEnv = await request.json() as DeleteEnv
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -59,8 +58,7 @@ export async function DELETE(request: Request) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store',
     })
@@ -79,8 +77,8 @@ export async function DELETE(request: Request) {
 export async function GET(request: Request) {
   const {searchParams} = new URL(request.url)
   const environmentId = searchParams.get('environmentId')
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -88,8 +86,7 @@ export async function GET(request: Request) {
     const response = await fetch(`${env.API_SERVER}/environment/${environmentId}`, {
       method: 'GET',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store'
     })

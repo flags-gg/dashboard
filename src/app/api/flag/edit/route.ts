@@ -1,6 +1,6 @@
-import { env } from "~/env";
 import { NextResponse } from "next/server";
-import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
+import { env } from "~/env";
 
 type EditFlag = {
   flag_id: string
@@ -9,8 +9,8 @@ type EditFlag = {
 
 export async function POST(request: Request) {
   const { flag_id, newName }: EditFlag = await request.json() as EditFlag
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -19,8 +19,7 @@ export async function POST(request: Request) {
       method : 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: newName,

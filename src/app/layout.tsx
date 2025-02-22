@@ -1,12 +1,10 @@
-import "~/styles/globals.css";
-import "@uploadthing/react/styles.css"
-
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { type ReactNode } from "react";
 import { Inter as FontSans } from "next/font/google"
+import { ClerkProvider } from "@clerk/nextjs";
+
 import { cn } from "~/lib/utils"
-import { getServerAuthSession } from "~/server/auth";
 import HeaderBar from "~/components/HeaderBar";
 import SideBar from "~/components/SideBar";
 import {TooltipProvider} from "~/components/ui/tooltip";
@@ -18,6 +16,9 @@ import {Toaster} from "~/components/ui/toaster";
 import { env } from "~/env";
 import { SidebarProvider } from "~/components/ui/sidebar";
 import OnboardCheck from "~/components/OnboardCheck";
+
+import "~/styles/globals.css";
+import "@uploadthing/react/styles.css"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -33,7 +34,6 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const session = await getServerAuthSession();
   const flagConfig = {
     projectId: env.NEXT_PUBLIC_FLAGS_PROJECT ?? "",
     agentId: env.NEXT_PUBLIC_FLAGS_AGENT ?? "",
@@ -43,28 +43,26 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <ClientProvider flagConfig={flagConfig}>
+        <ClerkProvider>
+          <ClientProvider flagConfig={flagConfig}>
             <TooltipProvider>
-              {session ? (
-                <div className="relative flex min-h-screen flex-col bg-muted/40">
-                  <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-                  <OnboardCheck />
-                  <SidebarProvider>
-                    <SideBar />
-                    <div className={"flex flex-col sm:py-4 size-full"}>
-                      <HeaderBar />
-                      <main className="flex-1 size-full p-4" suppressHydrationWarning={true}>
-                        {children}
-                      </main>
-                      <Toaster />
-                    </div>
-                  </SidebarProvider>
-                </div>
-              ) : (
-                children
-              )}
+              <div className="relative flex min-h-screen flex-col bg-muted/40">
+                <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+                <OnboardCheck />
+                <SidebarProvider>
+                  <SideBar />
+                  <div className={"flex flex-col sm:py-4 size-full"}>
+                    <HeaderBar />
+                    <main className="flex-1 size-full p-4" suppressHydrationWarning={true}>
+                      {children}
+                    </main>
+                    <Toaster />
+                  </div>
+                </SidebarProvider>
+              </div>
             </TooltipProvider>
-        </ClientProvider>
+          </ClientProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

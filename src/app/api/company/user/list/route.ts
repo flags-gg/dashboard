@@ -1,11 +1,11 @@
-import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { UserDetails } from "~/hooks/use-user-details";
 import { env } from "~/env";
 
 export async function GET() {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -13,8 +13,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/company/users`, {
       method: 'GET',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
         'Content-Type': 'application/json',
       },
       cache: 'no-store',
