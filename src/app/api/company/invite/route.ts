@@ -1,6 +1,7 @@
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 type InviteUser = {
   name: string,
@@ -8,9 +9,9 @@ type InviteUser = {
 }
 
 export async function POST(req: Request) {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    throw new Error('No access token found');
+  const user = await currentUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 })
   }
 
   const { name, email } = await req.json() as InviteUser;
@@ -20,8 +21,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: name,

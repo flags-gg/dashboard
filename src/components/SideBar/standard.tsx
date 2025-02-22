@@ -31,17 +31,19 @@ import {
   secretMenuAtom
 } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
+import { useUser } from "@clerk/nextjs";
 
 export default function Standard() {
+  const {is} = useFlags();
+  const {user} = useUser();
+
   const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
   const [selectedProject] = useAtom(projectAtom);
   const [selectedAgent] = useAtom(agentAtom);
   const [selectedEnvironment] = useAtom(environmentAtom);
   const [selectedMenu] = useAtom(secretMenuAtom);
 
-  const {is} = useFlags();
-
-  if (!hasCompletedOnboarding) {
+  if (!hasCompletedOnboarding || !user) {
     return null
   }
 

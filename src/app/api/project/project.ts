@@ -2,17 +2,17 @@ import {env} from "~/env";
 import { IProject, ProjectsData} from "~/lib/interfaces";
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function getProjects(): Promise<ProjectsData> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
   const res = await fetch(`${env.API_SERVER}/projects`, {
     headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
+      'x-user-subject': user.id,
     },
     cache: 'no-store'
   })
@@ -23,16 +23,15 @@ export async function getProjects(): Promise<ProjectsData> {
 }
 
 export async function getProject(project_id: string): Promise<IProject | Error> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
   try {
     const res = await fetch(`${env.API_SERVER}/project/${project_id}`, {
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store'
     })
@@ -55,8 +54,8 @@ export async function put(request: Request) {
   }
 
   const {projectId, name, enabled}: UpdateProjectName = await request.json();
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
@@ -64,8 +63,7 @@ export async function put(request: Request) {
     const response = await fetch(`${env.API_SERVER}/project/${projectId}`, {
       method: 'PUT',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: name,

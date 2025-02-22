@@ -2,6 +2,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
 import { put, getProject } from "./project";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function DELETE(request: Request) {
   type DeleteProject = {
@@ -9,8 +10,8 @@ export async function DELETE(request: Request) {
   }
 
   const { projectId }: DeleteProject = await request.json() as DeleteProject
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -19,8 +20,7 @@ export async function DELETE(request: Request) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store',
     })

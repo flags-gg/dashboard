@@ -1,11 +1,12 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function PUT(request: Request) {
   const { domain, invite_code }: { domain: string, invite_code: string } = await request.json() as { domain: string, invite_code: string }
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -13,8 +14,7 @@ export async function PUT(request: Request) {
     const response = await fetch(`${env.API_SERVER}/company/user`, {
       method: 'PUT',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

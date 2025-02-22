@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
 import { fetchFlags } from "~/app/api/flag/list/index";
+import { currentUser } from "@clerk/nextjs/server";
 
 type GetFlags = {
   environment_id: string
@@ -8,13 +9,13 @@ type GetFlags = {
 
 export async function POST(request: Request) {
   const { environment_id }: GetFlags = await request.json() as GetFlags
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    return new NextResponse('Unauthorized', { status: 401 })
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
   try {
-    const flags = await fetchFlags(environment_id, session.user.access_token, session.user.id)
+    const flags = await fetchFlags(environment_id, user.id)
     return NextResponse.json(flags)
   } catch (e) {
     console.error('Failed to fetch flags', e)

@@ -1,6 +1,7 @@
 import {env} from "~/env";
 import {NextResponse} from "next/server";
 import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 
 type CreateFlag = {
   name: string
@@ -10,10 +11,9 @@ type CreateFlag = {
 
 export async function POST(request: Request) {
   const { name, environment_id, agent_id }: CreateFlag = await request.json() as CreateFlag
-
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    return new NextResponse('Unauthorized', { status: 401 })
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -21,8 +21,7 @@ export async function POST(request: Request) {
       method : 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: name,

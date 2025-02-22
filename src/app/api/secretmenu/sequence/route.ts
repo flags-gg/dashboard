@@ -1,6 +1,7 @@
 import {env} from "~/env";
 import {NextResponse} from 'next/server';
 import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 
 type SecretMenuParams = {
   menuId?: string
@@ -10,8 +11,8 @@ type SecretMenuParams = {
 
 export async function PUT(request: Request) {
   const {menuId, sequence}: SecretMenuParams = await request.json();
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -20,8 +21,7 @@ export async function PUT(request: Request) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         "sequence": sequence
@@ -41,8 +41,8 @@ export async function PUT(request: Request) {
 
 export async function POST(request: Request) {
   const {sequence, environmentId}: SecretMenuParams = await request.json();
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -51,8 +51,7 @@ export async function POST(request: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       cache: 'no-store',
       body: JSON.stringify({

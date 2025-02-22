@@ -1,6 +1,7 @@
 import { getServerAuthSession } from "~/server/auth";
 import { env } from "~/env";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function PUT(request: Request) {
   type UpdateImage = {
@@ -12,17 +13,16 @@ export async function PUT(request: Request) {
     return NextResponse.json({message: 'No image provided'}, { status: 400 })
   }
 
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    return NextResponse.json({mesasge: 'Unauthorized'}, { status: 401 })
+  const user = await currentUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 })
   }
 
   try {
     const response = await fetch(`${env.API_SERVER}/company/image`, {
       method: 'PUT',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({image: image}),

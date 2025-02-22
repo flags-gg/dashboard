@@ -2,17 +2,18 @@ import {env} from "~/env";
 import {AgentsData, FlagAgent} from "~/lib/interfaces";
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function getAgents(project_id: string): Promise<AgentsData> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
   const res = await fetch(`${env.API_SERVER}/project/${project_id}/agents`, {
     headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
+      'Content-Type': 'application/json',
+      'x-user-subject': user.id,
     },
     cache: 'no-store'
   })
@@ -23,15 +24,15 @@ export async function getAgents(project_id: string): Promise<AgentsData> {
 }
 
 export async function getAgent(agent_id: string): Promise<FlagAgent> {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
   const res = await fetch(`${env.API_SERVER}/agent/${agent_id}`, {
     headers: {
-      'x-user-access-token': session.user.access_token,
-      'x-user-subject': session.user.id,
+      'Content-Type': 'application/json',
+      'x-user-subject': user.id,
     },
     cache: 'no-store'
   })
@@ -49,17 +50,17 @@ export async function put(request: Request) {
   }
 
   const {agentId, name, enabled}: UpdateAgentName = await request.json();
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    throw new Error('No access token found')
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
   try {
     const response = await fetch(`${env.API_SERVER}/agent/${agentId}`, {
       method: 'PUT',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'Content-Type': 'application/json',
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: name,

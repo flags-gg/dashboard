@@ -2,12 +2,13 @@ import Stripe from "stripe"
 import { env } from "~/env"
 import { getServerAuthSession } from "~/server/auth";
 import { NextResponse } from "next/server";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function POST(request: Request) {
   const {priceId}: {priceId: string} = await request.json();
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    throw new Error('No access token found')
+  const user = await currentUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 })
   }
 
   const stripe = new Stripe(env.STRIPE_SECRET, {
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
       mode: 'subscription',
       return_url: `${env.NEXTAUTH_URL}/company/upgrade/?session_id={CHECKOUT_SESSION_ID}`,
       metadata: {
-        userId: session.user.id,
+        userId: user.id,
         priceId: priceId,
       },
       ui_mode: 'embedded',
@@ -47,17 +48,17 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const {sessionId}: {sessionId: string} = await request.json();
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    throw new Error('No access token found')
+  const user = await currentUser();
+  if (!user) {
+    return new NextResponse('Unauthorized', { status: 401 })
   }
 
   try {
     const response = await fetch(`${env.API_SERVER}/company/upgrade`, {
       method: 'PUT',
       headers: {
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'Content-Type': 'application/json',
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         sessionId: sessionId,

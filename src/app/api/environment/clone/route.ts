@@ -1,6 +1,7 @@
 import { env } from "~/env";
 import { NextResponse } from "next/server";
 import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 
 type CloneEnv = {
   name: string
@@ -10,8 +11,8 @@ type CloneEnv = {
 
 export async function POST(request: Request) {
   const { name, environmentId, agentId }: CloneEnv = await request.json() as CloneEnv
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -20,8 +21,7 @@ export async function POST(request: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-access-token': session.user.access_token,
-        'x-user-subject': session.user.id,
+        'x-user-subject': user.id,
       },
       body: JSON.stringify({
         name: name,

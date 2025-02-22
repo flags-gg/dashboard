@@ -1,11 +1,11 @@
 import { Flag } from "~/lib/interfaces";
 import { env } from "~/env";
 import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 
-export async function fetchFlags(environment_id: string, accessToken: string, userId: string): Promise<Flag[]> {
+export async function fetchFlags(environment_id: string, userId: string): Promise<Flag[]> {
   const res = await fetch(`${env.API_SERVER}/environment/${environment_id}/flags`, {
     headers: {
-      'x-user-access-token': accessToken,
       'x-user-subject': userId,
     },
     cache: 'no-store'
@@ -17,11 +17,10 @@ export async function fetchFlags(environment_id: string, accessToken: string, us
 }
 
 export async function getFlags(environment_id: string): Promise<Flag[]> {
-  const session = await getServerAuthSession();
-
-  if (!session?.user?.access_token) {
+  const user = await currentUser();
+  if (!user) {
     throw new Error('No access token found')
   }
 
-  return fetchFlags(environment_id, session.user.access_token, session.user.id)
+  return fetchFlags(environment_id, user.id)
 }
