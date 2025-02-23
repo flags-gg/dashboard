@@ -12,7 +12,7 @@ import { FlagSwitch } from "./switch";
 import { DeleteFlag } from "./delete";
 import { EditFlag } from "./edit";
 
-export default async function FlagsList({ environment_id, }: { environment_id: string; }) {
+export default async function FlagsList({ environment_id }: { environment_id: string; }) {
   let flags: Flag[] = [];
   try {
     await getFlags(environment_id).then((data) => {

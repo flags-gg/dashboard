@@ -1,20 +1,32 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import {ProjectsData} from "~/lib/interfaces";
 import {Card} from "~/components/ui/card";
-import {getProjects} from "~/app/api/project/project";
+import { fetchProjects } from "~/app/api/project/project";
 import Link from "next/link";
 import Image from "next/image";
 import { ShieldPlus } from "lucide-react";
 
 export default async function ProjectList() {
-  let projects: ProjectsData;
+  let projects: ProjectsData | null = null;
   try {
-    projects = await getProjects();
+    await fetchProjects().then(data => {
+      projects = data
+    }).catch(e => {
+      throw e
+    })
   } catch (e) {
     console.error(e);
     return <div className={"gap-3 col-span-2"}>
       <Card className={"mb-3 p-3"}>
         Error loading projects
+      </Card>
+    </div>
+  }
+
+  if (!projects) {
+    return <div className={"gap-3 col-span-2"}>
+      <Card className={"mb-3 p-3"}>
+        Loading projects
       </Card>
     </div>
   }
@@ -34,7 +46,7 @@ export default async function ProjectList() {
           </TableHeader>
           <TableBody>
             {projects?.projects?.map(project => (
-              <TableRow key={project.id}>
+              <TableRow key={`project-${project.id}`}>
                 <TableCell className={"place-content-center justify-center"} style={{ paddingLeft: "3%" }}>
                   <Link href={`/project/${project.project_id}`}>
                     {project.logo ? <Image src={project.logo} alt={project.name} width={50} height={50} /> : <ShieldPlus className={"h-5 w-5"} />}
