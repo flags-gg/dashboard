@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { type Session } from 'next-auth';
 import { commitHashAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { CompanyLimits } from "~/lib/interfaces";
+import { useUser } from "@clerk/nextjs";
 
 const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
   const res = await fetch(`/api/company/limits`, {
@@ -21,11 +21,12 @@ const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
   return await res.json() as CompanyLimits;
 };
 
-export const useCompanyLimits = (session: Session) => {
+export const useCompanyLimits = () => {
   const [commitHash] = useAtom(commitHashAtom)
+  const {user} = useUser();
 
   return useQuery<CompanyLimits, Error>({
-    queryKey: ['companyLimits', session.user.id, commitHash],
+    queryKey: ['companyLimits', user?.id, commitHash],
     queryFn: () => fetchCompanyLimits(),
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes

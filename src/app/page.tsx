@@ -1,9 +1,18 @@
-import { auth } from "@clerk/nextjs/server";
+"use client"
 
-export default async function Home() {
-  const {userId} = await auth();
-  if (!userId) {
-    return <div>Not Signed in</div>
+import { SignUp, useUser } from "@clerk/nextjs";
+
+export default function Home() {
+  const {user} = useUser();
+
+  console.info("userId", user)
+
+  if (!user) {
+    return (
+      <div className={"flex justify-center"}>
+        <SignUp />
+      </div>
+    )
   }
 
   return (

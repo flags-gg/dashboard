@@ -1,12 +1,12 @@
 import AccountForm from "./accountForm";
-import { getServerAuthSession } from "~/server/auth";
 import { redirect } from "next/navigation";
 import InfoBox from "./infobox";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function AccountPage() {
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (
@@ -14,7 +14,7 @@ export default async function AccountPage() {
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>User Account</h1>
       </header>
-      <AccountForm session={session} />
+      <AccountForm />
       <InfoBox />
     </div>
   )

@@ -9,20 +9,22 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { z } from "zod";
 import { Separator } from "~/components/ui/separator";
-import { Session } from "next-auth";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { getUserDetails } from "~/hooks/use-user-details";
 import { useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
 
-export default function StepOne({session}: {session: Session}) {
-  const firstName = session?.user?.name?.split(" ")[0] ?? ""
-  const lastName = session?.user?.name?.split(" ")[1] ?? ""
-  const email = session?.user.email ?? ""
+export default function StepOne() {
+  const {user} = useUser();
+
+  const firstName = user?.firstName ?? ""
+  const lastName = user?.lastName ?? ""
+  const email = user?.emailAddresses?.[0]?.emailAddress ?? ""
   const {toast} = useToast()
   const router = useRouter()
 
-  if (!session?.user?.id) {
+  if (!user?.id) {
     router.push("/api/auth/signin")
   }
   // they have done the first step, but haven't completed the second step

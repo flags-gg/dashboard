@@ -75,7 +75,7 @@ export default function DeleteButton() {
               });
               deleteCookie("hasCompletedOnboarding")
               queryClient.clear()
-              router.push("/api/auth/signout")
+              router.push("/")
             }).catch((error) => {
               if (error instanceof Error) {
                 toast({

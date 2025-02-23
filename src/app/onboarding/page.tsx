@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
-import { getServerAuthSession } from "~/server/auth";
 import { Metadata } from "next";
 import StepOne from "./stepone";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return {
@@ -15,9 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Onboarding() {
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (
@@ -25,7 +25,7 @@ export default async function Onboarding() {
       <header className={"col-span-3"}>
         <h1 className={"text-2xl font-semibold"}>Onboarding</h1>
       </header>
-      <StepOne session={session} />
+      <StepOne />
     </div>
   )
 }

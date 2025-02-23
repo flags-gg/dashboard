@@ -1,8 +1,8 @@
-import { getServerAuthSession } from "~/server/auth";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
 import Maker from "../maker";
 import { type Metadata } from "next";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "SecretMenu Builder - Flags.gg",
@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default async function SecretMenuSpecificPage({params}: {params: Promise<{menu_id: string}>}) {
   const {menu_id} = await params
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (

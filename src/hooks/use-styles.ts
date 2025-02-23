@@ -1,18 +1,23 @@
-import { type Session } from "next-auth";
 import { type StyleFetch, type StyleState } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { commitHashAtom } from "~/lib/statemanager";
+import { useUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 
-const fetchStyles = async (session: Session, menuId: string): Promise<StyleFetch> => {
+const fetchStyles = async (menuId: string): Promise<StyleFetch> => {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error('No user found')
+  }
+
   const response = await fetch(`/api/secretmenu/style`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      sessionToken: session.user.access_token,
-      userId: session.user.id,
+      userId: user?.id,
       menuId: menuId,
     }),
     cache: "no-store",
@@ -38,13 +43,17 @@ const transformStyles = (data: StyleFetch): { styles: StyleState; id: string } =
   };
 }
 
-export const useStyles = (session: Session, menuId: string) => {
+export const useStyles = (menuId: string) => {
   const [commitHash] = useAtom(commitHashAtom)
+  const {user} = useUser();
+  if (!user) {
+    throw new Error('No user found')
+  }
 
   return useQuery<{ styles: StyleState; id: string }, Error>({
-    queryKey: ["styles", menuId, session.user.id, commitHash],
+    queryKey: ["styles", menuId, user?.id, commitHash],
     queryFn: async () => {
-      const data = await fetchStyles(session, menuId);
+      const data = await fetchStyles(menuId);
       return transformStyles(data);
     },
     retry: 3,

@@ -3,7 +3,6 @@
 import { CardFooter } from "~/components/ui/card";
 import CreateAgent from "~/app/(dashboard)/agent/create";
 import { useAtom } from "jotai";
-import { type Session } from "next-auth";
 import { projectAtom } from "~/lib/statemanager";
 import { useToast } from "~/hooks/use-toast";
 import { useFlags } from "@flags-gg/react-library";
@@ -11,15 +10,17 @@ import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 import { NewLoader } from "~/components/ui/new-loader";
+import { useUser } from "@clerk/nextjs";
+import { router } from "next/client";
 
-export default function InfoButtons({ session }: { session: Session }) {
+export default function InfoButtons() {
   const [projectInfo] = useAtom(projectAtom);
   const { is } = useFlags();
   const { toast } = useToast();
-  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
-
-  if (!session) {
-    throw new Error('No session found');
+  const { data: companyLimits, isLoading, error } = useCompanyLimits();
+  const {user} = useUser();
+  if (!user) {
+    router.push("/").catch(console.error)
   }
 
   if (isLoading) {

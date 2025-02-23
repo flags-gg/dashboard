@@ -9,7 +9,6 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { z } from "zod";
 import { Separator } from "~/components/ui/separator";
-import { Session } from "next-auth";
 import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
@@ -17,14 +16,15 @@ import { getUserDetails } from "~/hooks/use-user-details";
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
+import { useUser } from "@clerk/nextjs";
 
-export default function StepTwo({session}: {session: Session}) {
+export default function StepTwo() {
   const {toast} = useToast()
   const router = useRouter()
   const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
-
-  if (!session?.user?.id) {
-    router.push("/api/auth/signin")
+  const {user} = useUser()
+  if (!user) {
+    router.push("/")
   }
 
   // they have somehow got to the second step without completing the first step
@@ -55,7 +55,7 @@ export default function StepTwo({session}: {session: Session}) {
   })
   const companyCodeOnSubmit = async (data: z.infer<typeof companyCodeSchema>) => {
     try {
-      const domain = session?.user.email?.split("@")[1]
+      const domain = user?.emailAddresses?.[0]?.emailAddress?.split("@")[1]
 
       const companyCodeValues = {
         invite_code: data.companyCode,
@@ -98,7 +98,7 @@ export default function StepTwo({session}: {session: Session}) {
   }
 
   const blockedDomains = ["gmail.com", "google.com", "yahoo.com", "hotmail.com", "outlook.com"]
-  let domain = session?.user.email?.split("@")[1]
+  let domain = user?.emailAddresses?.[0]?.emailAddress?.split("@")[1]
   if (domain != undefined && blockedDomains.includes(domain)) {
     domain = ""
   }

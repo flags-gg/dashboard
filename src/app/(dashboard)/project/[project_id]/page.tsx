@@ -1,15 +1,15 @@
 import List from "./list";
-import { getServerAuthSession } from "~/server/auth";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getProject } from "~/app/api/project/project";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function generateMetadata({params}: {params: Promise<{project_id: string}>}): Promise<Metadata> {
   const {project_id} = await params
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
   const projectInfo = await getProject(project_id)
   if (!projectInfo) {
@@ -23,9 +23,9 @@ export async function generateMetadata({params}: {params: Promise<{project_id: s
 
 export default async function ProjectPage({params}: {params: Promise<{project_id: string}>}) {
   const {project_id} = await params
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (

@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "~/components/ui/button";
-import { type Session } from "next-auth";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -21,6 +20,8 @@ import { Input } from "~/components/ui/input";
 import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NewLoader } from "~/components/ui/new-loader";
+import { useUser } from "@clerk/nextjs";
+import { router } from "next/client";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
@@ -45,17 +46,21 @@ const FormSchema = z.object({
   projectName: z.string().min(2, {message: "Project Name is required a minimum of 2 characters"}),
 });
 
-export default function CreateProject({ session }: { session: Session }) {
+export default function CreateProject() {
   const [isOpen, setIsOpen] = useState(false);
   const [createdProject, setCreatedProject] = useState<IProject | null>(null);
   const queryClient = useQueryClient();
+  const {user} = useUser();
+  if (!user) {
+    router.push("/").catch(console.error)
+  }
 
-  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
+  const { data: companyLimits, isLoading, error } = useCompanyLimits();
 
   const createProjectMutation = useMutation({
     mutationFn: (name: string) => createProject(name),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ['companyLimits', session.user.id]}).catch(console.error);
+      queryClient.invalidateQueries({queryKey: ['companyLimits', user?.id]}).catch(console.error);
       toast({
         title: "Project Created",
         description: "Project has been created",

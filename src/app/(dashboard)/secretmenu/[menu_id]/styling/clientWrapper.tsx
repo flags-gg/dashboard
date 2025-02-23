@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Info from "./info";
-import { type Session } from "next-auth";
 import { StyleProvider } from "./context";
 import PageContainer from "./pageContainer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -11,12 +10,11 @@ import { useToast } from "~/hooks/use-toast";
 import { Skeleton } from "~/components/ui/skeleton";
 
 type ClientWrapperProps = {
-  session: Session;
   menuId: string;
 };
 
-function StyleWrapper({ session, menuId }: ClientWrapperProps) {
-  const { data, isLoading, error } = useStyles(session, menuId);
+function StyleWrapper({ menuId }: ClientWrapperProps) {
+  const { data, isLoading, error } = useStyles(menuId);
   const { toast } = useToast();
 
   if (isLoading) {
@@ -38,17 +36,17 @@ function StyleWrapper({ session, menuId }: ClientWrapperProps) {
   return (
     <StyleProvider initialStyles={data.styles}>
       <PageContainer />
-      <Info session={session} menuId={menuId} />
+      <Info menuId={menuId} />
     </StyleProvider>
   );
 }
 
-export default function ClientWrapper({ session, menuId }: ClientWrapperProps) {
+export default function ClientWrapper({ menuId }: ClientWrapperProps) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (
     <QueryClientProvider client={queryClient}>
-      <StyleWrapper session={session} menuId={menuId} />
+      <StyleWrapper menuId={menuId} />
     </QueryClientProvider>
   );
 }

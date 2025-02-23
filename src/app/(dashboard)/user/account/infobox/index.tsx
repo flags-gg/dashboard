@@ -1,13 +1,13 @@
-import { getServerAuthSession } from "~/server/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {InfoButtons} from "./buttons";
 import UserImage from "./userImage";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function InfoBox() {
-  const session = await getServerAuthSession()
-
-  if (!session) {
-    throw new Error('No session found')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (
@@ -16,7 +16,7 @@ export default async function InfoBox() {
         <CardTitle className={"group flex items-center gap-2 text-lg"}>User Options</CardTitle>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <UserImage session={session} />
+        <UserImage />
       </CardContent>
       <InfoButtons />
     </Card>

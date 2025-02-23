@@ -3,13 +3,13 @@ import FlagsList from "./flags/list";
 import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getEnvironment } from "~/app/api/environment/environment";
-import { getServerAuthSession } from "~/server/auth";
+import { currentUser } from "@clerk/nextjs/server";
 
 export async function generateMetadata({params}: {params: Promise<{environment_id: string}>}): Promise<Metadata> {
   const {environment_id} = await params
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   const { data: environmentInfo, error } = await getEnvironment(environment_id)
@@ -25,9 +25,9 @@ export async function generateMetadata({params}: {params: Promise<{environment_i
 
 export default async function EnvironmentPage({params}: {params: Promise<{environment_id: string}>}) {
   const {environment_id} = await params
-  const session = await getServerAuthSession()
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (
