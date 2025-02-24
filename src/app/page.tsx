@@ -1,6 +1,6 @@
 "use client"
 
-import { SignUp, useUser } from "@clerk/nextjs";
+import { SignIn, useUser } from "@clerk/nextjs";
 
 export default function Home() {
   const {user} = useUser();
@@ -10,7 +10,7 @@ export default function Home() {
   if (!user) {
     return (
       <div className={"flex justify-center"}>
-        <SignUp />
+        <SignIn />
       </div>
     )
   }
