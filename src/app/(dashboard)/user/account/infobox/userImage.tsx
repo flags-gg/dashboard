@@ -1,6 +1,5 @@
 "use client"
 
-import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import Image from "next/image";
 import { useUserDetails } from "~/hooks/use-user-details";
 import { useToast } from "~/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { useUser } from "@clerk/nextjs";
 
 interface IError {
   message: string
@@ -39,14 +39,15 @@ function uploadImage({ imageUrl }: { imageUrl: string }): Error | void {
     });
 }
 
-export default function UserImage({session}: {session: Session}) {
+export default function UserImage() {
   const [iconOpen, setIconOpen] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [showError, setShowError] = useState(false)
   const [imageURL, setImageURL] = useState("")
   const {toast} = useToast()
+  const {user} = useUser();
 
-  const { data: userData } = useUserDetails(session?.user?.id ?? "");
+  const { data: userData } = useUserDetails(user?.id ?? "");
   useEffect(() => {
     if (userData) {
       setImageURL(userData.avatar)
@@ -58,12 +59,11 @@ export default function UserImage({session}: {session: Session}) {
     imageElement =
       <Image src={imageURL} alt={userData?.first_name + " " + userData?.last_name} height={200} width={200} className={"cursor-pointer"} priority={true} />
   } else {
-    const userName = session?.user?.name ?? "";
-    const shortName = userName.split(" ")?.map((n) => n[0]).join("");
+    const userName = user?.username ?? "";
     imageElement = (
       <Avatar className={"cursor-pointer h-28 w-28"}>
         <AvatarImage src={userData?.avatar} alt={"User Image"} height="200px" width="200px" className={"h-28 w-28"} />
-        <AvatarFallback>{shortName}</AvatarFallback>
+        <AvatarFallback>{userName}</AvatarFallback>
       </Avatar>
     );
   }

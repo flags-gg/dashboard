@@ -3,22 +3,28 @@ import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
 import { IProject, ProjectsData} from "~/lib/interfaces";
 
-export async function getProjects(): Promise<ProjectsData> {
+export async function getProjects(userId: string): Promise<ProjectsData> {
+  const res = await fetch(`${env.API_SERVER}/projects`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'x-user-subject': userId,
+    },
+    cache: 'no-store'
+  })
+  if (!res.ok) {
+    throw new Error('Failed to fetch projects');
+  }
+
+  return res.json()
+}
+
+export async function fetchProjects(): Promise<ProjectsData> {
   const user = await currentUser();
   if (!user) {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(`${env.API_SERVER}/projects`, {
-    headers: {
-      'x-user-subject': user.id,
-    },
-    cache: 'no-store'
-  })
-  if (!res.ok) {
-    throw new Error('Failed to fetch projects')
-  }
-  return res.json()
+  return getProjects(user.id)
 }
 
 export async function getProject(project_id: string): Promise<IProject | Error> {

@@ -2,6 +2,7 @@
 
 import Onboarding from "./onboarding";
 import Standard from "./standard";
+import Unknown from "./unknown";
 import { useUser } from "@clerk/nextjs";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
@@ -14,12 +15,14 @@ export default function SideBar() {
   const {user} = useUser();
   const {toast} = useToast();
 
+  console.info("user", user)
+
   const [, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const {data: onboardedData, error: onboardedError} = useQuery({
     queryKey: ["onboarded", user?.id],
     queryFn: getUserDetails,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(user?.id),
+    enabled: Boolean(user) && Boolean(user?.id),
   });
 
   useEffect(() => {
@@ -36,7 +39,10 @@ export default function SideBar() {
     return <Standard />;
   }
 
+  if (user) {
+    return <Onboarding />
+  }
 
-  return <Onboarding />
+  return <Unknown />
 }
 

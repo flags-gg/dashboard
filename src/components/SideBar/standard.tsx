@@ -122,7 +122,7 @@ export default function Standard() {
             <SidebarGroupLabel>Project Options</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                <SidebarMenuItem key={`project-${selectedProject.project_id}`}>
+                <SidebarMenuItem key={`sidebar-project-${selectedProject.project_id}`}>
                   <SidebarMenuButton asChild>
                     <Link href={`/project/${selectedProject.project_id}`}>
                       <SquareKanban className={"h-5 w-5"} />

@@ -2,14 +2,14 @@ import {Card, CardContent, CardHeader} from "~/components/ui/card";
 import ProjectInfo from "./info";
 import Name from "./name";
 import InfoButtons from "./buttons";
-import { getServerAuthSession } from "~/server/auth";
 import Delete from "./delete";
 import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs/server";
 
 export default async function InfoBox({project_id}: {project_id: string}) {
-  const session = await getServerAuthSession();
-  if (!session?.user?.access_token) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (
@@ -23,9 +23,9 @@ export default async function InfoBox({project_id}: {project_id: string}) {
         </div>
       </CardHeader>
       <CardContent className={"p-6 text-sm"}>
-        <ProjectInfo session={session} project_id={project_id} />
+        <ProjectInfo project_id={project_id} />
       </CardContent>
-      <InfoButtons session={session} />
+      <InfoButtons />
     </Card>
   )
 }

@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { useStyleContext } from "./context";
 import { Button } from "~/components/ui/button";
-import { type Session } from "next-auth";
 import { Separator } from "~/components/ui/separator";
 import { useStyles } from "~/hooks/use-styles";
 import { useToast } from "~/hooks/use-toast";
@@ -46,9 +45,9 @@ async function saveStyle({style, menuId, styleId}: {style: string, menuId: strin
   return null
 }
 
-export default function Info({session, menuId}: {session: Session, menuId: string}) {
+export default function Info({menuId}: {menuId: string}) {
   const {resetStyle, modifiedStyles, styles} = useStyleContext();
-  const {data, isLoading, error} = useStyles(session, menuId);
+  const {data, isLoading, error} = useStyles(menuId);
   const {toast} = useToast();
 
   if (isLoading) {

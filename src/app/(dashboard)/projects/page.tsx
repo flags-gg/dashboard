@@ -1,18 +1,17 @@
 import { redirect } from 'next/navigation'
-import { getServerAuthSession } from "~/server/auth";
 import List from "./list";
 import InfoBox from "./infobox";
 import { type Metadata } from "next";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Projects - Flags.gg",
 }
 
 export default async function ProjectsPage() {
-  const session = await getServerAuthSession()
-
-  if (!session) {
-    redirect('/api/auth/signin')
+  const user = await currentUser();
+  if (!user) {
+    redirect('/')
   }
 
   return (

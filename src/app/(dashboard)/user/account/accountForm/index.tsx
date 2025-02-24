@@ -1,6 +1,5 @@
 "use client"
 
-import { type Session } from "next-auth";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { useUserDetails } from "~/hooks/use-user-details";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -11,6 +10,7 @@ import { useToast } from "~/hooks/use-toast";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 const formSchema = z.object({
   knownAs: z.string().min(2, {message: "Known As requires a minimum of 2 characters"}),
@@ -21,8 +21,10 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function AccountForm({ session }: { session: Session }) {
-  const { data: userData, isLoading } = useUserDetails(session?.user?.id ?? "");
+export default function AccountForm() {
+  const {user} = useUser();
+
+  const { data: userData, isLoading } = useUserDetails(user?.id ?? "");
   const [fromKeycloak, setFromKeycloak] = useState(false);
   const { toast } = useToast();
 
@@ -48,22 +50,21 @@ export default function AccountForm({ session }: { session: Session }) {
       return
     }
 
-    if (session?.user?.name) {
-      const [firstName, lastName] = session.user.name.split(" ");
+    if (user?.username) {
       form.reset({
-        knownAs: session.user.name,
-        firstName,
-        lastName,
+        knownAs: user?.username,
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
         location: "Unknown",
       });
       setFromKeycloak(true);
     }
-  }, [userData, session]);
+  }, [userData, user]);
 
   const onSubmit = async (data: FormValues) => {
     try {
       // @ts-expect-error email doesn't exist on session.user
-      data.email = session.user.email
+      data.email = user?.emailAddresses?.[0]?.emailAddress
 
       const res = await fetch("/api/user/details", {
         method: fromKeycloak ? "POST" : "PUT",

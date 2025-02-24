@@ -11,6 +11,7 @@ export async function getEnvironments(agent_id: string): Promise<{ data: Environ
   try {
     const res = await fetch(`${env.API_SERVER}/agent/${agent_id}/environments`, {
       headers: {
+        'Content-Type': 'application/json',
         'x-user-subject': user.id,
       },
       cache: 'no-store'

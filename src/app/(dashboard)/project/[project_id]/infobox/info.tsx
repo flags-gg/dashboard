@@ -1,6 +1,5 @@
 "use client"
 
-import {type Session} from "next-auth";
 import {projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
 import {useEffect, useState} from "react";
@@ -20,6 +19,8 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { useProjectLimits } from "~/hooks/use-project-limits";
 import { useToast } from "~/hooks/use-toast";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 interface IError {
   message: string
@@ -46,10 +47,7 @@ function uploadImage({projectId, imageUrl}: uploadImageProps): Error | void {
   })
 }
 
-export default function ProjectInfo({session, project_id}: {session: Session, project_id: string}) {
-  if (!session) {
-    throw new Error('No session found')
-  }
+export default function ProjectInfo({project_id}: {project_id: string}) {
   const [projectInfo] = useAtom(projectAtom)
   const [, setSelectedProject] = useAtom(projectAtom)
   const [iconOpen, setIconOpen] = useState(false)
@@ -58,6 +56,12 @@ export default function ProjectInfo({session, project_id}: {session: Session, pr
   const [imageURL, setImageURL] = useState("")
   const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
   const {toast} = useToast()
+  const router = useRouter()
+  const {user} = useUser();
+  if (!user) {
+    router.push('/')
+    return <></>
+  }
 
   useEffect(() => {
     setSelectedProject(projectInfo)

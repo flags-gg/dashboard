@@ -1,6 +1,5 @@
 "use client"
 
-import { type Session } from "next-auth";
 import { useFlags } from "@flags-gg/react-library";
 import { CardFooter } from "~/components/ui/card";
 import Link from "next/link";
@@ -10,14 +9,10 @@ import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { useToast } from "~/hooks/use-toast";
 import { NewLoader } from "~/components/ui/new-loader";
 
-export default function InfoButtons({ session }: { session: Session }) {
+export default function InfoButtons() {
   const { is } = useFlags();
   const { toast } = useToast();
-  const { data: companyLimits, isLoading, error } = useCompanyLimits(session);
-
-  if (!session) {
-    throw new Error('No session found');
-  }
+  const { data: companyLimits, isLoading, error } = useCompanyLimits();
 
   if (isLoading) {
     return (
@@ -49,7 +44,7 @@ export default function InfoButtons({ session }: { session: Session }) {
 
   return (
     <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
-      {is("create project")?.enabled() && <CreateProject session={session} />}
+      {is("create project")?.enabled() && <CreateProject />}
       {is("alter limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href="/company/limits">Alter Limits</Link>}
     </CardFooter>
   );
