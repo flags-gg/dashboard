@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ShieldPlus } from "lucide-react";
 
 export default async function ProjectList() {
-  let projects: ProjectsData | null = null;
+  let projects: ProjectsData = ProjectsData.empty();
   try {
     await fetchProjects().then(data => {
       projects = data
