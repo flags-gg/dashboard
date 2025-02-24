@@ -7,20 +7,16 @@ import Image from "next/image";
 import { ShieldPlus } from "lucide-react";
 
 export default async function ProjectList() {
-  let projects: ProjectsData = ProjectsData.empty();
+  let projects: ProjectsData = { projects: [] };
   try {
-    await fetchProjects().then(data => {
-      projects = data
-    }).catch(e => {
-      throw e
-    })
+    projects = await fetchProjects();
   } catch (e) {
     console.error(e);
-    return <div className={"gap-3 col-span-2"}>
-      <Card className={"mb-3 p-3"}>
-        Error loading projects
-      </Card>
-    </div>
+    return (
+      <div className={"gap-3 col-span-2"}>
+        <Card className={"mb-3 p-3"}>Error loading projects</Card>
+      </div>
+    );
   }
 
   if (!projects) {
