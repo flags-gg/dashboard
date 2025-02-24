@@ -51,11 +51,10 @@ export default function AccountForm() {
     }
 
     if (user?.username) {
-      const [firstName, lastName] = user?.username.split(" ");
       form.reset({
         knownAs: user?.username,
-        firstName,
-        lastName,
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
         location: "Unknown",
       });
       setFromKeycloak(true);
