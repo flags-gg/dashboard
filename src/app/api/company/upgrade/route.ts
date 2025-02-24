@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         },
       ],
       mode: 'subscription',
-      return_url: `${env.NEXTAUTH_URL}/company/upgrade/?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: `https://flags.gg/api/company/upgrade/?session_id={CHECKOUT_SESSION_ID}`,
       metadata: {
         userId: user.id,
         priceId: priceId,

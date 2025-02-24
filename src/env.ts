@@ -17,12 +17,6 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
 
-    NEXTAUTH_SECRET:
-      process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
-    NEXTAUTH_URL: z.string().url(),
-
     KEYCLOAK_ID: z.string(),
     KEYCLOAK_SECRET: z.string(),
     KEYCLOAK_ISSUER: z.string(),
@@ -58,9 +52,6 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 
     KEYCLOAK_ID: process.env.KEYCLOAK_ID,
     KEYCLOAK_SECRET: process.env.KEYCLOAK_SECRET,
