@@ -3,10 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { commitHashAtom } from "~/lib/statemanager";
 import { useUser } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
 
 const fetchStyles = async (menuId: string): Promise<StyleFetch> => {
-  const user = await currentUser();
+  const {user} = useUser();
   if (!user) {
     throw new Error('No user found')
   }
