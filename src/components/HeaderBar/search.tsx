@@ -136,7 +136,7 @@ export function SearchBox() {
             {projectsData && (
               <CommandGroup heading="Projects">
                 {projectsData.projects?.map((project) => (
-                  <CommandItem key={project.project_id} onSelect={() => {
+                  <CommandItem key={`search-project-${project.project_id}`} onSelect={() => {
                     setIsOpen(false)
                     window.location.href = `/project/${project?.project_id}`
                   }}><span className={"font-bold"}>{project?.name}</span></CommandItem>
@@ -148,7 +148,7 @@ export function SearchBox() {
                 <CommandSeparator />
                 <CommandGroup heading="Agents">
                   {agentsData.agents?.map((agent) => (
-                    <CommandItem key={agent?.agent_id} onSelect={() => {
+                    <CommandItem key={`search-agent-${agent?.agent_id}`} onSelect={() => {
                       setIsOpen(false)
                       window.location.href = `/agent/${agent?.agent_id}`
                     }}>[<span className={"font-italic"}>{agent?.project_info?.name}</span>]&nbsp;<span className={"font-bold"}>{agent?.name}</span></CommandItem>
@@ -161,7 +161,7 @@ export function SearchBox() {
                 <CommandSeparator />
                 <CommandGroup heading="Environments">
                   {environmentsData.environments?.map((environment) => (
-                    <CommandItem key={environment?.environment_id} onSelect={() => {
+                    <CommandItem key={`search-environment-${environment?.environment_id}`} onSelect={() => {
                       setIsOpen(false)
                       window.location.href = `/environment/${environment?.environment_id}`
                     }}>[<span className={"font-italic"}>{environment?.project_name}: {environment?.agent_name}</span>]&nbsp;<span className={"font-bold"}>{environment?.name}</span></CommandItem>
