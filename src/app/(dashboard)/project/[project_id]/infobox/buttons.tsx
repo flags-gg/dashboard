@@ -11,16 +11,18 @@ import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 import { NewLoader } from "~/components/ui/new-loader";
 import { useUser } from "@clerk/nextjs";
-import { router } from "next/client";
+import { useRouter } from "next/navigation";
 
 export default function InfoButtons() {
   const [projectInfo] = useAtom(projectAtom);
   const { is } = useFlags();
   const { toast } = useToast();
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
+  const router = useRouter()
   const {user} = useUser();
   if (!user) {
-    router.push("/").catch(console.error)
+    router.push('/')
+    return <></>
   }
 
   if (isLoading) {

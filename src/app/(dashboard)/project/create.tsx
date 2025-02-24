@@ -21,7 +21,7 @@ import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NewLoader } from "~/components/ui/new-loader";
 import { useUser } from "@clerk/nextjs";
-import { router } from "next/client";
+import { useRouter } from "next/navigation";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
@@ -50,9 +50,11 @@ export default function CreateProject() {
   const [isOpen, setIsOpen] = useState(false);
   const [createdProject, setCreatedProject] = useState<IProject | null>(null);
   const queryClient = useQueryClient();
+  const router = useRouter()
   const {user} = useUser();
   if (!user) {
-    router.push("/").catch(console.error)
+    router.push('/')
+    return <></>
   }
 
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
