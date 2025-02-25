@@ -13,7 +13,7 @@ export default function ClientProvider({ children, flagConfig }: { children: Rea
   return (
     <ThemeProvider attribute="class" defaultTheme={theme} enableSystem disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>
-        <FlagsProvider options={flagConfig ?? flagsConfig}>
+        <FlagsProvider options={flagConfig ?? flagConfig}>
           {children}
           <ReactQueryDevtools initialIsOpen={false} />
         </FlagsProvider>

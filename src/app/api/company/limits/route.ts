@@ -5,6 +5,7 @@ import {env} from "~/env";
 export async function GET() {
   const user = await currentUser();
   if (!user) {
+    console.log('company limits user is null')
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
