@@ -22,7 +22,6 @@ export async function GET() {
     }
 
     const data = await response.json() as IProject[]
-    console.info("data", data)
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch projects', e)

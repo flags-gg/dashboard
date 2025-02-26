@@ -32,7 +32,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Failed to create environment' }, { status: 500 })
     }
     const body = await response.json()
-    console.info("create env", body)
 
     return NextResponse.json(body)
   } catch (e) {

@@ -5,8 +5,6 @@ import { SignIn, useUser } from "@clerk/nextjs";
 export default function Home() {
   const {user} = useUser();
 
-  console.info("userId", user)
-
   if (!user) {
     return (
       <div className={"flex justify-center"}>

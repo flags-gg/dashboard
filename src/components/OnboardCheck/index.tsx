@@ -5,9 +5,11 @@ import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useEffect } from "react";
 import {hasCookie} from "cookies-next";
 import { getUserDetails } from "~/hooks/use-user-details";
+import { useUser } from "@clerk/nextjs";
 
 export default function OnboardCheck() {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
+  const {user: useUserData} = useUser();
 
   useEffect(() => {
     if (!hasCompletedOnboarding) {
@@ -21,7 +23,7 @@ export default function OnboardCheck() {
           setHasCompletedOnboarding(true)
         }
       }).catch((e) => {
-        console.info("error in getUserDetails", e)
+        console.error("error in getUserDetails", e, useUserData)
       })
     }
   }, [hasCompletedOnboarding])

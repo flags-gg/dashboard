@@ -13,7 +13,7 @@ const fetchProjectLimits = async (projectId: string): Promise<AgentLimits> => {
   });
 
   if (!res.ok) {
-    console.info('Failed to fetch project limits', res.status, res.statusText, projectId);
+    console.error('Failed to fetch project limits', res.status, res.statusText, projectId);
     throw new Error('Failed to fetch project limits');
   }
 

@@ -15,8 +15,6 @@ export default function SideBar() {
   const {user} = useUser();
   const {toast} = useToast();
 
-  console.info("user", user)
-
   const [, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const {data: onboardedData, error: onboardedError} = useQuery({
     queryKey: ["onboarded", user?.id],

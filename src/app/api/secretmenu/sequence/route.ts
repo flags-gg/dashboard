@@ -59,7 +59,7 @@ export async function POST(request: Request) {
       }),
     });
     if (!response.ok) {
-      console.info("failed to create it")
+      console.error("failed to create secret menu")
       return NextResponse.json({message: "Failed to create secret menu"}, { status: 500 });
     }
 

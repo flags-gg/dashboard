@@ -34,7 +34,7 @@ export default function StepOne() {
         router.push("/onboarding/steptwo")
       }
     }).catch(err => {
-      console.info("User not setup yet", err)
+      console.error("User not setup yet", err)
     })
   }, [])
 

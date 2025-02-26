@@ -65,7 +65,7 @@ export async function PUT(request: Request) {
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.info("Failed to upgrade plan", await response.json())
+      console.error("Failed to upgrade plan", await response.json())
       return NextResponse.json({ message: 'Failed to upgrade plan' }, { status: 500 })
     }
 
