@@ -3,13 +3,12 @@ import ProjectInfo from "./info";
 import Name from "./name";
 import InfoButtons from "./buttons";
 import Delete from "./delete";
-import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 
 export default async function InfoBox({project_id}: {project_id: string}) {
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return <></>
   }
 
   return (

@@ -1,12 +1,16 @@
 import AccountForm from "./accountForm";
-import { redirect } from "next/navigation";
 import InfoBox from "./infobox";
 import { currentUser } from "@clerk/nextjs/server";
+import { SignIn } from "@clerk/nextjs";
 
 export default async function AccountPage() {
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return (
+      <div className={"flex justify-center"}>
+        <SignIn />
+      </div>
+    )
   }
 
   return (

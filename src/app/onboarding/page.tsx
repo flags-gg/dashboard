@@ -1,14 +1,9 @@
-import { redirect } from "next/navigation";
 import { Metadata } from "next";
 import StepOne from "./stepone";
 import { currentUser } from "@clerk/nextjs/server";
+import { SignIn } from "@clerk/nextjs";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const user = await currentUser();
-  if (!user) {
-    redirect('/')
-  }
-
   return {
     title: `Onboarding - Flags.gg`,
   }
@@ -17,7 +12,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Onboarding() {
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return (
+      <div className={"flex justify-center"}>
+        <SignIn />
+      </div>
+    )
   }
 
   return (
