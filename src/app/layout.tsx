@@ -13,7 +13,6 @@ import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
 import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/toaster";
-import { env } from "~/env";
 import { SidebarProvider } from "~/components/ui/sidebar";
 import OnboardCheck from "~/components/OnboardCheck";
 
@@ -34,17 +33,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
-  const flagConfig = {
-    projectId: env.NEXT_PUBLIC_FLAGS_PROJECT ?? "",
-    agentId: env.NEXT_PUBLIC_FLAGS_AGENT ?? "",
-    environmentId: env.NEXT_PUBLIC_FLAGS_ENVIRONMENT ?? "",
-  }
-
   return (
     <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
         <ClerkProvider>
-          <ClientProvider flagConfig={flagConfig}>
+          <ClientProvider>
             <TooltipProvider>
               <div className="relative flex min-h-screen flex-col bg-muted/40">
                 <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />

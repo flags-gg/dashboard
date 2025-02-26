@@ -1,10 +1,9 @@
 "use client"
 
-import React, { useState } from "react";
+import React from "react";
 import Info from "./info";
 import { StyleProvider } from "./context";
 import PageContainer from "./pageContainer";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useStyles } from "~/hooks/use-styles";
 import { useToast } from "~/hooks/use-toast";
 import { Skeleton } from "~/components/ui/skeleton";
@@ -42,11 +41,5 @@ function StyleWrapper({ menuId }: ClientWrapperProps) {
 }
 
 export default function ClientWrapper({ menuId }: ClientWrapperProps) {
-  const [queryClient] = useState(() => new QueryClient())
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <StyleWrapper menuId={menuId} />
-    </QueryClientProvider>
-  );
+  return <StyleWrapper menuId={menuId} />
 }
