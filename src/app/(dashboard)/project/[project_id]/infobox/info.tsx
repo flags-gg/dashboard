@@ -20,7 +20,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/comp
 import { useProjectLimits } from "~/hooks/use-project-limits";
 import { useToast } from "~/hooks/use-toast";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
 
 interface IError {
   message: string
@@ -56,10 +55,8 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   const [imageURL, setImageURL] = useState("")
   const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
   const {toast} = useToast()
-  const router = useRouter()
   const {user} = useUser();
   if (!user) {
-    router.push('/')
     return <></>
   }
 

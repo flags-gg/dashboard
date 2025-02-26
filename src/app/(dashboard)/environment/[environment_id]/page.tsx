@@ -1,17 +1,12 @@
-import {redirect} from "next/navigation";
 import FlagsList from "./flags/list";
 import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getEnvironment } from "~/app/api/environment/environment";
 import { currentUser } from "@clerk/nextjs/server";
+import { SignIn } from "@clerk/nextjs";
 
 export async function generateMetadata({params}: {params: Promise<{environment_id: string}>}): Promise<Metadata> {
   const {environment_id} = await params
-  const user = await currentUser();
-  if (!user) {
-    redirect('/')
-  }
-
   const { data: environmentInfo, error } = await getEnvironment(environment_id)
 
   if (error ?? !environmentInfo) {
@@ -27,7 +22,11 @@ export default async function EnvironmentPage({params}: {params: Promise<{enviro
   const {environment_id} = await params
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return (
+      <div className={"flex justify-center"}>
+        <SignIn />
+      </div>
+    )
   }
 
   return (

@@ -2,12 +2,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import {InfoButtons} from "./buttons";
 import UserImage from "./userImage";
 import { currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 
 export default async function InfoBox() {
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return <></>
   }
 
   return (

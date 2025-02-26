@@ -1,8 +1,8 @@
-import {redirect} from "next/navigation";
 import Maker from "./maker";
 import InfoBox from "./info"
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs/server";
+import { SignIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Secret Menu Builder - Flags.gg",
@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 export default async function SecretMenuPage() {
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return (
+      <div className={"flex justify-center"}>
+        <SignIn />
+      </div>
+    )
   }
 
   return (

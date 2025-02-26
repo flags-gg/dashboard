@@ -4,13 +4,10 @@ import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getProject } from "~/app/api/project/project";
 import { currentUser } from "@clerk/nextjs/server";
+import { SignIn } from "@clerk/nextjs";
 
 export async function generateMetadata({params}: {params: Promise<{project_id: string}>}): Promise<Metadata> {
   const {project_id} = await params
-  const user = await currentUser();
-  if (!user) {
-    redirect('/')
-  }
   const projectInfo = await getProject(project_id)
   if (!projectInfo) {
     redirect('/projects')
@@ -25,7 +22,11 @@ export default async function ProjectPage({params}: {params: Promise<{project_id
   const {project_id} = await params
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return (
+      <div className={"flex justify-center"}>
+        <SignIn />
+      </div>
+    )
   }
 
   return (

@@ -4,14 +4,10 @@ import InfoBox from "./infobox";
 import { type Metadata } from "next";
 import { getAgent } from "~/app/api/agent/agent";
 import { currentUser } from "@clerk/nextjs/server";
+import { SignIn } from "@clerk/nextjs";
 
 export async function generateMetadata({params}: {params: Promise<{agent_id: string}>}): Promise<Metadata> {
   const {agent_id} = await params
-  const user = await currentUser();
-  if (!user) {
-    redirect('/')
-  }
-
   const agentInfo = await getAgent(agent_id)
   if (!agentInfo?.project_info?.name) {
     redirect('/projects')
@@ -26,7 +22,11 @@ export default async function AgentPage({params}: {params: Promise<{agent_id: st
   const {agent_id} = await params
   const user = await currentUser();
   if (!user) {
-    redirect('/')
+    return (
+      <div className={"flex justify-center"}>
+        <SignIn />
+      </div>
+    )
   }
 
   return (
