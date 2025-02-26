@@ -17,9 +17,9 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
 
-    KEYCLOAK_ID: z.string(),
-    KEYCLOAK_SECRET: z.string(),
-    KEYCLOAK_ISSUER: z.string(),
+    // KEYCLOAK_ID: z.string(),
+    // KEYCLOAK_SECRET: z.string(),
+    // KEYCLOAK_ISSUER: z.string(),
 
     UPLOADTHING_TOKEN: z.string(),
 
@@ -53,9 +53,9 @@ export const env = createEnv({
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
 
-    KEYCLOAK_ID: process.env.KEYCLOAK_ID,
-    KEYCLOAK_SECRET: process.env.KEYCLOAK_SECRET,
-    KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
+    // KEYCLOAK_ID: process.env.KEYCLOAK_ID,
+    // KEYCLOAK_SECRET: process.env.KEYCLOAK_SECRET,
+    // KEYCLOAK_ISSUER: process.env.KEYCLOAK_ISSUER,
 
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
 
