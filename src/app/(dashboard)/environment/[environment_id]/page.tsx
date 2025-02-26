@@ -1,4 +1,3 @@
-import {redirect} from "next/navigation";
 import FlagsList from "./flags/list";
 import InfoBox from "./infobox";
 import { type Metadata } from "next";
