@@ -8,7 +8,7 @@ export default function Button() {
         onClientUploadComplete={(res) => {
 
           // Do something with the response
-          console.log("Files: ", res);
+          console.info("upload completed", res)
           alert("Upload Completed");
         }}
         onUploadError={(error: Error) => {

@@ -43,7 +43,6 @@ export function AgentSwitch({agent_id}: {agent_id: string}) {
 
   const onSwitch = () => {
     const updatedAgentInfo = {...agentInfo, enabled: !agentInfo.enabled}
-    console.info("updatedAgentInfo", updatedAgentInfo, agentInfo)
 
     try {
       enableDisableAgent(updatedAgentInfo.agent_id, updatedAgentInfo.enabled, updatedAgentInfo.name).then(() => {

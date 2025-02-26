@@ -7,7 +7,6 @@ import { UserDetails } from "~/hooks/use-user-details";
 export async function GET() {
   const user = await currentUser();
   if (!user) {
-    console.log('user details user is null')
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
