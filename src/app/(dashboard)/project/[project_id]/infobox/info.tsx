@@ -56,14 +56,17 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
   const {toast} = useToast()
   const {user} = useUser();
+
+  useEffect(() => {
+    if (user) {
+      setSelectedProject(projectInfo)
+      setImageURL(projectInfo.logo)
+    }
+  }, [projectInfo, setSelectedProject, setImageURL, user])
+
   if (!user) {
     return <></>
   }
-
-  useEffect(() => {
-    setSelectedProject(projectInfo)
-    setImageURL(projectInfo.logo)
-  }, [projectInfo, setSelectedProject, setImageURL])
 
   if (error) {
     setShowError(true)
