@@ -30,7 +30,7 @@ export async function fetchProjects(): Promise<ProjectsData> {
 export async function getProject(project_id: string): Promise<IProject | Error> {
   const user = await currentUser();
   if (!user) {
-    throw new Error('No access token found')
+    return Error('No access token found')
   }
 
   try {
