@@ -9,7 +9,11 @@ import { ShieldPlus } from "lucide-react";
 export default async function ProjectList() {
   let projects: ProjectsData = { projects: [] };
   try {
-    projects = await fetchProjects();
+    await fetchProjects().then((data) => {
+      projects = data;
+    }).catch((e) => {
+      throw e
+    })
   } catch (e) {
     console.error(e);
     return (
