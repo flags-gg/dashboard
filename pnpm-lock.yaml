@@ -69,8 +69,8 @@ importers:
         specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@stripe/react-stripe-js':
-        specifier: ^3.4.0
-        version: 3.4.0(@stripe/stripe-js@6.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^3.5.0
+        version: 3.5.0(@stripe/stripe-js@6.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@stripe/stripe-js':
         specifier: ^6.0.0
         version: 6.0.0
@@ -1361,8 +1361,8 @@ packages:
   '@standard-schema/utils@0.3.0':
     resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
 
-  '@stripe/react-stripe-js@3.4.0':
-    resolution: {integrity: sha512-5m0vProlV2qyB7qXHSn25Ao79BjgJW/oiv2ynJ645dpdjeR7fyeb+KSrA4Esk7jqy+aKmdyn70TAIN0BVgh0MA==}
+  '@stripe/react-stripe-js@3.5.0':
+    resolution: {integrity: sha512-oo5J2SNbuAUjE9XmQv/SOD7vgZCa1Y9OcZyRAfvQPkyrDrru35sg5c64ANdHEmOWUibism3+25rKdARSw3HOfA==}
     peerDependencies:
       '@stripe/stripe-js': '>=1.44.1 <7.0.0'
       react: '>=16.8.0 <20.0.0'
@@ -5290,7 +5290,7 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@stripe/react-stripe-js@3.4.0(@stripe/stripe-js@6.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@stripe/react-stripe-js@3.5.0(@stripe/stripe-js@6.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@stripe/stripe-js': 6.0.0
       prop-types: 15.8.1
