@@ -5,7 +5,7 @@ import { SignIn } from "@clerk/nextjs";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `Onboarding - Flags.gg`,
+    title: `Flags.gg - Onboarding`,
   }
 }
 

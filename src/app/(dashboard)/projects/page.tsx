@@ -5,7 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "Projects - Flags.gg",
+  title: "Flags.gg - Projects",
 }
 
 export default async function ProjectsPage() {
