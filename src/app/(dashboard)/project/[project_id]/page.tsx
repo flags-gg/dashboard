@@ -14,7 +14,7 @@ export async function generateMetadata({params}: {params: Promise<{project_id: s
   }
 
   return {
-    title: `${projectInfo.name} Agents - Flags.gg`,
+    title: `Flags.gg - ${projectInfo.name} Agents`,
   }
 }
 

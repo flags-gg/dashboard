@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "SecretMenu Style Builder - Flags.gg",
+  title: "Flags.gg - SecretMenu Style Builder",
 }
 
 export default async function Styling({params}: {params: Promise<{menu_id: string}>}) {

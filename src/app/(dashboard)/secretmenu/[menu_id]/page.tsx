@@ -5,7 +5,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
-  title: "SecretMenu Builder - Flags.gg",
+  title: "Flags.gg - SecretMenu Builder",
 }
 
 export default async function SecretMenuSpecificPage({params}: {params: Promise<{menu_id: string}>}) {
