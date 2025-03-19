@@ -157,8 +157,8 @@ importers:
         specifier: ^9.22.0
         version: 9.22.0
       '@next/eslint-plugin-next':
-        specifier: ^15.2.2
-        version: 15.2.2
+        specifier: ^15.2.3
+        version: 15.2.3
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
