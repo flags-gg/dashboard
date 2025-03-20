@@ -69,8 +69,8 @@ importers:
         specifier: ^1.1.8
         version: 1.1.8(@types/react-dom@19.0.4(@types/react@19.0.11))(@types/react@19.0.11)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@stripe/react-stripe-js':
-        specifier: ^3.5.0
-        version: 3.5.0(@stripe/stripe-js@6.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^3.5.1
+        version: 3.5.1(@stripe/stripe-js@6.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@stripe/stripe-js':
         specifier: ^6.1.0
         version: 6.1.0
@@ -811,9 +811,6 @@ packages:
   '@next/env@15.2.3':
     resolution: {integrity: sha512-a26KnbW9DFEUsSxAxKBORR/uD9THoYoKbkpFywMN/AFvboTt94b8+g/07T8J6ACsdLag8/PDU60ov4rPxRAixw==}
 
-  '@next/eslint-plugin-next@15.2.2':
-    resolution: {integrity: sha512-1+BzokFuFQIfLaRxUKf2u5In4xhPV7tUgKcK53ywvFl6+LXHWHpFkcV7VNeKlyQKUotwiq4fy/aDNF9EiUp4RQ==}
-
   '@next/eslint-plugin-next@15.2.3':
     resolution: {integrity: sha512-eNSOIMJtjs+dp4Ms1tB1PPPJUQHP3uZK+OQ7iFY9qXpGO6ojT6imCL+KcUOqE/GXGidWbBZJzYdgAdPHqeCEPA==}
 
@@ -1373,8 +1370,8 @@ packages:
   '@standard-schema/utils@0.3.0':
     resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
 
-  '@stripe/react-stripe-js@3.5.0':
-    resolution: {integrity: sha512-oo5J2SNbuAUjE9XmQv/SOD7vgZCa1Y9OcZyRAfvQPkyrDrru35sg5c64ANdHEmOWUibism3+25rKdARSw3HOfA==}
+  '@stripe/react-stripe-js@3.5.1':
+    resolution: {integrity: sha512-MFZ69qz70T0srU9nsPhQHFNbOxfL4fb9fokHKqJy0S6X53D8KJXD23iiKWGmLasMeqXNzBqLnuziE72QszeRLw==}
     peerDependencies:
       '@stripe/stripe-js': '>=1.44.1 <7.0.0'
       react: '>=16.8.0 <20.0.0'
@@ -4821,10 +4818,6 @@ snapshots:
 
   '@next/env@15.2.3': {}
 
-  '@next/eslint-plugin-next@15.2.2':
-    dependencies:
-      fast-glob: 3.3.1
-
   '@next/eslint-plugin-next@15.2.3':
     dependencies:
       fast-glob: 3.3.1
@@ -5377,7 +5370,7 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@stripe/react-stripe-js@3.5.0(@stripe/stripe-js@6.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@stripe/react-stripe-js@3.5.1(@stripe/stripe-js@6.1.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@stripe/stripe-js': 6.1.0
       prop-types: 15.8.1
