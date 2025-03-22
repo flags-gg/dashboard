@@ -21,25 +21,34 @@ export type UserDetails = {
   subject: string;
 }
 export async function getUserDetails(): Promise<UserDetails> {
-  const res = await fetch(`/api/user/details`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-store",
-  });
+  try {
+    const res = await fetch(`/api/user/details`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
 
-  if (!res.ok) {
-    throw new Error(`Failed to fetch user details: ${res.status} ${res.statusText}`);
+    if (!res.ok) {
+      console.error(`API Error: ${res.status} ${res.statusText}`);
+      throw new Error(`Failed to fetch user details: ${res.status} ${res.statusText}`);
+    }
+
+    const data = (await res.json()) as UserDetails;
+
+    if (!data) {
+      console.error("API returned no user details");
+      throw new Error("No user details returned");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error in getUserDetails:", error);
+    throw error; // Re-throw the error so useQuery can handle it
   }
-
-  const data = await res.json() as UserDetails;
-  if (!data) {
-    throw new Error("No user details returned");
-  }
-
-  return data;
 }
+
 
 export function useUserDetails(userId: string) {
   const [commitHash] = useAtom(commitHashAtom)
