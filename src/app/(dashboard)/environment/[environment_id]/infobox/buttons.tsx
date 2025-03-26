@@ -17,7 +17,6 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Code } from "lucide-react";
-import { cn } from "~/lib/utils";
 
 const copyAgentCode = (code: string) => {
   navigator.clipboard.writeText(code ?? "").then(() => {
