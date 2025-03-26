@@ -15,6 +15,7 @@ export default function SideBar() {
   const {user} = useUser();
   const {toast} = useToast();
 
+
   const [, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const {data: onboardedData, error: onboardedError} = useQuery({
     queryKey: ["onboarded", user?.id],
@@ -25,10 +26,7 @@ export default function SideBar() {
 
   useEffect(() => {
     if (onboardedError) {
-      toast({
-        title: "Error loading onboarded status",
-        description: "Please try again later.",
-      });
+      window.location.href = "/";
     }
   }, [onboardedError, toast]);
 
