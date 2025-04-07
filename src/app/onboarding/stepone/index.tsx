@@ -18,14 +18,14 @@ import { useUser } from "@clerk/nextjs";
 export default function StepOne() {
   const {user} = useUser();
 
-  const firstName = user?.firstName ?? ""
-  const lastName = user?.lastName ?? ""
+  const firstName = user?.firstName ?? "First"
+  const lastName = user?.lastName ?? "Last"
   const email = user?.emailAddresses?.[0]?.emailAddress ?? ""
   const {toast} = useToast()
   const router = useRouter()
 
   if (!user?.id) {
-    router.push("/api/auth/signin")
+    router.push("/")
   }
   // they have done the first step, but haven't completed the second step
   useEffect(() => {
