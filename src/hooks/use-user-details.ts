@@ -32,14 +32,14 @@ export async function getUserDetails(): Promise<UserDetails> {
 
     if (!res.ok) {
       console.error(`API Error: ${res.status} ${res.statusText}`);
-      throw new Error(`Failed to fetch user details: ${res.status} ${res.statusText}`);
+      new Error(`Failed to fetch user details: ${res.status} ${res.statusText}`);
     }
 
     const data = (await res.json()) as UserDetails;
 
     if (!data) {
       console.error("API returned no user details");
-      throw new Error("No user details returned");
+      new Error("No user details returned");
     }
 
     return data;
