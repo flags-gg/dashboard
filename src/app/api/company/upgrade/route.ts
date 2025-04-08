@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   }
 
   const stripe = new Stripe(env.STRIPE_SECRET, {
-    apiVersion: "2025-01-27.acacia",
+    apiVersion: "2025-03-31.basil",
     typescript: true,
     appInfo: {
       name: "Flags.gg",
