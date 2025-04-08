@@ -48,8 +48,8 @@ export default function StepOne() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       knownAs: "",
-      firstName: firstName,
-      lastName: lastName,
+      firstName: firstName ?? "FirstName",
+      lastName: lastName ?? "LastName",
       email: email ? email : "",
     },
   })
