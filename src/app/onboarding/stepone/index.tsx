@@ -40,16 +40,16 @@ export default function StepOne() {
 
   const formSchema = z.object({
     knownAs: z.string().min(2, {message: "Known as is required a minimum of 2 characters"}),
-    firstName: z.string().min(2, {message: "First name is required a minimum of 2 characters"}).default(firstName),
-    lastName: z.string().min(2, {message: "Last name is required a minimum of 2 characters"}).default(lastName),
-    email: z.string().email({message: "Email is not valid"}).default(email),
+    firstName: z.string().min(0, {message: "First name is required a minimum of 2 characters"}),
+    lastName: z.string().min(0, {message: "Last name is required a minimum of 2 characters"}),
+    email: z.string().email({message: "Email is not valid"}),
   })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       knownAs: "",
-      firstName: firstName ?? "FirstName",
-      lastName: lastName ?? "LastName",
+      firstName: firstName,
+      lastName: lastName,
       email: email ? email : "",
     },
   })
