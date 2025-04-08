@@ -32,6 +32,7 @@ import {
 } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import { useUser } from "@clerk/nextjs";
+import Image from "next/image";
 
 export default function Standard() {
   const {is} = useFlags();
@@ -125,7 +126,7 @@ export default function Standard() {
                 <SidebarMenuItem key={`sidebar-project-${selectedProject.project_id}`}>
                   <SidebarMenuButton asChild>
                     <Link href={`/project/${selectedProject.project_id}`}>
-                      <SquareKanban className={"h-5 w-5"} />
+                      {selectedProject.logo ? (<Image src={selectedProject.logo} alt={selectedProject.name} width={50} height={50} className={"h-5 w-5"} />) : <SquareKanban className={"h-5 w-5"} />}
                       <span>Project</span>
                     </Link>
                   </SidebarMenuButton>
