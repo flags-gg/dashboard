@@ -6,6 +6,7 @@ import {projectAtom} from "~/lib/statemanager";
 import {useToast} from "~/hooks/use-toast";
 import { useProject } from "~/hooks/use-project";
 import { NewLoader } from "~/components/ui/new-loader";
+import { useEffect } from "react";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
   try {
@@ -49,6 +50,12 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
     return <NewLoader />
   }
 
+  useEffect(() => {
+    if (projectData) {
+      setProjectInfo(projectData)
+    }
+  }, [projectData])
+
   const onSwitch = () => {
     const updatedProjectInfo = {...projectInfo, enabled: !projectInfo.enabled}
 
@@ -82,5 +89,5 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
     }
   }
 
-  return <Switch defaultChecked={projectData?.enabled} name={"project"} onCheckedChange={onSwitch} />
+  return <Switch defaultChecked={projectInfo?.enabled} name={"project"} onCheckedChange={onSwitch} />
 }

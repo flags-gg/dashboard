@@ -16,7 +16,7 @@ import {useToast} from "~/hooks/use-toast";
 import { useProject } from "~/hooks/use-project";
 import { IProject } from "~/lib/interfaces";
 
-async function updateProjectName(project_id: string, name: string): Promise<IProject | Error> {
+async function updateProjectName(project_id: string, name: string, enabled: boolean): Promise<IProject | Error> {
   try {
     const res = await fetch(`/api/project/name`, {
       method: "PUT",
@@ -26,6 +26,7 @@ async function updateProjectName(project_id: string, name: string): Promise<IPro
       body: JSON.stringify({
         name: name,
         projectId: project_id,
+        enabled: enabled,
       }),
       cache: "no-store",
     })
@@ -46,8 +47,8 @@ async function updateProjectName(project_id: string, name: string): Promise<IPro
 }
 
 export default function Name({project_id}: {project_id: string}) {
-  const [projectName, setProjectName] = useState("Project Name")
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
+  const [projectName, setProjectName] = useState(projectInfo?.name ?? "Project Name")
   const [openEdit, setOpenEdit] = useState(false)
   const {toast} = useToast()
   const {data: projectData} = useProject(project_id)
@@ -73,7 +74,7 @@ export default function Name({project_id}: {project_id: string}) {
     form.reset()
 
     try {
-      updateProjectName(project_id, data.name).then(() => {
+      updateProjectName(project_id, data.name, projectInfo.enabled).then(() => {
         setProjectName(data.name)
         setProjectInfo({...projectInfo, name: data.name})
         toast({
@@ -110,7 +111,7 @@ export default function Name({project_id}: {project_id: string}) {
                 <FormItem>
                   <FormLabel>Project Name</FormLabel>
                   <FormControl>
-                    <Input placeholder={"Project Name"} {...field} />
+                    <Input placeholder={projectName} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
