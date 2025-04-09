@@ -14,7 +14,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import { useToast } from "~/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,6 +21,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useFlags } from "@flags-gg/react-library";
+import { toast } from "sonner";
 
 async function cloneEnvironmentAction(environment_id: string, agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -57,7 +57,6 @@ export default function Clone({environment_id}: {environment_id: string}) {
   const [environmentInfo] = useAtom(environmentAtom)
   const [agentInfo] = useAtom(agentAtom)
   const [openClone, setOpenClone] = useState(false);
-  const {toast} = useToast();
   const router = useRouter()
   const {is} = useFlags();
 
@@ -72,8 +71,7 @@ export default function Clone({environment_id}: {environment_id: string}) {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setOpenClone(false)
     cloneEnvironmentAction(environment_id, agentInfo.agent_id, data.name).then(() => {
-      toast({
-        title: "Environment Cloned",
+      toast("Environment Cloned", {
         description: "The environment has been cloned",
       })
       router.push(`/agent/${agentInfo.agent_id}?ts=${Date.now()}`)
@@ -91,7 +89,7 @@ export default function Clone({environment_id}: {environment_id: string}) {
       <TooltipTrigger>
         <Dialog open={openClone} onOpenChange={setOpenClone}>
           <DialogTrigger asChild>
-            <Copy className={"h-5 w-5 mt-1.5"} />
+            <Copy className={"size-5 mt-1.5"} />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

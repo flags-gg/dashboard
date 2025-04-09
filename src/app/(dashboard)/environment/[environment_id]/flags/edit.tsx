@@ -11,9 +11,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { toast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { LoadingSpinner } from "~/components/ui/loader";
+import { toast } from "sonner";
 
 // TODO: edit flag
 async function editFlagAction(flag: Flag): Promise<null | Error> {
@@ -92,20 +92,19 @@ export function EditFlag({flag}: {flag: Flag}) {
     if (loading) {
         return (
             <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-                <LoadingSpinner className={"h-5 w-5"} />
+                <LoadingSpinner className={"size-5"} />
             </Button>
         )
     }
 
     if (error) {
-        toast({
-            title: "Failed to edit flag",
+        toast("Failed to edit flag", {
             description: "Failed to edit flag",
         })
 
         return (
             <Button disabled={true} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-                <Pencil className={"h-5 w-5"} />
+                <Pencil className={"size-5"} />
             </Button>
         )
     }
@@ -114,7 +113,7 @@ export function EditFlag({flag}: {flag: Flag}) {
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
           <PopoverTrigger asChild>
               <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-                  <Pencil className={"h-5 w-5"} />
+                  <Pencil className={"size-5"} />
               </Button>
           </PopoverTrigger>
           <PopoverContent>

@@ -4,18 +4,17 @@ import { CardFooter } from "~/components/ui/card";
 import CreateAgent from "~/app/(dashboard)/agent/create";
 import { useAtom } from "jotai";
 import { projectAtom } from "~/lib/statemanager";
-import { useToast } from "~/hooks/use-toast";
 import { useFlags } from "@flags-gg/react-library";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
 import { NewLoader } from "~/components/ui/new-loader";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function InfoButtons() {
   const [projectInfo] = useAtom(projectAtom);
   const { is } = useFlags();
-  const { toast } = useToast();
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
   const {user} = useUser();
   if (!user) {
@@ -31,8 +30,7 @@ export default function InfoButtons() {
   }
 
   if (error) {
-    toast({
-      title: "Error loading company limits",
+    toast("Error loading company limits", {
       description: "Please try again later.",
     });
     return <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">Error loading limits</CardFooter>;

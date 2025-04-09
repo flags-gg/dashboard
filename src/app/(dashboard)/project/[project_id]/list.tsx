@@ -44,7 +44,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
                   <Link href={`/agent/${agent.agent_id}`}>{agent.environment_limit}</Link>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/agent/${agent.agent_id}`}>{agent.environments.length}</Link>
+                  <Link href={`/agent/${agent.agent_id}`}>{agent.environments ? agent.environments.length : 0}</Link>
                 </TableCell>
               </TableRow>
             ))}

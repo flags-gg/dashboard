@@ -6,12 +6,11 @@ import Link from "next/link";
 import CreateProject from "~/app/(dashboard)/project/create";
 import { buttonVariants } from "~/components/ui/button";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
-import { useToast } from "~/hooks/use-toast";
 import { NewLoader } from "~/components/ui/new-loader";
+import { toast } from "sonner";
 
 export default function InfoButtons() {
   const { is } = useFlags();
-  const { toast } = useToast();
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
 
   if (isLoading) {
@@ -23,8 +22,7 @@ export default function InfoButtons() {
   }
 
   if (error) {
-    toast({
-      title: "Error loading company limits",
+    toast("Error loading company limits", {
       description: "Please try again later.",
     });
     return <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">Error loading limits</CardFooter>;

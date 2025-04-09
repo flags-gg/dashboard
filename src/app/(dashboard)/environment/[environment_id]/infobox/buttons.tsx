@@ -3,7 +3,6 @@
 import CreateFlag from "../flags/create";
 import {CardFooter} from "~/components/ui/card";
 import { useFlags } from "@flags-gg/react-library";
-import { toast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { agentAtom, environmentAtom, projectAtom } from "~/lib/statemanager";
 import {
@@ -17,11 +16,11 @@ import {
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Code } from "lucide-react";
+import { toast } from "sonner";
 
 const copyAgentCode = (code: string) => {
   navigator.clipboard.writeText(code ?? "").then(() => {
-    toast({
-      title: "Flags.gg Agent Code Copied",
+    toast("Flags.gg Agent Code Copied", {
       description: "The Flags.gg agent code have been copied to your clipboard",
     })
   })
@@ -45,7 +44,7 @@ export default function InfoButtons({environmentId}: {environmentId: string}) {
       {is("view guide")?.enabled() && <Dialog>
         <DialogTrigger asChild>
           <Button variant={"secondary"}>
-            <Code className={"h-6 w-6"} />
+            <Code className={"size-6"} />
             <span className={"ml-2"}>View Configuration</span>
           </Button>
         </DialogTrigger>

@@ -12,9 +12,9 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "~/
 import {Input} from "~/components/ui/input";
 import {projectAtom} from "~/lib/statemanager";
 import {useAtom} from "jotai";
-import {useToast} from "~/hooks/use-toast";
 import { useProject } from "~/hooks/use-project";
 import { IProject } from "~/lib/interfaces";
+import { toast } from "sonner";
 
 async function updateProjectName(project_id: string, name: string, enabled: boolean): Promise<IProject | Error> {
   try {
@@ -50,7 +50,6 @@ export default function Name({project_id}: {project_id: string}) {
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
   const [projectName, setProjectName] = useState(projectInfo?.name ?? "Project Name")
   const [openEdit, setOpenEdit] = useState(false)
-  const {toast} = useToast()
   const {data: projectData} = useProject(project_id)
 
   useEffect(() => {
@@ -77,8 +76,7 @@ export default function Name({project_id}: {project_id: string}) {
       updateProjectName(project_id, data.name, projectInfo.enabled).then(() => {
         setProjectName(data.name)
         setProjectInfo({...projectInfo, name: data.name})
-        toast({
-          title: "Project Name Updated",
+        toast("Project Name Updated", {
           description: "The project name has been updated",
         })
       }).catch((e) => {
@@ -88,8 +86,7 @@ export default function Name({project_id}: {project_id: string}) {
     } catch (e) {
       console.error("Error updating project name", e)
 
-      toast({
-        title: "Project Name Error",
+      toast("Project Name Error", {
         description: "There was an error updating the project name",
       })
     }
@@ -101,7 +98,7 @@ export default function Name({project_id}: {project_id: string}) {
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
         <PopoverTrigger asChild>
           <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
-            <Pencil className={"h-5 w-5"} />
+            <Pencil className={"size-5"} />
           </Button>
         </PopoverTrigger>
         <PopoverContent>

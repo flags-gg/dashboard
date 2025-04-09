@@ -2,7 +2,6 @@
 
 import { CardFooter } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { useToast } from "~/hooks/use-toast";
 import { useState } from "react";
 import {
   Dialog,
@@ -17,6 +16,7 @@ import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { deleteCookie } from "cookies-next";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 async function deleteAccount(): Promise<null | Error> {
   try {
@@ -46,7 +46,6 @@ async function deleteAccount(): Promise<null | Error> {
 export function InfoButtons() {
   const [openDelete, setOpenDelete] = useState(false);
   const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
-  const {toast} = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -68,8 +67,7 @@ export function InfoButtons() {
             <Button variant="destructive" className={"cursor-pointer"} onClick={() => {
               setOpenDelete(false)
               deleteAccount().then(() => {
-                toast({
-                  title: "Account deleted",
+                toast("Account deleted", {
                   description: "Your account has been deleted",
                 });
                 setOnboardingComplete(false)
@@ -78,14 +76,12 @@ export function InfoButtons() {
                 router.push("/api/auth/signout")
               }).catch((error) => {
                 if (error instanceof Error) {
-                  toast({
-                    title: "Failed to delete account",
+                  toast("Failed to delete account", {
                     description: error.message,
                   });
                 } else {
                   console.error("deleteAccount", error);
-                  toast({
-                    title: "Failed to delete account",
+                  toast("Failed to delete account", {
                     description: "Failed to delete account",
                   });
                 }

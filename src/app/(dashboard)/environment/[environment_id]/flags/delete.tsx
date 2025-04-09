@@ -5,8 +5,8 @@ import {useState} from "react";
 import {Button} from "~/components/ui/button";
 import {Trash2} from "lucide-react";
 import {LoadingSpinner} from "~/components/ui/loader";
-import { toast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 async function deleteFlagAction(flag_id: string): Promise<null | Error> {
     try {
@@ -55,8 +55,7 @@ export function DeleteFlag({flag}: {flag: Flag}) {
             })
         } catch (e) {
             console.error("Error deleting flag", e);
-            toast({
-                title: "Failed to delete flag",
+            toast("Failed to delete flag", {
                 description: "Failed to delete flag",
             })
         }
@@ -65,14 +64,14 @@ export function DeleteFlag({flag}: {flag: Flag}) {
     if (loading) {
         return (
             <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-                <LoadingSpinner className={"h-5 w-5"} />
+                <LoadingSpinner className={"size-5"} />
             </Button>
         )
     }
 
     return (
         <Button onClick={deleteFlag} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-            <Trash2 className={"h-5 w-5"} />
+            <Trash2 className={"size-5"} />
         </Button>
     )
 }

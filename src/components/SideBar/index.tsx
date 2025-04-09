@@ -7,14 +7,11 @@ import { useUser } from "@clerk/nextjs";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
-import { useToast } from "~/hooks/use-toast";
 import { useEffect } from "react";
 import { getUserDetails } from "~/hooks/use-user-details";
 
 export default function SideBar() {
   const {user} = useUser();
-  const {toast} = useToast();
-
 
   const [, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const {data: onboardedData, error: onboardedError} = useQuery({
@@ -28,7 +25,7 @@ export default function SideBar() {
     if (onboardedError) {
       window.location.href = "/";
     }
-  }, [onboardedError, toast]);
+  }, [onboardedError]);
 
   if (onboardedData?.onboarded) {
     setIsOnboarded(true);

@@ -1,15 +1,14 @@
 "use client"
 
 import { useCompanyLimits } from "~/hooks/use-company-limits";
-import { useToast } from "~/hooks/use-toast";
 import { Skeleton } from "~/components/ui/skeleton";
 import { agentAtom, environmentAtom, projectAtom, secretMenuAtom } from "~/lib/statemanager";
 import { useEffect } from "react";
 import { useResetAtom } from "jotai/utils";
+import {toast} from "sonner"
 
 export default function ProjectsInfo() {
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
-  const { toast } = useToast();
 
   // reset selected state
   const resetProject = useResetAtom(projectAtom);
@@ -29,8 +28,7 @@ export default function ProjectsInfo() {
   }
 
   if (error) {
-    toast({
-      title: "Error loading projects",
+    toast("Error loading projects", {
       description: "Please try again later.",
     });
 

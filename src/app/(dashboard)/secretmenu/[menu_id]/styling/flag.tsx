@@ -166,8 +166,8 @@ export default function Flag({children}: {children: ReactNode}) {
                     <FormLabel>Color</FormLabel>
                     <FormControl>
                       <div className="flex items-center">
-                        <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
-                        <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                        <Input type="color" {...fieldProps} className="size-12 p-1 mr-2" />
+                        <Input {...fieldProps} placeholder="#RRGGBB" className="grow" />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -213,8 +213,8 @@ export default function Flag({children}: {children: ReactNode}) {
                     <FormLabel>Background Color</FormLabel>
                     <FormControl>
                       <div className="flex items-center">
-                        <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
-                        <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                        <Input type="color" {...fieldProps} className="size-12 p-1 mr-2" />
+                        <Input {...fieldProps} placeholder="#RRGGBB" className="grow" />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -224,8 +224,8 @@ export default function Flag({children}: {children: ReactNode}) {
                     <FormLabel>Text Color</FormLabel>
                     <FormControl>
                       <div className="flex items-center">
-                        <Input type="color" {...fieldProps} className="w-12 h-12 p-1 mr-2" />
-                        <Input {...fieldProps} placeholder="#RRGGBB" className="flex-grow" />
+                        <Input type="color" {...fieldProps} className="size-12 p-1 mr-2" />
+                        <Input {...fieldProps} placeholder="#RRGGBB" className="grow" />
                       </div>
                     </FormControl>
                     <FormMessage />

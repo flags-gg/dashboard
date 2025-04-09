@@ -3,10 +3,10 @@
 import {Switch} from "~/components/ui/switch";
 import { useAtom } from "jotai";
 import { environmentAtom } from "~/lib/statemanager";
-import { useToast } from "~/hooks/use-toast";
 import { useEnvironment } from "~/hooks/use-environment";
 import { NewLoader } from "~/components/ui/new-loader";
 import { IEnvironment } from "~/lib/interfaces";
+import { toast } from "sonner";
 
 async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {
@@ -36,13 +36,10 @@ async function enableDisableEnvironment(environmentInfo: IEnvironment) {
 export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const {data: environmentData, isLoading, error} = useEnvironment(environmentId)
-  const {toast} = useToast()
 
   if (error) {
-    toast({
-      title: "Error",
+    toast("Error", {
       description: "Failed to fetch environment",
-      variant: "destructive",
     });
   }
 
@@ -55,8 +52,7 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
     try {
       setEnvironmentInfo(updatedEnvironmentInfo)
       enableDisableEnvironment(updatedEnvironmentInfo).then(() => {
-        toast({
-          title: "Environment Updated",
+        toast("Environment Updated", {
           description: "The environment has been updated",
         })
       }).catch((e) => {
@@ -67,14 +63,12 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
       })
     } catch (e) {
       if (e instanceof Error) {
-        toast({
-          title: "Environment Error",
+        toast("Environment Error", {
           description: `There was an error updating the environment: ${e.message}`,
         })
       } else {
         console.error("Error updating environment", e)
-        toast({
-          title: "Environment Error",
+        toast("Environment Error", {
           description: `There was an error updating the environment`,
         })
       }

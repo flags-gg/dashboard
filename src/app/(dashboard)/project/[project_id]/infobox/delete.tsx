@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react";
-import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -14,6 +13,7 @@ import {
 import { Trash2 } from "lucide-react";
 import ProjectInfo from "~/app/(dashboard)/project/[project_id]/infobox/info";
 import { Button } from "~/components/ui/button";
+import { toast } from "sonner";
 
 async function deleteProject(project_id: string): Promise<null | Error> {
   try {
@@ -46,13 +46,12 @@ async function deleteProject(project_id: string): Promise<null | Error> {
 
 export default function Delete({project_id}: {project_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
-  const {toast} = useToast();
   const router = useRouter()
 
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogTrigger asChild>
-        <Trash2 className={"h-5 w-5 mt-1.5 cursor-pointer"}/>
+        <Trash2 className={"size-5 mt-1.5 cursor-pointer"}/>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -64,22 +63,19 @@ export default function Delete({project_id}: {project_id: string}) {
           <Button variant={"destructive"} onClick={() => {
             setOpenDelete(false)
             deleteProject(project_id).then(() => {
-              toast({
-                title: "Project Deleted",
+              toast("Project Deleted", {
                 description: "The project has been deleted",
               })
               router.push(`/projects?ts=${Date.now()}`)
             }).catch((e) => {
               if (e instanceof Error) {
-                toast({
-                  title: "Error Deleting Project",
+                toast("Error Deleting Project", {
                   description: `There was an error deleting the project: ${e.message}`,
                 })
                 return
               }
 
-              toast({
-                title: "Error Deleting Project",
+              toast("Error Deleting Project", {
                 description: `There was an unknown error deleting the project: ${e}`,
               })
             })

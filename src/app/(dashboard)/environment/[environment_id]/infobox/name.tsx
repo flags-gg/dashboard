@@ -12,8 +12,8 @@ import { Input } from "~/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useToast } from "~/hooks/use-toast";
 import { IEnvironment } from "~/lib/interfaces";
+import { toast } from "sonner";
 
 async function updateEnvironmentName(environment_id: string, name: string, enabled: boolean): Promise<IEnvironment | Error> {
   try {
@@ -49,8 +49,6 @@ export default function Name({environment_id}: {environment_id: string}) {
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const [openEdit, setOpenEdit] = useState(false)
 
-  const {toast} = useToast();
-
   const FormSchema = z.object({
     name: z.string().min(2, {message: "Name is required a minimum of 2 characters"}),
   })
@@ -64,8 +62,7 @@ export default function Name({environment_id}: {environment_id: string}) {
     try {
       updateEnvironmentName(environment_id, data.name, environmentInfo.enabled).then(() => {
         setEnvironmentInfo({...environmentInfo, name: data.name})
-        toast({
-          title: "Environment Name Updated",
+        toast("Environment Name Updated", {
           description: "The environment name has been updated",
         })
       }).catch((e) => {
@@ -75,8 +72,7 @@ export default function Name({environment_id}: {environment_id: string}) {
     } catch (e) {
       console.error("Error updating environment name", e)
 
-      toast({
-        title: "Environment Name Error",
+      toast("Environment Name Error", {
         description: "There was an error updating the environment name",
       })
     }
@@ -88,7 +84,7 @@ export default function Name({environment_id}: {environment_id: string}) {
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
         <PopoverTrigger asChild>
           <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
-            <Pencil className={"h-5 w-5"} />
+            <Pencil className={"size-5"} />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
