@@ -3,9 +3,9 @@ import {Card} from "~/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCell,
+  TableCell, TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "~/components/ui/table";
 import { getFlags } from "~/app/api/flag/list";
 import { FlagSwitch } from "./switch";
@@ -37,9 +37,9 @@ export default async function FlagsList({ environment_id }: { environment_id: st
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell colSpan={2}>Enabled</TableCell>
-              <TableCell>Options</TableCell>
+              <TableHead>Name</TableHead>
+              <TableHead colSpan={2}>Enabled</TableHead>
+              <TableHead>Options</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

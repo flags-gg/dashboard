@@ -92,7 +92,7 @@ export function EditFlag({flag}: {flag: Flag}) {
     if (loading) {
         return (
             <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-                <LoadingSpinner className={"size-5"} />
+                <LoadingSpinner className={"size-3"} />
             </Button>
         )
     }
@@ -104,7 +104,7 @@ export function EditFlag({flag}: {flag: Flag}) {
 
         return (
             <Button disabled={true} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-                <Pencil className={"size-5"} />
+                <Pencil className={"size-3"} />
             </Button>
         )
     }
@@ -113,7 +113,7 @@ export function EditFlag({flag}: {flag: Flag}) {
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
           <PopoverTrigger asChild>
               <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-                  <Pencil className={"size-5"} />
+                  <Pencil className={"size-3"} />
               </Button>
           </PopoverTrigger>
           <PopoverContent>

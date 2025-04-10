@@ -1,5 +1,5 @@
 import {Card} from "~/components/ui/card";
-import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import {AgentsData} from "~/lib/interfaces";
 import {getAgents} from "~/app/api/agent/agent";
@@ -25,10 +25,10 @@ export default async function AgentsList({ project_id }: { project_id: string })
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Agent ID</TableCell>
-              <TableCell>Environments Allowed</TableCell>
-              <TableCell>Environments Used</TableCell>
+              <TableHead>Name</TableHead>
+              <TableHead>Agent ID</TableHead>
+              <TableHead>Environments Allowed</TableHead>
+              <TableHead>Environments Used</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

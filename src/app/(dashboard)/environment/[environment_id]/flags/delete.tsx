@@ -64,7 +64,7 @@ export function DeleteFlag({flag}: {flag: Flag}) {
     if (loading) {
         return (
             <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-                <LoadingSpinner className={"size-5"} />
+                <LoadingSpinner className={"size-3"} />
             </Button>
         )
     }
