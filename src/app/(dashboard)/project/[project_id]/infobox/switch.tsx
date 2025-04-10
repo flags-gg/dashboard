@@ -37,6 +37,12 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
   const {data: projectData, isLoading, error} = useProject(projectId)
 
+  useEffect(() => {
+    if (projectData) {
+      setProjectInfo(projectData)
+    }
+  }, [projectData])
+
   if (error) {
     toast("Error loading project", {
       description: "Please try again later.",
@@ -47,12 +53,6 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   if (!projectData || isLoading) {
     return <NewLoader />
   }
-
-  useEffect(() => {
-    if (projectData) {
-      setProjectInfo(projectData)
-    }
-  }, [projectData])
 
   const onSwitch = () => {
     const updatedProjectInfo = {...projectInfo, enabled: !projectInfo.enabled}
