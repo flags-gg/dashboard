@@ -3,8 +3,8 @@ import { useStyleContext } from "./context";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { useStyles } from "~/hooks/use-styles";
-import { useToast } from "~/hooks/use-toast";
 import { Skeleton } from "~/components/ui/skeleton";
+import { toast } from "sonner";
 
 const styleNames: Record<string, string> = {
   resetButton: "Reset Button",
@@ -48,7 +48,6 @@ async function saveStyle({style, menuId, styleId}: {style: string, menuId: strin
 export default function Info({menuId}: {menuId: string}) {
   const {resetStyle, modifiedStyles, styles} = useStyleContext();
   const {data, isLoading, error} = useStyles(menuId);
-  const {toast} = useToast();
 
   if (isLoading) {
     return <Skeleton className="h-[125px] w-[250px] rounded-xl" />
@@ -91,25 +90,21 @@ export default function Info({menuId}: {menuId: string}) {
               const style = JSON.stringify(styles)
               if (styleId) {
                 saveStyle({style, menuId: menuId, styleId: styleId}).then(() => {
-                  toast({
-                    title: "Style Saved",
+                  toast("Style Saved", {
                     description: "The style has been saved",
                   })
                 }).catch((e) => {
-                  toast({
-                    title: "Error Saving Style",
+                  toast("Error Saving Style", {
                     description: `There was an error saving the style: ${e}`,
                   })
                 })
               } else {
                 saveStyle({style, menuId: menuId}).then(() => {
-                  toast({
-                    title: "Style Saved",
+                  toast( "Style Saved", {
                     description: "The style has been saved",
                   })
                 }).catch((e) => {
-                  toast({
-                    title: "Error Saving Style",
+                  toast("Error Saving Style", {
                     description: `There was an error saving the style: ${e}`,
                   })
                 })

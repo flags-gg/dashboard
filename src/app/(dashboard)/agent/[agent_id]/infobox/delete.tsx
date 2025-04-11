@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { FlagAgent } from "~/lib/interfaces";
 import {
@@ -15,6 +14,7 @@ import {
 import { Trash2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { useAgent } from "~/hooks/use-agent";
+import {toast} from "sonner";
 
 async function deleteAgent(agent_id: string): Promise<null | Error> {
   try {
@@ -47,7 +47,6 @@ async function deleteAgent(agent_id: string): Promise<null | Error> {
 
 export default function Delete({agent_id}: {agent_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
-  const {toast} = useToast();
   const router = useRouter()
   const [AgentInfo, setAgentInfo] = useState<FlagAgent | null>(null)
   const {data: agentData, isLoading} = useAgent(agent_id)
@@ -65,7 +64,7 @@ export default function Delete({agent_id}: {agent_id: string}) {
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogTrigger asChild>
-        <Trash2 className={"h-5 w-5 mt-1.5 cursor-pointer"}/>
+        <Trash2 className={"size-5 mt-1.5 cursor-pointer"}/>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -77,22 +76,19 @@ export default function Delete({agent_id}: {agent_id: string}) {
           <Button variant={"destructive"} onClick={() => {
             setOpenDelete(false)
             deleteAgent(agent_id).then(() => {
-              toast({
-                title: "Agent Deleted",
+              toast("Agent Deleted", {
                 description: "The agent has been deleted",
               })
               router.push(`/project/${AgentInfo?.project_info?.project_id}?ts=${Date.now()}`)
             }).catch((e) => {
               if (e instanceof Error) {
-                toast({
-                  title: "Error Deleting Agent",
+                toast("Error Deleting Agent", {
                   description: `There was an error deleting the agent: ${e.message}`,
                 })
                 return
               }
 
-              toast({
-                title: "Error Deleting Agent",
+              toast("Error Deleting Agent", {
                 description: `There was an unknown error deleting the agent: ${e}`,
               })
             })

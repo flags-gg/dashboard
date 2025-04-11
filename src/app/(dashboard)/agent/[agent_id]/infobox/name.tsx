@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { agentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
-import { useToast } from "~/hooks/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import { useAgent } from "~/hooks/use-agent";
 import { NewLoader } from "~/components/ui/new-loader";
+import {toast} from "sonner";
 
 async function updateAgentName(agent_id: string, name: string, enabled: boolean): Promise<null | Error> {
   try {
@@ -49,7 +49,6 @@ export default function Name({agent_id}: {agent_id: string}) {
   const [agentName, setAgentName] = useState("Agent Name");
   const [agentInfo, setAgentInfo] = useAtom(agentAtom)
   const [openEdit, setOpenEdit] = useState(false);
-  const {toast} = useToast()
 
   const {data: agentData, isLoading} = useAgent(agent_id)
   useEffect(() => {
@@ -76,14 +75,12 @@ export default function Name({agent_id}: {agent_id: string}) {
       updateAgentName(agent_id, data.name, agentInfo.enabled).then(() => {
         setAgentInfo({ ...agentInfo, name: data.name })
         setAgentName(data.name)
-        toast({
-          title: "Agent name updated",
+        toast("Agent name updated", {
           description: "Agent name updated successfully",
         })
       }).catch((e) => {
         if (e instanceof Error) {
-          toast({
-            title: "Error updating agent name",
+          toast("Error updating agent name", {
             description: `There was an error updating the agent name: ${e.message}`,
           })
         }
@@ -93,8 +90,7 @@ export default function Name({agent_id}: {agent_id: string}) {
     } catch (e) {
       console.error("Error updating agent name", e)
 
-      toast({
-        title: "Agent name error",
+      toast("Error updating agent name", {
         description: "There was an unknown error updating the agent name",
       })
     }
@@ -110,7 +106,7 @@ export default function Name({agent_id}: {agent_id: string}) {
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
         <PopoverTrigger asChild>
           <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
-            <Pencil className={"h-5 w-5"} />
+            <Pencil className={"size-5"} />
           </Button>
         </PopoverTrigger>
         <PopoverContent>

@@ -49,7 +49,7 @@ export default async function ProjectList() {
               <TableRow key={`project-${project.id}`}>
                 <TableCell className={"place-content-center justify-center"} style={{ paddingLeft: "3%" }}>
                   <Link href={`/project/${project.project_id}`}>
-                    {project.logo ? <Image src={project.logo} alt={project.name} width={50} height={50} /> : <ShieldPlus className={"h-5 w-5"} />}
+                    {project.logo ? <Image src={project.logo} alt={project.name} width={50} height={50} /> : <ShieldPlus className={"size-5"} />}
                   </Link>
                 </TableCell>
                 <TableCell>

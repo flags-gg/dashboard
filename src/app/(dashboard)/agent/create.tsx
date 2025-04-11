@@ -2,7 +2,6 @@
 
 import {Button} from "~/components/ui/button";
 import { useState } from "react";
-import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -17,6 +16,7 @@ import {
 } from "~/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import {toast} from "sonner";
 
 async function createAgentAction(project_id: string, name: string): Promise<null | Error> {
   try {
@@ -49,7 +49,6 @@ async function createAgentAction(project_id: string, name: string): Promise<null
 
 export default function CreateAgent({ project_id }: { project_id: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const {toast} = useToast()
   const router = useRouter()
 
   const formSchema = z.object({
@@ -65,21 +64,18 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
     form.reset()
 
     createAgentAction(project_id, data.agentName).then(() => {
-      toast({
-        title: "Agent Created",
+      toast("Agent Created", {
         description: "The agent has been created",
       })
       router.refresh()
     }).catch((e) => {
       if (e instanceof Error) {
-        toast({
-          title: "Failed to create agent",
+        toast("Failed to create agent", {
           description: `Failed to create agent for reason: ${e.message}`,
         })
       }
       console.error("createAgent", e)
-      toast({
-        title: "Failed to create agent",
+      toast("Failed to create agent", {
         description: "Failed to create agent for unknown reason",
       })
     })

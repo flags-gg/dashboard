@@ -15,9 +15,9 @@ import {
 } from "~/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { Copy } from "lucide-react";
-import { useToast } from "~/hooks/use-toast";
 import Image from "next/image";
 import DeleteCompany from "./delete"
+import {toast} from "sonner";
 
 interface IError {
   message: string
@@ -55,7 +55,6 @@ export default function Info() {
   const [showError, setShowError] = useState(false)
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [imageURL, setImageURL] = useState("")
-  const {toast} = useToast();
 
   let imageElement = <span className={"text-muted-foreground cursor-pointer"}>No Logo</span>
   useEffect(() => {
@@ -73,8 +72,7 @@ export default function Info() {
   }
 
   if (showError) {
-    toast({
-      title: errorInfo.title,
+    toast(errorInfo.title, {
       description: errorInfo.message,
       duration: 5000,
     })
@@ -82,8 +80,7 @@ export default function Info() {
 
   const copyInviteCode = () => {
     navigator.clipboard.writeText(companyInfo?.company?.invite_code ?? "").then(() => {
-      toast({
-        title: "Flags.gg Invite Code Copied",
+      toast("Flags.gg Invite Code Copied", {
         description: "The Flags.gg invite code have been copied to your clipboard",
       })
     })
@@ -113,9 +110,9 @@ export default function Info() {
                   <p className={"cursor-pointer"} onClick={copyInviteCode}>{companyInfo?.company?.invite_code.slice(0, 12)}...</p>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className={"w-[20rem]"}>
+                  <p className={"size-[20rem]"}>
                     {companyInfo?.company?.invite_code}
-                    <Copy className={"h-5 w-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyInviteCode} />
+                    <Copy className={"size-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyInviteCode} />
                   </p>
                 </TooltipContent>
               </Tooltip>

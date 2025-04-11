@@ -3,10 +3,10 @@
 import { Switch } from "~/components/ui/switch";
 import {useAtom} from "jotai";
 import {projectAtom} from "~/lib/statemanager";
-import {useToast} from "~/hooks/use-toast";
 import { useProject } from "~/hooks/use-project";
 import { NewLoader } from "~/components/ui/new-loader";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
   try {
@@ -36,11 +36,15 @@ async function enableDisableProject(project_id: string, enabled: boolean, name: 
 export function ProjectSwitch({projectId}: {projectId: string}) {
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
   const {data: projectData, isLoading, error} = useProject(projectId)
-  const {toast} = useToast()
+
+  useEffect(() => {
+    if (projectData) {
+      setProjectInfo(projectData)
+    }
+  }, [projectData])
 
   if (error) {
-    toast({
-      title: "Error loading project",
+    toast("Error loading project", {
       description: "Please try again later.",
     });
     return null
@@ -50,19 +54,12 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
     return <NewLoader />
   }
 
-  useEffect(() => {
-    if (projectData) {
-      setProjectInfo(projectData)
-    }
-  }, [projectData])
-
   const onSwitch = () => {
     const updatedProjectInfo = {...projectInfo, enabled: !projectInfo.enabled}
 
     try {
       enableDisableProject(updatedProjectInfo.project_id, updatedProjectInfo.enabled, updatedProjectInfo.name).then(() => {
-        toast({
-          title: "Project Updated",
+        toast("Project Updated", {
           description: `The project has been ${updatedProjectInfo.enabled ? "enabled" : "disabled"}`,
         })
         setProjectInfo(updatedProjectInfo)
@@ -74,14 +71,12 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
       })
     } catch (e) {
       if (e instanceof Error) {
-        toast({
-          title: "Error updating project",
+        toast("Error updating project", {
           description: `There was an error updating the project: ${e.message}`,
         })
       } else {
         console.error("Error updating project", e)
-        toast({
-          title: "Error updating project",
+        toast("Error updating project", {
           description: `There was an unknown error updating the project`,
         })
         console.error("Error updating project", e)
@@ -89,5 +84,5 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
     }
   }
 
-  return <Switch defaultChecked={projectInfo?.enabled} name={"project"} onCheckedChange={onSwitch} />
+  return <Switch checked={projectInfo?.enabled} name={"project-switch"} onCheckedChange={onSwitch} />
 }

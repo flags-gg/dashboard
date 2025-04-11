@@ -5,8 +5,8 @@ import Info from "./info";
 import { StyleProvider } from "./context";
 import PageContainer from "./pageContainer";
 import { useStyles } from "~/hooks/use-styles";
-import { useToast } from "~/hooks/use-toast";
 import { Skeleton } from "~/components/ui/skeleton";
+import { toast } from "sonner";
 
 type ClientWrapperProps = {
   menuId: string;
@@ -14,15 +14,13 @@ type ClientWrapperProps = {
 
 function StyleWrapper({ menuId }: ClientWrapperProps) {
   const { data, isLoading, error } = useStyles(menuId);
-  const { toast } = useToast();
 
   if (isLoading) {
     return <Skeleton className="h-[125px] w-[250px] rounded-xl" />;
   }
 
   if (error) {
-    toast({
-      title: "Error loading styles",
+    toast("Error loading styles", {
       description: "Please try again later.",
     });
     return <div className="col-span-2 gap-3">Error loading styles</div>;

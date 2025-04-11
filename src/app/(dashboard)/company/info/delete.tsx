@@ -3,7 +3,6 @@
 import { deleteCookie } from "cookies-next";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "~/components/ui/button";
-import { useToast } from "~/hooks/use-toast";
 import { useState } from "react";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import {
 } from "~/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import { useFlags } from "@flags-gg/react-library";
+import {toast} from "sonner";
 
 async function deleteCompany(): Promise<null | Error> {
   try {
@@ -43,7 +43,6 @@ async function deleteCompany(): Promise<null | Error> {
 
 export default function DeleteButton() {
   const [openDelete, setOpenDelete] = useState(false);
-  const {toast} = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
   const {is} = useFlags();
@@ -69,8 +68,7 @@ export default function DeleteButton() {
           <Button variant="destructive" className={"cursor-pointer"} onClick={() => {
             setOpenDelete(false)
             deleteCompany().then(() => {
-              toast({
-                title: "Company deleted",
+              toast("Company deleted", {
                 description: "Your company has been deleted",
               });
               deleteCookie("hasCompletedOnboarding")
@@ -78,14 +76,12 @@ export default function DeleteButton() {
               router.push("/")
             }).catch((error) => {
               if (error instanceof Error) {
-                toast({
-                  title: "Failed to delete company",
+                toast("Failed to delete company", {
                   description: error.message,
                 });
               } else {
                 console.error("deleteCompany", error);
-                toast({
-                  title: "Failed to delete company",
+                toast("Failed to delete company", {
                   description: "Failed to delete company",
                 });
               }

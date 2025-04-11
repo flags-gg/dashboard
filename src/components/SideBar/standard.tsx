@@ -51,7 +51,9 @@ export default function Standard() {
   return (
     <Sidebar>
       <SidebarHeader>
-        Flags.gg
+        <Link href={"/"}>
+          <Image src={"/logo512.png"} alt={"Flags.gg"} width={250} height={250} className={"size-25 cursor-pointer ml-15"} />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -61,7 +63,7 @@ export default function Standard() {
               <SidebarMenuItem key={"dashboard"}>
                 <SidebarMenuButton asChild>
                   <Link href={"/"}>
-                    <Home className={"h-5 w-5"} />
+                    <Home className={"size-5"} />
                     <span>Home</span>
                   </Link>
                 </SidebarMenuButton>
@@ -77,7 +79,7 @@ export default function Standard() {
                 <SidebarMenuItem key={"docs"}>
                   <SidebarMenuButton asChild>
                     <a href={"https://docs.flags.gg"} target={"_blank"} rel={"noreferrer"}>
-                      <Book className={"h-5 w-5"} />
+                      <Book className={"size-5"} />
                       <span>Docs</span>
                     </a>
                   </SidebarMenuButton>
@@ -94,7 +96,7 @@ export default function Standard() {
                 <SidebarMenuItem key={"company"}>
                   <SidebarMenuButton asChild>
                     <Link href={"/company"}>
-                      <Building2 className={"h-5 w-5"} />
+                      <Building2 className={"size-5"} />
                       <span>Company</span>
                     </Link>
                   </SidebarMenuButton>
@@ -110,7 +112,7 @@ export default function Standard() {
               <SidebarMenuItem key={"projects"}>
                 <SidebarMenuButton asChild>
                   <Link href={"/projects"}>
-                    <SquareGanttChart className={"h-5 w-5"} />
+                    <SquareGanttChart className={"size-5"} />
                     <span>Projects</span>
                   </Link>
                 </SidebarMenuButton>
@@ -126,7 +128,7 @@ export default function Standard() {
                 <SidebarMenuItem key={`sidebar-project-${selectedProject.project_id}`}>
                   <SidebarMenuButton asChild>
                     <Link href={`/project/${selectedProject.project_id}`}>
-                      {selectedProject.logo ? (<Image src={selectedProject.logo} alt={selectedProject.name} width={50} height={50} className={"h-5 w-5"} />) : <SquareKanban className={"h-5 w-5"} />}
+                      {selectedProject.logo ? (<Image src={selectedProject.logo} alt={selectedProject.name} width={50} height={50} className={"size-5"} />) : <SquareKanban className={"size-5"} />}
                       <span>Project</span>
                     </Link>
                   </SidebarMenuButton>
@@ -136,7 +138,7 @@ export default function Standard() {
                   <SidebarMenuItem key={`agent-${selectedAgent.agent_id}`}>
                     <SidebarMenuButton asChild>
                       <Link href={`/agent/${selectedAgent.agent_id}`}>
-                        <VenetianMask className={"h-5 w-5"} />
+                        <VenetianMask className={"size-5"} />
                         <span>Agent</span>
                       </Link>
                     </SidebarMenuButton>
@@ -147,7 +149,7 @@ export default function Standard() {
                   <SidebarMenuItem key={`environment-${selectedEnvironment.environment_id}`}>
                     <SidebarMenuButton asChild>
                       <Link href={`/environment/${selectedEnvironment.environment_id}`}>
-                        <Container className={"h-5 w-5"} />
+                        <Container className={"size-5"} />
                         <span>Environment</span>
                       </Link>
                     </SidebarMenuButton>
@@ -158,7 +160,7 @@ export default function Standard() {
                   <SidebarMenuItem key={`secretmenu-${selectedMenu.menu_id}`}>
                     <SidebarMenuButton asChild>
                       <Link href={`/secretmenu/${selectedMenu.menu_id}`}>
-                        <SquareMenu className={"h-5 w-5"} />
+                        <SquareMenu className={"size-5"} />
                         <span>Secret Menu Config</span>
                       </Link>
                     </SidebarMenuButton>

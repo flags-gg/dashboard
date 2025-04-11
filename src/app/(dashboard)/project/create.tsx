@@ -14,13 +14,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { IProject } from "~/lib/interfaces";
-import { toast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useCompanyLimits } from '~/hooks/use-company-limits';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NewLoader } from "~/components/ui/new-loader";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
@@ -60,16 +60,14 @@ export default function CreateProject() {
     mutationFn: (name: string) => createProject(name),
     onSuccess: (data) => {
       queryClient.invalidateQueries({queryKey: ['companyLimits', user?.id]}).catch(console.error);
-      toast({
-        title: "Project Created",
+      toast("Project Created", {
         description: "Project has been created",
       });
       setCreatedProject(data);
     },
     onError: (error) => {
       console.error(error);
-      toast({
-        title: "Failed to create project",
+      toast("Failed to create project", {
         description: "Failed to create project",
       });
     },

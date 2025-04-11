@@ -1,6 +1,5 @@
 import { useCompanyDetails } from "~/hooks/use-company-details";
 import { useCallback, useState } from "react";
-import { useToast } from "~/hooks/use-toast";
 import { NewLoader } from "~/components/ui/new-loader";
 import {
   Dialog,
@@ -16,6 +15,7 @@ import { useFlags } from "@flags-gg/react-library";
 import { UpgradeChoice } from "~/lib/interfaces";
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { toast } from "sonner";
 
 interface IError {
   message: string
@@ -30,8 +30,6 @@ export default function Plan() {
   const [choicesOpen, setChoicesOpen] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [upgradeChoice, setUpgradeChoice] = useState<UpgradeChoice | null>(null)
-
-  const {toast} = useToast();
   const [errorInfo] = useState({} as IError);
   const [showError] = useState(false);
   const {is} = useFlags();
@@ -70,8 +68,7 @@ export default function Plan() {
   }
 
   if (showError) {
-    toast({
-      title: errorInfo.title,
+    toast(errorInfo.title, {
       description: errorInfo.message,
       duration: 5000,
     })

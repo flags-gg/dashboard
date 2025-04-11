@@ -3,7 +3,7 @@
 import {Switch} from "~/components/ui/switch";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
-import { useToast } from "~/hooks/use-toast";
+import { toast } from "sonner";
 
 async function enableDisableMenu(menu_id: string) {
   try {
@@ -30,13 +30,11 @@ async function enableDisableMenu(menu_id: string) {
 
 export function MenuSwitch({menu_id}: { menu_id: string }) {
   const [selectedEnvironment, setSelectedEnvironment] = useAtom(environmentAtom)
-  const {toast} = useToast()
 
   return (
     <Switch checked={selectedEnvironment?.secret_menu?.enabled} name={"menu"} onCheckedChange={() => {
       enableDisableMenu(menu_id).then(() => {
-        toast({
-          title: "Menu Updated",
+        toast("Menu Updated", {
           description: "The menu has been updated",
         })
         setSelectedEnvironment((prev) => {
@@ -49,8 +47,7 @@ export function MenuSwitch({menu_id}: { menu_id: string }) {
           }
         })
       }).catch((e) => {
-        toast({
-          title: "Error Updating Menu",
+        toast("Error Updating Menu", {
           description: `There was an error updating the menu: ${e}`,
         })
       })

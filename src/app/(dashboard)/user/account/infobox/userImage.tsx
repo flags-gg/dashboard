@@ -12,9 +12,9 @@ import {
 import { UploadButton } from "~/lib/utils/uploadthing";
 import Image from "next/image";
 import { useUserDetails } from "~/hooks/use-user-details";
-import { useToast } from "~/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 interface IError {
   message: string
@@ -44,7 +44,6 @@ export default function UserImage() {
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [showError, setShowError] = useState(false)
   const [imageURL, setImageURL] = useState("")
-  const {toast} = useToast()
   const {user} = useUser();
 
   const { data: userData } = useUserDetails(user?.id ?? "");
@@ -61,16 +60,15 @@ export default function UserImage() {
   } else {
     const userName = user?.username ?? "";
     imageElement = (
-      <Avatar className={"cursor-pointer h-28 w-28"}>
-        <AvatarImage src={userData?.avatar} alt={"User Image"} height="200px" width="200px" className={"h-28 w-28"} />
+      <Avatar className={"cursor-pointer size-28"}>
+        <AvatarImage src={userData?.avatar} alt={"User Image"} height="200px" width="200px" className={"size-28"} />
         <AvatarFallback>{userName}</AvatarFallback>
       </Avatar>
     );
   }
 
   if (showError) {
-    toast({
-      title: errorInfo.title,
+    toast(errorInfo.title, {
       description: errorInfo.message,
     })
   }

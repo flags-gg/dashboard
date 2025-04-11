@@ -1,5 +1,5 @@
 import {Card} from "~/components/ui/card";
-import {Table, TableBody, TableCell, TableHeader, TableRow} from "~/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import {getEnvironments} from "~/app/api/environment/environment";
 
@@ -23,9 +23,9 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Environment ID</TableCell>
-              <TableCell>Enabled</TableCell>
+              <TableHead>Name</TableHead>
+              <TableHead>Environment ID</TableHead>
+              <TableHead>Enabled</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

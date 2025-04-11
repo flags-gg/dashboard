@@ -79,8 +79,8 @@ export default function EnableButton() {
                 <FormLabel>Background</FormLabel>
                 <FormControl>
                   <div className="flex items-center">
-                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                    <Input type="color" {...field} className="size-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="grow" />
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -106,8 +106,8 @@ export default function EnableButton() {
                 <FormLabel>Text Color</FormLabel>
                 <FormControl>
                   <div className="flex items-center">
-                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                    <Input type="color" {...field} className="size-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="grow" />
                   </div>
                 </FormControl>
                 <FormMessage />
