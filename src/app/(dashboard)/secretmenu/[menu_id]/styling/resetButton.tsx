@@ -112,8 +112,8 @@ export default function ResetButton() {
                 <FormLabel>Icon Color</FormLabel>
                 <FormControl>
                   <div className="flex items-center">
-                    <Input type="color" {...field} className="w-12 h-12 p-1 mr-2" />
-                    <Input {...field} placeholder="#RRGGBB" className="flex-grow" />
+                    <Input type="color" {...field} className="size-12 p-1 mr-2" />
+                    <Input {...field} placeholder="#RRGGBB" className="grow" />
                   </div>
                 </FormControl>
                 <FormMessage />

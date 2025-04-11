@@ -42,7 +42,7 @@ export async function getEnvironment(environment_id: string): Promise<{ data: IE
       cache: 'no-store'
     })
     if (!res.ok) {
-      return { data: null, error: new Error('Failed to fetch environment') }
+      return { data: null, error: Error('Failed to fetch environment') }
     }
 
     const data = await res.json() as IEnvironment
@@ -50,6 +50,6 @@ export async function getEnvironment(environment_id: string): Promise<{ data: IE
   }
   catch (e) {
     console.error('Failed to fetch environment', e)
-    return { data: null, error: new Error('Internal Server Error') }
+    return { data: null, error: Error('Internal Server Error') }
   }
 }

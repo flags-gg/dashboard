@@ -9,7 +9,6 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { z } from "zod";
 import { Separator } from "~/components/ui/separator";
-import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
 import { getUserDetails } from "~/hooks/use-user-details";
@@ -17,9 +16,9 @@ import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function StepTwo() {
-  const {toast} = useToast()
   const router = useRouter()
   const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
   const {user} = useUser()
@@ -73,26 +72,21 @@ export default function StepTwo() {
         new Error("Failed to create company")
       }
 
-      toast({
-        title: "Company Created",
+      toast("Company Created", {
         description: "Last step of onboarding has been completed",
       })
       setOnboardingComplete(true)
       router.push("/")
     } catch (e) {
       if (e instanceof Error) {
-        toast({
-          title: "Error",
+        toast("Error", {
           description: `Failed to completed last step of onboarding: ${e.message}`,
-          variant: "destructive",
         })
         return
       }
 
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "Failed to completed last step of onboarding for unknown reason",
-        variant: "destructive",
       })
     }
   }
@@ -133,26 +127,21 @@ export default function StepTwo() {
         new Error("Failed to create company")
       }
 
-      toast({
-        title: "Company Created",
+      toast("Company Created", {
         description: "Last step of onboarding has been completed",
       })
       setOnboardingComplete(true)
       router.push("/")
     } catch (e) {
       if (e instanceof Error) {
-        toast({
-          title: "Error",
+        toast("Error", {
           description: `Failed to completed last step of onboarding: ${e.message}`,
-          variant: "destructive",
         })
         return
       }
 
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "Failed to completed last step of onboarding for unknown reason",
-        variant: "destructive",
       })
     }
   }

@@ -2,7 +2,6 @@
 
 import {Button} from "~/components/ui/button";
 import { useState } from "react";
-import { useToast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import {
   Dialog,
@@ -18,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useAgent } from "~/hooks/use-agent";
+import { toast } from "sonner";
 
 async function createEnvironmentAction(agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -49,7 +49,6 @@ async function createEnvironmentAction(agent_id: string, name: string): Promise<
 
 export default function CreateEnvironment({agent_id}: {agent_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
-  const {toast} = useToast()
   const router = useRouter()
   const {data: agentInfo} = useAgent(agent_id)
 
@@ -66,8 +65,7 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
 
     try {
       createEnvironmentAction(agent_id, data.environmentName).then(() => {
-        toast({
-          title: "Environment Created",
+        toast("Environment Created", {
           description: "The environment has been created",
         })
         router.refresh()
@@ -76,8 +74,7 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
       })
     } catch (e) {
       console.error(e)
-      toast({
-        title: "Failed to create environment",
+      toast("Failed to create environment", {
         description: "Failed to create environment",
       })
     }

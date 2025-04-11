@@ -19,9 +19,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { toast } from "~/hooks/use-toast";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import { toast } from "sonner";
 
 async function sendInvite(name: string, email_address: string): Promise<null | Error> {
   try {
@@ -65,8 +65,7 @@ export default function Users() {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setInviteOpen(false)
     sendInvite(data.name, data.email_address).then(() => {
-      toast({
-        title: "Invite Sent",
+      toast("Invite Sent", {
         description: "Invite Sent",
       })
     }).catch((e) => {

@@ -1,8 +1,8 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "~/hooks/use-toast";
 import { Suspense } from "react";
+import { toast } from "sonner";
 
 async function setUpgraded(sessionId: string): Promise<null | Error> {
   try {
@@ -36,18 +36,15 @@ function UpgradePage() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const sessionId = searchParams.get("session_id")
-  const {toast} = useToast()
 
   setUpgraded(sessionId ?? "").then(() => {
-    toast({
-      title: "Upgraded",
+    toast("Upgraded", {
       description: "Your plan has been upgraded",
     })
     router.push("/company")
   }).catch((e) => {
     console.error("Failed to set upgraded", e)
-    toast({
-      title: "Failed to upgrade",
+    toast("Failed to upgrade", {
       description: "Failed to upgrade",
     })
     router.push("/company")

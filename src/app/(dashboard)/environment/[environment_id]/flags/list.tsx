@@ -3,9 +3,9 @@ import {Card} from "~/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCell,
+  TableCell, TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "~/components/ui/table";
 import { getFlags } from "~/app/api/flag/list";
 import { FlagSwitch } from "./switch";
@@ -37,9 +37,9 @@ export default async function FlagsList({ environment_id }: { environment_id: st
         <Table>
           <TableHeader>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell colSpan={2}>Enabled</TableCell>
-              <TableCell>Options</TableCell>
+              <TableHead className={"font-bold"}>Name</TableHead>
+              <TableHead colSpan={2} className={"font-bold"}>Enabled</TableHead>
+              <TableHead className={"text-center font-bold"}>Options</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -49,9 +49,9 @@ export default async function FlagsList({ environment_id }: { environment_id: st
                 <TableCell colSpan={2}>
                   <FlagSwitch flag={flag} />
                 </TableCell>
-                <TableCell className={"gap-2 flex flex-row-reverse"}>
-                  <DeleteFlag flag={flag} />
+                <TableCell className={"gap-2 flex place-content-end"}>
                   <EditFlag flag={flag} />
+                  <DeleteFlag flag={flag} />
                 </TableCell>
               </TableRow>
             ))}

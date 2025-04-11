@@ -6,11 +6,11 @@ import { Skeleton } from "~/components/ui/skeleton";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "~/hooks/use-toast";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   knownAs: z.string().min(2, {message: "Known As requires a minimum of 2 characters"}),
@@ -26,7 +26,6 @@ export default function AccountForm() {
 
   const { data: userData, isLoading } = useUserDetails(user?.id ?? "");
   const [fromKeycloak, setFromKeycloak] = useState(false);
-  const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -75,32 +74,25 @@ export default function AccountForm() {
         cache: "no-store",
       });
       if (!res.ok) {
-        toast({
-          title: "Error",
+        toast("Error", {
           description: "Failed to update account details",
-          variant: "destructive",
         });
         return
       }
 
-      toast({
-        title: "Account Updated",
+      toast("Account Updated", {
         description: "The account has been updated successfully",
       });
     } catch (error) {
       if (error instanceof Error) {
-        toast({
-          title: "Error",
+        toast("Error", {
           description: `Failed to update account details: ${error.message}`,
-          variant: "destructive",
         });
         return
       }
 
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "Failed to update account details",
-        variant: "destructive",
       });
     }
   };

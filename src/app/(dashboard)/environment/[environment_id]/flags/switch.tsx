@@ -50,7 +50,7 @@ export function FlagSwitch({flag}: { flag: Flag }) {
 
   return (
     <Switch
-      defaultChecked={flagData.enabled}
+      checked={flagData.enabled}
       name={flagData.details.id}
       onCheckedChange={handleChange}
       disabled={isUpdating} />

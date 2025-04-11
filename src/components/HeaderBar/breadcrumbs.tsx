@@ -115,7 +115,7 @@ export default function BreadCrumbs({commitHash}: {commitHash: string}) {
   }, [commitHash, setCommitHash])
 
   return (
-    <Breadcrumb className={"hidden md:flex"} key={"breadcrumbs-root"}>
+    <Breadcrumb className={"md:flex"} key={"breadcrumbs-root"}>
       <BreadcrumbList key={"breadcrumbs-list"}>
         {breadcrumbs?.map((crumb, index) => (
           <Fragment key={`${crumb.url}-container`}>

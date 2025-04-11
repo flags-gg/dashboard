@@ -18,8 +18,8 @@ import { ProjectSwitch } from "./switch";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 import { useProjectLimits } from "~/hooks/use-project-limits";
-import { useToast } from "~/hooks/use-toast";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 interface IError {
   message: string
@@ -54,7 +54,6 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   const [errorInfo, setErrorInfo] = useState({} as IError)
   const [imageURL, setImageURL] = useState("")
   const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
-  const {toast} = useToast()
   const {user} = useUser();
 
   useEffect(() => {
@@ -77,8 +76,7 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   }
 
   if (showError) {
-    toast({
-      title: errorInfo.title,
+    toast(errorInfo.title, {
       description: errorInfo.message,
       duration: 5000,
     })
@@ -88,7 +86,7 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
-  let imageElement = <ShieldPlus className={"h-5 w-5 cursor-pointer"} />
+  let imageElement = <ShieldPlus className={"size-5 cursor-pointer"} />
   if (imageURL && imageURL !== "") {
     imageElement =
       <Image src={imageURL} alt={projectInfo.name} width={50} height={50} className={"cursor-pointer"} />

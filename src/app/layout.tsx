@@ -12,7 +12,7 @@ import ClientProvider from "~/components/ClientProvider";
 import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin";
 import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
-import {Toaster} from "~/components/ui/toaster";
+import {Toaster} from "~/components/ui/sonner";
 import { SidebarProvider } from "~/components/ui/sidebar";
 import OnboardCheck from "~/components/OnboardCheck";
 
@@ -49,10 +49,10 @@ export default async function RootLayout({
                     <main className="flex-1 size-full p-4" suppressHydrationWarning={true}>
                       {children}
                     </main>
-                    <Toaster />
                   </div>
                 </SidebarProvider>
               </div>
+              <Toaster />
             </TooltipProvider>
           </ClientProvider>
         </ClerkProvider>

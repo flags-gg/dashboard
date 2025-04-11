@@ -9,11 +9,11 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { z } from "zod";
 import { Separator } from "~/components/ui/separator";
-import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { getUserDetails } from "~/hooks/use-user-details";
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 export default function StepOne() {
   const {user} = useUser();
@@ -21,7 +21,6 @@ export default function StepOne() {
   const firstName = user?.firstName ?? "First"
   const lastName = user?.lastName ?? "Last"
   const email = user?.emailAddresses?.[0]?.emailAddress ?? ""
-  const {toast} = useToast()
   const router = useRouter()
 
   if (!user?.id) {
@@ -75,25 +74,20 @@ export default function StepOne() {
         new Error("Failed to create account")
       }
 
-      toast({
-        title: "Account Created",
+      toast("Account Created", {
         description: "First step of onboarding has been completed",
       })
       router.push("/onboarding/steptwo")
     } catch (e) {
       if (e instanceof Error) {
-        toast({
-          title: "Error",
+        toast("Error", {
           description: `Failed to complete first step of onboarding: ${e.message}`,
-          variant: "destructive",
         })
         return
       }
 
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "Failed to complete first step of onboarding for unknown reason",
-        variant: "destructive",
       })
     }
   }

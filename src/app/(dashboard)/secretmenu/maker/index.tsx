@@ -9,9 +9,9 @@ import {useEffect, useState} from "react";
 import {arrayMove} from "@dnd-kit/sortable";
 import {Separator} from "~/components/ui/separator";
 import {Button} from "~/components/ui/button";
-import { useToast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { environmentAtom } from "~/lib/statemanager";
+import { toast } from "sonner";
 
 interface SecretMenuData {
   menu_id: string,
@@ -92,7 +92,6 @@ export default function Maker({menuId}: {menuId: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
   const [error, setError] = useState<string | null>(null)
   const [selectedEnvironment] = useAtom(environmentAtom)
-  const {toast} = useToast()
 
   useEffect(() => {
     getSequence(menuId).then(resp => {
@@ -193,8 +192,7 @@ export default function Maker({menuId}: {menuId: string}) {
 
             if (menuId === "") {
               createMenuId(selectedEnvironment.environment_id, sequence).then(() => {
-                toast({
-                  title: "Menu Saved",
+                toast("Menu Saved", {
                   description: "Saved the menu"
                 })
               }).catch((e) => {

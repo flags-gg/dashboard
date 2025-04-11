@@ -14,10 +14,10 @@ import { Search } from "lucide-react";
 import { Input } from "~/components/ui/input";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
-import { useToast } from "~/hooks/use-toast";
 import { useAtom } from "jotai";
 import { AgentsData, EnvironmentsData, ProjectsData } from "~/lib/interfaces";
 import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
 async function getProjects() {
   const res = await fetch(`/api/project/list`, {
@@ -68,7 +68,6 @@ async function getEnvironments() {
 }
 
 export function SearchBox() {
-  const {toast} = useToast();
   const {is} = useFlags();
   const {user} = useUser();
 
@@ -99,8 +98,7 @@ export function SearchBox() {
 
   useEffect(() => {
     if (projectsError || agentsError || environmentsError) {
-      toast({
-        title: "Error loading search data",
+      toast("Error loading search data", {
         description: projectsError?.message || agentsError?.message || environmentsError?.message,
       });
       setError(true);

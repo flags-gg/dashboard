@@ -11,10 +11,10 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import { useToast } from "~/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { agentAtom, environmentAtom } from "~/lib/statemanager";
+import { toast } from "sonner";
 
 async function deleteEnvironment(environment_id: string): Promise<null | Error> {
   try {
@@ -47,7 +47,6 @@ async function deleteEnvironment(environment_id: string): Promise<null | Error> 
 
 export default function Delete({environment_id}: {environment_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
-  const {toast} = useToast();
   const router = useRouter()
   const [environmentInfo] = useAtom(environmentAtom)
   const [agentInfo] = useAtom(agentAtom)
@@ -55,7 +54,7 @@ export default function Delete({environment_id}: {environment_id: string}) {
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogTrigger asChild>
-        <Trash2 className={"h-5 w-5 mt-1.5 cursor-pointer"}/>
+        <Trash2 className={"size-5 mt-1.5 cursor-pointer"}/>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -67,22 +66,19 @@ export default function Delete({environment_id}: {environment_id: string}) {
           <Button variant={"destructive"} onClick={() => {
             setOpenDelete(false)
             deleteEnvironment(environment_id).then(() => {
-              toast({
-                title: "Environment Deleted",
+              toast("Environment Deleted", {
                 description: "The environment has been deleted",
               })
               router.push(`/agent/${agentInfo.agent_id}?ts=${Date.now()}`)
             }).catch((e) => {
               if (e instanceof Error) {
-                toast({
-                  title: "Error Deleting Environment",
+                toast("Error Deleting Environment", {
                   description: `There was an error deleting the environment: ${e.message}`,
                 })
                 return
               }
 
-              toast({
-                title: "Error Deleting Environment",
+              toast("Error Deleting Environment", {
                 description: `There was an unknown error deleting the environment: ${e}`,
               })
             })
