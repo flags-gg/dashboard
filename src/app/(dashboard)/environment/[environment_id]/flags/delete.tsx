@@ -63,14 +63,14 @@ export function DeleteFlag({flag}: {flag: Flag}) {
 
     if (loading) {
         return (
-            <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
+            <Button size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
                 <LoadingSpinner className={"size-3"} />
             </Button>
         )
     }
 
     return (
-        <Button onClick={deleteFlag} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
+        <Button onClick={deleteFlag} size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
             <Trash2 className={"size-5"} />
         </Button>
     )

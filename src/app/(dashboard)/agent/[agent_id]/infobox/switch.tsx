@@ -70,6 +70,6 @@ export function AgentSwitch({agent_id}: {agent_id: string}) {
   }
 
   return (
-    <Switch defaultChecked={agentData?.enabled} name={"agent"} onCheckedChange={onSwitch} />
+    <Switch checked={agentData?.enabled} name={"agent"} onCheckedChange={onSwitch} />
   )
 }

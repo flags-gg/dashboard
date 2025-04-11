@@ -84,5 +84,5 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
     }
   }
 
-  return <Switch defaultChecked={projectInfo?.enabled} name={"project"} onCheckedChange={onSwitch} />
+  return <Switch checked={projectInfo?.enabled} name={"project-switch"} onCheckedChange={onSwitch} />
 }

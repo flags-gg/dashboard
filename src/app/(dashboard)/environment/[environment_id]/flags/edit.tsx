@@ -103,7 +103,7 @@ export function EditFlag({flag}: {flag: Flag}) {
         })
 
         return (
-            <Button disabled={true} asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
+            <Button disabled={true} size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
                 <Pencil className={"size-3"} />
             </Button>
         )
@@ -112,8 +112,8 @@ export function EditFlag({flag}: {flag: Flag}) {
     return (
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
           <PopoverTrigger asChild>
-              <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-                  <Pencil className={"size-3"} />
+              <Button size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
+                  <Pencil className={"size-5"} />
               </Button>
           </PopoverTrigger>
           <PopoverContent>
