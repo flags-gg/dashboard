@@ -18,14 +18,14 @@ import { useUser } from "@clerk/nextjs";
 export default function StepOne() {
   const {user} = useUser();
 
-  const firstName = user?.firstName ?? ""
-  const lastName = user?.lastName ?? ""
+  const firstName = user?.firstName ?? "First"
+  const lastName = user?.lastName ?? "Last"
   const email = user?.emailAddresses?.[0]?.emailAddress ?? ""
   const {toast} = useToast()
   const router = useRouter()
 
   if (!user?.id) {
-    router.push("/api/auth/signin")
+    router.push("/")
   }
   // they have done the first step, but haven't completed the second step
   useEffect(() => {
@@ -40,9 +40,9 @@ export default function StepOne() {
 
   const formSchema = z.object({
     knownAs: z.string().min(2, {message: "Known as is required a minimum of 2 characters"}),
-    firstName: z.string().min(2, {message: "First name is required a minimum of 2 characters"}).default(firstName),
-    lastName: z.string().min(2, {message: "Last name is required a minimum of 2 characters"}).default(lastName),
-    email: z.string().email({message: "Email is not valid"}).default(email),
+    firstName: z.string().min(0, {message: "First name is required a minimum of 2 characters"}),
+    lastName: z.string().min(0, {message: "Last name is required a minimum of 2 characters"}),
+    email: z.string().email({message: "Email is not valid"}),
   })
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
