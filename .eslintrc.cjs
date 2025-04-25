@@ -17,10 +17,12 @@ const config = {
     "react-compiler",
   ],
   "extends": [
+    "eslint:recommended",
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:@next/next/recommended",
+    "plugin:@typescript-eslint/recommended",
   ],
   "rules": {
     "react-compiler/react-compiler": "error",
