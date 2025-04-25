@@ -32,7 +32,6 @@ export async function getUserDetails(): Promise<UserDetails> {
 
     if (!res.ok) {
       console.error(`API Error: ${res.status} ${res.statusText}`);
-      // eslint-disable-next-line no-throw-literal, @typescript-eslint/no-throw-literal
       throw new Error(`Failed to fetch user details: ${res.status} ${res.statusText}`);
     }
 
@@ -40,7 +39,6 @@ export async function getUserDetails(): Promise<UserDetails> {
 
     if (!data) {
       console.error("API returned no user details");
-      // eslint-disable-next-line no-throw-literal, @typescript-eslint/no-throw-literal
       throw new Error("No user details returned");
     }
 
