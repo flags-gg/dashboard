@@ -14,10 +14,9 @@ import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/sonner";
 import { SidebarProvider } from "~/components/ui/sidebar";
-import OnboardCheck from "~/components/OnboardCheck";
+import OnboardCheck from "~/components/OnboardCheck"
 
 import "~/styles/globals.css";
-import "@uploadthing/react/styles.css"
 
 const fontSans = FontSans({
   subsets: ["latin"],
