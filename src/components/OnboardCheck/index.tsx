@@ -24,6 +24,7 @@ export default function OnboardCheck() {
         }
       }).catch((e) => {
         console.error("error in getUserDetails", e, useUserData)
+        window.location.href = "/";
       })
     }
   }, [hasCompletedOnboarding])
