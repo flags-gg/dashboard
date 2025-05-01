@@ -124,7 +124,7 @@ importers:
         version: 8.21.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@uploadthing/react':
         specifier: ^7.3.0
-        version: 7.3.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(uploadthing@7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.4))
+        version: 7.3.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(uploadthing@7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.5))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -205,7 +205,7 @@ importers:
         version: 1.2.8
       uploadthing:
         specifier: ^7.6.0
-        version: 7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.4)
+        version: 7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.5)
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.1.2(@types/react@19.1.2))(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -277,8 +277,8 @@ importers:
         specifier: ^0.6.11
         version: 0.6.11(prettier@3.5.3)
       tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
+        specifier: ^4.1.5
+        version: 4.1.5
       ts-jest:
         specifier: ^29.3.2
         version: 29.3.2(@babel/core@7.26.7)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.7))(jest@29.7.0(@types/node@22.15.3)(babel-plugin-macros@3.1.0))(typescript@5.8.3)
@@ -6410,12 +6410,12 @@ snapshots:
 
   '@uploadthing/mime-types@0.3.4': {}
 
-  '@uploadthing/react@7.3.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(uploadthing@7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.4))':
+  '@uploadthing/react@7.3.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(uploadthing@7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.5))':
     dependencies:
       '@uploadthing/shared': 7.1.7
       file-selector: 0.6.0
       react: 19.1.0
-      uploadthing: 7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.4)
+      uploadthing: 7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.5)
     optionalDependencies:
       next: 15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
@@ -9063,7 +9063,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  uploadthing@7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.4):
+  uploadthing@7.6.0(next@15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@4.1.5):
     dependencies:
       '@effect/platform': 0.72.0(effect@3.12.0)
       '@standard-schema/spec': 1.0.0-beta.4
@@ -9072,7 +9072,7 @@ snapshots:
       effect: 3.12.0
     optionalDependencies:
       next: 15.3.1(@babel/core@7.26.7)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      tailwindcss: 4.1.4
+      tailwindcss: 4.1.5
 
   uri-js@4.4.1:
     dependencies:
