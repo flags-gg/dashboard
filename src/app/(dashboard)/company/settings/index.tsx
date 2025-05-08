@@ -10,7 +10,7 @@ import Details from "./details"
 export default function Settings() {
   const {is} = useFlags();
 
-  if (!is("company settings")?.enabled()) {
+  if (is("company settings")?.disabled()) {
     return <></>
   }
 
