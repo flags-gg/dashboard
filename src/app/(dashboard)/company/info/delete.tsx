@@ -47,7 +47,7 @@ export default function DeleteButton() {
   const queryClient = useQueryClient();
   const {is} = useFlags();
 
-  if (!is("company delete")?.enabled()) {
+  if (is("company delete")?.disabled()) {
     return <></>
   }
 

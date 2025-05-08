@@ -14,7 +14,7 @@ export function ThemeChooser() {
   const {setTheme} = useTheme();
   const {is} = useFlags();
 
-  if (!is("theme chooser")?.enabled()) {
+  if (is("theme chooser")?.disabled()) {
     return null;
   }
 
