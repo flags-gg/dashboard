@@ -80,7 +80,7 @@ export default function Clone({environment_id}: {environment_id: string}) {
     })
   }
 
-  if (!is("clone env")?.enabled()) {
+  if (is("clone env")?.disabled()) {
     return <></>
   }
 
