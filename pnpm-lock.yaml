@@ -211,8 +211,8 @@ importers:
         version: 3.24.4
     devDependencies:
       '@eslint/js':
-        specifier: ^9.26.0
-        version: 9.26.0
+        specifier: ^9.27.0
+        version: 9.27.0
       '@next/eslint-plugin-next':
         specifier: ^15.3.2
         version: 15.3.2
@@ -612,6 +612,10 @@ packages:
 
   '@eslint/js@9.26.0':
     resolution: {integrity: sha512-I9XlJawFdSMvWjDt6wksMCrgns5ggLNfFwFvnShsleWruvXM514Qxk8V246efTw+eo9JABvVz+u3q2RiAowKxQ==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.27.0':
+    resolution: {integrity: sha512-G5JD9Tu5HJEu4z2Uo4aHY2sLV64B7CDMXxFzqzjl3NKd6RVzSXNoE80jk7Y0lJkTTkjiIhBAqmlYwjuBY3tvpA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.6':
@@ -4420,9 +4424,6 @@ packages:
   tailwind-merge@3.3.0:
     resolution: {integrity: sha512-fyW/pEfcQSiigd5SNn0nApUOxx0zB/dm6UDU/rEwc2c3sX2smWUNbapHv+QRqLGVp9GWX3THIa7MUGPo+YkDzQ==}
 
-  tailwindcss@4.1.6:
-    resolution: {integrity: sha512-j0cGLTreM6u4OWzBeLBpycK0WIh8w7kSwcUsQZoGLHZ7xDTdM69lN64AgoIEEwFi0tnhs4wSykUa5YWxAzgFYg==}
-
   tailwindcss@4.1.7:
     resolution: {integrity: sha512-kr1o/ErIdNhTz8uzAYL7TpaUuzKIE6QPQ4qmSdxnoX/lo+5wmUHQA6h3L5yIqEImSRnAAURDirLu/BgiXGPAhg==}
 
@@ -5109,6 +5110,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@9.26.0': {}
+
+  '@eslint/js@9.27.0': {}
 
   '@eslint/object-schema@2.1.6': {}
 
@@ -9348,8 +9351,6 @@ snapshots:
       use-sync-external-store: 1.5.0(react@19.1.0)
 
   tailwind-merge@3.3.0: {}
-
-  tailwindcss@4.1.6: {}
 
   tailwindcss@4.1.7: {}
 
