@@ -57,7 +57,7 @@
     "embla-carousel-react": "^8.6.0",
     "geist": "^1.4.2",
     "input-otp": "^1.4.2",
-    "jotai": "^2.12.4",
+    "jotai": "^2.12.5",
     "lucide-react": "^0.511.0",
     "next": "^15.3.2",
     "next-auth": "4.24.11",
