@@ -189,8 +189,8 @@ importers:
         specifier: ^2.0.4
         version: 2.0.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       stripe:
-        specifier: ^18.1.1
-        version: 18.1.1(@types/node@22.15.29)
+        specifier: ^18.2.0
+        version: 18.2.0(@types/node@22.15.29)
       superjson:
         specifier: ^2.2.2
         version: 2.2.2
@@ -612,10 +612,6 @@ packages:
 
   '@eslint/eslintrc@3.3.1':
     resolution: {integrity: sha512-gtF186CXhIl1p4pJNGZw8Yc6RlshoePRvE0X91oPGb3vZ8pM3qOS9W9NGPat9LziaBV7XrJWGylNQXkGcnM3IQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@eslint/js@9.27.0':
-    resolution: {integrity: sha512-G5JD9Tu5HJEu4z2Uo4aHY2sLV64B7CDMXxFzqzjl3NKd6RVzSXNoE80jk7Y0lJkTTkjiIhBAqmlYwjuBY3tvpA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/js@9.28.0':
@@ -4406,8 +4402,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  stripe@18.1.1:
-    resolution: {integrity: sha512-hlF0ripc2nJrihpsJZQDl3xirS7tpdpS7DlmSNLEDRW8j7Qr215y5DHOI3+aEY/lq6PG8y4GR1RZPtEoIoAs/g==}
+  stripe@18.2.0:
+    resolution: {integrity: sha512-RpOaGh5CLs3SYeVXw1CIQZNwPVADBJtgNyUgu+ZkIvu3u4pkZvNrlKr+WaLoNjSPQWef0dikxDS2AKHBl/l3bg==}
     engines: {node: '>=12.*'}
     peerDependencies:
       '@types/node': '>=12.x.x'
@@ -5135,8 +5131,6 @@ snapshots:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
-
-  '@eslint/js@9.27.0': {}
 
   '@eslint/js@9.28.0': {}
 
@@ -9440,7 +9434,7 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  stripe@18.1.1(@types/node@22.15.29):
+  stripe@18.2.0(@types/node@22.15.29):
     dependencies:
       qs: 6.14.0
     optionalDependencies:
