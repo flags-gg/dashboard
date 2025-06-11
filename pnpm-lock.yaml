@@ -112,7 +112,7 @@ importers:
         version: 7.3.1
       '@t3-oss/env-nextjs':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.56)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.58)
       '@tanstack/react-query':
         specifier: ^5.80.6
         version: 5.80.6(react@19.1.0)
@@ -207,8 +207,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.1.6(@types/react@19.1.7))(@types/react@19.1.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       zod:
-        specifier: ^3.25.56
-        version: 3.25.56
+        specifier: ^3.25.58
+        version: 3.25.58
     devDependencies:
       '@eslint/js':
         specifier: ^9.28.0
@@ -4743,8 +4743,8 @@ packages:
     peerDependencies:
       zod: ^3.24.4
 
-  zod@3.25.56:
-    resolution: {integrity: sha512-rd6eEF3BTNvQnR2e2wwolfTmUTnp70aUTqr0oaGbHifzC3BKJsoV+Gat8vxUMR1hwOKBs6El+qWehrHbCpW6SQ==}
+  zod@3.25.58:
+    resolution: {integrity: sha512-DVLmMQzSZwNYzQoMaM3MQWnxr2eq+AtM9Hx3w1/Yl0pH8sLTSjN4jGP7w6f7uand6Hw44tsnSu1hz1AOA6qI2Q==}
 
 snapshots:
 
@@ -6268,19 +6268,19 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@t3-oss/env-core@0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.56)':
+  '@t3-oss/env-core@0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.58)':
     optionalDependencies:
       arktype: 2.1.20
       typescript: 5.8.3
-      zod: 3.25.56
+      zod: 3.25.58
 
-  '@t3-oss/env-nextjs@0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.56)':
+  '@t3-oss/env-nextjs@0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.58)':
     dependencies:
-      '@t3-oss/env-core': 0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.56)
+      '@t3-oss/env-core': 0.13.8(arktype@2.1.20)(typescript@5.8.3)(zod@3.25.58)
     optionalDependencies:
       arktype: 2.1.20
       typescript: 5.8.3
-      zod: 3.25.56
+      zod: 3.25.58
 
   '@tailwindcss/node@4.1.8':
     dependencies:
@@ -7528,8 +7528,8 @@ snapshots:
       '@babel/plugin-proposal-private-methods': 7.18.6(@babel/core@7.27.1)
       eslint: 9.28.0(jiti@2.4.2)
       hermes-parser: 0.25.1
-      zod: 3.25.56
-      zod-validation-error: 3.4.1(zod@3.25.56)
+      zod: 3.25.58
+      zod-validation-error: 3.4.1(zod@3.25.58)
     transitivePeerDependencies:
       - supports-color
 
@@ -9820,8 +9820,8 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod-validation-error@3.4.1(zod@3.25.56):
+  zod-validation-error@3.4.1(zod@3.25.58):
     dependencies:
-      zod: 3.25.56
+      zod: 3.25.58
 
-  zod@3.25.56: {}
+  zod@3.25.58: {}
