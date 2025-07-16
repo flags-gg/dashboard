@@ -3,7 +3,6 @@ import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import pluginReact from "eslint-plugin-react";
 
-// @ts-expect-error - eslint-plugin-next is not typed
 import pluginNext from '@next/eslint-plugin-next';
 
 export default [
