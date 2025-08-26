@@ -106,10 +106,10 @@ importers:
         version: 1.2.8(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@stripe/react-stripe-js':
         specifier: ^3.9.1
-        version: 3.9.1(@stripe/stripe-js@7.8.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 3.9.1(@stripe/stripe-js@7.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@stripe/stripe-js':
-        specifier: ^7.8.0
-        version: 7.8.0
+        specifier: ^7.9.0
+        version: 7.9.0
       '@t3-oss/env-nextjs':
         specifier: ^0.13.8
         version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.1)
@@ -1690,8 +1690,8 @@ packages:
       react: '>=16.8.0 <20.0.0'
       react-dom: '>=16.8.0 <20.0.0'
 
-  '@stripe/stripe-js@7.8.0':
-    resolution: {integrity: sha512-DNXRfYUgkZlrniQORbA/wH8CdFRhiBSE0R56gYU0V5vvpJ9WZwvGrz9tBAZmfq2aTgw6SK7mNpmTizGzLWVezw==}
+  '@stripe/stripe-js@7.9.0':
+    resolution: {integrity: sha512-ggs5k+/0FUJcIgNY08aZTqpBTtbExkJMYMLSMwyucrhtWexVOEY1KJmhBsxf+E/Q15f5rbwBpj+t0t2AW2oCsQ==}
     engines: {node: '>=12.16'}
 
   '@swc/helpers@0.5.15':
@@ -6364,14 +6364,14 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@stripe/react-stripe-js@3.9.1(@stripe/stripe-js@7.8.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@stripe/react-stripe-js@3.9.1(@stripe/stripe-js@7.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@stripe/stripe-js': 7.8.0
+      '@stripe/stripe-js': 7.9.0
       prop-types: 15.8.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  '@stripe/stripe-js@7.8.0': {}
+  '@stripe/stripe-js@7.9.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:
