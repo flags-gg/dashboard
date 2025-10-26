@@ -7,10 +7,20 @@ import { AgentSwitch } from "./switch";
 import { useAgent } from "~/hooks/use-agent";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { toast } from "sonner";
+import { Copy } from "lucide-react";
 
 export default function AgentInfo({agent_id}: {agent_id: string}) {
   const [, setSelectedAgent] = useAtom(agentAtom);
   const {data: agentInfo, isLoading} = useAgent(agent_id);
+
+  const copyAgentId = () => {
+    navigator.clipboard.writeText(agent_id ?? "").then(() => {
+      toast(`${agentInfo?.name} Agent ID Copied`, {
+        description: `The ${agentInfo?.name} agent id has been copied to your clipboard`,
+      })
+    })
+  }
 
   useEffect(() => {
     if (agentInfo) {
@@ -33,7 +43,10 @@ export default function AgentInfo({agent_id}: {agent_id: string}) {
                 <p className={"cursor-pointer"}>{agentInfo?.agent_id.slice(0, 11)}...</p>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{agentInfo?.agent_id}</p>
+                <p>
+                  {agentInfo?.agent_id}
+                  <Copy className={"size-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyAgentId} />
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

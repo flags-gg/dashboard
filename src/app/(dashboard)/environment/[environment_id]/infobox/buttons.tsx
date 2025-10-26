@@ -56,7 +56,7 @@ export default function InfoButtons({environmentId}: {environmentId: string}) {
                 Use the following configuration to set up your Flags.gg
                 provider:
               </p>
-              <pre>
+              <pre className={"bg-secondary rounded p-1"}>
                 <code>
                   {`<FlagsProvider options={{\n`}
                   {`  projectId: "${projectInfo?.project_id}",\n`}
@@ -70,7 +70,7 @@ export default function InfoButtons({environmentId}: {environmentId: string}) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant={"ghost"} onClick={() => copyAgentCode(code)}>Copy Agent Code</Button>
+            <Button variant={"ghost"} onClick={() => copyAgentCode(code)} className={"cursor-pointer"}>Copy Agent Code</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>}
