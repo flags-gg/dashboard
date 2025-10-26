@@ -13,7 +13,7 @@ import {
 } from "~/components/ui/dialog";
 import {UploadButton} from "~/lib/utils/uploadthing";
 import Image from "next/image";
-import { ShieldPlus } from "lucide-react";
+import { Copy, ShieldPlus } from "lucide-react";
 import { ProjectSwitch } from "./switch";
 import { Skeleton } from "~/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
@@ -55,6 +55,14 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   const [imageURL, setImageURL] = useState("")
   const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
   const {user} = useUser();
+
+  const copyProjectId = () => {
+    navigator.clipboard.writeText(project_id ?? "").then(() => {
+      toast(`${projectInfo.name} Project ID Copied`, {
+        description: `The ${projectInfo.name} project id has been copied to your clipboard`,
+      })
+    })
+  }
 
   useEffect(() => {
     if (user) {
@@ -103,7 +111,10 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
                 <p className={"cursor-pointer"}>{project_id.slice(0, 11)}...</p>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{project_id}</p>
+                <p>
+                  {project_id}
+                  <Copy className={"size-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyProjectId} />
+                </p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

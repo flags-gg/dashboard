@@ -110,7 +110,7 @@ export default function Info() {
                   <p className={"cursor-pointer"} onClick={copyInviteCode}>{companyInfo?.company?.invite_code.slice(0, 12)}...</p>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className={"size-[20rem]"}>
+                  <p className={"w-[20rem] h-[1rem]"}>
                     {companyInfo?.company?.invite_code}
                     <Copy className={"size-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyInviteCode} />
                   </p>
