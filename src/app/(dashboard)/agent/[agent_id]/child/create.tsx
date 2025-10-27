@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
-import { CornerDownRight, CornerRightDown } from "lucide-react";
+import { CornerRightDown } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -20,36 +20,33 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "~/components/ui/input";
+import { toast } from "sonner";
+import { useCreateEnvironment } from "~/hooks/use-create-environment";
 
-export default function CreateChild() {
+export default function CreateChild({envId, agentId}: {envId: string, agentId: string}) {
   const [openChild, setOpenChild] = useState(false);
+  const createEnv = useCreateEnvironment();
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    setOpenChild(false)
-    form.reset()
-    // try {
-    //   updateAgentName(agent_id, data.name, agentInfo.enabled).then(() => {
-    //     setAgentInfo({ ...agentInfo, name: data.name })
-    //     setAgentName(data.name)
-    //     toast("Agent name updated", {
-    //       description: "Agent name updated successfully",
-    //     })
-    //   }).catch((e) => {
-    //     if (e instanceof Error) {
-    //       toast("Error updating agent name", {
-    //         description: `There was an error updating the agent name: ${e.message}`,
-    //       })
-    //     }
-    //
-    //     throw new Error("Failed to update agent name")
-    //   })
-    // } catch (e) {
-    //   console.error("Error updating agent name", e)
-    //
-    //   toast("Error updating agent name", {
-    //     description: "There was an unknown error updating the agent name",
-    //   })
-    // }
+    createEnv.mutate({
+      agentId: agentId,
+      parentId: envId,
+      name: data.name,
+    }, {
+      onSuccess: () => {
+        setOpenChild(false);
+        form.reset();
+        toast("Child Environment Created", {
+          description: "Child environment created successfully",
+        });
+      },
+      onError: (error) => {
+        console.error("Child environment failed to create", error);
+        toast("Child Environment Failed", {
+          description: "Child environment failed to create",
+        });
+      },
+    });
   }
 
   const FormSchema = z.object({
@@ -81,7 +78,7 @@ export default function CreateChild() {
                 <FormMessage />
               </FormItem>
             )} />
-            <Button type={"submit"} className={"cursor-pointer"}>Create</Button>
+            <Button type={"submit"} className={"cursor-pointer"} disabled={createEnv.isPending}>Create</Button>
           </form>
         </Form>
       </PopoverContent>

@@ -21,8 +21,6 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
   const levels = environments?.environments?.map(environment => environment.level ?? -Infinity) ?? [];
   const maxLevel = levels.length ? Math.max(...levels) : -Infinity;
 
-
-
   return (
     <div className={"gap-3 col-span-2 min-w-[40rem]"}>
       <Card className={"mb-3"}>
@@ -47,7 +45,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
                   <Link
                     href={`/environment/${environment.environment_id}`}>{environment.enabled ? "True" : "False"}</Link>
                   {environment.level === maxLevel && (
-                    <CreateChild />
+                    <CreateChild envId={environment.environment_id} agentId={agent_id}/>
                   )}
                 </TableCell>
               </TableRow>
