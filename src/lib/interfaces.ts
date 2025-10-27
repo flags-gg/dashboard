@@ -58,6 +58,7 @@ export interface IEnvironment {
   name: string;
   environment_id: string;
   enabled: boolean;
+  level: number;
   secret_menu: {
     enabled: boolean;
     menu_id: string;
