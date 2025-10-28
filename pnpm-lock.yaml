@@ -26,7 +26,13 @@ importers:
         version: 1.14.6(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 =======
         specifier: ^1.14.7
+<<<<<<< ours
         version: 1.14.7(@babel/core@7.28.4)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+>>>>>>> theirs
+||||||| ancestor
+        version: 1.14.7(@babel/core@7.28.4)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+=======
+        version: 1.14.7(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 >>>>>>> theirs
       '@hookform/resolvers':
         specifier: ^5.2.2
@@ -5381,12 +5387,19 @@ snapshots:
       levn: 0.4.1
 
 <<<<<<< ours
+<<<<<<< ours
   '@flags-gg/react-library@1.14.7(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
 ||||||| ancestor
   '@flags-gg/react-library@1.14.6(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
 =======
 
   '@flags-gg/react-library@1.14.6(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+>>>>>>> theirs
+||||||| ancestor
+
+  '@flags-gg/react-library@1.14.6(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+=======
+  '@flags-gg/react-library@1.14.7(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
 >>>>>>> theirs
     dependencies:
       '@swc/helpers': 0.5.17
@@ -5400,7 +5413,7 @@ snapshots:
       lucide-react: 0.540.0(react@19.1.0)
 =======
       fast-equals: 5.3.2
-      jotai: 2.15.0(@babel/core@7.28.4)(@babel/template@7.27.2)(@types/react@19.1.8)(react@19.1.0)
+      jotai: 2.15.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react@19.1.0)
       lucide-react: 0.548.0(react@19.1.0)
 >>>>>>> theirs
       react: 19.1.0
