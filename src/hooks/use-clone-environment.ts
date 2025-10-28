@@ -1,14 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { IEnvironment } from '~/lib/interfaces';
 
-export type CreateEnvironmentInput = {
+export type CloneEnvironmentInput = {
   agentId: string;
-  parentId: string;
+  environmentId: string;
   name: string;
 };
 
-async function createEnvironment(input: CreateEnvironmentInput): Promise<IEnvironment> {
-  const res = await fetch(`/api/environment/create`, {
+async function cloneEnvironment(input: CloneEnvironmentInput): Promise<IEnvironment> {
+  console.info("Cloning", input)
+
+  const res = await fetch(`/api/environment/clone`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -25,11 +27,10 @@ async function createEnvironment(input: CreateEnvironmentInput): Promise<IEnviro
   return await res.json() as IEnvironment;
 }
 
-export function useCreateEnvironment() {
+export function useCloneEnvironment() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (input: CreateEnvironmentInput) => createEnvironment(input),
+    mutationFn: (input: CloneEnvironmentInput) => cloneEnvironment(input),
     onSuccess: (data) => {
       // Best-effort invalidations; keys may differ across the app
       // Invalidate any environment detail queries

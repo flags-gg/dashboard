@@ -21,16 +21,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
-import { useCreateEnvironment } from "~/hooks/use-create-environment";
+import { useCloneEnvironment } from "~/hooks/use-clone-environment";
 
 export default function CreateChild({envId, agentId}: {envId: string, agentId: string}) {
   const [openChild, setOpenChild] = useState(false);
-  const createEnv = useCreateEnvironment();
+  const createEnv = useCloneEnvironment();
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.info("Creating child environment with data:", data, envId, agentId);
+
     createEnv.mutate({
       agentId: agentId,
-      parentId: envId,
+      environmentId: envId,
       name: data.name,
     }, {
       onSuccess: () => {
