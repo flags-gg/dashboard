@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
-import { CornerRightDown } from "lucide-react";
+import { CornerRightDown, Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -22,14 +22,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
 import { useCloneEnvironment } from "~/hooks/use-clone-environment";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "~/components/ui/skeleton";
+import { NewLoader } from "~/components/ui/new-loader";
 
 export default function CreateChild({envId, agentId}: {envId: string, agentId: string}) {
   const [openChild, setOpenChild] = useState(false);
   const createEnv = useCloneEnvironment();
+  const router = useRouter();
+  const [isCreating, setIsCreating] = useState(false);
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.info("Creating child environment with data:", data, envId, agentId);
-
+    setIsCreating(true);
     createEnv.mutate({
       agentId: agentId,
       environmentId: envId,
@@ -41,12 +45,16 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
         toast("Child Environment Created", {
           description: "Child environment created successfully",
         });
+        // Refresh the current route so the server component list re-fetches
+        router.refresh();
+        setIsCreating(false)
       },
       onError: (error) => {
         console.error("Child environment failed to create", error);
         toast("Child Environment Failed", {
           description: "Child environment failed to create",
         });
+        setIsCreating(false)
       },
     });
   }
@@ -69,20 +77,24 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className={"w-full space-y-6"}>
-            <FormField control={form.control} name={"name"} render={({field}) => (
-              <FormItem>
-                <FormLabel>Create Child Environment</FormLabel>
-                <FormControl>
-                  <Input placeholder={"Environment Name"} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-            <Button type={"submit"} className={"cursor-pointer"} disabled={createEnv.isPending}>Create</Button>
-          </form>
-        </Form>
+        {isCreating ? (
+          <NewLoader />
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className={"w-full space-y-6"}>
+              <FormField control={form.control} name={"name"} render={({field}) => (
+                <FormItem>
+                  <FormLabel>Create Child Environment</FormLabel>
+                  <FormControl>
+                    <Input placeholder={"Environment Name"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
+              <Button type={"submit"} className={"cursor-pointer"} disabled={createEnv.isPending}>Create</Button>
+            </form>
+          </Form>
+        )}
       </PopoverContent>
     </Popover>
   )

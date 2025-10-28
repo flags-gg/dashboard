@@ -8,8 +8,6 @@ export type CloneEnvironmentInput = {
 };
 
 async function cloneEnvironment(input: CloneEnvironmentInput): Promise<IEnvironment> {
-  console.info("Cloning", input)
-
   const res = await fetch(`/api/environment/clone`, {
     method: 'POST',
     headers: {
