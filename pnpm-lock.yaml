@@ -150,8 +150,8 @@ importers:
         specifier: ^2.15.0
         version: 2.15.0(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.1.8)(react@19.1.0)
       lucide-react:
-        specifier: ^0.544.0
-        version: 0.544.0(react@19.1.0)
+        specifier: ^0.548.0
+        version: 0.548.0(react@19.1.0)
       next:
         specifier: ^15.4.6
         version: 15.4.6(@babel/core@7.28.5)(babel-plugin-macros@3.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
