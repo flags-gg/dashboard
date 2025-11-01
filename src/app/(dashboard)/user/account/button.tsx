@@ -5,10 +5,9 @@ import {UploadButton} from "~/lib/utils/uploadthing";
 export default function Button() {
   return <UploadButton
         endpoint="imageUploader"
-        onClientUploadComplete={(res) => {
+        onClientUploadComplete={() => {
 
           // Do something with the response
-          console.info("upload completed", res)
           alert("Upload Completed");
         }}
         onUploadError={(error: Error) => {

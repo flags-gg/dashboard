@@ -10,7 +10,6 @@ const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'no-store',
   });
 
   if (!res.ok) {
@@ -23,12 +22,16 @@ const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
 
 export const useCompanyLimits = () => {
   const [commitHash] = useAtom(commitHashAtom)
-  const {user} = useUser();
+  const { user, isLoaded } = useUser();
 
   return useQuery<CompanyLimits, Error>({
     queryKey: ['companyLimits', user?.id, commitHash],
     queryFn: () => fetchCompanyLimits(),
+    enabled: isLoaded && !!user?.id,
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 };
