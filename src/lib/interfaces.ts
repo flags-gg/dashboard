@@ -59,6 +59,7 @@ export interface IEnvironment {
   environment_id: string;
   enabled: boolean;
   level: number;
+  canPromote: boolean;
   secret_menu: {
     enabled: boolean;
     menu_id: string;
@@ -93,6 +94,8 @@ export interface Flag {
   details: {
     name: string,
     id: string,
+    lastChanged: string,
+    promoted: boolean,
   }
 }
 

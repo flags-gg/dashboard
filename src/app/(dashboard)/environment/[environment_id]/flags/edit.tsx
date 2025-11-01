@@ -15,7 +15,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { LoadingSpinner } from "~/components/ui/loader";
 import { toast } from "sonner";
 
-// TODO: edit flag
 async function editFlagAction(flag: Flag): Promise<null | Error> {
     try {
         const res = await fetch(`/api/flag/edit`, {
@@ -65,7 +64,7 @@ export function EditFlag({flag}: {flag: Flag}) {
 
         try {
             editFlagAction(flag).then(() => {
-                setLoading(false);
+                setLoading(true);
                 router.refresh()
             }).catch((e) => {
                 if (e instanceof Error) {

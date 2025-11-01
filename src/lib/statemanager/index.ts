@@ -33,6 +33,8 @@ export const environmentAtom = atomWithStorage<IEnvironment>("environmentAtom", 
   name: '',
   environment_id: '',
   enabled: false,
+  level: 0,
+  canPromote: false,
   secret_menu: {
     enabled: false,
     menu_id: '',
