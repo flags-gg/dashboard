@@ -7,7 +7,6 @@ import { LoadingSpinner } from "~/components/ui/loader";
 import { toast } from "sonner";
 import { BookUp2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEnvironment } from "~/hooks/use-environment";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 

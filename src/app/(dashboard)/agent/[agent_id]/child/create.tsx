@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
-import { CornerRightDown, Loader2 } from "lucide-react";
+import { CornerRightDown } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -23,7 +23,6 @@ import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
 import { useCloneEnvironment } from "~/hooks/use-clone-environment";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "~/components/ui/skeleton";
 import { NewLoader } from "~/components/ui/new-loader";
 
 export default function CreateChild({envId, agentId}: {envId: string, agentId: string}) {
