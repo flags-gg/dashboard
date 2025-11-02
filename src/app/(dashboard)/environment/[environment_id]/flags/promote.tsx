@@ -48,7 +48,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
     setLoading(true);
     try {
       promoteFlag(flag).then(() => {
-        setLoading(true);
+        setLoading(false);
         router.refresh()
       }).catch((err) => {
         setError(err);
