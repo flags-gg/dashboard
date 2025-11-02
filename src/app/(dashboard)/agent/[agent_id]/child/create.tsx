@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
-import { CornerRightDown } from "lucide-react";
+import { CornerRightUp } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -72,7 +72,7 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
     <Popover open={openChild} onOpenChange={setOpenChild}>
       <PopoverTrigger asChild>
         <Button variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer ml-2"} size={"icon"}>
-          <CornerRightDown className={"size-5"} />
+          <CornerRightUp className={"size-5"} />
         </Button>
       </PopoverTrigger>
       <PopoverContent>

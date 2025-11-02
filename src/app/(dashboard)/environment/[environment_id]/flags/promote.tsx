@@ -67,7 +67,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
   if (loading) {
     return (
       <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-        <LoadingSpinner className={"size-3"} />
+        <LoadingSpinner className={"size-5"} />
       </Button>
     )
   }
@@ -79,7 +79,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
 
     return (
       <Button disabled={true} size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-        <BookUp2 className={"size-3"} />
+        <BookUp2 className={"size-5"} />
       </Button>
     )
   }
