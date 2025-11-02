@@ -6,8 +6,8 @@ import Link from "next/link";
 import CreateProject from "~/app/(dashboard)/project/create";
 import { buttonVariants } from "~/components/ui/button";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
-import { NewLoader } from "~/components/ui/new-loader";
 import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 export default function InfoButtons() {
   const { is } = useFlags();
@@ -16,7 +16,7 @@ export default function InfoButtons() {
   if (isLoading) {
     return (
       <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
-        <NewLoader />
+        <Spinner />
       </CardFooter>
     )
   }

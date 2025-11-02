@@ -12,8 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
-import { LoadingSpinner } from "~/components/ui/loader";
 import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 async function editFlagAction(flag: Flag): Promise<null | Error> {
     try {
@@ -91,7 +91,7 @@ export function EditFlag({flag}: {flag: Flag}) {
     if (loading) {
         return (
             <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-                <LoadingSpinner className={"size-3"} />
+                <Spinner />
             </Button>
         )
     }

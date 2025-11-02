@@ -3,12 +3,12 @@
 import { Flag } from "~/lib/interfaces";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import { LoadingSpinner } from "~/components/ui/loader";
 import { toast } from "sonner";
-import { BookUp2 } from "lucide-react";
+import { BookUp2, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
+import { Spinner } from "~/components/ui/spinner";
 
 async function promoteFlag(flag: Flag): Promise<null | Error>  {
   try {
@@ -67,7 +67,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
   if (loading) {
     return (
       <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-        <LoadingSpinner className={"size-5"} />
+        <Spinner />
       </Button>
     )
   }

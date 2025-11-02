@@ -8,9 +8,9 @@ import { useFlags } from "@flags-gg/react-library";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { buttonVariants } from "~/components/ui/button";
 import Link from "next/link";
-import { NewLoader } from "~/components/ui/new-loader";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 export default function InfoButtons() {
   const [projectInfo] = useAtom(projectAtom);
@@ -24,7 +24,7 @@ export default function InfoButtons() {
   if (isLoading) {
     return (
       <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
-        <NewLoader />
+        <Spinner />
       </CardFooter>
     )
   }

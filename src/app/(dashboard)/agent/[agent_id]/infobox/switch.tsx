@@ -4,8 +4,8 @@ import { Switch } from "~/components/ui/switch";
 import { agentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useAgent } from "~/hooks/use-agent";
-import { NewLoader } from "~/components/ui/new-loader";
 import {toast} from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 async function enableDisableAgent(agent_id: string, enabled: boolean, agentName: string) {
   try {
@@ -37,7 +37,7 @@ export function AgentSwitch({agent_id}: {agent_id: string}) {
   const {data: agentData, isLoading} = useAgent(agent_id)
 
   if (isLoading) {
-    return <NewLoader />
+    return <Spinner />
   }
 
   const onSwitch = () => {
