@@ -1,6 +1,5 @@
 import { useCompanyDetails } from "~/hooks/use-company-details";
 import { useCallback, useState } from "react";
-import { NewLoader } from "~/components/ui/new-loader";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +15,7 @@ import { UpgradeChoice } from "~/lib/interfaces";
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 interface IError {
   message: string
@@ -64,7 +64,7 @@ export default function Plan() {
   const stripeOptions = { fetchClientSecret }
 
   if (detailsLoading || choicesLoading) {
-    return <NewLoader />
+    return <Spinner />
   }
 
   if (showError) {

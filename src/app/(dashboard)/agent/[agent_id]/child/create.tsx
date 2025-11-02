@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
-import { CornerRightDown } from "lucide-react";
+import { CornerRightUp, Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -23,7 +23,6 @@ import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
 import { useCloneEnvironment } from "~/hooks/use-clone-environment";
 import { useRouter } from "next/navigation";
-import { NewLoader } from "~/components/ui/new-loader";
 
 export default function CreateChild({envId, agentId}: {envId: string, agentId: string}) {
   const [openChild, setOpenChild] = useState(false);
@@ -72,12 +71,14 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
     <Popover open={openChild} onOpenChange={setOpenChild}>
       <PopoverTrigger asChild>
         <Button variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer ml-2"} size={"icon"}>
-          <CornerRightDown className={"size-5"} />
+          <CornerRightUp className={"size-5"} />
         </Button>
       </PopoverTrigger>
       <PopoverContent>
         {isCreating ? (
-          <NewLoader />
+          <Button variant={"outline"} className={"bg-muted/10 border-0 ml-2"} disabled={true} size={"icon"}>
+            <Loader2 />
+          </Button>
         ) : (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className={"w-full space-y-6"}>

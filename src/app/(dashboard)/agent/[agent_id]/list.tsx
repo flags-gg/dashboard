@@ -21,6 +21,17 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
   const levels = environments?.environments?.map(environment => environment.level ?? -Infinity) ?? [];
   const maxLevel = levels.length ? Math.max(...levels) : -Infinity;
 
+  const sortedEnvironments = (environments?.environments ?? [])
+    .slice()
+    .sort((a, b) => {
+      const aNum = Number(a.id);
+      const bNum = Number(b.id);
+      if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
+        return bNum - aNum; // highest id first, lowest at bottom
+      }
+      return String(b.id).localeCompare(String(a.id));
+    });
+
   return (
     <div className={"gap-3 col-span-2 min-w-[40rem]"}>
       <Card className={"mb-3"}>
@@ -33,7 +44,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
             </TableRow>
           </TableHeader>
           <TableBody>
-            {environments?.environments?.map(environment => (
+            {sortedEnvironments.map(environment => (
               <TableRow key={environment.id}>
                 <TableCell>
                   <Link href={`/environment/${environment.environment_id}`}>{environment.name}</Link>

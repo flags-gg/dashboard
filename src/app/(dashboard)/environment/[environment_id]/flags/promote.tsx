@@ -3,12 +3,12 @@
 import { Flag } from "~/lib/interfaces";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import { LoadingSpinner } from "~/components/ui/loader";
 import { toast } from "sonner";
 import { BookUp2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
+import { Spinner } from "~/components/ui/spinner";
 
 async function promoteFlag(flag: Flag): Promise<null | Error>  {
   try {
@@ -48,7 +48,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
     setLoading(true);
     try {
       promoteFlag(flag).then(() => {
-        setLoading(true);
+        setLoading(false);
         router.refresh()
       }).catch((err) => {
         setError(err);
@@ -67,7 +67,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
   if (loading) {
     return (
       <Button asChild size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-        <LoadingSpinner className={"size-3"} />
+        <Spinner />
       </Button>
     )
   }
@@ -79,7 +79,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
 
     return (
       <Button disabled={true} size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
-        <BookUp2 className={"size-3"} />
+        <BookUp2 className={"size-5"} />
       </Button>
     )
   }
