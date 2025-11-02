@@ -4,7 +4,7 @@ import { Flag } from "~/lib/interfaces";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
-import { BookUp2, Loader2 } from "lucide-react";
+import { BookUp2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
