@@ -56,7 +56,7 @@ export default function Name({agent_id}: {agent_id: string}) {
       setAgentName(agentData.name)
       setAgentInfo(agentData)
     }
-  }, [agentData, setAgentInfo])
+  }, [agentData])
 
   const FormSchema = z.object({
     name: z.string().min(2, {message: "Name is required to be at least 2 characters"}),

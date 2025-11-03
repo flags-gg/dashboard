@@ -112,7 +112,7 @@ export default function BreadCrumbs({commitHash}: {commitHash: string}) {
   const pathname = usePathname()
   useEffect(() => {
     setCommitHash(commitHash)
-  }, [commitHash, setCommitHash])
+  }, [commitHash])
 
   return (
     <Breadcrumb className={"md:flex"} key={"breadcrumbs-root"}>

@@ -26,7 +26,7 @@ export default function AgentInfo({agent_id}: {agent_id: string}) {
     if (agentInfo) {
       setSelectedAgent(agentInfo);
     }
-  }, [agentInfo, setSelectedAgent]);
+  }, [agentInfo]);
 
   if (isLoading) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />

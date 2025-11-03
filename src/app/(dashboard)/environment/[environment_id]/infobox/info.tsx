@@ -31,7 +31,7 @@ export default function Info({environmentId, menuId}: {environmentId: string, me
     if (environmentInfo) {
       setSelectedEnvironment(environmentInfo)
     }
-  }, [environmentInfo, setSelectedEnvironment])
+  }, [environmentInfo])
 
   if (isLoading) {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
