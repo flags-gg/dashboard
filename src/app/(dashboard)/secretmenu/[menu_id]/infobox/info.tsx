@@ -12,7 +12,7 @@ export default function Info({secretMenuInfo}: {secretMenuInfo: SecretMenu}) {
   const [, setSelectedSecretMenu] = useAtom(secretMenuAtom)
   useEffect(() => {
     setSelectedSecretMenu(secretMenuInfo)
-  }, [secretMenuInfo, setSelectedSecretMenu])
+  }, [secretMenuInfo])
 
   return (
     <div className={"grid gap-3"}>

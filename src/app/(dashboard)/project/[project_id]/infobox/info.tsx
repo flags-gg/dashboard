@@ -69,7 +69,7 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
       setSelectedProject(projectInfo)
       setImageURL(projectInfo.logo)
     }
-  }, [projectInfo, setSelectedProject, setImageURL, user])
+  }, [projectInfo, user])
 
   if (!user) {
     return <></>
