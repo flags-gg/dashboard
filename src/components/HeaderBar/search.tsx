@@ -105,8 +105,6 @@ export function SearchBox() {
     }
   }, [projectsError, agentsError, environmentsError, user, toast])
 
-  console.info("projects", projectsData, "agents", agentsData, "environments", environmentsData)
-
   const shouldShowSearch = isOnboarded && is("search")?.enabled() && user && !error;
   if (shouldShowSearch) {
     return (
