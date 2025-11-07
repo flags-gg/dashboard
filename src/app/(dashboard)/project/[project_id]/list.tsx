@@ -1,8 +1,9 @@
 import {Card} from "~/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import Link from "next/link";
-import {AgentsData} from "~/lib/interfaces";
+import { AgentsData, EnvironmentsData } from "~/lib/interfaces";
 import {getAgents} from "~/app/api/agent/agent";
+import { getEnvironments } from "~/app/api/environment/environment";
 
 export default async function AgentsList({ project_id }: { project_id: string }) {
   let agents: AgentsData;
@@ -17,6 +18,19 @@ export default async function AgentsList({ project_id }: { project_id: string })
         </Card>
       </div>
     )
+  }
+
+  if (agents !== undefined && agents.agents.length > 0) {
+    for (let agent of agents.agents) {
+      let environments: EnvironmentsData
+      try {
+        const env = await getEnvironments(agent.agent_id)
+        environments = env.data as EnvironmentsData;
+        agent.environments = environments.environments as []
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   return (
