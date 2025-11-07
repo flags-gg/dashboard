@@ -40,6 +40,7 @@ export const environmentAtom = atomWithStorage<IEnvironment>("environmentAtom", 
     menu_id: '',
   },
   flags: [],
+  agent_id: '',
   agent_name: '',
   project_name: '',
 })

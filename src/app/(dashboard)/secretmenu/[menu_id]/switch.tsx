@@ -37,13 +37,11 @@ export function MenuSwitch({menu_id}: { menu_id: string }) {
         toast("Menu Updated", {
           description: "The menu has been updated",
         })
-        setSelectedEnvironment((prev) => {
-          return {
-            ...prev,
-            secret_menu: {
-              ...prev.secret_menu,
-              enabled: !prev.secret_menu.enabled,
-            }
+        setSelectedEnvironment({
+          ...selectedEnvironment,
+          secret_menu: {
+            ...selectedEnvironment.secret_menu,
+            enabled: !selectedEnvironment.secret_menu.enabled,
           }
         })
       }).catch((e) => {

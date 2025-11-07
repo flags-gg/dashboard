@@ -65,6 +65,7 @@ export interface IEnvironment {
     menu_id: string;
   },
   flags: [];
+  agent_id: string;
   agent_name: string;
   project_name: string;
 }
