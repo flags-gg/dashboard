@@ -21,7 +21,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
   }
 
   if (agents !== undefined && agents.agents.length > 0) {
-    for (let agent of agents.agents) {
+    for (const agent of agents.agents) {
       let environments: EnvironmentsData
       try {
         const env = await getEnvironments(agent.agent_id)
