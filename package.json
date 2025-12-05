@@ -65,7 +65,7 @@
     "react": "19.2.1",
     "react-colorful": "^5.6.1",
     "react-day-picker": "9.11.3",
-    "react-dom": "19.2.0",
+    "react-dom": "19.2.1",
     "react-hook-form": "^7.68.0",
     "react-resizable-panels": "^3.0.6",
     "recharts": "^2.15.4",
@@ -89,7 +89,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "@types/react": "19.2.7",
-    "@types/react-dom": "19.2.2",
+    "@types/react-dom": "19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.48.1",
     "eslint": "^9.39.1",
@@ -113,7 +113,7 @@
   "pnpm": {
     "overrides": {
       "@types/react": "19.2.7",
-      "@types/react-dom": "19.2.2"
+      "@types/react-dom": "19.2.3"
     }
   },
   "engines": {
