@@ -11,6 +11,7 @@ import { getFlags } from "~/app/api/flag/list";
 import { FlagSwitch } from "./switch";
 import { DeleteFlag } from "./delete";
 import { EditFlag } from "./edit";
+import { PromoteFlag } from "~/app/(dashboard)/environment/[environment_id]/flags/promote";
 
 export default async function FlagsList({ environment_id }: { environment_id: string; }) {
   let flags: Flag[] = [];
@@ -50,6 +51,7 @@ export default async function FlagsList({ environment_id }: { environment_id: st
                   <FlagSwitch flag={flag} />
                 </TableCell>
                 <TableCell className={"gap-2 flex place-content-end"}>
+                  <PromoteFlag flag={flag} />
                   <EditFlag flag={flag} />
                   <DeleteFlag flag={flag} />
                 </TableCell>

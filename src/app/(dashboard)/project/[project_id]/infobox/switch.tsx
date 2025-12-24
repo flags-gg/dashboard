@@ -4,9 +4,9 @@ import { Switch } from "~/components/ui/switch";
 import {useAtom} from "jotai";
 import {projectAtom} from "~/lib/statemanager";
 import { useProject } from "~/hooks/use-project";
-import { NewLoader } from "~/components/ui/new-loader";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
   try {
@@ -51,7 +51,7 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   }
 
   if (!projectData || isLoading) {
-    return <NewLoader />
+    return <Spinner />
   }
 
   const onSwitch = () => {

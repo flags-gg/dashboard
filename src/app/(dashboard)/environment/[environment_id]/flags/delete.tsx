@@ -4,9 +4,9 @@ import {type Flag} from "~/lib/interfaces";
 import {useState} from "react";
 import {Button} from "~/components/ui/button";
 import {Trash2} from "lucide-react";
-import {LoadingSpinner} from "~/components/ui/loader";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 async function deleteFlagAction(flag_id: string): Promise<null | Error> {
     try {
@@ -64,7 +64,7 @@ export function DeleteFlag({flag}: {flag: Flag}) {
     if (loading) {
         return (
             <Button size={'icon'} variant={"outline"} className={"bg-muted/10 border-0"} disabled={true}>
-                <LoadingSpinner className={"size-3"} />
+                <Spinner />
             </Button>
         )
     }

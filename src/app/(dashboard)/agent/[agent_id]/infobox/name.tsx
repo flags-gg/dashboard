@@ -13,8 +13,8 @@ import { Pencil } from "lucide-react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useAgent } from "~/hooks/use-agent";
-import { NewLoader } from "~/components/ui/new-loader";
 import {toast} from "sonner";
+import { Spinner } from "~/components/ui/spinner";
 
 async function updateAgentName(agent_id: string, name: string, enabled: boolean): Promise<null | Error> {
   try {
@@ -56,7 +56,7 @@ export default function Name({agent_id}: {agent_id: string}) {
       setAgentName(agentData.name)
       setAgentInfo(agentData)
     }
-  }, [agentData, setAgentInfo])
+  }, [agentData])
 
   const FormSchema = z.object({
     name: z.string().min(2, {message: "Name is required to be at least 2 characters"}),
@@ -97,7 +97,7 @@ export default function Name({agent_id}: {agent_id: string}) {
   }
 
   if (isLoading) {
-    return <NewLoader />
+    return <Spinner />
   }
 
   return (

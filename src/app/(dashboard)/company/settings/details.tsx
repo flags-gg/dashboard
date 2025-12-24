@@ -1,13 +1,13 @@
 "use client"
 
 import { useCompanyDetails } from "~/hooks/use-company-details";
-import { NewLoader } from "~/components/ui/new-loader";
+import { Spinner } from "~/components/ui/spinner";
 
 export default function Details() {
   const {data: companyInfo, isLoading} = useCompanyDetails();
 
   if (isLoading) {
-    return <NewLoader />
+    return <Spinner />
   }
 
   return (

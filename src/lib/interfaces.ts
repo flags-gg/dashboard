@@ -58,11 +58,14 @@ export interface IEnvironment {
   name: string;
   environment_id: string;
   enabled: boolean;
+  level: number;
+  canPromote: boolean;
   secret_menu: {
     enabled: boolean;
     menu_id: string;
   },
   flags: [];
+  agent_id: string;
   agent_name: string;
   project_name: string;
 }
@@ -92,6 +95,8 @@ export interface Flag {
   details: {
     name: string,
     id: string,
+    lastChanged: string,
+    promoted: boolean,
   }
 }
 
