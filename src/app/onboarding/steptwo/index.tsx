@@ -21,13 +21,18 @@ import { toast } from "sonner";
 export default function StepTwo() {
   const router = useRouter()
   const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
-  const {user} = useUser()
-  if (!user) {
-    router.push("/")
-  }
+  const {user, isLoaded} = useUser()
 
-  // they have somehow got to the second step without completing the first step
+  // Handle unauthenticated users and step validation
   useEffect(() => {
+    if (isLoaded && !user) {
+      router.push("/")
+      return
+    }
+
+    if (!user) return
+
+    // they have somehow got to the second step without completing the first step
     getUserDetails().then(userData => {
       if (userData?.onboarded) {
         setOnboardingComplete(true)
@@ -41,7 +46,7 @@ export default function StepTwo() {
       console.error("User not setup yet", err)
       router.push("/onboarding")
     })
-  }, [])
+  }, [isLoaded, user, router, setOnboardingComplete])
 
   const companyCodeSchema = z.object({
     companyCode: z.string().min(2, {message: "Company Invite Code is required a minimum of 2 characters"}),
