@@ -3,7 +3,6 @@
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useEffect } from "react";
-import {hasCookie} from "cookies-next";
 import { getUserDetails } from "~/hooks/use-user-details";
 import { useUser } from "@clerk/nextjs";
 
@@ -13,11 +12,6 @@ export default function OnboardCheck() {
 
   useEffect(() => {
     if (!hasCompletedOnboarding) {
-      if (hasCookie("hasCompletedOnboarding")) {
-        setHasCompletedOnboarding(true)
-        return
-      }
-
       getUserDetails().then((user) => {
         if (user?.onboarded) {
           setHasCompletedOnboarding(true)
@@ -26,7 +20,7 @@ export default function OnboardCheck() {
         console.error("error in getUserDetails", e, useUserData)
       })
     }
-  }, [hasCompletedOnboarding])
+  }, [hasCompletedOnboarding, setHasCompletedOnboarding, useUserData])
 
   return <></>
 }
