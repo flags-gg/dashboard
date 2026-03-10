@@ -16,7 +16,11 @@ jobs:
           fetch-depth: 1
       - name: Install Railway CLI
         run: npm install -g @railway/cli
+      - name: Link Railway project
+        run: railway link --project a53fbabb-c9f2-4a1c-81e7-653521f3bb70 --environment production --service dashboard
+        env:
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       - name: Deploy to production
-        run: railway up --project flags --service dashboard --environment production --detach
+        run: railway up --detach
         env:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
