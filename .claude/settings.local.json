@@ -15,7 +15,8 @@
       "Bash(gh pr:*)",
       "Bash(bun run:*)",
       "Bash(SKIP_ENV_VALIDATION=1 bun run:*)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(gh run:*)"
     ],
     "deny": []
   }
