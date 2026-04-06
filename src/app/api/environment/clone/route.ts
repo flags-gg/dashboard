@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const { name, environmentId, agentId }: CloneEnv = await request.json() as CloneEnv
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -29,12 +29,12 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to clone environment' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to clone environment' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Environment cloned successfully' })
   } catch (e) {
     console.error('Failed to clone environment', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

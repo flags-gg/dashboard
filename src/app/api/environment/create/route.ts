@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const { name, agentId }: CreateEnv = await request.json() as CreateEnv
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -29,13 +29,13 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to create environment' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create environment' }, { status: 500 })
     }
     const body = await response.json()
 
     return NextResponse.json(body)
   } catch (e) {
     console.error('Failed to create environment', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

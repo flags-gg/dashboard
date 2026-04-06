@@ -10,7 +10,7 @@ export async function DELETE(request: Request) {
   const { flag_id }: DeleteFlag = await request.json() as DeleteFlag
   const user = await currentUser();
   if (!user) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -24,12 +24,12 @@ export async function DELETE(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to delete flag' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to delete flag' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Flag deleted successfully' })
   } catch (e) {
     console.error('Failed to delete flag', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -21,22 +21,24 @@ interface IError {
   title: string
 }
 
-function uploadImage({ imageUrl }: { imageUrl: string }): Error | void {
-  fetch(`/api/user/image`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ image: imageUrl }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return new Error(`HTTP error! status: ${response.status}`);
-      }
+async function uploadImage({ imageUrl }: { imageUrl: string }): Promise<Error | void> {
+  try {
+    const response = await fetch(`/api/user/image`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: imageUrl }),
     })
-    .catch((error: Error) => {
-      return error;
-    });
+    if (!response.ok) {
+      return new Error(`HTTP error! status: ${response.status}`)
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      return error
+    }
+    return new Error("Failed to upload image")
+  }
 }
 
 export default function UserImage() {
@@ -67,11 +69,14 @@ export default function UserImage() {
     );
   }
 
-  if (showError) {
-    toast(errorInfo.title, {
-      description: errorInfo.message,
-    })
-  }
+  useEffect(() => {
+    if (showError) {
+      toast(errorInfo.title, {
+        description: errorInfo.message,
+      })
+      setShowError(false)
+    }
+  }, [showError, errorInfo])
 
   return (
     <div className={"flex flex-col items-center gap-4"}>
@@ -89,7 +94,7 @@ export default function UserImage() {
           <div className={"grid gap-4 py-4"}>
             <UploadButton
               endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
+              onClientUploadComplete={async (res) => {
                 if (!res?.[0]?.url) {
                   setShowError(true)
                   setErrorInfo({
@@ -99,7 +104,7 @@ export default function UserImage() {
                   setIconOpen(false)
                   return
                 }
-                const upload = uploadImage({
+                const upload = await uploadImage({
                   imageUrl: res[0].url,
                 })
                 if (upload instanceof Error) {
