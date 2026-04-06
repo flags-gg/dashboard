@@ -67,11 +67,14 @@ export default function UserImage() {
     );
   }
 
-  if (showError) {
-    toast(errorInfo.title, {
-      description: errorInfo.message,
-    })
-  }
+  useEffect(() => {
+    if (showError) {
+      toast(errorInfo.title, {
+        description: errorInfo.message,
+      })
+      setShowError(false)
+    }
+  }, [showError, errorInfo])
 
   return (
     <div className={"flex flex-col items-center gap-4"}>
