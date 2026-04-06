@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const { flag }: UpdateFlagRequest = await request.json();
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -35,6 +35,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Flag updated successfully' });
   } catch (error) {
     console.error('Error updating flag:', error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

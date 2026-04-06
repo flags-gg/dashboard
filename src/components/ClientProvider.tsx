@@ -1,15 +1,25 @@
 "use client"
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { ThemeProvider, useTheme } from "next-themes";
 import {FlagsProvider} from "@flags-gg/react-library";
 import { env } from "~/env";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useAuth } from "@clerk/nextjs";
 
 export default function ClientProvider({ children}: { children: ReactNode}) {
   const {theme} = useTheme()
   const [queryClient] = useState(() => new QueryClient())
+  const { isSignedIn } = useAuth()
+  const prevSignedIn = useRef(isSignedIn)
+
+  useEffect(() => {
+    if (prevSignedIn.current && !isSignedIn) {
+      queryClient.clear()
+    }
+    prevSignedIn.current = isSignedIn
+  }, [isSignedIn, queryClient])
 
   const flagConfig = {
     projectId: env.NEXT_PUBLIC_FLAGS_PROJECT ?? "",

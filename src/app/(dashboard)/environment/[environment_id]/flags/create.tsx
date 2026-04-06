@@ -63,23 +63,19 @@ export default function CreateFlag({ environment_id }: { environment_id: string 
     defaultValues: {flagName: ""},
   })
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsOpen(false)
 
     try {
-      createFlagAction(environment_id, agentInfo.agent_id, data.flagName).then((flag) => {
-        if (flag instanceof Error) {
-          throw new Error("Failed to create flag")
-        }
-
-        router.refresh()
-      }).catch((e) => {
-        throw new Error(`Failed to create flag: ${e}`)
-      })
+      const flag = await createFlagAction(environment_id, agentInfo.agent_id, data.flagName)
+      if (flag instanceof Error) {
+        throw flag
+      }
+      router.refresh()
     } catch (e) {
       console.error(e)
       toast("Failed to create flag", {
-        description: "Failed to create flag",
+        description: e instanceof Error ? e.message : "Failed to create flag",
       })
     }
 

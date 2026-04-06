@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const { name, environment_id, agent_id }: CreateFlag = await request.json() as CreateFlag
   const user = await currentUser();
   if (!user) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to create flag' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create flag' }, { status: 500 })
     }
 
     return NextResponse.json({
@@ -42,6 +42,6 @@ export async function POST(request: Request) {
     })
   } catch (e) {
     console.error('Failed to create flag', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -11,7 +11,7 @@ export async function DELETE(request: Request) {
   const { projectId }: DeleteProject = await request.json() as DeleteProject
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -25,13 +25,13 @@ export async function DELETE(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to delete environment' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 })
     }
 
-    return NextResponse.json({ message: 'Environment deleted successfully' })
+    return NextResponse.json({ message: 'Project deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete environment', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    console.error('Failed to delete project', e)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
@@ -44,11 +44,11 @@ export async function GET(request: Request) {
   const projectId = searchParams.get('projectId')
 
   if (!projectId) {
-    return NextResponse.json({ message: 'No projectId provided' }, { status: 400 })
+    return NextResponse.json({ error: 'No projectId provided' }, { status: 400 })
   }
   const data = await getProject(projectId)
   if (!data) {
-    return NextResponse.json({ message: 'No project found' }, { status: 404 })
+    return NextResponse.json({ error: 'No project found' }, { status: 404 })
   }
 
   return NextResponse.json(data)

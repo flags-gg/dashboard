@@ -10,7 +10,7 @@ type InviteUser = {
 export async function POST(req: Request) {
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { name, email } = await req.json() as InviteUser;
