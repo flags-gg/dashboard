@@ -1,0 +1,73 @@
+import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure } from "./_helpers";
+
+jest.mock("@clerk/nextjs/server", () => ({
+  currentUser: jest.fn(),
+}));
+
+jest.mock("~/env", () => ({
+  env: { API_SERVER: "https://api.test.com/v1" },
+}));
+
+import { currentUser } from "@clerk/nextjs/server";
+import { POST as createEnvironment } from "~/app/api/environment/create/route";
+import { GET as getEnvironments } from "~/app/api/environment/list/route";
+
+const mockedCurrentUser = currentUser as jest.MockedFunction<typeof currentUser>;
+
+describe("Environment API Routes", () => {
+  const originalFetch = global.fetch;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    global.fetch = originalFetch;
+  });
+
+  describe("POST /api/environment/create", () => {
+    it("returns 401 when not authenticated", async () => {
+      mockedCurrentUser.mockResolvedValue(null);
+      const req = createMockRequest("/api/environment/create", {
+        method: "POST",
+        body: { agentId: "agent-1", name: "Staging" },
+      });
+
+      const res = await createEnvironment(req);
+      expect(res.status).toBe(401);
+    });
+
+    it("creates environment successfully", async () => {
+      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      global.fetch = mockFetchSuccess({ environment_id: "env-new" });
+
+      const req = createMockRequest("/api/environment/create", {
+        method: "POST",
+        body: { agentId: "agent-1", name: "Staging" },
+      });
+
+      const res = await createEnvironment(req);
+      expect(res.status).toBe(200);
+    });
+  });
+
+  describe("GET /api/environment/list", () => {
+    it("returns 401 when not authenticated", async () => {
+      mockedCurrentUser.mockResolvedValue(null);
+      const res = await getEnvironments();
+      expect(res.status).toBe(401);
+    });
+
+    it("returns environments list", async () => {
+      const envData = [
+        { id: "1", name: "Production", environment_id: "env-1" },
+        { id: "2", name: "Staging", environment_id: "env-2" },
+      ];
+      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      global.fetch = mockFetchSuccess(envData);
+
+      const res = await getEnvironments();
+      expect(res.status).toBe(200);
+    });
+  });
+});
