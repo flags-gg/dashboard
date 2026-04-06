@@ -37,7 +37,7 @@ describe("POST /api/agent/create", () => {
 
   it("creates agent and returns response", async () => {
     const agentData = { id: "1", name: "New Agent", agent_id: "agent-new" };
-    mockedCurrentUser.mockResolvedValue(mockUser as any);
+    mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
     global.fetch = mockFetchSuccess(agentData);
 
     const req = createMockRequest("/api/agent/create", {
@@ -52,7 +52,7 @@ describe("POST /api/agent/create", () => {
   });
 
   it("sends correct data to backend API", async () => {
-    mockedCurrentUser.mockResolvedValue(mockUser as any);
+    mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
     global.fetch = mockFetchSuccess({});
 
     const req = createMockRequest("/api/agent/create", {
@@ -72,7 +72,7 @@ describe("POST /api/agent/create", () => {
   });
 
   it("returns 500 when backend returns error", async () => {
-    mockedCurrentUser.mockResolvedValue(mockUser as any);
+    mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
     global.fetch = mockFetchFailure();
 
     const req = createMockRequest("/api/agent/create", {
@@ -85,7 +85,7 @@ describe("POST /api/agent/create", () => {
   });
 
   it("returns 500 on network error", async () => {
-    mockedCurrentUser.mockResolvedValue(mockUser as any);
+    mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
     global.fetch = mockFetchThrow("Connection refused");
 
     const req = createMockRequest("/api/agent/create", {

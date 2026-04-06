@@ -37,7 +37,7 @@ describe("Project API Routes", () => {
     });
 
     it("deletes project successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/project", {
@@ -52,7 +52,7 @@ describe("Project API Routes", () => {
     });
 
     it("returns 500 when backend fails", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchFailure();
 
       const req = createMockRequest("/api/project", {
@@ -65,7 +65,7 @@ describe("Project API Routes", () => {
     });
 
     it("returns 500 on network error", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchThrow();
 
       const req = createMockRequest("/api/project", {
@@ -78,7 +78,7 @@ describe("Project API Routes", () => {
     });
 
     it("sends correct headers to backend", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/project", {
@@ -102,7 +102,7 @@ describe("Project API Routes", () => {
 
   describe("GET /api/project", () => {
     it("returns 400 when no projectId provided", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       const req = createMockRequest("/api/project");
 
       const res = await GET(req);
@@ -111,7 +111,7 @@ describe("Project API Routes", () => {
 
     it("returns project data", async () => {
       const projectData = { id: "1", name: "Test", project_id: "proj-1" };
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(projectData);
 
       const req = createMockRequest("/api/project", {
@@ -123,7 +123,7 @@ describe("Project API Routes", () => {
     });
 
     it("calls backend with correct project ID", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess({ id: "1", name: "Test", project_id: "proj-1" });
 
       const req = createMockRequest("/api/project", {

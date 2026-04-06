@@ -5,6 +5,7 @@ import { createElement, type ReactNode } from "react";
 
 // Mock jotai atoms
 jest.mock("~/lib/statemanager", () => {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { atom } = require("jotai");
   return { commitHashAtom: atom("") };
 });

@@ -1,4 +1,4 @@
-import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure } from "./_helpers";
+import { createMockRequest, mockUser, mockFetchSuccess } from "./_helpers";
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
@@ -38,7 +38,7 @@ describe("Environment API Routes", () => {
     });
 
     it("creates environment successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess({ environment_id: "env-new" });
 
       const req = createMockRequest("/api/environment/create", {
@@ -63,7 +63,7 @@ describe("Environment API Routes", () => {
         { id: "1", name: "Production", environment_id: "env-1" },
         { id: "2", name: "Staging", environment_id: "env-2" },
       ];
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(envData);
 
       const res = await getEnvironments();

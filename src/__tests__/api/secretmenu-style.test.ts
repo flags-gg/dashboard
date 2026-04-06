@@ -1,4 +1,4 @@
-import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure } from "./_helpers";
+import { createMockRequest, mockUser, mockFetchSuccess } from "./_helpers";
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
@@ -38,7 +38,7 @@ describe("Secret Menu Style API Routes", () => {
 
     it("returns style data on success", async () => {
       const styleData = { style_id: "style-1", styles: [] };
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(styleData);
 
       const req = createMockRequest("/api/secretmenu/style", {
@@ -74,7 +74,7 @@ describe("Secret Menu Style API Routes", () => {
     });
 
     it("updates style successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/secretmenu/style", {
@@ -87,7 +87,7 @@ describe("Secret Menu Style API Routes", () => {
     });
 
     it("returns 400 for invalid JSON style", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
 
       const req = createMockRequest("/api/secretmenu/style", {
         method: "PUT",
@@ -99,7 +99,7 @@ describe("Secret Menu Style API Routes", () => {
     });
 
     it("includes styleId when provided", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/secretmenu/style", {

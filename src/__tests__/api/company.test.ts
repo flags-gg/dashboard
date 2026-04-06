@@ -37,7 +37,7 @@ describe("Company API Routes", () => {
     });
 
     it("creates company successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess({ message: "created" });
 
       const req = createMockRequest("/api/company/create", {
@@ -52,7 +52,7 @@ describe("Company API Routes", () => {
     });
 
     it("sends correct data to backend", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/company/create", {
@@ -75,7 +75,7 @@ describe("Company API Routes", () => {
     });
 
     it("returns 500 when backend fails", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchFailure();
 
       const req = createMockRequest("/api/company/create", {
@@ -88,7 +88,7 @@ describe("Company API Routes", () => {
     });
 
     it("returns 500 on network error", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchThrow();
 
       const req = createMockRequest("/api/company/create", {

@@ -29,7 +29,7 @@ class MockRequest {
         : []
     );
     this._bodyText = typeof init?.body === 'string' ? init.body : null;
-    this.cache = (init as any)?.cache ?? 'default';
+    this.cache = (init as Record<string, unknown>)?.cache as string ?? 'default';
   }
 
   async json() {

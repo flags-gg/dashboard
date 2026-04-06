@@ -45,7 +45,7 @@ describe("Flag API Routes", () => {
     });
 
     it("toggles flag successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/flag", {
@@ -65,7 +65,7 @@ describe("Flag API Routes", () => {
     });
 
     it("sends negated enabled value to backend", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/flag", {
@@ -103,7 +103,7 @@ describe("Flag API Routes", () => {
     });
 
     it("deletes flag successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/flag/delete", {
@@ -118,7 +118,7 @@ describe("Flag API Routes", () => {
     });
 
     it("returns 500 on network error", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchThrow();
 
       const req = createMockRequest("/api/flag/delete", {
@@ -134,7 +134,7 @@ describe("Flag API Routes", () => {
   describe("POST /api/flag/create", () => {
     it("creates flag successfully", async () => {
       const flagData = { enabled: true, details: { id: "new-flag", name: "New Flag" } };
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(flagData);
 
       const req = createMockRequest("/api/flag/create", {
@@ -147,7 +147,7 @@ describe("Flag API Routes", () => {
     });
 
     it("returns 500 when backend fails", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchFailure();
 
       const req = createMockRequest("/api/flag/create", {
@@ -162,7 +162,7 @@ describe("Flag API Routes", () => {
 
   describe("POST /api/flag/edit", () => {
     it("edits flag name successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/flag/edit", {

@@ -39,7 +39,7 @@ describe("Agent API Routes", () => {
     });
 
     it("deletes agent successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess({ message: "deleted" });
 
       const req = createMockRequest("/api/agent", {
@@ -54,7 +54,7 @@ describe("Agent API Routes", () => {
     });
 
     it("returns 500 when backend fails", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchFailure();
 
       const req = createMockRequest("/api/agent", {
@@ -67,7 +67,7 @@ describe("Agent API Routes", () => {
     });
 
     it("returns 500 on network error", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchThrow();
 
       const req = createMockRequest("/api/agent", {
@@ -98,7 +98,7 @@ describe("Agent API Routes", () => {
         agent_id: "agent-1",
         enabled: true,
       };
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(agentData);
 
       const req = createMockRequest("/api/agent", {
@@ -112,7 +112,7 @@ describe("Agent API Routes", () => {
     });
 
     it("returns 500 when backend fails", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchFailure();
 
       const req = createMockRequest("/api/agent", {
@@ -126,7 +126,7 @@ describe("Agent API Routes", () => {
 
   describe("PUT /api/agent", () => {
     it("updates agent successfully", async () => {
-      mockedCurrentUser.mockResolvedValue(mockUser as any);
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess();
 
       const req = createMockRequest("/api/agent", {
