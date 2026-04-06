@@ -29,24 +29,28 @@ interface uploadImageProps {
   imageUrl: string
 }
 
-function uploadImage({companyId, imageUrl}: uploadImageProps): Error | void {
+async function uploadImage({companyId, imageUrl}: uploadImageProps): Promise<Error | void> {
   if (!companyId) {
     return new Error("No company ID provided")
   }
 
-  fetch(`/api/company/image`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({image: imageUrl, company_id: companyId}),
-  }).then((response) => {
+  try {
+    const response = await fetch(`/api/company/image`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({image: imageUrl, company_id: companyId}),
+    })
     if (!response.ok) {
-      return new Error(`HTTP error! status: ${response.status}`);
+      return new Error(`HTTP error! status: ${response.status}`)
     }
-  }).catch((error: Error) => {
-    return error
-  })
+  } catch (error) {
+    if (error instanceof Error) {
+      return error
+    }
+    return new Error("Failed to upload image")
+  }
 }
 
 export default function Info() {
@@ -134,7 +138,7 @@ export default function Info() {
                 <div className={"grid gap-4 py-4"}>
                   <UploadButton
                     endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
+                    onClientUploadComplete={async (res) => {
                       if (!res?.[0]?.url) {
                         setShowError(true)
                         setErrorInfo({
@@ -144,7 +148,7 @@ export default function Info() {
                         setIconOpen(false)
                         return
                       }
-                      const upload = uploadImage({
+                      const upload = await uploadImage({
                         companyId: companyInfo?.company?.id,
                         imageUrl: res[0].url,
                       })
@@ -156,7 +160,6 @@ export default function Info() {
                         })
                       }
                       setIconOpen(false)
-                      imageElement = <Image src={res[0].url} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
                       setImageURL(res[0].url)
                     }}
                     onUploadError={(error: Error) => {
