@@ -1,7 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(grep -l \"useEffect\" /Volumes/Dockcase/Projects/flags/dashboard/src/app/\\\\\\(dashboard\\\\\\)/**/\\\\*.tsx)",
+      "mcp__linear__list_teams",
+      "mcp__linear__list_projects",
+      "mcp__linear__save_issue",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git worktree:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git push:*)",
+      "Bash(gh pr:*)",
+      "Bash(bun run:*)"
     ],
     "deny": []
   }
