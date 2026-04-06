@@ -6,7 +6,7 @@ export async function PUT(request: Request) {
   const { domain, invite_code }: { domain: string, invite_code: string } = await request.json() as { domain: string, invite_code: string }
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -23,12 +23,12 @@ export async function PUT(request: Request) {
       cache: 'no-store',
     })
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to update company user' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to update company user' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Company user updated' })
   } catch (e) {
     console.error('Failed to update company user', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

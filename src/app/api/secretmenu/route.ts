@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const {menuId}: SecretMenuParams = await request.json();
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   if (!menuId) {
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     return response
   } catch (error) {
     console.error('Error getting secret menu:', error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
   const {menu_id} = await request.json();
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -61,6 +61,6 @@ export async function PUT(request: Request) {
     return NextResponse.json({message: 'Secret menu updated successfully'})
   } catch (error) {
     console.error('Error updating secret menu:', error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

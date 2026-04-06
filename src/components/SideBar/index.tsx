@@ -13,10 +13,10 @@ import { getUserDetails } from "~/hooks/use-user-details";
 export default function SideBar() {
   const {user} = useUser();
 
-  const [, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
+  const [isOnboarded, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const {data: onboardedData, error: onboardedError} = useQuery({
     queryKey: ["onboarded", user?.id],
-    queryFn: getUserDetails,
+    queryFn: ({ signal }) => getUserDetails(signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(user) && Boolean(user?.id),
   });
@@ -27,8 +27,13 @@ export default function SideBar() {
     }
   }, [onboardedError]);
 
-  if (onboardedData?.onboarded) {
-    setIsOnboarded(true);
+  useEffect(() => {
+    if (onboardedData?.onboarded && !isOnboarded) {
+      setIsOnboarded(true);
+    }
+  }, [onboardedData?.onboarded, isOnboarded, setIsOnboarded]);
+
+  if (onboardedData?.onboarded || isOnboarded) {
     return <Standard />;
   }
 

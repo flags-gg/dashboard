@@ -7,7 +7,7 @@ import { UserDetails } from "~/hooks/use-user-details";
 export async function GET() {
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -19,21 +19,21 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to fetch user details' }, { status: 404 })
+      return NextResponse.json({ error: 'Failed to fetch user details' }, { status: 404 })
     }
 
     const data = await response.json() as UserDetails
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch user details', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
 export async function PUT(request: Request) {
   const user = await currentUser();
   if (!user) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const {firstName, lastName, knownAs, email} = await request.json();
 
@@ -54,20 +54,20 @@ export async function PUT(request: Request) {
     })
     if (!response.ok) {
       console.error('Failed to update user details', response)
-      return NextResponse.json({ message: 'Failed to update user details' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to update user details' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'User details updated' })
   } catch (e) {
     console.error('Failed to update user details', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
 export async function POST(request: Request) {
   const user = await currentUser();
   if (!user) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const {firstName, lastName, knownAs, email} = await request.json();
 
@@ -88,12 +88,12 @@ export async function POST(request: Request) {
     })
     if (!response.ok) {
       console.error('Failed to update user details', response)
-      return NextResponse.json({ message: 'Failed to update user details' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to update user details' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'User details updated' })
   } catch (e) {
     console.error('Failed to update user details', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { FlagAgent } from "~/lib/interfaces";
 
-const fetchAgent = async (agentId: string): Promise<FlagAgent | null> => {
+const fetchAgent = async (agentId: string, signal?: AbortSignal): Promise<FlagAgent | null> => {
   const res = await fetch(`/api/agent?agentId=${agentId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'no-store'
+    cache: 'no-store',
+    signal,
   })
   if (!res.ok) {
     throw new Error('Failed to fetch agent')
@@ -23,7 +24,7 @@ export const useAgent = (agentId: string) => {
 
   return useQuery<FlagAgent | null, Error>({
     queryKey: ['agent', agentId, commitHash],
-    queryFn: () => fetchAgent(agentId),
+    queryFn: ({ signal }) => fetchAgent(agentId, signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(agentId),
     retry: (failureCount, error) => {
