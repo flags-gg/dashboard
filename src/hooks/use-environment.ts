@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { IEnvironment } from "~/lib/interfaces";
 
-const fetchEnvironment = async (environmentId: string): Promise<IEnvironment | null> => {
+const fetchEnvironment = async (environmentId: string, signal?: AbortSignal): Promise<IEnvironment | null> => {
   const res = await fetch(`/api/environment?environmentId=${environmentId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'no-store'
+    cache: 'no-store',
+    signal,
   })
   if (!res.ok) {
     throw new Error('Failed to fetch environment')
@@ -23,7 +24,7 @@ export const useEnvironment = (environmentId: string) => {
 
   return useQuery<IEnvironment | null, Error>({
     queryKey: ['environment', environmentId, commitHash],
-    queryFn: () => fetchEnvironment(environmentId),
+    queryFn: ({ signal }) => fetchEnvironment(environmentId, signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(environmentId),
     retry: (failureCount, error) => {

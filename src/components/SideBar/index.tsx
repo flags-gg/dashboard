@@ -16,7 +16,7 @@ export default function SideBar() {
   const [isOnboarded, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const {data: onboardedData, error: onboardedError} = useQuery({
     queryKey: ["onboarded", user?.id],
-    queryFn: getUserDetails,
+    queryFn: ({ signal }) => getUserDetails(signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(user) && Boolean(user?.id),
   });

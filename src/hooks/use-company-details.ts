@@ -3,13 +3,14 @@ import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { ICompanyInfo } from "~/lib/interfaces";
 
-const fetchCompanyDetails = async (): Promise<ICompanyInfo> => {
+const fetchCompanyDetails = async (signal?: AbortSignal): Promise<ICompanyInfo> => {
   const res = await fetch(`/api/company/info`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
     cache: 'no-store',
+    signal,
   });
 
   if (!res.ok) {
@@ -25,7 +26,7 @@ export const useCompanyDetails = () => {
 
   return useQuery<ICompanyInfo, Error>({
     queryKey: ['companyDetails', commitHash],
-    queryFn: () => fetchCompanyDetails(),
+    queryFn: ({ signal }) => fetchCompanyDetails(signal),
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

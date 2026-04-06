@@ -1,13 +1,14 @@
 import { UserDetails } from "~/hooks/use-user-details";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchCompanyUsers = async (): Promise<UserDetails[]> => {
+const fetchCompanyUsers = async (signal?: AbortSignal): Promise<UserDetails[]> => {
   const res = await fetch(`/api/company/user/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
     cache: "no-store",
+    signal,
   });
 
   if (!res.ok) {
@@ -25,7 +26,7 @@ const fetchCompanyUsers = async (): Promise<UserDetails[]> => {
 export function useCompanyUsers() {
   return useQuery({
     queryKey: ["companyUsers"],
-    queryFn: fetchCompanyUsers,
+    queryFn: ({ signal }) => fetchCompanyUsers(signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: (failureCount, error) => {
       if (error.message.includes('404')) {
