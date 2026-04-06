@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const { menuId }: StyleParams = await request.json() as StyleParams
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}/style`, {
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   })
   if (!response.ok) {
     console.error("Failed to get style", response)
-    return NextResponse.json({ message: "Failed to get style" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to get style" }, { status: 500 })
   }
 
   const data = await response.json() as StyleFetch
@@ -51,7 +51,7 @@ export async function PUT(request: Request) {
   const { menuId, styleId, style }: StyleParams = await request.json() as StyleParams
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const styleJson = JSON.parse(style) as ParsedStyle
@@ -84,12 +84,12 @@ export async function PUT(request: Request) {
       cache: 'no-store',
     })
     if (!response.ok) {
-      return NextResponse.json({ message: "Failed to update style" }, { status: 500 })
+      return NextResponse.json({ error: "Failed to update style" }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Style updated successfully' })
   } catch (e) {
     console.error('Failed to update style', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

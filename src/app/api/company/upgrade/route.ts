@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   const {priceId}: {priceId: string} = await request.json();
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const stripe = new Stripe(env.STRIPE_SECRET, {
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     return NextResponse.json({clientSecret: stripeSession.client_secret})
   } catch (e) {
     console.error('Failed to upgrade plan', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
@@ -49,7 +49,7 @@ export async function PUT(request: Request) {
   const {sessionId}: {sessionId: string} = await request.json();
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -66,12 +66,12 @@ export async function PUT(request: Request) {
     })
     if (!response.ok) {
       console.error("Failed to upgrade plan", await response.json())
-      return NextResponse.json({ message: 'Failed to upgrade plan' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to upgrade plan' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Plan upgraded successfully' })
   } catch (e) {
     console.error('Failed to upgrade plan', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

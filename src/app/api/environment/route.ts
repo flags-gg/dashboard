@@ -13,7 +13,7 @@ export async function PUT(request: Request) {
   const { name, environmentId, enabled }: UpdateEnvironmentName = await request.json() as UpdateEnvironmentName
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -32,13 +32,13 @@ export async function PUT(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to update environment name' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to update environment name' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Environment name updated successfully' })
   } catch (e) {
     console.error('Failed to update environment name', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
@@ -50,7 +50,7 @@ export async function DELETE(request: Request) {
   const { environmentId }: DeleteEnv = await request.json() as DeleteEnv
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -64,13 +64,13 @@ export async function DELETE(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to delete environment' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to delete environment' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Environment deleted successfully' })
   } catch (e) {
     console.error('Failed to delete environment', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
   const environmentId = searchParams.get('environmentId')
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -91,13 +91,13 @@ export async function GET(request: Request) {
       cache: 'no-store'
     })
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to fetch environment' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to fetch environment' }, { status: 500 })
     }
 
     const data = await response.json() as IEnvironment
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch environment', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

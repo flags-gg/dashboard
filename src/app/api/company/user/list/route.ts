@@ -6,7 +6,7 @@ import { env } from "~/env";
 export async function GET() {
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -19,17 +19,17 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to fetch company users' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to fetch company users' }, { status: 500 })
     }
 
     const data = await response.json() as UserDetails[]
     if (data.length === 0) {
-      return NextResponse.json({ message: 'No users found' }, { status: 404 })
+      return NextResponse.json({ error: 'No users found' }, { status: 404 })
     }
 
     return NextResponse.json(data)
   } catch (e) {
     console.error('Failed to fetch company users', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
