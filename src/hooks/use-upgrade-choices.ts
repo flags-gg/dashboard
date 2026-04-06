@@ -7,13 +7,14 @@ interface UpgradeChoices {
   prices: UpgradeChoice[];
 }
 
-const fetchUpgradeChoices = async (): Promise<UpgradeChoices> => {
+const fetchUpgradeChoices = async (signal?: AbortSignal): Promise<UpgradeChoices> => {
   const res = await fetch(`/api/company/pricing`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
     cache: 'no-store',
+    signal,
   });
 
   if (!res.ok) {
@@ -29,7 +30,7 @@ export const useUpgradeChoices = () => {
 
   return useQuery<UpgradeChoices, Error>({
     queryKey: ['companyUpgradeChoices', commitHash],
-    queryFn: () => fetchUpgradeChoices(),
+    queryFn: ({ signal }) => fetchUpgradeChoices(signal),
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });

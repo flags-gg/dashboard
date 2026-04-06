@@ -20,7 +20,7 @@ export type UserDetails = {
   created: boolean;
   subject: string;
 }
-export async function getUserDetails(): Promise<UserDetails> {
+export async function getUserDetails(signal?: AbortSignal): Promise<UserDetails> {
   try {
     const res = await fetch(`/api/user/details`, {
       method: "GET",
@@ -28,6 +28,7 @@ export async function getUserDetails(): Promise<UserDetails> {
         "Content-Type": "application/json",
       },
       cache: "no-store",
+      signal,
     });
 
     if (!res.ok) {
@@ -55,7 +56,7 @@ export function useUserDetails(userId: string) {
 
   return useQuery({
     queryKey: ["userDetails", userId, commitHash],
-    queryFn: getUserDetails,
+    queryFn: ({ signal }) => getUserDetails(signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(userId),
     retry: (failureCount, error) => {

@@ -4,12 +4,13 @@ import { useAtom } from "jotai";
 import { CompanyLimits } from "~/lib/interfaces";
 import { useUser } from "@clerk/nextjs";
 
-const fetchCompanyLimits = async (): Promise<CompanyLimits> => {
+const fetchCompanyLimits = async (signal?: AbortSignal): Promise<CompanyLimits> => {
   const res = await fetch(`/api/company/limits`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
+    signal,
   });
 
   if (!res.ok) {
@@ -26,7 +27,7 @@ export const useCompanyLimits = () => {
 
   return useQuery<CompanyLimits, Error>({
     queryKey: ['companyLimits', user?.id, commitHash],
-    queryFn: () => fetchCompanyLimits(),
+    queryFn: ({ signal }) => fetchCompanyLimits(signal),
     enabled: isLoaded && !!user?.id,
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
