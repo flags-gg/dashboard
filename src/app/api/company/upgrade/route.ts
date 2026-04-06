@@ -34,7 +34,7 @@ export async function POST(request: Request) {
         userId: user.id,
         priceId: priceId,
       },
-      ui_mode: 'embedded',
+      ui_mode: 'embedded_page',
       redirect_on_completion: 'always',
     });
 
