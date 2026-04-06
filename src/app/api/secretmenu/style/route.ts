@@ -54,7 +54,12 @@ export async function PUT(request: Request) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  const styleJson = JSON.parse(style) as ParsedStyle
+  let styleJson: ParsedStyle
+  try {
+    styleJson = JSON.parse(style) as ParsedStyle
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON in style parameter" }, { status: 400 })
+  }
   const dataModel = {
     menu_id: menuId,
     custom_style: {
