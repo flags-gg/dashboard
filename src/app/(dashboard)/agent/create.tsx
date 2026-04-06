@@ -59,26 +59,27 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
     defaultValues: {agentName: ""},
   })
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsOpen(false)
     form.reset()
 
-    createAgentAction(project_id, data.agentName).then(() => {
+    try {
+      const result = await createAgentAction(project_id, data.agentName)
+      if (result instanceof Error) {
+        throw result
+      }
       toast("Agent Created", {
         description: "The agent has been created",
       })
       router.refresh()
-    }).catch((e) => {
-      if (e instanceof Error) {
-        toast("Failed to create agent", {
-          description: `Failed to create agent for reason: ${e.message}`,
-        })
-      }
+    } catch (e) {
       console.error("createAgent", e)
       toast("Failed to create agent", {
-        description: "Failed to create agent for unknown reason",
+        description: e instanceof Error
+          ? `Failed to create agent: ${e.message}`
+          : "Failed to create agent for unknown reason",
       })
-    })
+    }
   }
 
   return (
