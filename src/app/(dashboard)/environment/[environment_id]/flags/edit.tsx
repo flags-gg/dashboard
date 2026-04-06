@@ -62,30 +62,21 @@ export function EditFlag({flag}: {flag: Flag}) {
         setLoading(true);
         flag.details.name = data.flagName
 
-        try {
-            editFlagAction(flag).then(() => {
-                setLoading(true);
-                router.refresh()
-            }).catch((e) => {
-                if (e instanceof Error) {
-                    setError(e.message);
-                    form.reset()
-                    return
-                }
-                setError("Failed to edit flag");
+        editFlagAction(flag).then((result) => {
+            if (result instanceof Error) {
+                setError(result.message);
                 form.reset()
                 return
-            })
-        } catch (e) {
+            }
+            router.refresh()
+        }).catch((e) => {
             console.error(e)
-            setError("Failed to edit flag")
+            setError(e instanceof Error ? e.message : "Failed to edit flag");
             form.reset()
-        } finally {
+        }).finally(() => {
             setLoading(false);
             setOpenEdit(false);
-        }
-
-        router.refresh()
+        })
     }
 
     if (loading) {
