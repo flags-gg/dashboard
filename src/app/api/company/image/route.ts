@@ -14,7 +14,7 @@ export async function PUT(request: Request) {
 
   const user = await currentUser();
   if (!user) {
-    return new NextResponse('Unauthorized', { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {

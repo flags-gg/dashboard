@@ -3,13 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { IProject } from "~/lib/interfaces";
 
-const fetchProject = async (projectId: string): Promise<IProject | null> => {
+const fetchProject = async (projectId: string, signal?: AbortSignal): Promise<IProject | null> => {
   const res = await fetch(`/api/project?projectId=${projectId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
-    cache: 'no-store'
+    cache: 'no-store',
+    signal,
   })
   if (!res.ok) {
     throw new Error('Failed to fetch project')
@@ -23,7 +24,7 @@ export const useProject = (projectId: string) => {
 
   return useQuery<IProject | null, Error>({
     queryKey: ['project', projectId, commitHash],
-    queryFn: () => fetchProject(projectId),
+    queryFn: ({ signal }) => fetchProject(projectId, signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(projectId),
     retry: (failureCount, error) => {

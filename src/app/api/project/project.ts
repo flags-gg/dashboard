@@ -85,6 +85,6 @@ export async function put(request: Request) {
     return NextResponse.json({message: 'Agent enabled status updated successfully'})
   } catch (e) {
     console.error('Failed to update agent enabled status', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

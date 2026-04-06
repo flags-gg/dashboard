@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const { environment_id }: GetFlags = await request.json() as GetFlags
   const user = await currentUser();
   if (!user) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -18,6 +18,6 @@ export async function POST(request: Request) {
     return NextResponse.json(flags)
   } catch (e) {
     console.error('Failed to fetch flags', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

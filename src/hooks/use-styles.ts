@@ -4,22 +4,18 @@ import { useAtom } from "jotai";
 import { commitHashAtom } from "~/lib/statemanager";
 import { useUser } from "@clerk/nextjs";
 
-const fetchStyles = async (menuId: string): Promise<StyleFetch> => {
-  const {user} = useUser();
-  if (!user) {
-    throw new Error('No user found')
-  }
-
+const fetchStyles = async (menuId: string, userId: string, signal?: AbortSignal): Promise<StyleFetch> => {
   const response = await fetch(`/api/secretmenu/style`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      userId: user?.id,
+      userId: userId,
       menuId: menuId,
     }),
     cache: "no-store",
+    signal,
   })
 
   if (!response.ok) {
@@ -51,8 +47,8 @@ export const useStyles = (menuId: string) => {
 
   return useQuery<{ styles: StyleState; id: string }, Error>({
     queryKey: ["styles", menuId, user?.id, commitHash],
-    queryFn: async () => {
-      const data = await fetchStyles(menuId);
+    queryFn: async ({ signal }) => {
+      const data = await fetchStyles(menuId, user.id, signal);
       return transformStyles(data);
     },
     retry: 3,

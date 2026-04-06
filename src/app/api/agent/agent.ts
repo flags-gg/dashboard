@@ -52,7 +52,7 @@ export async function put(request: Request) {
   const {agentId, name, enabled}: UpdateAgentName = await request.json();
   const user = await currentUser();
   if (!user) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
@@ -77,7 +77,7 @@ export async function put(request: Request) {
     return NextResponse.json({message: 'Agent enabled status updated successfully'})
   } catch (e) {
     console.error('Failed to update agent enabled status', e)
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
 

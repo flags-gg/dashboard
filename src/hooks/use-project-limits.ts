@@ -3,13 +3,14 @@ import { useAtom } from "jotai";
 import { useQuery } from "@tanstack/react-query";
 import { type AgentLimits } from "~/lib/interfaces";
 
-const fetchProjectLimits = async (projectId: string): Promise<AgentLimits> => {
+const fetchProjectLimits = async (projectId: string, signal?: AbortSignal): Promise<AgentLimits> => {
   const res = await fetch(`/api/project/limits/?project_id=${projectId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
     cache: 'no-store',
+    signal,
   });
 
   if (!res.ok) {
@@ -25,7 +26,7 @@ export const useProjectLimits = (projectId: string) => {
 
   return useQuery<AgentLimits, Error>({
     queryKey: ['projectLimits', projectId, commitHash],
-    queryFn: () => fetchProjectLimits(projectId),
+    queryFn: ({ signal }) => fetchProjectLimits(projectId, signal),
     retry: 3,
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: !!projectId,

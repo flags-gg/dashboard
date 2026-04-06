@@ -49,6 +49,7 @@ async function createAgentAction(project_id: string, name: string): Promise<null
 
 export default function CreateAgent({ project_id }: { project_id: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter()
 
   const formSchema = z.object({
@@ -61,6 +62,7 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsOpen(false)
+    setIsSubmitting(true)
     form.reset()
 
     try {
@@ -79,6 +81,8 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
           ? `Failed to create agent: ${e.message}`
           : "Failed to create agent for unknown reason",
       })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -103,7 +107,9 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
                 <FormMessage />
               </FormItem>
             )} />
-            <Button type={"submit"}>Create</Button>
+            <Button type={"submit"} disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create"}
+            </Button>
           </form>
         </Form>
       </DialogContent>
