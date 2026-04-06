@@ -71,12 +71,15 @@ export default function Info() {
     return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
   }
 
-  if (showError) {
-    toast(errorInfo.title, {
-      description: errorInfo.message,
-      duration: 5000,
-    })
-  }
+  useEffect(() => {
+    if (showError) {
+      toast(errorInfo.title, {
+        description: errorInfo.message,
+        duration: 5000,
+      })
+      setShowError(false)
+    }
+  }, [showError, errorInfo])
 
   const copyInviteCode = () => {
     navigator.clipboard.writeText(companyInfo?.company?.invite_code ?? "").then(() => {
