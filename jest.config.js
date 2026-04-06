@@ -17,6 +17,12 @@ export default {
     "/.claude/",
     "/src/components/ui/",
   ],
+  modulePathIgnorePatterns: [
+    "<rootDir>/.next/",
+  ],
+  watchPathIgnorePatterns: [
+    "<rootDir>/.next/",
+  ],
   testMatch: [
     "**/__tests__/**/*.test.ts",
     "**/__tests__/**/*.test.tsx",
