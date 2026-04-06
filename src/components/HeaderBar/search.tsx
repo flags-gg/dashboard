@@ -103,7 +103,7 @@ export function SearchBox() {
       });
       setError(true);
     }
-  }, [projectsError, agentsError, environmentsError, user, toast])
+  }, [projectsError, agentsError, environmentsError])
 
   const shouldShowSearch = isOnboarded && is("search")?.enabled() && user && !error;
   if (shouldShowSearch) {

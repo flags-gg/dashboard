@@ -25,12 +25,12 @@ export async function DELETE(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to delete environment' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 })
     }
 
-    return NextResponse.json({ message: 'Environment deleted successfully' })
+    return NextResponse.json({ message: 'Project deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete environment', e)
+    console.error('Failed to delete project', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
