@@ -121,7 +121,9 @@ export default function CreateProject() {
                 <FormMessage />
               </FormItem>
             )} />
-            <Button type={"submit"}>Create</Button>
+            <Button type={"submit"} disabled={createProjectMutation.isPending}>
+              {createProjectMutation.isPending ? "Creating..." : "Create"}
+            </Button>
           </form>
         </Form>
       </DialogContent>

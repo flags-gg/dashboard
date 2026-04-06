@@ -49,6 +49,7 @@ async function createEnvironmentAction(agent_id: string, name: string): Promise<
 
 export default function CreateEnvironment({agent_id}: {agent_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter()
   const {data: agentInfo} = useAgent(agent_id)
 
@@ -60,23 +61,26 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
     defaultValues: {environmentName: ""},
   })
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsOpen(false)
+    setIsSubmitting(true)
 
     try {
-      createEnvironmentAction(agent_id, data.environmentName).then(() => {
-        toast("Environment Created", {
-          description: "The environment has been created",
-        })
-        router.refresh()
-      }).catch((e) => {
-        throw new Error(`Failed to create environment: ${e}`)
+      const result = await createEnvironmentAction(agent_id, data.environmentName)
+      if (result instanceof Error) {
+        throw result
+      }
+      toast("Environment Created", {
+        description: "The environment has been created",
       })
+      router.refresh()
     } catch (e) {
       console.error(e)
       toast("Failed to create environment", {
-        description: "Failed to create environment",
+        description: e instanceof Error ? e.message : "Failed to create environment",
       })
+    } finally {
+      setIsSubmitting(false)
     }
 
     form.reset()
@@ -111,7 +115,9 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
                 <FormMessage />
               </FormItem>
             )} />
-            <Button type={"submit"}>Create</Button>
+            <Button type={"submit"} disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create"}
+            </Button>
           </form>
         </Form>
       </DialogContent>
