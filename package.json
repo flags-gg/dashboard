@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@next/eslint-plugin-next": "16.1.6",
+    "@next/eslint-plugin-next": "16.2.2",
     "@tailwindcss/postcss": "^4.2.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
