@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 type PromoteFlag = {
   flag_id: string
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({message: "successfully promoted flag"});
   } catch (error) {
-    console.error(error);
+    logError(error);
     return NextResponse.json({message: "failed to promote flag"}, {status: 500});
   }
 }

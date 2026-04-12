@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
 import { IProject, ProjectsData} from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function getProjects(userId: string): Promise<ProjectsData> {
   const res = await fetch(`${env.API_SERVER}/projects`, {
@@ -46,7 +47,7 @@ export async function getProject(project_id: string): Promise<IProject | Error> 
 
     return await res.json() as IProject
   } catch (e) {
-    console.error('Failed to fetch project', e)
+    logError('Failed to fetch project', e)
     return Error('Internal Server Error')
   }
 }
@@ -84,7 +85,7 @@ export async function put(request: Request) {
 
     return NextResponse.json({message: 'Agent enabled status updated successfully'})
   } catch (e) {
-    console.error('Failed to update agent enabled status', e)
+    logError('Failed to update agent enabled status', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

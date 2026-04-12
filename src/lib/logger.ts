@@ -20,14 +20,16 @@ export function logInfo(message: string, ...details: unknown[]) {
   return bugfixesInfo(message, ...details.map(normalize));
 }
 
-export function logError(message: string, error?: unknown, ...details: unknown[]) {
+export function logError(message: unknown, error?: unknown, ...details: unknown[]) {
+  const normalizedMessage = normalize(message);
+
   if (error instanceof Error) {
-    return bugfixesError(message, error, ...details.map(normalize));
+    return bugfixesError(normalizedMessage, error, ...details.map(normalize));
   }
 
   if (error !== undefined) {
-    return bugfixesError(message, normalize(error), ...details.map(normalize));
+    return bugfixesError(normalizedMessage, normalize(error), ...details.map(normalize));
   }
 
-  return bugfixesError(message, ...details.map(normalize));
+  return bugfixesError(normalizedMessage, ...details.map(normalize));
 }

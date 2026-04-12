@@ -15,6 +15,7 @@ import { Trash2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { useAgent } from "~/hooks/use-agent";
 import {toast} from "sonner";
+import { logError } from "~/lib/logger";
 
 async function deleteAgent(agent_id: string): Promise<null | Error> {
   try {
@@ -38,7 +39,7 @@ async function deleteAgent(agent_id: string): Promise<null | Error> {
     if (e instanceof Error) {
       return Error(`Failed to delete agent: ${e.message}`)
     } else {
-      console.error("deleteAgent", e)
+      logError("deleteAgent", e)
     }
   }
 

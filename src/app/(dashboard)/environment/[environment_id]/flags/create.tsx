@@ -20,6 +20,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { Flag } from "~/lib/interfaces";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function createFlagAction(environment_id: string, agent_id: string, name: string): Promise<Flag | Error> {
   try {
@@ -44,7 +45,7 @@ async function createFlagAction(environment_id: string, agent_id: string, name: 
     if (e instanceof Error) {
       return Error(`Failed to create flag: ${e.message}`)
     }
-    console.error("createFlag", e)
+    logError("createFlag", e)
   }
 
   return Error("Failed to create flag")
@@ -73,7 +74,7 @@ export default function CreateFlag({ environment_id }: { environment_id: string 
       }
       router.refresh()
     } catch (e) {
-      console.error(e)
+      logError(e)
       toast("Failed to create flag", {
         description: e instanceof Error ? e.message : "Failed to create flag",
       })

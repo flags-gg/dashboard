@@ -23,6 +23,7 @@ import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
 import { useCloneEnvironment } from "~/hooks/use-clone-environment";
 import { useRouter } from "next/navigation";
+import { logError } from "~/lib/logger";
 
 export default function CreateChild({envId, agentId}: {envId: string, agentId: string}) {
   const [openChild, setOpenChild] = useState(false);
@@ -48,7 +49,7 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
         setIsCreating(false)
       },
       onError: (error) => {
-        console.error("Child environment failed to create", error);
+        logError("Child environment failed to create", error);
         toast("Child Environment Failed", {
           description: "Child environment failed to create",
         });

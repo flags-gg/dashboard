@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { IEnvironment } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
   const user = await currentUser();
@@ -24,7 +25,7 @@ export async function GET() {
     const data = await response.json() as IEnvironment[]
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch environments', e)
+    logError('Failed to fetch environments', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

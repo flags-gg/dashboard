@@ -17,6 +17,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import {toast} from "sonner";
+import { logError } from "~/lib/logger";
 
 async function createAgentAction(project_id: string, name: string): Promise<null | Error> {
   try {
@@ -40,7 +41,7 @@ async function createAgentAction(project_id: string, name: string): Promise<null
     if (e instanceof Error) {
       return Error(`Failed to create agent: ${e.message}`)
     } else {
-      console.error("createAgent", e)
+      logError("createAgent", e)
     }
   }
 
@@ -75,7 +76,7 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
       })
       router.refresh()
     } catch (e) {
-      console.error("createAgent", e)
+      logError("createAgent", e)
       toast("Failed to create agent", {
         description: e instanceof Error
           ? `Failed to create agent: ${e.message}`

@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
 import { put, getProject } from "./project";
+import { logError } from "~/lib/logger";
 
 export async function DELETE(request: Request) {
   type DeleteProject = {
@@ -30,7 +31,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'Project deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete project', e)
+    logError('Failed to delete project', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

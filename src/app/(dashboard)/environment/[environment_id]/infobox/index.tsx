@@ -6,12 +6,13 @@ import {InfoBoxError} from "~/components/InfoBoxError";
 import InfoButtons from "./buttons";
 import Clone from "./clone"
 import Delete from "./delete"
+import { logError } from "~/lib/logger";
 
 export default async function InfoBox({environment_id}: {environment_id: string}) {
   const { data: environmentInfo, error } = await getEnvironment(environment_id)
 
   if (error ?? !environmentInfo) {
-    console.error(error)
+    logError(error)
     return <InfoBoxError name={"environment"} blurb={"Failed to fetch environment"} />
   }
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function PUT(request: Request) {
   type UpdateImage = {
@@ -33,7 +34,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ message: 'Company image updated'})
   } catch (e) {
-    console.error('Failed to update company image', e)
+    logError('Failed to update company image', e)
     return NextResponse.json({message: 'Internal Server Error'}, { status: 500 })
   }
 }

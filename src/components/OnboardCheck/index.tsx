@@ -5,6 +5,7 @@ import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useEffect } from "react";
 import { getUserDetails } from "~/hooks/use-user-details";
 import { useUser } from "@clerk/nextjs";
+import { logError } from "~/lib/logger";
 
 export default function OnboardCheck() {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
@@ -17,7 +18,7 @@ export default function OnboardCheck() {
           setHasCompletedOnboarding(true)
         }
       }).catch((e) => {
-        console.error("error in getUserDetails", e, useUserData)
+        logError("error in getUserDetails", e, useUserData)
       })
     }
   }, [hasCompletedOnboarding, setHasCompletedOnboarding, useUserData])

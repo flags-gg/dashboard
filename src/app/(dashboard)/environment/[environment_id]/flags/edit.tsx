@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function editFlagAction(flag: Flag): Promise<null | Error> {
     try {
@@ -37,7 +38,7 @@ async function editFlagAction(flag: Flag): Promise<null | Error> {
         if (e instanceof Error) {
             return Error(`Failed to edit flag: ${e.message}`)
         } else {
-            console.error("editFlag", e)
+            logError("editFlag", e)
         }
     }
 
@@ -70,7 +71,7 @@ export function EditFlag({flag}: {flag: Flag}) {
             }
             router.refresh()
         }).catch((e) => {
-            console.error(e)
+            logError(e)
             setError(e instanceof Error ? e.message : "Failed to edit flag");
             form.reset()
         }).finally(() => {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { IEnvironment } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function PUT(request: Request) {
   type UpdateEnvironmentName = {
@@ -37,7 +38,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ message: 'Environment name updated successfully' })
   } catch (e) {
-    console.error('Failed to update environment name', e)
+    logError('Failed to update environment name', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -69,7 +70,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'Environment deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete environment', e)
+    logError('Failed to delete environment', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -97,7 +98,7 @@ export async function GET(request: Request) {
     const data = await response.json() as IEnvironment
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch environment', e)
+    logError('Failed to fetch environment', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

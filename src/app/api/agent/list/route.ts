@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 import { FlagAgent } from "~/lib/interfaces";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
   const user = await currentUser();
@@ -26,7 +27,7 @@ export async function GET() {
     const data = await response.json() as FlagAgent[]
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch agents', e)
+    logError('Failed to fetch agents', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

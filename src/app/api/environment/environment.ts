@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
 import { EnvironmentsData, IEnvironment } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function getEnvironments(agent_id: string): Promise<{ data: EnvironmentsData | null, error: Error | null }> {
   const user = await currentUser();
@@ -23,7 +24,7 @@ export async function getEnvironments(agent_id: string): Promise<{ data: Environ
     const data = await res.json() as EnvironmentsData
     return { data, error: null }
   } catch (e) {
-    console.error('Failed to fetch environments', e)
+    logError('Failed to fetch environments', e)
     return { data: null, error: new Error('Internal Server Error') }
   }
 }
@@ -49,7 +50,7 @@ export async function getEnvironment(environment_id: string): Promise<{ data: IE
     return { data, error: null }
   }
   catch (e) {
-    console.error('Failed to fetch environment', e)
+    logError('Failed to fetch environment', e)
     return { data: null, error: Error('Internal Server Error') }
   }
 }

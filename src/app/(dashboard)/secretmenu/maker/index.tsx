@@ -12,6 +12,7 @@ import {Button} from "~/components/ui/button";
 import { useAtom } from "jotai";
 import { environmentAtom } from "~/lib/statemanager";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 interface SecretMenuData {
   menu_id: string,
@@ -33,12 +34,12 @@ async function createMenuId(envId: string, sequence: string[]): Promise<SecretMe
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.error("createMenuId response", response);
+      logError("createMenuId response", response);
       return new Error('Failed to create secret menu ID')
     }
     return await response.json()
   } catch (e) {
-    console.error("createMenuId", 'Error creating secret menu:', e)
+    logError("createMenuId", 'Error creating secret menu:', e)
     throw new Error('Failed to create secret menu')
   }
 }
@@ -60,7 +61,7 @@ async function getSequence(menuId: string): Promise<SecretMenuData | Error> {
     }
     return await response.json()
   } catch (e) {
-    console.error("getMenu", 'Error getting secret menu:', e)
+    logError("getMenu", 'Error getting secret menu:', e)
     throw new Error('Failed to get secret menu')
   }
 }
@@ -83,7 +84,7 @@ async function saveSequence(menu_id: string, sequence: string[]) {
     }
     return await response.json()
   } catch (e) {
-    console.error('Error saving secret menu sequence:', e)
+    logError('Error saving secret menu sequence:', e)
     throw new Error('Failed to save secret menu sequence')
   }
 }
@@ -99,7 +100,7 @@ export default function Maker({menuId}: {menuId: string}) {
         setCodeSequence(resp.sequence)
       }
     }).catch((e) => {
-      console.error("Error retrieving menu", e);
+      logError("Error retrieving menu", e);
       setError("Error retrieving menu")
     })
   }, [menuId])
@@ -196,7 +197,7 @@ export default function Maker({menuId}: {menuId: string}) {
                   description: "Saved the menu"
                 })
               }).catch((e) => {
-                console.error("Error creating menu", e);
+                logError("Error creating menu", e);
                 setError("Error creating menu")
               })
 
@@ -204,7 +205,7 @@ export default function Maker({menuId}: {menuId: string}) {
             }
 
             saveSequence(menuId, sequence).catch((e) => {
-              console.error("Error saving menu", e);
+              logError("Error saving menu", e);
               setError("Error saving menu")
             })
           }} className={"w-full"}>Save</Button>

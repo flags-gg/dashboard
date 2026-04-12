@@ -2,6 +2,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { IProject } from "~/lib/interfaces";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
   const user = await currentUser();
@@ -24,7 +25,7 @@ export async function GET() {
     const data = await response.json() as IProject[]
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch projects', e)
+    logError('Failed to fetch projects', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
 import { UserDetails } from "~/hooks/use-user-details";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
   const user = await currentUser();
@@ -25,7 +26,7 @@ export async function GET() {
     const data = await response.json() as UserDetails
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch user details', e)
+    logError('Failed to fetch user details', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -53,13 +54,13 @@ export async function PUT(request: Request) {
       }),
     })
     if (!response.ok) {
-      console.error('Failed to update user details', response)
+      logError('Failed to update user details', response)
       return NextResponse.json({ error: 'Failed to update user details' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'User details updated' })
   } catch (e) {
-    console.error('Failed to update user details', e)
+    logError('Failed to update user details', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -87,13 +88,13 @@ export async function POST(request: Request) {
       }),
     })
     if (!response.ok) {
-      console.error('Failed to update user details', response)
+      logError('Failed to update user details', response)
       return NextResponse.json({ error: 'Failed to update user details' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'User details updated' })
   } catch (e) {
-    console.error('Failed to update user details', e)
+    logError('Failed to update user details', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

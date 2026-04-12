@@ -14,6 +14,7 @@ import { getUserDetails } from "~/hooks/use-user-details";
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 export default function StepOne() {
   const {user} = useUser();
@@ -33,7 +34,7 @@ export default function StepOne() {
         router.push("/onboarding/steptwo")
       }
     }).catch(err => {
-      console.error("User not setup yet", err)
+      logError("User not setup yet", err)
     })
   }, [])
 

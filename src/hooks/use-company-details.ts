@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { ICompanyInfo } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 const fetchCompanyDetails = async (signal?: AbortSignal): Promise<ICompanyInfo> => {
   const res = await fetch(`/api/company/info`, {
@@ -14,7 +15,7 @@ const fetchCompanyDetails = async (signal?: AbortSignal): Promise<ICompanyInfo> 
   });
 
   if (!res.ok) {
-    console.error('Failed to fetch company details', res.status, res.statusText);
+    logError('Failed to fetch company details', res.status, res.statusText);
     throw new Error('Failed to fetch company details');
   }
 

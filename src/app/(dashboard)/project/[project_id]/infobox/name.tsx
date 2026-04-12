@@ -15,6 +15,7 @@ import {useAtom} from "jotai";
 import { useProject } from "~/hooks/use-project";
 import { IProject } from "~/lib/interfaces";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function updateProjectName(project_id: string, name: string, enabled: boolean): Promise<IProject | Error> {
   try {
@@ -39,7 +40,7 @@ async function updateProjectName(project_id: string, name: string, enabled: bool
     if (e instanceof Error) {
       return Error(`Failed to update project name: ${e.message}`)
     } else {
-      console.error("updateProjectName", e)
+      logError("updateProjectName", e)
     }
   }
 
@@ -80,11 +81,11 @@ export default function Name({project_id}: {project_id: string}) {
           description: "The project name has been updated",
         })
       }).catch((e) => {
-        console.error("try - Error updating project name", e)
+        logError("try - Error updating project name", e)
         throw new Error(e.message)
       })
     } catch (e) {
-      console.error("Error updating project name", e)
+      logError("Error updating project name", e)
 
       toast("Project Name Error", {
         description: "There was an error updating the project name",

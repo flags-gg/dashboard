@@ -7,6 +7,7 @@ import {Trash2} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function deleteFlagAction(flag_id: string): Promise<null | Error> {
     try {
@@ -29,7 +30,7 @@ async function deleteFlagAction(flag_id: string): Promise<null | Error> {
         if (e instanceof Error) {
             return Error(`Failed to delete flag: ${e.message}`)
         } else {
-            console.error("deleteFlag", e)
+            logError("deleteFlag", e)
         }
     }
 
@@ -54,7 +55,7 @@ export function DeleteFlag({flag}: {flag: Flag}) {
                 throw new Error("Failed to delete flag");
             })
         } catch (e) {
-            console.error("Error deleting flag", e);
+            logError("Error deleting flag", e);
             toast("Failed to delete flag", {
                 description: "Failed to delete flag",
             })

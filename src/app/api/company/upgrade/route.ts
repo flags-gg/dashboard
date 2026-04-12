@@ -2,6 +2,7 @@ import Stripe from "stripe"
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env"
+import { logError } from "~/lib/logger";
 
 export async function POST(request: Request) {
   const {priceId}: {priceId: string} = await request.json();
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({clientSecret: stripeSession.client_secret})
   } catch (e) {
-    console.error('Failed to upgrade plan', e)
+    logError('Failed to upgrade plan', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -65,13 +66,13 @@ export async function PUT(request: Request) {
       cache: 'no-store',
     })
     if (!response.ok) {
-      console.error("Failed to upgrade plan", await response.json())
+      logError("Failed to upgrade plan", await response.json())
       return NextResponse.json({ error: 'Failed to upgrade plan' }, { status: 500 })
     }
 
     return NextResponse.json({ message: 'Plan upgraded successfully' })
   } catch (e) {
-    console.error('Failed to upgrade plan', e)
+    logError('Failed to upgrade plan', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

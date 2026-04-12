@@ -5,6 +5,7 @@ import { fetchProjects } from "~/app/api/project/project";
 import Link from "next/link";
 import Image from "next/image";
 import { ShieldPlus } from "lucide-react";
+import { logError } from "~/lib/logger";
 
 export default async function ProjectList() {
   let projects: ProjectsData = { projects: [] };
@@ -15,7 +16,7 @@ export default async function ProjectList() {
       throw e
     })
   } catch (e) {
-    console.error(e);
+    logError(e);
     return (
       <div className={"gap-3 col-span-2"}>
         <Card className={"mb-3 p-3"}>Error loading projects</Card>

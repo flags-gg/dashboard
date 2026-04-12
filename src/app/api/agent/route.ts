@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { put } from "./agent";
 import { FlagAgent } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 
 export async function DELETE(request: Request) {
@@ -32,7 +33,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'Agent deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete agent', e)
+    logError('Failed to delete agent', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -65,7 +66,7 @@ export async function GET(request: Request) {
     const data = await response.json() as FlagAgent
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch agent', e)
+    logError('Failed to fetch agent', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

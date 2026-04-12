@@ -3,6 +3,7 @@
 import {Switch} from "~/components/ui/switch"
 import {useState} from "react";
 import { Flag } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 async function updateFlag(flag: Flag) {
   try {
@@ -23,7 +24,7 @@ async function updateFlag(flag: Flag) {
     if (e instanceof Error) {
       throw new Error(`Failed to update flag: ${e.message}`)
     } else {
-      console.error('Failed to update flag:', e)
+      logError('Failed to update flag:', e)
     }
   }
 }
@@ -41,7 +42,7 @@ export function FlagSwitch({flag}: { flag: Flag }) {
     try {
       await updateFlag(flagData);
     } catch (e) {
-      console.error('Error updating flag:', e);
+      logError('Error updating flag:', e);
     } finally {
       setIsUpdating(false);
       setFlagData({...flagData, enabled: !flagData.enabled});
