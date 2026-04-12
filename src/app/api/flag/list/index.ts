@@ -13,7 +13,9 @@ export async function fetchFlags(environment_id: string, userId: string): Promis
   if (!res.ok) {
     throw new Error('Failed to fetch flags')
   }
-  return res.json()
+
+  const data = await res.json() as unknown;
+  return Array.isArray(data) ? data as Flag[] : [];
 }
 
 export async function getFlags(environment_id: string): Promise<Flag[]> {

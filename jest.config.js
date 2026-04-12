@@ -10,6 +10,7 @@ export default {
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
   moduleNameMapper: {
     "^~/(.*)$": "<rootDir>/src/$1",
+    "^bugfixes$": "<rootDir>/src/test/mocks/bugfixes.ts",
   },
   testPathIgnorePatterns: [
     "/node_modules/",

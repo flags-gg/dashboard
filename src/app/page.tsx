@@ -32,6 +32,10 @@ type FlagEntry = {
   environment: IEnvironment;
 };
 
+function normalizeFlags(value: unknown): Flag[] {
+  return Array.isArray(value) ? (value as Flag[]) : [];
+}
+
 async function fetchOrgJson<T>(path: string, userId: string): Promise<T> {
   logInfo(`fetching ${path} for user ${userId}`);
 
@@ -128,10 +132,10 @@ export default async function Home() {
     const flagsByEnvironment = await Promise.all(
       environments.map(async (environmentDetails) => {
         try {
-          const flags = await fetchOrgJson<Flag[]>(
+          const flags = normalizeFlags(await fetchOrgJson<Flag[] | null>(
             `/environment/${environmentDetails.environment_id}/flags`,
             user.id,
-          );
+          ));
 
           return flags.map((flag) => ({
             flag,
