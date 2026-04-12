@@ -136,3 +136,39 @@ export interface UpgradeChoice {
   }
 }
 
+export interface EnvironmentRequestSummary {
+  environment_id: string;
+  environment_name: string;
+  agent_id: string;
+  agent_name: string;
+  project_id: string;
+  project_name: string;
+  single_flag_requests: number;
+  all_flags_requests: number;
+  total_requests: number;
+}
+
+export interface RequestTotals {
+  single_flag_requests: number;
+  all_flags_requests: number;
+  total_requests: number;
+}
+
+export interface APIKeyCreator {
+  subject: string;
+  name: string;
+  email: string;
+  created_at: string;
+  project_id: string;
+  project_name: string;
+  agent_id: string;
+  agent_name: string;
+  environment_id?: string;
+  environment_name?: string;
+}
+
+export interface CompanyStats {
+  request_totals: RequestTotals;
+  environment_requests: EnvironmentRequestSummary[];
+  latest_api_key_creator?: APIKeyCreator;
+}
