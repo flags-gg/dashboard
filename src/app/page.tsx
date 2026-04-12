@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { APIKeyCreator, CompanyStats, FlagAgent, Flag, IEnvironment, IProject } from "~/lib/interfaces";
+import { logError, logInfo } from "~/lib/logger";
 
 type ProjectResponse = {
   projects: IProject[];
@@ -32,6 +33,8 @@ type FlagEntry = {
 };
 
 async function fetchOrgJson<T>(path: string, userId: string): Promise<T> {
+  logInfo(`fetching ${path} for user ${userId}`);
+
   const response = await fetch(`${env.API_SERVER}${path}`, {
     headers: {
       "Content-Type": "application/json",
@@ -135,7 +138,7 @@ export default async function Home() {
             environment: environmentDetails,
           }));
         } catch (error) {
-          console.error("Failed to fetch environment flags", environmentDetails.environment_id, error);
+          logError("failed to fetch environment flags", error, environmentDetails.environment_id);
           return [] as FlagEntry[];
         }
       }),
@@ -431,7 +434,7 @@ export default async function Home() {
       </div>
     );
   } catch (error) {
-    console.error("Failed to build dashboard home", error);
+    logError("failed to build dashboard home", error);
 
     return (
       <div className={"grid gap-4"}>

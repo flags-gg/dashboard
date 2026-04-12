@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { CompanyStats } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
   const user = await currentUser();
@@ -24,7 +25,7 @@ export async function GET() {
 
     return NextResponse.json(await response.json() as CompanyStats);
   } catch (error) {
-    console.error("Failed to fetch company stats", error);
+    logError("failed to fetch company stats", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

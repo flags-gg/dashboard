@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 import type { UserDetails } from "~/hooks/use-user-details";
 
 /**
@@ -23,14 +24,14 @@ export async function getUserDetailsServer(): Promise<UserDetails | null> {
     });
 
     if (!res.ok) {
-      console.error("getUserDetailsServer: backend returned non-OK", res.status, res.statusText);
+      logError("getUserDetailsServer backend returned non-OK", `${res.status} ${res.statusText}`);
       return null;
     }
 
     const data = (await res.json()) as UserDetails;
     return data ?? null;
   } catch (e) {
-    console.error("getUserDetailsServer: error fetching user details", e);
+    logError("getUserDetailsServer error fetching user details", e);
     return null;
   }
 }
