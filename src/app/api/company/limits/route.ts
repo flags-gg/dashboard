@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
   const user = await currentUser();
@@ -24,7 +25,7 @@ export async function GET() {
 
     return NextResponse.json(await response.json())
   } catch (e) {
-    console.error('Failed to fetch company limits', e)
+    logError('Failed to fetch company limits', e)
     return NextResponse.json({message: 'Internal Server Error'}, {status: 500})
   }
 }

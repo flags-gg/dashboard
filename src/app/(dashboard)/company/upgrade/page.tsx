@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function setUpgraded(sessionId: string): Promise<null | Error> {
   try {
@@ -25,7 +26,7 @@ async function setUpgraded(sessionId: string): Promise<null | Error> {
     if (e instanceof Error) {
       return Error(`Failed to set upgraded: ${e.message}`)
     } else {
-      console.error("setUpgraded", e)
+      logError("setUpgraded", e)
     }
   }
 
@@ -43,7 +44,7 @@ function UpgradePage() {
     })
     router.push("/company")
   }).catch((e) => {
-    console.error("Failed to set upgraded", e)
+    logError("Failed to set upgraded", e)
     toast("Failed to upgrade", {
       description: "Failed to upgrade",
     })

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function promoteFlag(flag: Flag): Promise<null | Error>  {
   try {
@@ -31,7 +32,7 @@ async function promoteFlag(flag: Flag): Promise<null | Error>  {
     if (error instanceof Error) {
       return Error(`failed to promote flag: ${error.message}`);
     } else {
-      console.error(error);
+      logError(error);
     }
   }
 
@@ -55,7 +56,7 @@ export function PromoteFlag({flag}: {flag: Flag}) {
         return
       });
     } catch (e) {
-      console.error(e);
+      logError(e);
       if (e instanceof Error) {
         setError(e.message);
       }

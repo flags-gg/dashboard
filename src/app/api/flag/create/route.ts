@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
+import { logError } from "~/lib/logger";
 
 type CreateFlag = {
   name: string
@@ -41,7 +42,7 @@ export async function POST(request: Request) {
       },
     })
   } catch (e) {
-    console.error('Failed to create flag', e)
+    logError('Failed to create flag', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

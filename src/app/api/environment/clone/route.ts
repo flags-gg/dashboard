@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 type CloneEnv = {
   name: string
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Environment cloned successfully' })
   } catch (e) {
-    console.error('Failed to clone environment', e)
+    logError('Failed to clone environment', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

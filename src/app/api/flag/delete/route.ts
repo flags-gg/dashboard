@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 type DeleteFlag = {
   flag_id: string
@@ -29,7 +30,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'Flag deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete flag', e)
+    logError('Failed to delete flag', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

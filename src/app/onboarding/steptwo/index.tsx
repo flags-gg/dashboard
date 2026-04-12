@@ -17,6 +17,7 @@ import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 export default function StepTwo() {
   const router = useRouter()
@@ -43,7 +44,7 @@ export default function StepTwo() {
         router.push("/onboarding")
       }
     }).catch(err => {
-      console.error("User not setup yet", err)
+      logError("User not setup yet", err)
       router.push("/onboarding")
     })
   }, [isLoaded, user, router, setOnboardingComplete])

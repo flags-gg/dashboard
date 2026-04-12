@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { fetchFlags } from "~/app/api/flag/list/index";
+import { logError } from "~/lib/logger";
 
 type GetFlags = {
   environment_id: string
@@ -17,7 +18,7 @@ export async function POST(request: Request) {
     const flags = await fetchFlags(environment_id, user.id)
     return NextResponse.json(flags)
   } catch (e) {
-    console.error('Failed to fetch flags', e)
+    logError('Failed to fetch flags', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

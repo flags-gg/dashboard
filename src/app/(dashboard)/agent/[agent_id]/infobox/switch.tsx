@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import { useAgent } from "~/hooks/use-agent";
 import {toast} from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function enableDisableAgent(agent_id: string, enabled: boolean, agentName: string) {
   try {
@@ -27,7 +28,7 @@ async function enableDisableAgent(agent_id: string, enabled: boolean, agentName:
     if (e instanceof Error) {
       throw new Error(`Failed to enable/disable agent: ${e.message}`)
     } else {
-      console.error('Failed to enable/disable agent', e)
+      logError('Failed to enable/disable agent', e)
     }
   }
 }
@@ -64,7 +65,7 @@ export function AgentSwitch({agent_id}: {agent_id: string}) {
         toast("Error updating agent", {
           description: `There was an unknown error updating the agent`,
         })
-        console.error("Error updating agent", e)
+        logError("Error updating agent", e)
       }
     }
   }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 type EditFlag = {
   flag_id: string
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Flag updated successfully' })
   } catch (e) {
-    console.error('Failed to edit flag', e)
+    logError('Failed to edit flag', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

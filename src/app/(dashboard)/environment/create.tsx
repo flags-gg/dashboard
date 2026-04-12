@@ -18,6 +18,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useAgent } from "~/hooks/use-agent";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function createEnvironmentAction(agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -41,7 +42,7 @@ async function createEnvironmentAction(agent_id: string, name: string): Promise<
     if (e instanceof Error) {
       return Error(`Failed to create environment: ${e.message}`)
     } else {
-      console.error("createEnvironment", e)
+      logError("createEnvironment", e)
     }
   }
   return Error("Failed to create environment")
@@ -75,7 +76,7 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
       })
       router.refresh()
     } catch (e) {
-      console.error(e)
+      logError(e)
       toast("Failed to create environment", {
         description: e instanceof Error ? e.message : "Failed to create environment",
       })

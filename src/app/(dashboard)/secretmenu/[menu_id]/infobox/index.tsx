@@ -4,13 +4,14 @@ import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
 import Info from "./info";
 import {InfoBoxError} from "~/components/InfoBoxError";
 import InfoButtons from "./buttons";
+import { logError } from "~/lib/logger";
 
 export default async function InfoBox({menu_id}: {menu_id: string}) {
   let secretMenuInfo: SecretMenu
   try {
     secretMenuInfo = await getSecretMenu(menu_id)
   } catch(e) {
-    console.error(e)
+    logError(e)
     return <InfoBoxError name={"secret menu"} blurb={"secret menu"} />
   }
 

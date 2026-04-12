@@ -4,6 +4,7 @@ import {Switch} from "~/components/ui/switch";
 import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function enableDisableMenu(menu_id: string) {
   try {
@@ -23,7 +24,7 @@ async function enableDisableMenu(menu_id: string) {
     if (e instanceof Error) {
       throw new Error(`Failed to enable/disable menu: ${e.message}`)
     } else {
-      console.error('Failed to enable/disable menu', e)
+      logError('Failed to enable/disable menu', e)
     }
   }
 }

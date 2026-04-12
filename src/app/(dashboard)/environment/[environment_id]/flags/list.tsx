@@ -12,6 +12,7 @@ import { FlagSwitch } from "./switch";
 import { DeleteFlag } from "./delete";
 import { EditFlag } from "./edit";
 import { PromoteFlag } from "~/app/(dashboard)/environment/[environment_id]/flags/promote";
+import { logError } from "~/lib/logger";
 
 export default async function FlagsList({ environment_id }: { environment_id: string; }) {
   let flags: Flag[] = [];
@@ -22,7 +23,7 @@ export default async function FlagsList({ environment_id }: { environment_id: st
       throw e;
     });
   } catch (e) {
-    console.error("flags", e);
+    logError("flags", e);
     return (
       <div className={"col-span-2 gap-3"}>
         <Card className={"mb-3 p-3"}>

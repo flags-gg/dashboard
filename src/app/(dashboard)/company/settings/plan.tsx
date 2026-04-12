@@ -1,5 +1,5 @@
 import { useCompanyDetails } from "~/hooks/use-company-details";
-import { useCallback, useState } from "react";
+import { type ComponentProps, useCallback, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -22,8 +22,12 @@ interface IError {
   title: string
 }
 
+type EmbeddedCheckoutStripeProp = ComponentProps<typeof EmbeddedCheckoutProvider>["stripe"];
+
 export default function Plan() {
-  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
+  ) as EmbeddedCheckoutStripeProp;
 
   const {data: companyInfo, isLoading: detailsLoading} = useCompanyDetails();
   const {data: upgradeChoices, isLoading: choicesLoading} = useUpgradeChoices();

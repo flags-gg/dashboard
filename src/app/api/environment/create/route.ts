@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 type CreateEnv = {
   name: string
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(body)
   } catch (e) {
-    console.error('Failed to create environment', e)
+    logError('Failed to create environment', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

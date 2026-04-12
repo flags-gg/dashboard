@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { commitHashAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
+import { logError } from "~/lib/logger";
 
 type UserGroup = {
   id: string;
@@ -32,20 +33,20 @@ export async function getUserDetails(signal?: AbortSignal): Promise<UserDetails>
     });
 
     if (!res.ok) {
-      console.error(`API Error: ${res.status} ${res.statusText}`);
+      logError("use-user-details api error", `${res.status} ${res.statusText}`);
       throw new Error(`Failed to fetch user details: ${res.status} ${res.statusText}`);
     }
 
     const data = (await res.json()) as UserDetails;
 
     if (!data) {
-      console.error("API returned no user details");
+      logError("use-user-details api returned no user details");
       throw new Error("No user details returned");
     }
 
     return data;
   } catch (error) {
-    console.error("Error in getUserDetails:", error);
+    logError("error in getUserDetails", error);
     throw error; // Re-throw the error so useQuery can handle it
   }
 }
@@ -59,11 +60,8 @@ export function useUserDetails(userId: string) {
     queryFn: ({ signal }) => getUserDetails(signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(userId),
-    retry: (failureCount, error) => {
-      if (error.message.includes('404')) {
-        return false;
-      }
-      return failureCount < 3;
-    }
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }

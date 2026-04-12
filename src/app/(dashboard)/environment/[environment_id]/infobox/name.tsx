@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { IEnvironment } from "~/lib/interfaces";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function updateEnvironmentName(environment_id: string, name: string, enabled: boolean): Promise<IEnvironment | Error> {
   try {
@@ -38,7 +39,7 @@ async function updateEnvironmentName(environment_id: string, name: string, enabl
     if (e instanceof Error) {
       return Error(`Failed to update environment name: ${e.message}`)
     } else {
-      console.error("updateEnvironmentName", e)
+      logError("updateEnvironmentName", e)
     }
   }
 
@@ -66,11 +67,11 @@ export default function Name({environment_id}: {environment_id: string}) {
           description: "The environment name has been updated",
         })
       }).catch((e) => {
-        console.error("try - Error updating environment name", e)
+        logError("try - Error updating environment name", e)
         throw new Error(e.message)
       })
     } catch (e) {
-      console.error("Error updating environment name", e)
+      logError("Error updating environment name", e)
 
       toast("Environment Name Error", {
         description: "There was an error updating the environment name",

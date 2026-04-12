@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function POST(request: Request) {
   const { companyName, companyDomain }: { companyName: string, companyDomain: string } = await request.json() as { companyName: string, companyDomain: string }
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Company created' })
   } catch (e) {
-    console.error('Failed to create company', e)
+    logError('Failed to create company', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

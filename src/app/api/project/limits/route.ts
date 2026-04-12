@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { AgentLimits } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function GET(request: Request) {
   const user = await currentUser();
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch project limits', e)
+    logError('Failed to fetch project limits', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

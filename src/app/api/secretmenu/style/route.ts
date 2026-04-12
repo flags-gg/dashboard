@@ -2,6 +2,7 @@ import { env } from "~/env";
 import { NextResponse } from "next/server";
 import { type StyleFetch } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 import { currentUser } from "@clerk/nextjs/server";
+import { logError } from "~/lib/logger";
 
 export async function POST(request: Request) {
   type StyleParams = {
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
     cache: 'no-store',
   })
   if (!response.ok) {
-    console.error("Failed to get style", response)
+    logError("Failed to get style", response)
     return NextResponse.json({ error: "Failed to get style" }, { status: 500 })
   }
 
@@ -94,7 +95,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ message: 'Style updated successfully' })
   } catch (e) {
-    console.error('Failed to update style', e)
+    logError('Failed to update style', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

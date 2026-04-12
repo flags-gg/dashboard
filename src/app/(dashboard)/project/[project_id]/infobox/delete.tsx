@@ -14,6 +14,7 @@ import { Trash2 } from "lucide-react";
 import ProjectInfo from "~/app/(dashboard)/project/[project_id]/infobox/info";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function deleteProject(project_id: string): Promise<null | Error> {
   try {
@@ -37,7 +38,7 @@ async function deleteProject(project_id: string): Promise<null | Error> {
     if (e instanceof Error) {
       return Error(`Failed to delete project: ${e.message}`)
     } else {
-      console.error("deleteProject", e)
+      logError("deleteProject", e)
     }
   }
 

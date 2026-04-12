@@ -4,13 +4,14 @@ import { type Metadata } from "next";
 import { getEnvironment } from "~/app/api/environment/environment";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
+import { logError } from "~/lib/logger";
 
 export async function generateMetadata({params}: {params: Promise<{environment_id: string}>}): Promise<Metadata> {
   const {environment_id} = await params
   const { data: environmentInfo, error } = await getEnvironment(environment_id)
 
   if (error ?? !environmentInfo) {
-    console.error('Failed to fetch environment:', error)
+    logError('Failed to fetch environment:', error)
   }
 
   return {

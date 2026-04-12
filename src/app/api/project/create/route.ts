@@ -1,6 +1,7 @@
 import {NextResponse} from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
+import { logError } from "~/lib/logger";
 
 type CreateProject = {
   name: string
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(await response.json())
   } catch (e) {
-    console.error('Failed to create project', e)
+    logError('Failed to create project', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

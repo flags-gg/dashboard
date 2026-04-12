@@ -72,44 +72,59 @@ export function SearchBox() {
   const {user} = useUser();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [hasOpenedSearch, setHasOpenedSearch] = useState(false);
   const [isOnboarded] = useAtom(hasCompletedOnboardingAtom);
   const [error, setError] = useState<boolean>(false);
+  const searchEnabled = isOnboarded && is("search")?.enabled() && Boolean(user?.id);
+  const shouldFetchSearchData = searchEnabled && hasOpenedSearch;
 
   const {data: projectsData, error: projectsError} = useQuery({
       queryKey: ["projects", user?.id],
       queryFn: getProjects,
       staleTime: 5 * 60 * 1000, // 5 minutes
-      enabled: Boolean(user?.id) && Boolean(isOnboarded),
+      enabled: shouldFetchSearchData,
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
   });
 
   const { data: agentsData, error: agentsError } = useQuery({
     queryKey: ["agents", user?.id],
     queryFn: getAgents,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(user?.id) && Boolean(isOnboarded),
+    enabled: shouldFetchSearchData,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   const { data: environmentsData, error: environmentsError } = useQuery({
     queryKey: ["environments", user?.id],
     queryFn: getEnvironments,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(user?.id) && Boolean(isOnboarded),
+    enabled: shouldFetchSearchData,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 
   useEffect(() => {
-    if (projectsError || agentsError || environmentsError) {
+    if (!error && (projectsError || agentsError || environmentsError)) {
       toast("Error loading search data", {
         description: projectsError?.message || agentsError?.message || environmentsError?.message,
       });
       setError(true);
     }
-  }, [projectsError, agentsError, environmentsError])
+  }, [projectsError, agentsError, environmentsError, error])
 
-  const shouldShowSearch = isOnboarded && is("search")?.enabled() && user && !error;
+  const shouldShowSearch = searchEnabled && user && !error;
   if (shouldShowSearch) {
     return (
       <div className={"relative ml-auto flex-1 md:grow-0"}>
-        <div onClick={() => setIsOpen(true)}>
+        <div onClick={() => {
+          setHasOpenedSearch(true);
+          setIsOpen(true);
+        }}>
           <Search
             className={"absolute left-2.5 top-3 h-4 w-5 text-muted-foreground"}
           />

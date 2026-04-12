@@ -15,6 +15,7 @@ import { Input } from "~/components/ui/input";
 import { useAgent } from "~/hooks/use-agent";
 import {toast} from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function updateAgentName(agent_id: string, name: string, enabled: boolean): Promise<null | Error> {
   try {
@@ -38,7 +39,7 @@ async function updateAgentName(agent_id: string, name: string, enabled: boolean)
     if (e instanceof Error) {
       return Error(`Failed to update agent name: ${e.message}`)
     } else {
-      console.error("updateAgentName", e)
+      logError("updateAgentName", e)
     }
   }
 
@@ -88,7 +89,7 @@ export default function Name({agent_id}: {agent_id: string}) {
         throw new Error("Failed to update agent name")
       })
     } catch (e) {
-      console.error("Error updating agent name", e)
+      logError("Error updating agent name", e)
 
       toast("Error updating agent name", {
         description: "There was an unknown error updating the agent name",

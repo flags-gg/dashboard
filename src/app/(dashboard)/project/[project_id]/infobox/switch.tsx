@@ -7,6 +7,7 @@ import { useProject } from "~/hooks/use-project";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
   try {
@@ -28,7 +29,7 @@ async function enableDisableProject(project_id: string, enabled: boolean, name: 
     if (e instanceof Error) {
       throw new Error(`Failed to enable/disable project: ${e.message}`)
     } else {
-      console.error('Failed to enable/disable project', e)
+      logError('Failed to enable/disable project', e)
     }
   }
 }
@@ -75,11 +76,11 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
           description: `There was an error updating the project: ${e.message}`,
         })
       } else {
-        console.error("Error updating project", e)
+        logError("Error updating project", e)
         toast("Error updating project", {
           description: `There was an unknown error updating the project`,
         })
-        console.error("Error updating project", e)
+        logError("Error updating project", e)
       }
     }
   }

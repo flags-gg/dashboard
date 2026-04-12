@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 type InviteUser = {
   name: string,
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(null, { status: 200 })
   } catch (e) {
-    console.error('Failed to send invite', e)
+    logError('Failed to send invite', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

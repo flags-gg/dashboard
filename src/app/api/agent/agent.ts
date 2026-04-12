@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 
 import {env} from "~/env";
 import {AgentsData, FlagAgent} from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function getAgents(project_id: string): Promise<AgentsData> {
   const user = await currentUser();
@@ -76,7 +77,7 @@ export async function put(request: Request) {
 
     return NextResponse.json({message: 'Agent enabled status updated successfully'})
   } catch (e) {
-    console.error('Failed to update agent enabled status', e)
+    logError('Failed to update agent enabled status', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

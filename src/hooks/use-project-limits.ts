@@ -2,6 +2,7 @@ import { commitHashAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useQuery } from "@tanstack/react-query";
 import { type AgentLimits } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 const fetchProjectLimits = async (projectId: string, signal?: AbortSignal): Promise<AgentLimits> => {
   const res = await fetch(`/api/project/limits/?project_id=${projectId}`, {
@@ -14,7 +15,7 @@ const fetchProjectLimits = async (projectId: string, signal?: AbortSignal): Prom
   });
 
   if (!res.ok) {
-    console.error('Failed to fetch project limits', res.status, res.statusText, projectId);
+    logError('Failed to fetch project limits', res.status, res.statusText, projectId);
     throw new Error('Failed to fetch project limits');
   }
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function DELETE() {
   const user = await currentUser();
@@ -23,7 +24,7 @@ export async function DELETE() {
 
     return NextResponse.json({ message: 'User deleted successfully' })
   } catch (e) {
-    console.error('Failed to delete user', e)
+    logError('Failed to delete user', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

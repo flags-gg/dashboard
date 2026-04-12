@@ -3,6 +3,7 @@ import { commitHashAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { CompanyLimits } from "~/lib/interfaces";
 import { useUser } from "@clerk/nextjs";
+import { logError } from "~/lib/logger";
 
 const fetchCompanyLimits = async (signal?: AbortSignal): Promise<CompanyLimits> => {
   const res = await fetch(`/api/company/limits`, {
@@ -14,7 +15,7 @@ const fetchCompanyLimits = async (signal?: AbortSignal): Promise<CompanyLimits> 
   });
 
   if (!res.ok) {
-    console.error('Failed to fetch company limits', res.status, res.statusText);
+    logError('Failed to fetch company limits', res.status, res.statusText);
     throw new Error('Failed to fetch company limits');
   }
 

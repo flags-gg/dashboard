@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
 import {Flag} from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 type UpdateFlagRequest = {
   flag: Flag,
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Flag updated successfully' });
   } catch (error) {
-    console.error('Error updating flag:', error);
+    logError('Error updating flag:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

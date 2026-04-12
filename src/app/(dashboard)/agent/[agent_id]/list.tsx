@@ -3,12 +3,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~
 import Link from "next/link";
 import {getEnvironments} from "~/app/api/environment/environment";
 import CreateChild from "~/app/(dashboard)/agent/[agent_id]/child/create";
+import { logError } from "~/lib/logger";
 
 export default async function EnvironmentsList({ agent_id }: { agent_id: string }) {
   const { data: environments, error } = await getEnvironments(agent_id);
 
   if (error ?? !environments) {
-    console.error(error);
+    logError(error);
     return (
       <div className={"gap-3 col-span-2"}>
         <Card className={"mb-3 p-3"}>

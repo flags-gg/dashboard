@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { commitHashAtom } from "~/lib/statemanager";
 import { useQuery } from "@tanstack/react-query";
 import { UpgradeChoice } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 interface UpgradeChoices {
   prices: UpgradeChoice[];
@@ -18,7 +19,7 @@ const fetchUpgradeChoices = async (signal?: AbortSignal): Promise<UpgradeChoices
   });
 
   if (!res.ok) {
-    console.error('Failed to fetch company limits', res.status, res.statusText);
+    logError('Failed to fetch company limits', res.status, res.statusText);
     throw new Error('Failed to fetch company limits');
   }
 

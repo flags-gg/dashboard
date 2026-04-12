@@ -21,6 +21,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { NewLoader } from "~/components/ui/new-loader";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 const createProject = async (name: string): Promise<IProject> => {
   const res = await fetch(`/api/project/create`, {
@@ -59,14 +60,14 @@ export default function CreateProject() {
   const createProjectMutation = useMutation({
     mutationFn: (name: string) => createProject(name),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey: ['companyLimits', user?.id]}).catch(console.error);
+      queryClient.invalidateQueries({queryKey: ['companyLimits', user?.id]}).catch(logError);
       toast("Project Created", {
         description: "Project has been created",
       });
       setCreatedProject(data);
     },
     onError: (error) => {
-      console.error(error);
+      logError(error);
       toast("Failed to create project", {
         description: "Failed to create project",
       });

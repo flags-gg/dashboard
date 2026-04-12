@@ -6,20 +6,14 @@ import Unknown from "./unknown";
 import { useUser } from "@clerk/nextjs";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { getUserDetails } from "~/hooks/use-user-details";
+import { useUserDetails } from "~/hooks/use-user-details";
 
 export default function SideBar() {
   const {user} = useUser();
 
   const [isOnboarded, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
-  const {data: onboardedData, error: onboardedError} = useQuery({
-    queryKey: ["onboarded", user?.id],
-    queryFn: ({ signal }) => getUserDetails(signal),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    enabled: Boolean(user) && Boolean(user?.id),
-  });
+  const {data: onboardedData, error: onboardedError} = useUserDetails(user?.id ?? "");
 
   useEffect(() => {
     if (onboardedError) {
@@ -43,4 +37,3 @@ export default function SideBar() {
 
   return <Unknown />
 }
-

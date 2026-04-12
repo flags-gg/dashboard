@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import { agentAtom, environmentAtom } from "~/lib/statemanager";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function deleteEnvironment(environment_id: string): Promise<null | Error> {
   try {
@@ -38,7 +39,7 @@ async function deleteEnvironment(environment_id: string): Promise<null | Error> 
     if (e instanceof Error) {
       return Error(`Failed to delete environment: ${e.message}`)
     } else {
-      console.error("deleteEnvironment", e)
+      logError("deleteEnvironment", e)
     }
   }
 

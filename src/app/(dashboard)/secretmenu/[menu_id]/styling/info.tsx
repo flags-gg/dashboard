@@ -5,6 +5,7 @@ import { Separator } from "~/components/ui/separator";
 import { useStyles } from "~/hooks/use-styles";
 import { Skeleton } from "~/components/ui/skeleton";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 const styleNames: Record<string, string> = {
   resetButton: "Reset Button",
@@ -38,7 +39,7 @@ async function saveStyle({style, menuId, styleId}: {style: string, menuId: strin
     if (e instanceof Error) {
       throw new Error(`Failed to save style: ${e.message}`)
     } else {
-      console.error("saveStyle", e)
+      logError("saveStyle", e)
     }
   }
 

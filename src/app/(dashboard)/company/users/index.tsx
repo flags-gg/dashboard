@@ -22,6 +22,7 @@ import { useState } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function sendInvite(name: string, email_address: string): Promise<null | Error> {
   try {
@@ -40,7 +41,7 @@ async function sendInvite(name: string, email_address: string): Promise<null | E
     }
     return null
   } catch (e) {
-    console.error('Failed to send invite', e)
+    logError('Failed to send invite', e)
     return new Error('Internal Server Error')
   }
 }

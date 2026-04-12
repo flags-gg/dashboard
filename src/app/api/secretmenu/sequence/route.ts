@@ -1,6 +1,7 @@
 import {NextResponse} from 'next/server';
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
+import { logError } from "~/lib/logger";
 
 type SecretMenuParams = {
   menuId?: string
@@ -33,7 +34,7 @@ export async function PUT(request: Request) {
 
     return response
   } catch (error) {
-    console.error('Error saving secret menu sequence:', error);
+    logError('Error saving secret menu sequence:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
@@ -59,13 +60,13 @@ export async function POST(request: Request) {
       }),
     });
     if (!response.ok) {
-      console.error("failed to create secret menu")
+      logError("failed to create secret menu")
       return NextResponse.json({message: "Failed to create secret menu"}, { status: 500 });
     }
 
     return response
   } catch (error) {
-    console.error('Error creating secret menu:', error);
+    logError('Error creating secret menu:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

@@ -7,6 +7,7 @@ import { useEnvironment } from "~/hooks/use-environment";
 import { IEnvironment } from "~/lib/interfaces";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
+import { logError } from "~/lib/logger";
 
 async function enableDisableEnvironment(environmentInfo: IEnvironment) {
   try {
@@ -28,7 +29,7 @@ async function enableDisableEnvironment(environmentInfo: IEnvironment) {
     if (e instanceof Error) {
       throw new Error(`Failed to enable/disable environment: ${e.message}`)
     } else {
-      console.error('An unknown error occurred', e)
+      logError('An unknown error occurred', e)
     }
   }
 }
@@ -67,7 +68,7 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
           description: `There was an error updating the environment: ${e.message}`,
         })
       } else {
-        console.error("Error updating environment", e)
+        logError("Error updating environment", e)
         toast("Environment Error", {
           description: `There was an error updating the environment`,
         })

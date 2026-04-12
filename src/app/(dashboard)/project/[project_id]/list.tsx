@@ -4,13 +4,14 @@ import Link from "next/link";
 import { AgentsData, EnvironmentsData } from "~/lib/interfaces";
 import {getAgents} from "~/app/api/agent/agent";
 import { getEnvironments } from "~/app/api/environment/environment";
+import { logError } from "~/lib/logger";
 
 export default async function AgentsList({ project_id }: { project_id: string }) {
   let agents: AgentsData;
   try {
     agents = await getAgents(project_id);
   } catch (e) {
-    console.error(e);
+    logError(e);
     return (
       <div className={"gap-3 col-span-2"}>
         <Card className={"mb-3 p-3"}>
@@ -28,7 +29,7 @@ export default async function AgentsList({ project_id }: { project_id: string })
         environments = env.data as EnvironmentsData;
         agent.environments = environments.environments as []
       } catch (e) {
-        console.error(e);
+        logError(e);
       }
     }
   }

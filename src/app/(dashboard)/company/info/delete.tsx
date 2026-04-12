@@ -15,6 +15,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useFlags } from "@flags-gg/react-library";
 import {toast} from "sonner";
+import { logError } from "~/lib/logger";
 
 async function deleteCompany(): Promise<null | Error> {
   try {
@@ -34,7 +35,7 @@ async function deleteCompany(): Promise<null | Error> {
     if (error instanceof Error) {
       return Error(`Failed to delete company: ${error.message}`);
     } else {
-      console.error("deleteCompany", error);
+      logError("deleteCompany", error);
     }
   }
 
@@ -80,7 +81,7 @@ export default function DeleteButton() {
                   description: error.message,
                 });
               } else {
-                console.error("deleteCompany", error);
+                logError("deleteCompany", error);
                 toast("Failed to delete company", {
                   description: "Failed to delete company",
                 });

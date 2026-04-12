@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 export async function PUT(request: Request) {
   const { domain, invite_code }: { domain: string, invite_code: string } = await request.json() as { domain: string, invite_code: string }
@@ -28,7 +29,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ message: 'Company user updated' })
   } catch (e) {
-    console.error('Failed to update company user', e)
+    logError('Failed to update company user', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

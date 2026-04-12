@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { env } from "~/env";
 import { IEnvironment } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
 
 export async function GET() {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -13,7 +14,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/environments`, {
       method: 'GET',
       headers: {
-        'x-user-subject': user.id,
+        'x-user-subject': userId,
       },
       cache: 'no-store',
     })
@@ -24,7 +25,7 @@ export async function GET() {
     const data = await response.json() as IEnvironment[]
     return NextResponse.json(data)
   } catch (e) {
-    console.error('Failed to fetch environments', e)
+    logError('Failed to fetch environments', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

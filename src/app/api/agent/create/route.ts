@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
+import { logError } from "~/lib/logger";
 
 
 export async function POST(request: Request) {
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(await response.json())
   } catch (e) {
-    console.error('Failed to create agent', e)
+    logError('Failed to create agent', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

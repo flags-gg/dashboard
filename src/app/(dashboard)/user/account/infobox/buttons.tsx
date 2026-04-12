@@ -17,6 +17,7 @@ import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { deleteCookie } from "cookies-next";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function deleteAccount(): Promise<null | Error> {
   try {
@@ -36,7 +37,7 @@ async function deleteAccount(): Promise<null | Error> {
     if (error instanceof Error) {
       return Error(`Failed to delete account: ${error.message}`);
     } else {
-      console.error("deleteAccount", error);
+      logError("deleteAccount", error);
     }
   }
 
@@ -80,7 +81,7 @@ export function InfoButtons() {
                     description: error.message,
                   });
                 } else {
-                  console.error("deleteAccount", error);
+                  logError("deleteAccount", error);
                   toast("Failed to delete account", {
                     description: "Failed to delete account",
                   });

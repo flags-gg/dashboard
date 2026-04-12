@@ -22,6 +22,7 @@ import { Input } from "~/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useFlags } from "@flags-gg/react-library";
 import { toast } from "sonner";
+import { logError } from "~/lib/logger";
 
 async function cloneEnvironmentAction(environment_id: string, agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -46,7 +47,7 @@ async function cloneEnvironmentAction(environment_id: string, agent_id: string, 
     if (e instanceof Error) {
       return Error(`Failed to clone environment: ${e.message}`)
     } else {
-      console.error("cloneEnvironment", e)
+      logError("cloneEnvironment", e)
     }
   }
 
