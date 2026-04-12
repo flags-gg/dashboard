@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
 import { FlagAgent } from "~/lib/interfaces";
 import { env } from "~/env";
 import { logError } from "~/lib/logger";
 
 export async function GET() {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -16,7 +16,7 @@ export async function GET() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        'x-user-subject': userId,
       },
       cache: 'no-store',
     })

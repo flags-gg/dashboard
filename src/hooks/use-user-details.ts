@@ -60,11 +60,8 @@ export function useUserDetails(userId: string) {
     queryFn: ({ signal }) => getUserDetails(signal),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: Boolean(userId),
-    retry: (failureCount, error) => {
-      if (error.message.includes('404')) {
-        return false;
-      }
-      return failureCount < 3;
-    }
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
 }

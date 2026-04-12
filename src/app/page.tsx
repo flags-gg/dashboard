@@ -1,7 +1,6 @@
 import { SignIn } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { env } from "~/env";
 import { Badge } from "~/components/ui/badge";
 import {
   Card,
@@ -10,53 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { APIKeyCreator, CompanyStats, FlagAgent, Flag, IEnvironment, IProject } from "~/lib/interfaces";
-import { logError, logInfo } from "~/lib/logger";
-
-type ProjectResponse = {
-  projects: IProject[];
-};
-
-type AgentResponse = {
-  agents: FlagAgent[];
-};
-
-type EnvironmentResponse = {
-  environments: IEnvironment[];
-};
-
-type CompanyStatsResponse = CompanyStats;
-
-type FlagEntry = {
-  flag: Flag;
-  environment: IEnvironment;
-};
-
-function normalizeFlags(value: unknown): Flag[] {
-  return Array.isArray(value) ? (value as Flag[]) : [];
-}
-
-async function fetchOrgJson<T>(path: string, userId: string): Promise<T> {
-  logInfo(`fetching ${path} for user ${userId}`);
-
-  const response = await fetch(`${env.API_SERVER}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      "x-user-subject": userId,
-    },
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${path}`);
-  }
-
-  return response.json() as Promise<T>;
-}
-
-function sortByNumericIdDesc<T extends { id: string }>(items: T[]): T[] {
-  return [...items].sort((left, right) => Number(right.id) - Number(left.id));
-}
+import { APIKeyCreator, Flag } from "~/lib/interfaces";
+import { logError } from "~/lib/logger";
+import { getDashboardSummary } from "~/server/get-dashboard-summary";
 
 function formatTimestamp(value?: string): string {
   if (!value) {
@@ -72,15 +27,6 @@ function formatTimestamp(value?: string): string {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(parsed);
-}
-
-function parseTimestamp(value?: string): number {
-  if (!value) {
-    return 0;
-  }
-
-  const parsed = Date.parse(value);
-  return Number.isNaN(parsed) ? 0 : parsed;
 }
 
 function changeLabel(flag: Flag): string {
@@ -100,8 +46,8 @@ function creatorLabel(creator?: APIKeyCreator): string {
 }
 
 export default async function Home() {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return (
       <div className={"flex justify-center"}>
         <SignIn />
@@ -110,71 +56,17 @@ export default async function Home() {
   }
 
   try {
-    const [projectData, agentData, environmentData, companyStats] = await Promise.all([
-      fetchOrgJson<ProjectResponse>("/projects", user.id),
-      fetchOrgJson<AgentResponse>("/agents", user.id),
-      fetchOrgJson<EnvironmentResponse>("/environments", user.id),
-      fetchOrgJson<CompanyStatsResponse>("/stats/company", user.id),
-    ]);
-
-    const projects = projectData.projects ?? [];
-    const agents = agentData.agents ?? [];
-    const environments = environmentData.environments ?? [];
-    const stats = companyStats ?? {
-      request_totals: {
-        single_flag_requests: 0,
-        all_flags_requests: 0,
-        total_requests: 0,
-      },
-      environment_requests: [],
-    };
-
-    const flagsByEnvironment = await Promise.all(
-      environments.map(async (environmentDetails) => {
-        try {
-          const flags = normalizeFlags(await fetchOrgJson<Flag[] | null>(
-            `/environment/${environmentDetails.environment_id}/flags`,
-            user.id,
-          ));
-
-          return flags.map((flag) => ({
-            flag,
-            environment: environmentDetails,
-          }));
-        } catch (error) {
-          logError("failed to fetch environment flags", error, environmentDetails.environment_id);
-          return [] as FlagEntry[];
-        }
-      }),
-    );
-
-    const allFlags = flagsByEnvironment.flat();
-    const newestProject = sortByNumericIdDesc(projects)[0];
-    const newestFlag = [...allFlags].sort(
-      (left, right) => Number(right.flag.details.id) - Number(left.flag.details.id),
-    )[0];
-    const recentFlagChanges = [...allFlags]
-      .filter((entry) => parseTimestamp(entry.flag.details.lastChanged) > 0)
-      .sort(
-        (left, right) =>
-          parseTimestamp(right.flag.details.lastChanged) -
-          parseTimestamp(left.flag.details.lastChanged),
-      )
-      .slice(0, 5);
-    const environmentCoverage = environments
-      .map((environmentDetails) => {
-        const matchingFlags = allFlags.filter(
-          (entry) => entry.environment.environment_id === environmentDetails.environment_id,
-        );
-
-        return {
-          ...environmentDetails,
-          totalFlags: matchingFlags.length,
-          enabledFlags: matchingFlags.filter((entry) => entry.flag.enabled).length,
-        };
-      })
-      .sort((left, right) => right.totalFlags - left.totalFlags)
-      .slice(0, 6);
+    const {
+      projects,
+      agents,
+      environments,
+      allFlags,
+      newestProject,
+      newestFlag,
+      recentFlagChanges,
+      environmentCoverage,
+      stats,
+    } = await getDashboardSummary(userId);
 
     return (
       <div className={"grid gap-4"}>

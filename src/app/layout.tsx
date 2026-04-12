@@ -14,7 +14,6 @@ import {extractRouterConfig} from "uploadthing/server";
 import {ourFileRouter} from "~/app/api/uploadthing/core";
 import {Toaster} from "~/components/ui/sonner";
 import { SidebarProvider } from "~/components/ui/sidebar";
-import OnboardCheck from "~/components/OnboardCheck"
 
 import "~/styles/globals.css";
 
@@ -40,7 +39,6 @@ export default async function RootLayout({
             <TooltipProvider>
               <div className="relative flex min-h-screen flex-col bg-muted/40">
                 <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-                <OnboardCheck />
                 <SidebarProvider>
                   <SideBar />
                   <div className={"flex flex-col sm:py-4 size-full"}>

@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
 import { UserDetails } from "~/hooks/use-user-details";
 import { logError } from "~/lib/logger";
 
 export async function GET() {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -15,7 +15,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'GET',
       headers: {
-        'x-user-subject': user.id,
+        'x-user-subject': userId,
       },
       cache: 'no-store',
     })
@@ -32,8 +32,8 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const {firstName, lastName, knownAs, email} = await request.json();
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'PUT',
       headers: {
-        'x-user-subject': user.id,
+        'x-user-subject': userId,
         'Content-Type': 'application/json',
       },
       cache: 'no-store',
@@ -66,8 +66,8 @@ export async function PUT(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const {firstName, lastName, knownAs, email} = await request.json();
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'POST',
       headers: {
-        'x-user-subject': user.id,
+        'x-user-subject': userId,
         'Content-Type': 'application/json',
       },
       cache: 'no-store',
