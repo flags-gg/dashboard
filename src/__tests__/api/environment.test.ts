@@ -1,6 +1,7 @@
 import { createMockRequest, mockUser, mockFetchSuccess } from "./_helpers";
 
 jest.mock("@clerk/nextjs/server", () => ({
+  auth: jest.fn(),
   currentUser: jest.fn(),
 }));
 
@@ -8,10 +9,11 @@ jest.mock("~/env", () => ({
   env: { API_SERVER: "https://api.test.com/v1" },
 }));
 
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { POST as createEnvironment } from "~/app/api/environment/create/route";
 import { GET as getEnvironments } from "~/app/api/environment/list/route";
 
+const mockedAuth = auth as jest.MockedFunction<typeof auth>;
 const mockedCurrentUser = currentUser as jest.MockedFunction<typeof currentUser>;
 
 describe("Environment API Routes", () => {
@@ -19,6 +21,7 @@ describe("Environment API Routes", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedAuth.mockResolvedValue({ userId: null } as Awaited<ReturnType<typeof auth>>);
   });
 
   afterAll(() => {
@@ -53,7 +56,7 @@ describe("Environment API Routes", () => {
 
   describe("GET /api/environment/list", () => {
     it("returns 401 when not authenticated", async () => {
-      mockedCurrentUser.mockResolvedValue(null);
+      mockedAuth.mockResolvedValue({ userId: null } as Awaited<ReturnType<typeof auth>>);
       const res = await getEnvironments();
       expect(res.status).toBe(401);
     });
@@ -63,7 +66,7 @@ describe("Environment API Routes", () => {
         { id: "1", name: "Production", environment_id: "env-1" },
         { id: "2", name: "Staging", environment_id: "env-2" },
       ];
-      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
+      mockedAuth.mockResolvedValue({ userId: mockUser.id } as Awaited<ReturnType<typeof auth>>);
       global.fetch = mockFetchSuccess(envData);
 
       const res = await getEnvironments();

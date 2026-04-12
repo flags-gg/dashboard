@@ -1,7 +1,9 @@
-export function info(..._args: unknown[]) {
+export function info(...args: unknown[]) {
+  void args;
   return undefined;
 }
 
-export function error(..._args: unknown[]) {
+export function error(...args: unknown[]) {
+  void args;
   return undefined;
 }
