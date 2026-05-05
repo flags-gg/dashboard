@@ -100,7 +100,7 @@
     "globals": "^17.6.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
-    "postcss": "^8.5.13",
+    "postcss": "^8.5.14",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4.2.4",
