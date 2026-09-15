@@ -28,8 +28,8 @@
       }
     ],
     "incremental": true,
+    "rootDir": ".",
     /* Path Aliases */
-    "baseUrl": ".",
     "paths": {
       "~/*": [
         "./src/*"
