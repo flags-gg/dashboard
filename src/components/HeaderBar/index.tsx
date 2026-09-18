@@ -1,5 +1,3 @@
-"use server"
-
 import {SearchBox} from "./search";
 import {UserNav} from "./userNav";
 import BreadCrumbs from "./breadcrumbs";
