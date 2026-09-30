@@ -5,7 +5,7 @@ import {ReactNode} from "react";
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const user = await currentUser();
-  if (!user) redirect("/sign-in");
+  if (!user) redirect("/");
 
   const details = await getUserDetailsServer();
   if (!details?.onboarded) redirect("/onboarding");

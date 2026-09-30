@@ -15,6 +15,7 @@ import { z } from "zod";
 import { IEnvironment } from "~/lib/interfaces";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function updateEnvironmentName(environment_id: string, name: string, enabled: boolean): Promise<IEnvironment | Error> {
   try {
@@ -47,6 +48,7 @@ async function updateEnvironmentName(environment_id: string, name: string, enabl
 }
 
 export default function Name({environment_id}: {environment_id: string}) {
+  const queryClient = useQueryClient()
   const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
   const [openEdit, setOpenEdit] = useState(false)
 
@@ -61,7 +63,9 @@ export default function Name({environment_id}: {environment_id: string}) {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setOpenEdit(false)
     try {
-      updateEnvironmentName(environment_id, data.name, environmentInfo.enabled).then(() => {
+      updateEnvironmentName(environment_id, data.name, environmentInfo.enabled).then((result) => {
+        if (result instanceof Error) throw result
+        void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
         setEnvironmentInfo({...environmentInfo, name: data.name})
         toast("Environment Name Updated", {
           description: "The environment name has been updated",

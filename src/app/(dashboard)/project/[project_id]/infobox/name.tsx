@@ -16,6 +16,7 @@ import { useProject } from "~/hooks/use-project";
 import { IProject } from "~/lib/interfaces";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function updateProjectName(project_id: string, name: string, enabled: boolean): Promise<IProject | Error> {
   try {
@@ -48,6 +49,7 @@ async function updateProjectName(project_id: string, name: string, enabled: bool
 }
 
 export default function Name({project_id}: {project_id: string}) {
+  const queryClient = useQueryClient()
   const [projectInfo, setProjectInfo] = useAtom(projectAtom)
   const [projectName, setProjectName] = useState(projectInfo?.name ?? "Project Name")
   const [openEdit, setOpenEdit] = useState(false)
@@ -74,7 +76,9 @@ export default function Name({project_id}: {project_id: string}) {
     form.reset()
 
     try {
-      updateProjectName(project_id, data.name, projectInfo.enabled).then(() => {
+      updateProjectName(project_id, data.name, projectInfo.enabled).then((result) => {
+        if (result instanceof Error) throw result
+        void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
         setProjectName(data.name)
         setProjectInfo({...projectInfo, name: data.name})
         toast("Project Name Updated", {

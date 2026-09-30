@@ -1,4 +1,8 @@
 .env
+.env.*
+.codex
+.agents
+secrets_file.json
 Dockerfile
 .dockerignore
 node_modules

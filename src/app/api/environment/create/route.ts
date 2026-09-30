@@ -32,7 +32,9 @@ export async function POST(request: Request) {
     if (!response.ok) {
       return NextResponse.json({ error: 'Failed to create environment' }, { status: 500 })
     }
-    const body = await response.json()
+    // The API currently returns an empty 201 after successfully inserting the environment.
+    const text = await response.text()
+    const body: unknown = text.trim() ? JSON.parse(text) : {}
 
     return NextResponse.json(body)
   } catch (e) {

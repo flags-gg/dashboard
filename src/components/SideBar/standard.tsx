@@ -4,12 +4,8 @@ import Link from "next/link";
 import {
   Book,
   Building2,
-  Container,
   Home,
   SquareGanttChart,
-  SquareKanban,
-  SquareMenu,
-  VenetianMask
 } from "lucide-react";
 import {
   Sidebar,
@@ -20,29 +16,20 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarHeader, SidebarMenuBadge, SidebarFooter
+  SidebarHeader, SidebarFooter
 } from "~/components/ui/sidebar";
-import { useAtom } from "jotai";
-import {
-  agentAtom,
-  environmentAtom,
-  hasCompletedOnboardingAtom,
-  projectAtom,
-  secretMenuAtom
-} from "~/lib/statemanager";
+import { useAtomValue } from "jotai";
+import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import ProjectTree from "./project-tree";
 
 export default function Standard() {
   const {is} = useFlags();
   const {user} = useUser();
 
-  const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
-  const [selectedProject] = useAtom(projectAtom);
-  const [selectedAgent] = useAtom(agentAtom);
-  const [selectedEnvironment] = useAtom(environmentAtom);
-  const [selectedMenu] = useAtom(secretMenuAtom);
+  const hasCompletedOnboarding = useAtomValue(hasCompletedOnboardingAtom);
 
   if (!hasCompletedOnboarding || !user) {
     return null
@@ -120,56 +107,7 @@ export default function Standard() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        {selectedProject.project_id && (
-          <SidebarGroup>
-            <SidebarGroupLabel>Project Options</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem key={`sidebar-project-${selectedProject.project_id}`}>
-                  <SidebarMenuButton asChild>
-                    <Link href={`/project/${selectedProject.project_id}`}>
-                      {selectedProject.logo ? (<Image src={selectedProject.logo} alt={selectedProject.name} width={50} height={50} className={"size-5"} />) : <SquareKanban className={"size-5"} />}
-                      <span>Project</span>
-                    </Link>
-                  </SidebarMenuButton>
-                  <SidebarMenuBadge>{selectedProject.name}</SidebarMenuBadge>
-                </SidebarMenuItem>
-                {selectedAgent.agent_id && (
-                  <SidebarMenuItem key={`agent-${selectedAgent.agent_id}`}>
-                    <SidebarMenuButton asChild>
-                      <Link href={`/agent/${selectedAgent.agent_id}`}>
-                        <VenetianMask className={"size-5"} />
-                        <span>Agent</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    <SidebarMenuBadge>{selectedAgent.name}</SidebarMenuBadge>
-                  </SidebarMenuItem>
-                )}
-                {selectedEnvironment.environment_id && (
-                  <SidebarMenuItem key={`environment-${selectedEnvironment.environment_id}`}>
-                    <SidebarMenuButton asChild>
-                      <Link href={`/environment/${selectedEnvironment.environment_id}`}>
-                        <Container className={"size-5"} />
-                        <span>Environment</span>
-                      </Link>
-                    </SidebarMenuButton>
-                    <SidebarMenuBadge>{selectedEnvironment.name}</SidebarMenuBadge>
-                  </SidebarMenuItem>
-                )}
-                {selectedMenu.menu_id && (
-                  <SidebarMenuItem key={`secretmenu-${selectedMenu.menu_id}`}>
-                    <SidebarMenuButton asChild>
-                      <Link href={`/secretmenu/${selectedMenu.menu_id}`}>
-                        <SquareMenu className={"size-5"} />
-                        <span>Secret Menu Config</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        )}
+        <ProjectTree />
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>

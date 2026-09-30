@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useAgent } from "~/hooks/use-agent";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function createEnvironmentAction(agent_id: string, name: string): Promise<null | Error> {
   try {
@@ -52,6 +53,7 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter()
+  const queryClient = useQueryClient()
   const {data: agentInfo} = useAgent(agent_id)
 
   const FormSchema = z.object({
@@ -74,6 +76,7 @@ export default function CreateEnvironment({agent_id}: {agent_id: string}) {
       toast("Environment Created", {
         description: "The environment has been created",
       })
+      void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
       router.refresh()
     } catch (e) {
       logError(e)

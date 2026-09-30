@@ -16,6 +16,7 @@ import { useAtom } from "jotai";
 import { agentAtom, environmentAtom } from "~/lib/statemanager";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function deleteEnvironment(environment_id: string): Promise<null | Error> {
   try {
@@ -49,6 +50,7 @@ async function deleteEnvironment(environment_id: string): Promise<null | Error> 
 export default function Delete({environment_id}: {environment_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [environmentInfo] = useAtom(environmentAtom)
   const [agentInfo] = useAtom(agentAtom)
 
@@ -66,7 +68,9 @@ export default function Delete({environment_id}: {environment_id: string}) {
           <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
           <Button variant={"destructive"} onClick={() => {
             setOpenDelete(false)
-            deleteEnvironment(environment_id).then(() => {
+            deleteEnvironment(environment_id).then((result) => {
+              if (result instanceof Error) throw result
+              void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
               toast("Environment Deleted", {
                 description: "The environment has been deleted",
               })

@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
-import { CornerRightUp, Loader2 } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -51,7 +51,7 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
       onError: (error) => {
         logError("Child environment failed to create", error);
         toast("Child Environment Failed", {
-          description: "Child environment failed to create",
+          description: error.message || "Child environment failed to create",
         });
         setIsCreating(false)
       },
@@ -59,7 +59,7 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
   }
 
   const FormSchema = z.object({
-    name: z.string().min(2, {message: "Name is required to be at least 2 characters"}),
+    name: z.string().trim().min(2, {message: "Name is required to be at least 2 characters"}).max(255),
   })
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
@@ -71,11 +71,12 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
   return (
     <Popover open={openChild} onOpenChange={setOpenChild}>
       <PopoverTrigger asChild>
-        <Button variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer ml-2"} size={"icon"}>
-          <CornerRightUp className={"size-5"} />
+        <Button variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer ml-2"} size={"sm"}>
+          <Plus className={"size-4"} aria-hidden="true" />
+          Create child
         </Button>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent align="end">
         {isCreating ? (
           <Button variant={"outline"} className={"bg-muted/10 border-0 ml-2"} disabled={true} size={"icon"}>
             <Loader2 />
@@ -86,6 +87,9 @@ export default function CreateChild({envId, agentId}: {envId: string, agentId: s
               <FormField control={form.control} name={"name"} render={({field}) => (
                 <FormItem>
                   <FormLabel>Create Child Environment</FormLabel>
+                  <p className="text-sm text-muted-foreground">
+                    Copies all parent flags and their current enabled states. Future changes are promoted separately.
+                  </p>
                   <FormControl>
                     <Input placeholder={"Environment Name"} {...field} />
                   </FormControl>
