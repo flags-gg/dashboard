@@ -18,6 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/components/ui/input";
 import {toast} from "sonner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function createAgentAction(project_id: string, name: string): Promise<null | Error> {
   try {
@@ -52,6 +53,7 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const formSchema = z.object({
     agentName: z.string().min(2, {message: "Agent Name is required a minimum of 2 characters"}),
@@ -74,6 +76,7 @@ export default function CreateAgent({ project_id }: { project_id: string }) {
       toast("Agent Created", {
         description: "The agent has been created",
       })
+      void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
       router.refresh()
     } catch (e) {
       logError("createAgent", e)

@@ -16,6 +16,7 @@ import { useAgent } from "~/hooks/use-agent";
 import {toast} from "sonner";
 import { Spinner } from "~/components/ui/spinner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function updateAgentName(agent_id: string, name: string, enabled: boolean): Promise<null | Error> {
   try {
@@ -47,6 +48,7 @@ async function updateAgentName(agent_id: string, name: string, enabled: boolean)
 }
 
 export default function Name({agent_id}: {agent_id: string}) {
+  const queryClient = useQueryClient()
   const [agentName, setAgentName] = useState("Agent Name");
   const [agentInfo, setAgentInfo] = useAtom(agentAtom)
   const [openEdit, setOpenEdit] = useState(false);
@@ -73,7 +75,9 @@ export default function Name({agent_id}: {agent_id: string}) {
     setOpenEdit(false)
     form.reset()
     try {
-      updateAgentName(agent_id, data.name, agentInfo.enabled).then(() => {
+      updateAgentName(agent_id, data.name, agentInfo.enabled).then((result) => {
+        if (result instanceof Error) throw result
+        void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
         setAgentInfo({ ...agentInfo, name: data.name })
         setAgentName(data.name)
         toast("Agent name updated", {

@@ -16,6 +16,7 @@ import { Button } from "~/components/ui/button";
 import { useAgent } from "~/hooks/use-agent";
 import {toast} from "sonner";
 import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function deleteAgent(agent_id: string): Promise<null | Error> {
   try {
@@ -49,6 +50,7 @@ async function deleteAgent(agent_id: string): Promise<null | Error> {
 export default function Delete({agent_id}: {agent_id: string}) {
   const [openDelete, setOpenDelete] = useState(false);
   const router = useRouter()
+  const queryClient = useQueryClient()
   const [AgentInfo, setAgentInfo] = useState<FlagAgent | null>(null)
   const {data: agentData, isLoading} = useAgent(agent_id)
 
@@ -76,7 +78,9 @@ export default function Delete({agent_id}: {agent_id: string}) {
           <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
           <Button variant={"destructive"} onClick={() => {
             setOpenDelete(false)
-            deleteAgent(agent_id).then(() => {
+            deleteAgent(agent_id).then((result) => {
+              if (result instanceof Error) throw result
+              void queryClient.invalidateQueries({ queryKey: ["sidebar-project-tree"] })
               toast("Agent Deleted", {
                 description: "The agent has been deleted",
               })

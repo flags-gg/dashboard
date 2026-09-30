@@ -37,6 +37,7 @@ export function useCloneEnvironment() {
       }
       // Invalidate any generic environment lists if present
       queryClient.invalidateQueries({ queryKey: ['environments'] }).catch(() => {});
+      queryClient.invalidateQueries({ queryKey: ['sidebar-project-tree'] }).catch(() => {});
     },
   });
 }

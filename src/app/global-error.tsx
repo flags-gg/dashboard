@@ -11,7 +11,8 @@ export default function GlobalError({
   reset: () => void
 }) {
   useEffect(() => {
-    logError("dashboard global error", error, { digest: error.digest });
+    // Next reports server-rendering failures through onRequestError with the original stack.
+    if (!error.digest) logError("dashboard global error", error);
   }, [error]);
 
   return (
