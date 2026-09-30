@@ -7,7 +7,7 @@ export type CloneEnvironmentInput = {
   name: string;
 };
 
-async function cloneEnvironment(input: CloneEnvironmentInput): Promise<IEnvironment> {
+async function cloneEnvironment(input: CloneEnvironmentInput): Promise<Pick<IEnvironment, 'environment_id'>> {
   const res = await fetch(`/api/environment/clone`, {
     method: 'POST',
     headers: {
@@ -18,11 +18,11 @@ async function cloneEnvironment(input: CloneEnvironmentInput): Promise<IEnvironm
   });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(text || 'Failed to create environment');
+    const data = await res.json().catch(() => null) as { error?: string } | null;
+    throw new Error(data?.error || 'Failed to create child environment');
   }
 
-  return await res.json() as IEnvironment;
+  return await res.json() as Pick<IEnvironment, 'environment_id'>;
 }
 
 export function useCloneEnvironment() {

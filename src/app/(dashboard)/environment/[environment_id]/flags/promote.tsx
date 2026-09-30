@@ -45,20 +45,22 @@ export function PromoteFlag({flag}: {flag: Flag}) {
   const router = useRouter();
   const environmentDetails = useAtom(environmentAtom)
 
-  const promoteIt = () => {
+  const promoteIt = async () => {
     setLoading(true);
+    setError(null);
     try {
-      promoteFlag(flag).then(() => {
-        setLoading(false);
-        router.refresh()
-      }).catch((err) => {
-        setError(err);
-        return
-      });
+      const result = await promoteFlag(flag);
+      if (result) {
+        setError(result.message);
+        toast("Failed to promote flag", { description: result.message });
+        return;
+      }
+      router.refresh();
     } catch (e) {
       logError(e);
       if (e instanceof Error) {
         setError(e.message);
+        toast("Failed to promote flag", { description: e.message });
       }
     } finally {
       setLoading(false);
@@ -74,10 +76,6 @@ export function PromoteFlag({flag}: {flag: Flag}) {
   }
 
   if (error) {
-    toast("Failed to promote flag", {
-      description: error,
-    });
-
     return (
       <Button disabled={true} size={'icon'} variant={"outline"} className={"bg-muted/10 border-0 cursor-pointer"}>
         <BookUp2 className={"size-5"} />

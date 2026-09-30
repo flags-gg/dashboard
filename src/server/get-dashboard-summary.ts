@@ -33,8 +33,17 @@ export async function getDashboardSummary(userId: string): Promise<DashboardSumm
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch /stats/dashboard");
+    throw new Error(`Failed to fetch /stats/dashboard (${response.status})`);
   }
 
-  return response.json() as Promise<DashboardSummary>;
+  const summary = await response.json() as DashboardSummary;
+  return {
+    ...summary,
+    projects: summary.projects ?? [],
+    agents: summary.agents ?? [],
+    environments: summary.environments ?? [],
+    allFlags: summary.allFlags ?? [],
+    recentFlagChanges: summary.recentFlagChanges ?? [],
+    environmentCoverage: summary.environmentCoverage ?? [],
+  };
 }

@@ -42,6 +42,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
               <TableHead>Name</TableHead>
               <TableHead>Environment ID</TableHead>
               <TableHead>Enabled</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -56,6 +57,8 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
                 <TableCell>
                   <Link
                     href={`/environment/${environment.environment_id}`}>{environment.enabled ? "True" : "False"}</Link>
+                </TableCell>
+                <TableCell className="text-right">
                   {environment.level === maxLevel && (
                     <CreateChild envId={environment.environment_id} agentId={agent_id}/>
                   )}

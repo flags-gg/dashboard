@@ -25,7 +25,7 @@ export default function ClientProvider({ children}: { children: ReactNode}) {
     projectId: env.NEXT_PUBLIC_FLAGS_PROJECT ?? "",
     agentId: env.NEXT_PUBLIC_FLAGS_AGENT ?? "",
     environmentId: env.NEXT_PUBLIC_FLAGS_ENVIRONMENT ?? "",
-    //flagsURL: "https://api.1ff.pw/flags",
+    flagsURL: env.NEXT_PUBLIC_FLAGS_SERVER,
   }
 
   return (

@@ -9,8 +9,16 @@ jest.mock("~/env", () => ({
   env: { API_SERVER: "https://api.test.com/v1" },
 }));
 
+// Keep JSON bodies intact with the suite's Web API polyfills.
+jest.mock("next/server", () => ({
+  NextResponse: {
+    json: (data: unknown, init?: ResponseInit) => new Response(JSON.stringify(data), init),
+  },
+}));
+
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { POST as createEnvironment } from "~/app/api/environment/create/route";
+import { POST as cloneEnvironment } from "~/app/api/environment/clone/route";
 import { GET as getEnvironments } from "~/app/api/environment/list/route";
 
 const mockedAuth = auth as jest.MockedFunction<typeof auth>;
@@ -71,6 +79,45 @@ describe("Environment API Routes", () => {
 
       const res = await getEnvironments();
       expect(res.status).toBe(200);
+    });
+  });
+
+  describe("POST /api/environment/clone", () => {
+    const request = () => createMockRequest("/api/environment/clone", {
+      method: "POST",
+      body: { agentId: "agent-1", environmentId: "dev", name: "Production" },
+    });
+
+    it("requires authentication", async () => {
+      mockedCurrentUser.mockResolvedValue(null);
+      expect((await cloneEnvironment(request())).status).toBe(401);
+    });
+
+    it("returns the child's identifier for query invalidation", async () => {
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
+      global.fetch = mockFetchSuccess({ environmentId: "prod" }, 201);
+      const response = await cloneEnvironment(request());
+      expect(response.status).toBe(201);
+      expect(await response.json()).toEqual({ environment_id: "prod" });
+      expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/agent/agent-1/dev", expect.objectContaining({
+        method: "POST", body: JSON.stringify({ name: "Production" }),
+      }));
+    });
+
+    it("preserves actionable backend errors", async () => {
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
+      global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 409, text: async () => "this environment already has a child\n" });
+      const response = await cloneEnvironment(request());
+      expect(response.status).toBe(409);
+      expect(await response.json()).toEqual({ error: "this environment already has a child" });
+    });
+
+    it("keeps internal database details out of the response", async () => {
+      mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
+      global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 500, text: async () => "database details" });
+      const response = await cloneEnvironment(request());
+      expect(response.status).toBe(500);
+      expect(await response.json()).toEqual({ error: "Failed to create child environment" });
     });
   });
 });

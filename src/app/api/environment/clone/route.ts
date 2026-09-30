@@ -30,10 +30,16 @@ export async function POST(request: Request) {
     })
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to clone environment' }, { status: 500 })
+      const detail = await response.text();
+      logError('Failed to create child environment', { status: response.status, detail });
+      const error = response.status < 500 && detail.trim()
+        ? detail.trim()
+        : 'Failed to create child environment';
+      return NextResponse.json({ error }, { status: response.status })
     }
 
-    return NextResponse.json({ message: 'Environment cloned successfully' })
+    const data = await response.json() as { environmentId: string };
+    return NextResponse.json({ environment_id: data.environmentId }, { status: 201 })
   } catch (e) {
     logError('Failed to clone environment', e)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })

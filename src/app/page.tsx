@@ -1,5 +1,7 @@
 import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { getUserDetailsServer } from "~/server/get-user-details";
 import Link from "next/link";
 import { Badge } from "~/components/ui/badge";
 import {
@@ -50,9 +52,14 @@ export default async function Home() {
   if (!userId) {
     return (
       <div className={"flex justify-center"}>
-        <SignIn />
+        <SignIn routing="hash" />
       </div>
     );
+  }
+
+  const details = await getUserDetailsServer();
+  if (details && !details.onboarded) {
+    redirect("/onboarding");
   }
 
   try {
