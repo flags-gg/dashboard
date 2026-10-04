@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@clerk/nextjs':
-        specifier: ^7.9.8
-        version: 7.9.8(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^7.9.10
+        version: 7.9.10(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -114,20 +114,20 @@ importers:
         specifier: ^0.13.11
         version: 0.13.11(arktype@2.1.20)(typescript@6.0.3)(zod@4.6.5)
       '@tanstack/react-query':
-        specifier: ^5.104.0
-        version: 5.104.0(react@19.2.7)
+        specifier: ^5.104.1
+        version: 5.104.1(react@19.2.7)
       '@tanstack/react-query-devtools':
-        specifier: ^5.104.0
-        version: 5.104.0(@tanstack/react-query@5.104.0(react@19.2.7))(@types/react@19.2.17)(csstype@3.2.3)(react@19.2.7)
+        specifier: ^5.104.1
+        version: 5.104.1(@tanstack/react-query@5.104.1(react@19.2.7))(@types/react@19.2.17)(csstype@3.2.3)(react@19.2.7)
       '@tanstack/react-table':
-        specifier: ^9.2.4
-        version: 9.2.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^9.2.5
+        version: 9.2.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@uploadthing/react':
         specifier: ^7.3.3
-        version: 7.3.3(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(uploadthing@7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3))
+        version: 7.3.3(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(uploadthing@7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3))
       bugfixes:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.3.4
+        version: 2.3.4
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -139,28 +139,28 @@ importers:
         version: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       cookies-next:
         specifier: ^6.1.1
-        version: 6.1.1(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
+        version: 6.1.1(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.7)
       geist:
         specifier: ^1.7.2
-        version: 1.7.2(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
+        version: 1.7.2(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       input-otp:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       jotai:
-        specifier: ^2.20.3
-        version: 2.20.3(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.2.17)(react@19.2.7)
+        specifier: ^3.0.1
+        version: 3.0.1(@types/react@19.2.17)(react@19.2.7)
       lucide-react:
-        specifier: ^1.49.0
-        version: 1.49.0(@types/react@19.2.17)(react@19.2.7)
+        specifier: ^1.52.0
+        version: 1.52.0(@types/react@19.2.17)(react@19.2.7)
       next:
         specifier: 16.3.6
-        version: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       next-auth:
         specifier: 4.24.15
-        version: 4.24.15(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        version: 4.24.15(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -180,8 +180,8 @@ importers:
         specifier: ^7.89.0
         version: 7.89.0(@types/react@19.2.17)(react@19.2.7)
       react-resizable-panels:
-        specifier: ^4.14.1
-        version: 4.14.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^4.14.2
+        version: 4.14.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       recharts:
         specifier: ^3.10.1
         version: 3.10.1(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react-is@19.3.0)(react@19.2.7)(redux@5.0.1)
@@ -193,7 +193,7 @@ importers:
         version: 2.0.8(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       stripe:
         specifier: ^22.6.2
-        version: 22.6.2(@types/node@26.6.3)
+        version: 22.6.2(@types/node@26.6.4)
       superjson:
         specifier: ^2.2.6
         version: 2.2.6
@@ -205,7 +205,7 @@ importers:
         version: 1.4.0
       uploadthing:
         specifier: ^7.7.4
-        version: 7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3)
+        version: 7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3)
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -235,8 +235,8 @@ importers:
         specifier: ^30.0.0
         version: 30.0.0
       '@types/node':
-        specifier: ^26.6.3
-        version: 26.6.3
+        specifier: ^26.6.4
+        version: 26.6.4
       '@types/react':
         specifier: 19.2.17
         version: 19.2.17
@@ -262,11 +262,11 @@ importers:
         specifier: 19.0.0-beta-714736e-20250131
         version: 19.0.0-beta-714736e-20250131(eslint@9.39.5(jiti@2.7.0))
       globals:
-        specifier: ^17.12.0
-        version: 17.12.0
+        specifier: ^17.13.0
+        version: 17.13.0
       jest:
         specifier: ^30.5.2
-        version: 30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0)
+        version: 30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0)
       jest-environment-jsdom:
         specifier: ^30.5.2
         version: 30.5.2
@@ -284,7 +284,7 @@ importers:
         version: 4.3.3
       ts-jest:
         specifier: ^29.4.14
-        version: 29.4.14(@babel/core@7.29.7)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7))(jest-util@30.5.1)(jest@30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0))(typescript@6.0.3)
+        version: 29.4.14(@babel/core@7.29.7)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7))(jest-util@30.5.1)(jest@30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0))(typescript@6.0.3)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -514,27 +514,27 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@clerk/backend@3.21.0':
-    resolution: {integrity: sha512-X00c3MpUoXwpdW7TAEqtzPQamww2gCAh26+rwvcPaQmWOtbp66DvNsUnrUxKgbz0jysIynTOjXMGhRqPN9AEtg==}
+  '@clerk/backend@3.22.0':
+    resolution: {integrity: sha512-YBJtclx3ytvQGNYhf0/pG+WHUk1ams7Aai3D2AB8c96AkSnzUE+i1Q98HyupIulPDr3fUWeQJtex4DYyO9D4fA==}
     engines: {node: '>=20.9.0'}
 
-  '@clerk/nextjs@7.9.8':
-    resolution: {integrity: sha512-t2K8wlCqPrFsrCZSlRtD2bjGfgsIm5h4nQ3DLFtGdMyZximLmWmEV3Eq2cUyB266VgdVn+1TIvUXVq8WSOZOpA==}
+  '@clerk/nextjs@7.9.10':
+    resolution: {integrity: sha512-nMzJYFSAhZHNl9Ut9l/sYn9tjSgZlwye4r1fem+48k7ED2cmujv9pG1rg427rW8Z1uZ3ANQbSkXSI3YdR3eAZg==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       next: ^15.2.8 || ^15.3.8 || ^15.4.10 || ^15.5.9 || ^15.6.0-0 || ^16.0.10 || ^16.1.0-0
       react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
       react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
 
-  '@clerk/react@6.17.3':
-    resolution: {integrity: sha512-g5UsCSBeZqNYV/2GG12EsWxZIKfwBgMC92Tc5gxHhCkXW/xMqipSzHnGuN9ykNBallE676A/BgEr5hIBREwm8g==}
+  '@clerk/react@6.17.5':
+    resolution: {integrity: sha512-ibTMS/bvo4W7+r+JrnzTig9s4QMVyybxxKCED8VgZE9LSE8XJ0VCH+dVj36hmvndXmpEqNuHRC61SQVJvv+40w==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
       react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
 
-  '@clerk/shared@4.37.0':
-    resolution: {integrity: sha512-WyPU9zU4Rrs+etNvtN7ev8bi1INs44jZv1aSXb3TSvGQ8XWnlwuphGMbbnPK0fyqifmU6scOQk6wm+KwDejy/g==}
+  '@clerk/shared@4.38.0':
+    resolution: {integrity: sha512-jVHz03682SJ3xsjsSjNX8YyWHllnr91qQEQZpZjCHGUIwGz3rYVavh69cofSuvPrqwOtXReukVEMtodzG2vVCQ==}
     engines: {node: '>=20.9.0'}
     peerDependencies:
       react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
@@ -2117,21 +2117,21 @@ packages:
     resolution: {integrity: sha512-aPkUQctDzpXLSWhlx7jUDi3mInsI18xcnrK1hvIyIa88ab1ax88cACr7xU+BKMCGB4NZYNwh4SoNSEbv3RY2NA==}
     engines: {node: '>=20'}
 
-  '@tanstack/query-core@5.104.0':
-    resolution: {integrity: sha512-JrC2r/JQlXt7khBSdUpsgxNvybzOg+aITa+ARRMlP2AFo93Y8vIqz077rp+e61mJetSZ0T6AJbwW1JHer1vrPQ==}
+  '@tanstack/query-core@5.104.1':
+    resolution: {integrity: sha512-TiRghcrGkUTE+M4JBxvpPSpBhxvIzQairw+cksrHYGr+2uwC77yW1SY9nYxnYRYOppvucf8rEg6b5byoz4rTpw==}
 
-  '@tanstack/query-devtools@5.104.0':
-    resolution: {integrity: sha512-snKyFLVFC5LuNoyUTpyqCD2Z8cRlCWrAeO3xub0nGi81IMz8YAUWq2Z+XdpGSGT7bCxqVdOHUjyiA3CtDuBjfQ==}
+  '@tanstack/query-devtools@5.104.1':
+    resolution: {integrity: sha512-wmXnQbnwEz+SctYMTrwsOWWNHKhCsVgtaliL9E+VI2vx2Xr773d/MpcrbIU1hEOUqC3p7x59swXFUPDLbplT3g==}
 
-  '@tanstack/react-query-devtools@5.104.0':
-    resolution: {integrity: sha512-E3AfuGqrdyaamuRV3u8RFWQlkZxk7OQa9MJ3XLF9SEHFRHyTUnlHcAQ0hEpDYxNsNFKYrheiRpDKlYaG4vkt7g==}
+  '@tanstack/react-query-devtools@5.104.1':
+    resolution: {integrity: sha512-0GoLxe08PVxnkbrHFwO+7fkgbc07xEcoBfdYvbTv63e6Fe7uz7PGyOxKeQTOXKGMmTfoniaISOqkjDzKC/66Ng==}
     peerDependencies:
-      '@tanstack/react-query': ^5.104.0
+      '@tanstack/react-query': ^5.104.1
       '@types/react': ^18 || ^19
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.104.0':
-    resolution: {integrity: sha512-e1TZmDCQnWIfiDVryIHeA6Idj+Lfx1hORLOhXS/l5wcgvtVD4yYqbTDl378sGQKIi2cSgb0TEMC9cKK8GGoJEw==}
+  '@tanstack/react-query@5.104.1':
+    resolution: {integrity: sha512-Zz70EgjahNI7aCz8BZxM3vUGU44ycxEAzMuCUjLeA7SVhhOkg3ZgPjPJPvHjs6Rmky/dtmnu1WzjGHNHmhCoZQ==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -2141,8 +2141,8 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@tanstack/react-table@9.2.4':
-    resolution: {integrity: sha512-Rzp1Q4e0/nIgEjmISYR5HeEgLTNtrG+C7NFZf/AbCxPO5hg+zC3yNGwcoECigUk8SFzzvhXbd2rFdtP2ZiGrfA==}
+  '@tanstack/react-table@9.2.5':
+    resolution: {integrity: sha512-Stx55j6c02xhF7G598HS0PHZhOQOAXhR41fJ7HuEBunu9KheHP51xbDqxiGHsNedfOWjTuW5jqPoWzHhHX35SQ==}
     engines: {node: '>=20'}
     peerDependencies:
       react: '>=18'
@@ -2150,8 +2150,8 @@ packages:
   '@tanstack/store@0.11.2':
     resolution: {integrity: sha512-sJ4mjol8uQsHV0gOJzzjwXfh2Fwm+Sz0+8deqiTm4jGbMdjzNSW+xZCFm0kUa870uhd8yi+DpKnZb5Kc4apa0Q==}
 
-  '@tanstack/table-core@9.2.4':
-    resolution: {integrity: sha512-GwdDyGGr6UXAtubF14yAwcXvdaogqfsQgIk89Suebjxob/Rjq2xvfmXsjDF1rQmKmhHsJm9TOY7myxv3i6geJw==}
+  '@tanstack/table-core@9.2.5':
+    resolution: {integrity: sha512-HCMUpaEBEBS9AkV44sdTDmNgFrAA6H4NAnUgwuoWN7IkPgwXWlf3bfZ0moyxLwZqQXdpNQZdEl7LMW4rqm9zQQ==}
     engines: {node: '>=20'}
 
   '@testing-library/dom@10.4.0':
@@ -2255,8 +2255,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/node@26.6.3':
-    resolution: {integrity: sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg==}
+  '@types/node@26.6.4':
+    resolution: {integrity: sha512-ldVPDCzj7fsaGZrLB0NuHuTvJcsNasysBAqMolr/cgxrLd1xbqxIr3XJiPnHHJUCxj5sNF1vnRj9aWnrVh5Jcg==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -2663,8 +2663,8 @@ packages:
   bser@2.1.1:
     resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
 
-  bugfixes@2.3.2:
-    resolution: {integrity: sha512-EQl0NrTimObSvNQC6uWI60kQ2APl+D2CmSQsjP/4KUsQWGTmhZmI2NqgrkYwvJSao4cEhA2mzIul9+m8uqndQw==}
+  bugfixes@2.3.4:
+    resolution: {integrity: sha512-7LLNTTcGAf1bBzJeQ5hDlR+AdF68bBWSqJrL0IRDICm6y39W1WXU7gGz0+lZXXaDpHgFX2kW4fMud3yzoCa61Q==}
     engines: {node: '>=24.0.0'}
 
   bytes@3.1.2:
@@ -3383,8 +3383,8 @@ packages:
     resolution: {integrity: sha512-ob/2LcVVaVGCYN+r14cnwnoDPUufjiYgSqRhiFD0Q1iI4Odora5RE8Iv1D24hAz5oMophRGkGz+yuvQmmUMnMw==}
     engines: {node: '>=18'}
 
-  globals@17.12.0:
-    resolution: {integrity: sha512-cezEd/DTyyht9cvSSURyygXPfy04GtWO/5e6ZPvH7fCtjKz9PYOmuawphw1Ctd1f6C+5JypXfGD7ahNMXvevBA==}
+  globals@17.13.0:
+    resolution: {integrity: sha512-RwMTC61u7hrG3ZJMkZQOK4JLJrKS8QtoTii63EmWvFXHqycY9FObBJQCbsLxSO8kjKhWE5kV1GC+Vb1g3RI0Zg==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -3835,6 +3835,18 @@ packages:
       react:
         optional: true
 
+  jotai@3.0.1:
+    resolution: {integrity: sha512-6tS7wY9otdiNp26Wqb/1ds3OuVJVoV+tJlN4hpLrYmfFf/t9bauVt+zKBNSpS5qSl5h6GieVQ+OknVraZX+udQ==}
+    engines: {node: '>=22.12.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      react: '>=18.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
   js-cookie@3.0.8:
     resolution: {integrity: sha512-yeJd4aNAdYZQjaon2bpD/Gb0B/omw7HQOsynXXcOiWVCacbBcPlgn8S/d1X6blFSaHao7ozqtW7NZW19xpCtIw==}
 
@@ -4016,8 +4028,8 @@ packages:
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  lucide-react@1.49.0:
-    resolution: {integrity: sha512-ApfaNM4/7jBrVopqLJ84Jz8TMQ1Q1JeZ1PmKh25aeS3E1FTVcMkSh1bEQB7dfzdIrwXRP8p3z4AJjTIHHb5IIA==}
+  lucide-react@1.52.0:
+    resolution: {integrity: sha512-TUgPtl5ZI9WgxOcbu4ckaC5B3l1qxPQrCMgb6OfUB9owx/OvSJfcf93SMgUWAxRw5/1XDfh9uI5F5iNGXCcGDQ==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -4554,8 +4566,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-resizable-panels@4.14.1:
-    resolution: {integrity: sha512-OB1bXDNTLcGgTTbaX6Dn5efZhlMboSnkfr1w4xpsJTHPEbRJpACBhXpgRCXozgPO1ztgFeZRUe5J3mFNCVKm5g==}
+  react-resizable-panels@4.14.2:
+    resolution: {integrity: sha512-s35mfXhwpPEPnB+BKPCZJ9VZU0CHb1I9trm9tijEGBNv1Srl0HzIweENeXnsQvd0Xm9BeOBkEzDGVJOZM2mkEQ==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -5552,36 +5564,36 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@clerk/backend@3.21.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@clerk/backend@3.22.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@clerk/shared': 4.37.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@clerk/shared': 4.38.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       standardwebhooks: 1.1.1
       tslib: 2.8.1
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@clerk/nextjs@7.9.8(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@clerk/nextjs@7.9.10(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@clerk/backend': 3.21.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@clerk/react': 6.17.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@clerk/shared': 4.37.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@clerk/backend': 3.22.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@clerk/react': 6.17.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@clerk/shared': 4.38.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       server-only: 0.0.1
       tslib: 2.8.1
 
-  '@clerk/react@6.17.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@clerk/react@6.17.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@clerk/shared': 4.37.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@clerk/shared': 4.38.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
       tslib: 2.8.1
 
-  '@clerk/shared@4.37.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@clerk/shared@4.38.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@tanstack/query-core': 5.104.0
+      '@tanstack/query-core': 5.104.1
       dequal: 2.0.3
       glob-to-regexp: 0.4.1
       js-cookie: 3.0.8
@@ -5911,7 +5923,7 @@ snapshots:
   '@jest/console@30.5.2':
     dependencies:
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       chalk: 4.1.2
       jest-message-util: 30.5.1
       jest-util: 30.5.1
@@ -5925,7 +5937,7 @@ snapshots:
       '@jest/test-result': 30.5.2
       '@jest/transform': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 4.4.0
@@ -5933,7 +5945,7 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       graceful-fs: 4.2.11
       jest-changed-files: 30.5.1
-      jest-config: 30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0)
+      jest-config: 30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0)
       jest-haste-map: 30.5.1
       jest-message-util: 30.5.1
       jest-regex-util: 30.5.0
@@ -5961,7 +5973,7 @@ snapshots:
       '@jest/fake-timers': 30.5.2
       '@jest/types': 30.5.1
       '@types/jsdom': 21.1.7
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       jest-mock: 30.5.2
       jest-util: 30.5.1
       jsdom: 26.1.0
@@ -5970,7 +5982,7 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       jest-mock: 30.5.2
 
   '@jest/expect-utils@30.5.2':
@@ -5988,7 +6000,7 @@ snapshots:
     dependencies:
       '@jest/types': 30.5.1
       '@sinonjs/fake-timers': 15.4.0
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       jest-message-util: 30.5.1
       jest-mock: 30.5.2
       jest-util: 30.5.1
@@ -6006,7 +6018,7 @@ snapshots:
 
   '@jest/pattern@30.5.0':
     dependencies:
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       jest-regex-util: 30.5.0
 
   '@jest/reporters@30.5.2':
@@ -6017,7 +6029,7 @@ snapshots:
       '@jest/transform': 30.5.2
       '@jest/types': 30.5.1
       '@jridgewell/trace-mapping': 0.3.31
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       chalk: 4.1.2
       collect-v8-coverage: 1.0.3
       exit-x: 0.2.2
@@ -6094,7 +6106,7 @@ snapshots:
       '@jest/schemas': 30.5.0
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -7142,16 +7154,16 @@ snapshots:
     dependencies:
       remove-accents: 0.5.0
 
-  '@tanstack/query-core@5.104.0': {}
+  '@tanstack/query-core@5.104.1': {}
 
-  '@tanstack/query-devtools@5.104.0(csstype@3.2.3)':
+  '@tanstack/query-devtools@5.104.1(csstype@3.2.3)':
     dependencies:
       '@kobalte/core': 0.13.14(solid-js@1.9.15)
       '@solid-primitives/keyed': 1.5.3(solid-js@1.9.15)
       '@solid-primitives/resize-observer': 2.2.0(solid-js@1.9.15)
       '@solid-primitives/storage': 1.3.11(solid-js@1.9.15)
       '@tanstack/match-sorter-utils': 9.1.2
-      '@tanstack/query-core': 5.104.0
+      '@tanstack/query-core': 5.104.1
       clsx: 2.1.1
       goober: 2.1.19(csstype@3.2.3)
       solid-js: 1.9.15
@@ -7160,18 +7172,18 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/react-query-devtools@5.104.0(@tanstack/react-query@5.104.0(react@19.2.7))(@types/react@19.2.17)(csstype@3.2.3)(react@19.2.7)':
+  '@tanstack/react-query-devtools@5.104.1(@tanstack/react-query@5.104.1(react@19.2.7))(@types/react@19.2.17)(csstype@3.2.3)(react@19.2.7)':
     dependencies:
-      '@tanstack/query-devtools': 5.104.0(csstype@3.2.3)
-      '@tanstack/react-query': 5.104.0(react@19.2.7)
+      '@tanstack/query-devtools': 5.104.1(csstype@3.2.3)
+      '@tanstack/react-query': 5.104.1(react@19.2.7)
       '@types/react': 19.2.17
       react: 19.2.7
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/react-query@5.104.0(react@19.2.7)':
+  '@tanstack/react-query@5.104.1(react@19.2.7)':
     dependencies:
-      '@tanstack/query-core': 5.104.0
+      '@tanstack/query-core': 5.104.1
       react: 19.2.7
 
   '@tanstack/react-store@0.11.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
@@ -7181,17 +7193,17 @@ snapshots:
       react-dom: 19.2.7(react@19.2.7)
       use-sync-external-store: 1.7.0(react@19.2.7)
 
-  '@tanstack/react-table@9.2.4(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@tanstack/react-table@9.2.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       '@tanstack/react-store': 0.11.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@tanstack/table-core': 9.2.4
+      '@tanstack/table-core': 9.2.5
       react: 19.2.7
     transitivePeerDependencies:
       - react-dom
 
   '@tanstack/store@0.11.2': {}
 
-  '@tanstack/table-core@9.2.4':
+  '@tanstack/table-core@9.2.5':
     dependencies:
       '@tanstack/store': 0.11.2
 
@@ -7302,7 +7314,7 @@ snapshots:
 
   '@types/jsdom@21.1.7':
     dependencies:
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       '@types/tough-cookie': 4.0.5
       parse5: 7.3.0
 
@@ -7310,7 +7322,7 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/node@26.6.3':
+  '@types/node@26.6.4':
     dependencies:
       undici-types: 8.9.0
 
@@ -7502,14 +7514,14 @@ snapshots:
 
   '@uploadthing/mime-types@0.3.6': {}
 
-  '@uploadthing/react@7.3.3(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(uploadthing@7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3))':
+  '@uploadthing/react@7.3.3(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)(uploadthing@7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3))':
     dependencies:
       '@uploadthing/shared': 7.1.10
       file-selector: 0.6.0
       react: 19.2.7
-      uploadthing: 7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3)
+      uploadthing: 7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3)
     optionalDependencies:
-      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
 
   '@uploadthing/shared@7.1.10':
     dependencies:
@@ -7773,7 +7785,7 @@ snapshots:
     dependencies:
       node-int64: 0.4.0
 
-  bugfixes@2.3.2: {}
+  bugfixes@2.3.4: {}
 
   bytes@3.1.2:
     optional: true
@@ -7870,10 +7882,10 @@ snapshots:
 
   cookie@1.1.1: {}
 
-  cookies-next@6.1.1(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7):
+  cookies-next@6.1.1(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7):
     dependencies:
       cookie: 1.1.1
-      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
 
   copy-anything@4.1.5: {}
@@ -8580,9 +8592,9 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  geist@1.7.2(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)):
+  geist@1.7.2(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)):
     dependencies:
-      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
 
   generator-function@2.0.1: {}
 
@@ -8653,7 +8665,7 @@ snapshots:
 
   globals@16.4.0: {}
 
-  globals@17.12.0: {}
+  globals@17.13.0: {}
 
   globalthis@1.0.4:
     dependencies:
@@ -8975,7 +8987,7 @@ snapshots:
       '@jest/expect': 30.5.2
       '@jest/test-result': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.7.2(babel-plugin-macros@3.1.0)
@@ -8995,7 +9007,7 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  jest-cli@30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0):
+  jest-cli@30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0):
     dependencies:
       '@jest/core': 30.5.2(babel-plugin-macros@3.1.0)
       '@jest/test-result': 30.5.2
@@ -9003,7 +9015,7 @@ snapshots:
       chalk: 4.1.2
       exit-x: 0.2.2
       import-local: 3.2.0
-      jest-config: 30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0)
+      jest-config: 30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0)
       jest-util: 30.5.1
       jest-validate: 30.5.1
       yargs: 17.7.3
@@ -9014,7 +9026,7 @@ snapshots:
       - supports-color
       - ts-node
 
-  jest-config@30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0):
+  jest-config@30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0):
     dependencies:
       '@babel/core': 7.29.7
       '@jest/get-type': 30.5.0
@@ -9040,7 +9052,7 @@ snapshots:
       slash: 3.0.0
       strip-json-comments: 3.1.1
     optionalDependencies:
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -9081,7 +9093,7 @@ snapshots:
       '@jest/environment': 30.5.2
       '@jest/fake-timers': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       jest-mock: 30.5.2
       jest-util: 30.5.1
       jest-validate: 30.5.1
@@ -9090,7 +9102,7 @@ snapshots:
     dependencies:
       '@jest/types': 30.5.1
       '@parcel/watcher': 2.6.0
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       fdir: 6.5.0(picomatch@4.0.7)
@@ -9129,7 +9141,7 @@ snapshots:
     dependencies:
       '@jest/expect-utils': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       jest-util: 30.5.1
 
   jest-regex-util@30.5.0: {}
@@ -9159,7 +9171,7 @@ snapshots:
       '@jest/test-result': 30.5.2
       '@jest/transform': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       chalk: 4.1.2
       emittery: 0.13.1
       exit-x: 0.2.2
@@ -9187,7 +9199,7 @@ snapshots:
       '@jest/test-result': 30.5.2
       '@jest/transform': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       chalk: 4.1.2
       cjs-module-lexer: 2.2.1
       collect-v8-coverage: 1.0.3
@@ -9235,7 +9247,7 @@ snapshots:
   jest-util@30.5.1:
     dependencies:
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       chalk: 4.1.2
       ci-info: 4.4.0
       graceful-fs: 4.2.11
@@ -9254,7 +9266,7 @@ snapshots:
     dependencies:
       '@jest/test-result': 30.5.2
       '@jest/types': 30.5.1
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -9263,18 +9275,18 @@ snapshots:
 
   jest-worker@30.5.1:
     dependencies:
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
       '@ungap/structured-clone': 1.4.0
       jest-util: 30.5.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  jest@30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0):
+  jest@30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0):
     dependencies:
       '@jest/core': 30.5.2(babel-plugin-macros@3.1.0)
       '@jest/types': 30.5.1
       import-local: 3.2.0
-      jest-cli: 30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0)
+      jest-cli: 30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -9290,6 +9302,11 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.29.7
       '@babel/template': 7.29.7
+      '@types/react': 19.2.17
+      react: 19.2.7
+
+  jotai@3.0.1(@types/react@19.2.17)(react@19.2.7):
+    optionalDependencies:
       '@types/react': 19.2.17
       react: 19.2.7
 
@@ -9456,7 +9473,7 @@ snapshots:
     dependencies:
       react: 19.2.7
 
-  lucide-react@1.49.0(@types/react@19.2.17)(react@19.2.7):
+  lucide-react@1.52.0(@types/react@19.2.17)(react@19.2.7):
     dependencies:
       react: 19.2.7
     optionalDependencies:
@@ -9552,13 +9569,13 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-auth@4.24.15(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  next-auth@4.24.15(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       '@babel/runtime': 7.29.7
       '@panva/hkdf': 1.2.1
       cookie: 0.7.2
       jose: 4.15.9
-      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       oauth: 0.9.15
       openid-client: 5.7.1
       preact: 10.29.8(preact-render-to-string@5.2.6)
@@ -9572,7 +9589,7 @@ snapshots:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
 
-  next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       '@next/env': 16.3.6
       '@swc/helpers': 0.5.23
@@ -9591,7 +9608,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 16.3.6
       '@next/swc-win32-arm64-msvc': 16.3.6
       '@next/swc-win32-x64-msvc': 16.3.6
-      sharp: 0.35.5(@types/node@26.6.3)
+      sharp: 0.35.5(@types/node@26.6.4)
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/node'
@@ -9923,7 +9940,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.17
 
-  react-resizable-panels@4.14.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
+  react-resizable-panels@4.14.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7):
     dependencies:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
@@ -10132,7 +10149,7 @@ snapshots:
   setprototypeof@1.2.0:
     optional: true
 
-  sharp@0.35.5(@types/node@26.6.3):
+  sharp@0.35.5(@types/node@26.6.4):
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
@@ -10163,7 +10180,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.35.5
       '@img/sharp-win32-ia32': 0.35.5
       '@img/sharp-win32-x64': 0.35.5
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
     optional: true
 
   shebang-command@2.0.0:
@@ -10350,9 +10367,9 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  stripe@22.6.2(@types/node@26.6.3):
+  stripe@22.6.2(@types/node@26.6.4):
     optionalDependencies:
-      '@types/node': 26.6.3
+      '@types/node': 26.6.4
 
   styled-jsx@5.1.6(@babel/core@7.29.7)(babel-plugin-macros@3.1.0)(react@19.2.7):
     dependencies:
@@ -10426,12 +10443,12 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  ts-jest@29.4.14(@babel/core@7.29.7)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7))(jest-util@30.5.1)(jest@30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0))(typescript@6.0.3):
+  ts-jest@29.4.14(@babel/core@7.29.7)(@jest/transform@30.5.2)(@jest/types@30.5.1)(babel-jest@30.5.2(@babel/core@7.29.7))(jest-util@30.5.1)(jest@30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0))(typescript@6.0.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       handlebars: 4.7.9
-      jest: 30.5.2(@types/node@26.6.3)(babel-plugin-macros@3.1.0)
+      jest: 30.5.2(@types/node@26.6.4)(babel-plugin-macros@3.1.0)
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
@@ -10567,7 +10584,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  uploadthing@7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3):
+  uploadthing@7.7.4(express@5.1.0)(next@16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(tailwindcss@4.3.3):
     dependencies:
       '@effect/platform': 0.90.3(effect@3.17.7)
       '@standard-schema/spec': 1.0.0-beta.4
@@ -10576,7 +10593,7 @@ snapshots:
       effect: 3.17.7
     optionalDependencies:
       express: 5.1.0
-      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.3)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      next: 16.3.6(@babel/core@7.29.7)(@types/node@26.6.4)(babel-plugin-macros@3.1.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       tailwindcss: 4.3.3
 
   uri-js@4.4.1:
