@@ -150,8 +150,8 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       jotai:
-        specifier: ^2.20.3
-        version: 2.20.3(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.2.17)(react@19.2.7)
+        specifier: ^3.0.1
+        version: 3.0.1(@types/react@19.2.17)(react@19.2.7)
       lucide-react:
         specifier: ^1.52.0
         version: 1.52.0(@types/react@19.2.17)(react@19.2.7)
@@ -3976,6 +3976,18 @@ packages:
         optional: true
       '@babel/template':
         optional: true
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+
+  jotai@3.0.1:
+    resolution: {integrity: sha512-6tS7wY9otdiNp26Wqb/1ds3OuVJVoV+tJlN4hpLrYmfFf/t9bauVt+zKBNSpS5qSl5h6GieVQ+OknVraZX+udQ==}
+    engines: {node: '>=22.12.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      react: '>=18.0.0'
+    peerDependenciesMeta:
       '@types/react':
         optional: true
       react:
@@ -9603,6 +9615,11 @@ snapshots:
     optionalDependencies:
       '@babel/core': 7.29.7
       '@babel/template': 7.29.7
+      '@types/react': 19.2.17
+      react: 19.2.7
+
+  jotai@3.0.1(@types/react@19.2.17)(react@19.2.7):
+    optionalDependencies:
       '@types/react': 19.2.17
       react: 19.2.7
 
