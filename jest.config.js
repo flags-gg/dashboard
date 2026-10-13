@@ -2,11 +2,14 @@
 export default {
   testEnvironment: "jsdom",
   transform: {
-    "^.+\\.tsx?$": ["ts-jest", {
+    "^.+\\.[tj]sx?$": ["ts-jest", {
       tsconfig: "tsconfig.json",
       jsx: "react-jsx",
     }],
   },
+  transformIgnorePatterns: [
+    "/node_modules/(?!\\.pnpm/jotai@[^/]+/node_modules/jotai/|jotai/)",
+  ],
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
   moduleNameMapper: {
     "^~/(.*)$": "<rootDir>/src/$1",
