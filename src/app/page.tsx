@@ -73,7 +73,7 @@ export default async function Home() {
       recentFlagChanges,
       environmentCoverage,
       stats,
-    } = await getDashboardSummary(userId);
+    } = await getDashboardSummary();
 
     return (
       <div className={"grid gap-4"}>

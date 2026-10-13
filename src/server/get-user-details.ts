@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 import type { UserDetails } from "~/hooks/use-user-details";
 
@@ -18,7 +19,7 @@ export async function getUserDetailsServer(): Promise<UserDetails | null> {
     const res = await fetch(`${env.API_SERVER}/user`, {
       method: "GET",
       headers: {
-        "x-user-subject": user.id,
+        ...(await authHeader()),
       },
       cache: "no-store",
     });

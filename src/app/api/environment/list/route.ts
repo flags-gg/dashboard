@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { IEnvironment } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
@@ -14,7 +15,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/environments`, {
       method: 'GET',
       headers: {
-        'x-user-subject': userId,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })

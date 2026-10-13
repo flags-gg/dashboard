@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
 import {env} from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import {AgentsData, FlagAgent} from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
@@ -11,10 +12,14 @@ export async function getAgents(project_id: string): Promise<AgentsData> {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(`${env.API_SERVER}/project/${project_id}/agents`, {
+  if (!isUuid(project_id)) {
+    throw new Error('Invalid project id')
+  }
+
+  const res = await fetch(`${env.API_SERVER}/project/${encodeURIComponent(project_id)}/agents`, {
     headers: {
       'Content-Type': 'application/json',
-      'x-user-subject': user.id,
+      ...(await authHeader()),
     },
     cache: 'no-store'
   })
@@ -30,10 +35,14 @@ export async function getAgent(agent_id: string): Promise<FlagAgent> {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(`${env.API_SERVER}/agent/${agent_id}`, {
+  if (!isUuid(agent_id)) {
+    throw new Error('Invalid agent id')
+  }
+
+  const res = await fetch(`${env.API_SERVER}/agent/${encodeURIComponent(agent_id)}`, {
     headers: {
       'Content-Type': 'application/json',
-      'x-user-subject': user.id,
+      ...(await authHeader()),
     },
     cache: 'no-store'
   })
@@ -56,12 +65,16 @@ export async function put(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(agentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/agent/${agentId}`, {
+    const response = await fetch(`${env.API_SERVER}/agent/${encodeURIComponent(agentId)}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({
         name: name,

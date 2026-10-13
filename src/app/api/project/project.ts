@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { IProject, ProjectsData} from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
-export async function getProjects(userId: string): Promise<ProjectsData> {
+export async function getProjects(): Promise<ProjectsData> {
   const res = await fetch(`${env.API_SERVER}/projects`, {
     headers: {
       'Content-Type': 'application/json',
-      'x-user-subject': userId,
+      ...(await authHeader()),
     },
     cache: 'no-store'
   })
@@ -25,7 +26,7 @@ export async function fetchProjects(): Promise<ProjectsData> {
     throw new Error('No access token found')
   }
 
-  return getProjects(user.id)
+  return getProjects()
 }
 
 export async function getProject(project_id: string): Promise<IProject | Error> {
@@ -34,10 +35,14 @@ export async function getProject(project_id: string): Promise<IProject | Error> 
     return Error('No access token found')
   }
 
+  if (!isUuid(project_id)) {
+    return Error('Invalid project id')
+  }
+
   try {
-    const res = await fetch(`${env.API_SERVER}/project/${project_id}`, {
+    const res = await fetch(`${env.API_SERVER}/project/${encodeURIComponent(project_id)}`, {
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store'
     })
@@ -62,14 +67,18 @@ export async function put(request: Request) {
   const {projectId, name, enabled}: UpdateProjectName = await request.json();
   const user = await currentUser();
   if (!user) {
-    throw new Error('No access token found')
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  if (!isUuid(projectId)) {
+    return invalidId()
   }
 
   try {
-    const response = await fetch(`${env.API_SERVER}/project/${projectId}`, {
+    const response = await fetch(`${env.API_SERVER}/project/${encodeURIComponent(projectId)}`, {
       method: 'PUT',
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({
         name: name,

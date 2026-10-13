@@ -9,7 +9,7 @@ import { SignIn } from "@clerk/nextjs";
 export async function generateMetadata({params}: {params: Promise<{project_id: string}>}): Promise<Metadata> {
   const {project_id} = await params
   const projectInfo = await getProject(project_id)
-  if (!projectInfo) {
+  if (projectInfo instanceof Error) {
     redirect('/projects')
   }
 

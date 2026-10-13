@@ -11,7 +11,7 @@ export async function GET() {
   }
 
   try {
-    return NextResponse.json(await getDashboardSummary(userId));
+    return NextResponse.json(await getDashboardSummary());
   } catch (error) {
     logError("failed to fetch dashboard summary", error);
     return NextResponse.json({ error: "Failed to fetch dashboard summary" }, { status: 500 });

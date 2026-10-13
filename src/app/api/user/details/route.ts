@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { UserDetails } from "~/hooks/use-user-details";
 import { logError } from "~/lib/logger";
 
@@ -15,7 +16,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'GET',
       headers: {
-        'x-user-subject': userId,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })
@@ -42,7 +43,7 @@ export async function PUT(request: Request) {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'PUT',
       headers: {
-        'x-user-subject': userId,
+        ...(await authHeader()),
         'Content-Type': 'application/json',
       },
       cache: 'no-store',
@@ -76,7 +77,7 @@ export async function POST(request: Request) {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'POST',
       headers: {
-        'x-user-subject': userId,
+        ...(await authHeader()),
         'Content-Type': 'application/json',
       },
       cache: 'no-store',

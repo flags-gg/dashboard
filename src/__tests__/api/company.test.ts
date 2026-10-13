@@ -2,6 +2,7 @@ import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure, mockFe
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
 }));
 
 jest.mock("~/env", () => ({
@@ -67,7 +68,7 @@ describe("Company API Routes", () => {
         expect.objectContaining({
           method: "POST",
           headers: expect.objectContaining({
-            "x-user-subject": "user_123",
+            Authorization: "Bearer test-token",
           }),
           body: JSON.stringify({ name: "Acme", domain: "acme.com" }),
         })

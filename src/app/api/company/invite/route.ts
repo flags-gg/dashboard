@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 type InviteUser = {
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({
         name: name,

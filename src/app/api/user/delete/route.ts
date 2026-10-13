@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { currentUser } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 export async function DELETE() {
@@ -14,13 +15,16 @@ export async function DELETE() {
     const response = await fetch(`${env.API_SERVER}/user`, {
       method: 'DELETE',
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })
     if (!response.ok) {
       return NextResponse.json({ error: 'Failed to delete user' }, { status: 500 })
     }
+
+    // Only remove the Clerk identity once the API has deleted the account data.
+    await (await clerkClient()).users.deleteUser(user.id)
 
     return NextResponse.json({ message: 'User deleted successfully' })
   } catch (e) {

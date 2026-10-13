@@ -2,6 +2,7 @@ import { createMockRequest, mockUser, mockFetchSuccess } from "./_helpers";
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
 }));
 
 jest.mock("~/env", () => ({
@@ -29,7 +30,7 @@ describe("Secret Menu Style API Routes", () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/secretmenu/style", {
         method: "POST",
-        body: { menuId: "menu-1" },
+        body: { menuId: "d0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await POST(req);
@@ -43,7 +44,7 @@ describe("Secret Menu Style API Routes", () => {
 
       const req = createMockRequest("/api/secretmenu/style", {
         method: "POST",
-        body: { menuId: "menu-1" },
+        body: { menuId: "d0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await POST(req);
@@ -66,7 +67,7 @@ describe("Secret Menu Style API Routes", () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/secretmenu/style", {
         method: "PUT",
-        body: { menuId: "menu-1", style: validStyle },
+        body: { menuId: "d0000000-0000-4000-8000-000000000001", style: validStyle },
       });
 
       const res = await PUT(req);
@@ -79,7 +80,7 @@ describe("Secret Menu Style API Routes", () => {
 
       const req = createMockRequest("/api/secretmenu/style", {
         method: "PUT",
-        body: { menuId: "menu-1", style: validStyle },
+        body: { menuId: "d0000000-0000-4000-8000-000000000001", style: validStyle },
       });
 
       const res = await PUT(req);
@@ -91,7 +92,7 @@ describe("Secret Menu Style API Routes", () => {
 
       const req = createMockRequest("/api/secretmenu/style", {
         method: "PUT",
-        body: { menuId: "menu-1", style: "not-valid-json{" },
+        body: { menuId: "d0000000-0000-4000-8000-000000000001", style: "not-valid-json{" },
       });
 
       const res = await PUT(req);
@@ -104,7 +105,7 @@ describe("Secret Menu Style API Routes", () => {
 
       const req = createMockRequest("/api/secretmenu/style", {
         method: "PUT",
-        body: { menuId: "menu-1", styleId: "style-1", style: validStyle },
+        body: { menuId: "d0000000-0000-4000-8000-000000000001", styleId: "style-1", style: validStyle },
       });
 
       await PUT(req);

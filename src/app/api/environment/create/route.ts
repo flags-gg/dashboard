@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 type CreateEnv = {
@@ -15,12 +16,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(agentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/agent/${agentId}/environment`, {
+    const response = await fetch(`${env.API_SERVER}/agent/${encodeURIComponent(agentId)}/environment`, {
       method : 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({
         name: name,

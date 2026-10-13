@@ -29,7 +29,7 @@ describe("Environment API Routes", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedAuth.mockResolvedValue({ userId: null } as Awaited<ReturnType<typeof auth>>);
+    mockedAuth.mockResolvedValue({ userId: null, getToken: async () => "test-token" } as unknown as Awaited<ReturnType<typeof auth>>);
   });
 
   afterAll(() => {
@@ -41,7 +41,7 @@ describe("Environment API Routes", () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/environment/create", {
         method: "POST",
-        body: { agentId: "agent-1", name: "Staging" },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001", name: "Staging" },
       });
 
       const res = await createEnvironment(req);
@@ -54,7 +54,7 @@ describe("Environment API Routes", () => {
 
       const req = createMockRequest("/api/environment/create", {
         method: "POST",
-        body: { agentId: "agent-1", name: "Staging" },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001", name: "Staging" },
       });
 
       const res = await createEnvironment(req);
@@ -71,10 +71,10 @@ describe("Environment API Routes", () => {
 
     it("returns environments list", async () => {
       const envData = [
-        { id: "1", name: "Production", environment_id: "env-1" },
-        { id: "2", name: "Staging", environment_id: "env-2" },
+        { id: "1", name: "Production", environment_id: "c0000000-0000-4000-8000-000000000001" },
+        { id: "2", name: "Staging", environment_id: "c0000000-0000-4000-8000-000000000002" },
       ];
-      mockedAuth.mockResolvedValue({ userId: mockUser.id } as Awaited<ReturnType<typeof auth>>);
+      mockedAuth.mockResolvedValue({ userId: mockUser.id, getToken: async () => "test-token" } as unknown as Awaited<ReturnType<typeof auth>>);
       global.fetch = mockFetchSuccess(envData);
 
       const res = await getEnvironments();
@@ -85,7 +85,7 @@ describe("Environment API Routes", () => {
   describe("POST /api/environment/clone", () => {
     const request = () => createMockRequest("/api/environment/clone", {
       method: "POST",
-      body: { agentId: "agent-1", environmentId: "dev", name: "Production" },
+      body: { agentId: "a0000000-0000-4000-8000-000000000001", environmentId: "c0000000-0000-4000-8000-000000000001", name: "Production" },
     });
 
     it("requires authentication", async () => {
@@ -99,7 +99,7 @@ describe("Environment API Routes", () => {
       const response = await cloneEnvironment(request());
       expect(response.status).toBe(201);
       expect(await response.json()).toEqual({ environment_id: "prod" });
-      expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/agent/agent-1/dev", expect.objectContaining({
+      expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/agent/a0000000-0000-4000-8000-000000000001/c0000000-0000-4000-8000-000000000001", expect.objectContaining({
         method: "POST", body: JSON.stringify({ name: "Production" }),
       }));
     });

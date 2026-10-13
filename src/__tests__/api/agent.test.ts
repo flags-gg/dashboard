@@ -3,6 +3,7 @@ import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure, mockFe
 // Mock Clerk
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
 }));
 
 // Mock env
@@ -31,7 +32,7 @@ describe("Agent API Routes", () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/agent", {
         method: "DELETE",
-        body: { agentId: "agent-1" },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -44,7 +45,7 @@ describe("Agent API Routes", () => {
 
       const req = createMockRequest("/api/agent", {
         method: "DELETE",
-        body: { agentId: "agent-1" },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -59,7 +60,7 @@ describe("Agent API Routes", () => {
 
       const req = createMockRequest("/api/agent", {
         method: "DELETE",
-        body: { agentId: "agent-1" },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -72,7 +73,7 @@ describe("Agent API Routes", () => {
 
       const req = createMockRequest("/api/agent", {
         method: "DELETE",
-        body: { agentId: "agent-1" },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -84,7 +85,7 @@ describe("Agent API Routes", () => {
     it("returns 401 when not authenticated", async () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/agent", {
-        searchParams: { agentId: "agent-1" },
+        searchParams: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await GET(req);
@@ -95,14 +96,14 @@ describe("Agent API Routes", () => {
       const agentData = {
         id: "1",
         name: "Test Agent",
-        agent_id: "agent-1",
+        agent_id: "a0000000-0000-4000-8000-000000000001",
         enabled: true,
       };
       mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(agentData);
 
       const req = createMockRequest("/api/agent", {
-        searchParams: { agentId: "agent-1" },
+        searchParams: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await GET(req);
@@ -116,7 +117,7 @@ describe("Agent API Routes", () => {
       global.fetch = mockFetchFailure();
 
       const req = createMockRequest("/api/agent", {
-        searchParams: { agentId: "agent-1" },
+        searchParams: { agentId: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await GET(req);
@@ -131,7 +132,7 @@ describe("Agent API Routes", () => {
 
       const req = createMockRequest("/api/agent", {
         method: "PUT",
-        body: { agentId: "agent-1", name: "Updated", enabled: true },
+        body: { agentId: "a0000000-0000-4000-8000-000000000001", name: "Updated", enabled: true },
       });
 
       const res = await PUT(req);

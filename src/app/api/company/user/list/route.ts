@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { UserDetails } from "~/hooks/use-user-details";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 export async function GET() {
@@ -14,7 +15,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/company/users`, {
       method: 'GET',
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
         'Content-Type': 'application/json',
       },
       cache: 'no-store',

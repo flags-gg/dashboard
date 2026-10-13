@@ -2,6 +2,7 @@ import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure, mockFe
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
 }));
 
 jest.mock("~/env", () => ({
@@ -35,7 +36,7 @@ describe("Flag API Routes", () => {
         body: {
           flag: {
             enabled: true,
-            details: { id: "flag-1", name: "Test Flag", lastChanged: "", promoted: false },
+            details: { id: "42", name: "Test Flag", lastChanged: "", promoted: false },
           },
         },
       });
@@ -53,7 +54,7 @@ describe("Flag API Routes", () => {
         body: {
           flag: {
             enabled: true,
-            details: { id: "flag-1", name: "Test Flag", lastChanged: "", promoted: false },
+            details: { id: "42", name: "Test Flag", lastChanged: "", promoted: false },
           },
         },
       });
@@ -73,7 +74,7 @@ describe("Flag API Routes", () => {
         body: {
           flag: {
             enabled: true,
-            details: { id: "flag-1", name: "Test", lastChanged: "", promoted: false },
+            details: { id: "42", name: "Test", lastChanged: "", promoted: false },
           },
         },
       });
@@ -81,7 +82,7 @@ describe("Flag API Routes", () => {
       await toggleFlag(req);
 
       expect(global.fetch).toHaveBeenCalledWith(
-        "https://api.test.com/v1/flag/flag-1",
+        "https://api.test.com/v1/flag/42",
         expect.objectContaining({
           method: "PATCH",
           body: expect.stringContaining('"enabled":false'),
@@ -95,7 +96,7 @@ describe("Flag API Routes", () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/flag/delete", {
         method: "DELETE",
-        body: { flag_id: "flag-1" },
+        body: { flag_id: "42" },
       });
 
       const res = await deleteFlag(req);
@@ -108,7 +109,7 @@ describe("Flag API Routes", () => {
 
       const req = createMockRequest("/api/flag/delete", {
         method: "DELETE",
-        body: { flag_id: "flag-1" },
+        body: { flag_id: "42" },
       });
 
       const res = await deleteFlag(req);
@@ -123,7 +124,7 @@ describe("Flag API Routes", () => {
 
       const req = createMockRequest("/api/flag/delete", {
         method: "DELETE",
-        body: { flag_id: "flag-1" },
+        body: { flag_id: "42" },
       });
 
       const res = await deleteFlag(req);
@@ -139,7 +140,7 @@ describe("Flag API Routes", () => {
 
       const req = createMockRequest("/api/flag/create", {
         method: "POST",
-        body: { name: "New Flag", environment_id: "env-1", agent_id: "agent-1" },
+        body: { name: "New Flag", environment_id: "c0000000-0000-4000-8000-000000000001", agent_id: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await createFlag(req);
@@ -152,7 +153,7 @@ describe("Flag API Routes", () => {
 
       const req = createMockRequest("/api/flag/create", {
         method: "POST",
-        body: { name: "New Flag", environment_id: "env-1", agent_id: "agent-1" },
+        body: { name: "New Flag", environment_id: "c0000000-0000-4000-8000-000000000001", agent_id: "a0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await createFlag(req);
@@ -167,7 +168,7 @@ describe("Flag API Routes", () => {
 
       const req = createMockRequest("/api/flag/edit", {
         method: "POST",
-        body: { flag_id: "flag-1", newName: "Renamed Flag" },
+        body: { flag_id: "42", newName: "Renamed Flag" },
       });
 
       const res = await editFlag(req);

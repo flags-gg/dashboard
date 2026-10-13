@@ -10,7 +10,6 @@ import {
 import { Button } from "~/components/ui/button";
 import { useUpgradeChoices } from "~/hooks/use-upgrade-choices";
 import { Card, CardFooter, CardHeader, CardTitle, CardContent } from "~/components/ui/card";
-import { useFlags } from "@flags-gg/react-library";
 import { UpgradeChoice } from "~/lib/interfaces";
 import { EmbeddedCheckout, EmbeddedCheckoutProvider } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -36,24 +35,15 @@ export default function Plan() {
   const [upgradeChoice, setUpgradeChoice] = useState<UpgradeChoice | null>(null)
   const [errorInfo] = useState({} as IError);
   const [showError] = useState(false);
-  const {is} = useFlags();
 
   const fetchClientSecret = useCallback(async () => {
-    let priceId: string | undefined
-
-    if (is("dev prices")?.enabled()) {
-      priceId = upgradeChoice?.stripe?.dev_price_id
-    } else {
-      priceId = upgradeChoice?.stripe?.price_id
-    }
-
     const res = await fetch(`/api/company/upgrade`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        priceId: priceId,
+        plan: upgradeChoice?.title,
       }),
       cache: "no-store",
     })

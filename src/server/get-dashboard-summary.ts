@@ -1,4 +1,5 @@
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { CompanyStats, FlagAgent, Flag, IEnvironment, IProject } from "~/lib/interfaces";
 
 export type FlagEntry = {
@@ -23,11 +24,11 @@ export type DashboardSummary = {
   stats: CompanyStats;
 };
 
-export async function getDashboardSummary(userId: string): Promise<DashboardSummary> {
+export async function getDashboardSummary(): Promise<DashboardSummary> {
   const response = await fetch(`${env.API_SERVER}/stats/dashboard`, {
     headers: {
       "Content-Type": "application/json",
-      "x-user-subject": userId,
+      ...(await authHeader()),
     },
     cache: "no-store",
   });

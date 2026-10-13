@@ -2,6 +2,7 @@ import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure, mockFe
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
 }));
 
 jest.mock("~/env", () => ({
@@ -29,7 +30,7 @@ describe("Project API Routes", () => {
       mockedCurrentUser.mockResolvedValue(null);
       const req = createMockRequest("/api/project", {
         method: "DELETE",
-        body: { projectId: "proj-1" },
+        body: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -42,7 +43,7 @@ describe("Project API Routes", () => {
 
       const req = createMockRequest("/api/project", {
         method: "DELETE",
-        body: { projectId: "proj-1" },
+        body: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -57,7 +58,7 @@ describe("Project API Routes", () => {
 
       const req = createMockRequest("/api/project", {
         method: "DELETE",
-        body: { projectId: "proj-1" },
+        body: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -70,7 +71,7 @@ describe("Project API Routes", () => {
 
       const req = createMockRequest("/api/project", {
         method: "DELETE",
-        body: { projectId: "proj-1" },
+        body: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await DELETE(req);
@@ -83,17 +84,17 @@ describe("Project API Routes", () => {
 
       const req = createMockRequest("/api/project", {
         method: "DELETE",
-        body: { projectId: "proj-1" },
+        body: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       await DELETE(req);
 
       expect(global.fetch).toHaveBeenCalledWith(
-        "https://api.test.com/v1/project/proj-1",
+        "https://api.test.com/v1/project/b0000000-0000-4000-8000-000000000001",
         expect.objectContaining({
           method: "DELETE",
           headers: expect.objectContaining({
-            "x-user-subject": "user_123",
+            Authorization: "Bearer test-token",
           }),
         })
       );
@@ -110,12 +111,12 @@ describe("Project API Routes", () => {
     });
 
     it("returns project data", async () => {
-      const projectData = { id: "1", name: "Test", project_id: "proj-1" };
+      const projectData = { id: "1", name: "Test", project_id: "b0000000-0000-4000-8000-000000000001" };
       mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
       global.fetch = mockFetchSuccess(projectData);
 
       const req = createMockRequest("/api/project", {
-        searchParams: { projectId: "proj-1" },
+        searchParams: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       const res = await GET(req);
@@ -124,17 +125,17 @@ describe("Project API Routes", () => {
 
     it("calls backend with correct project ID", async () => {
       mockedCurrentUser.mockResolvedValue(mockUser as unknown as Awaited<ReturnType<typeof currentUser>>);
-      global.fetch = mockFetchSuccess({ id: "1", name: "Test", project_id: "proj-1" });
+      global.fetch = mockFetchSuccess({ id: "1", name: "Test", project_id: "b0000000-0000-4000-8000-000000000001" });
 
       const req = createMockRequest("/api/project", {
-        searchParams: { projectId: "proj-1" },
+        searchParams: { projectId: "b0000000-0000-4000-8000-000000000001" },
       });
 
       await GET(req);
       expect(global.fetch).toHaveBeenCalledWith(
-        "https://api.test.com/v1/project/proj-1",
+        "https://api.test.com/v1/project/b0000000-0000-4000-8000-000000000001",
         expect.objectContaining({
-          headers: expect.objectContaining({ "x-user-subject": "user_123" }),
+          headers: expect.objectContaining({ Authorization: "Bearer test-token" }),
         })
       );
     });

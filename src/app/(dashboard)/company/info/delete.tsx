@@ -17,29 +17,17 @@ import { useFlags } from "@flags-gg/react-library";
 import {toast} from "sonner";
 import { logError } from "~/lib/logger";
 
-async function deleteCompany(): Promise<null | Error> {
-  try {
-    const response = await fetch(`/api/company/delete`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
-    if (!response.ok) {
-      return new Error("Failed to delete company");
-    }
-
-    return null;
-  } catch (error) {
-    if (error instanceof Error) {
-      return Error(`Failed to delete company: ${error.message}`);
-    } else {
-      logError("deleteCompany", error);
-    }
+async function deleteCompany(): Promise<void> {
+  const response = await fetch(`/api/company/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete company");
   }
-
-  return new Error("Failed to delete company");
 }
 
 export default function DeleteButton() {

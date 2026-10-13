@@ -1,4 +1,5 @@
 import { env } from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { NextResponse } from "next/server";
 import { type StyleFetch } from "~/app/(dashboard)/secretmenu/[menu_id]/styling/context";
 import { currentUser } from "@clerk/nextjs/server";
@@ -15,11 +16,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}/style`, {
+  if (!isUuid(menuId)) {
+    return invalidId()
+  }
+
+  const response = await fetch(`${env.API_SERVER}/secret-menu/${encodeURIComponent(menuId)}/style`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'x-user-subject': user?.id,
+      ...(await authHeader()),
     },
     cache: 'no-store',
   })
@@ -79,12 +84,16 @@ export async function PUT(request: Request) {
     dataModel.custom_style.style_id = styleId
   }
 
+  if (!isUuid(menuId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}/style`, {
+    const response = await fetch(`${env.API_SERVER}/secret-menu/${encodeURIComponent(menuId)}/style`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user?.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify(dataModel),
       cache: 'no-store',
