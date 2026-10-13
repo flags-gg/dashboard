@@ -58,7 +58,7 @@
     "embla-carousel-react": "^8.6.0",
     "geist": "^1.7.2",
     "input-otp": "^1.5.0",
-    "jotai": "^2.20.3",
+    "jotai": "^3.0.1",
     "lucide-react": "^1.52.0",
     "next": "16.4.0",
     "next-auth": "4.24.15",
@@ -113,7 +113,7 @@
   },
   "packageManager": "pnpm@9.12.0",
   "engines": {
-    "node": ">= 20.9.0 < 26"
+    "node": ">= 22.12.0 < 26"
   },
   "overrides": {
     "@types/react": "19.2.17",
