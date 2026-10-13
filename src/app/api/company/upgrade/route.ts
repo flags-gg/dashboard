@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   }
 
   const stripe = new Stripe(env.STRIPE_SECRET, {
-    apiVersion: "2026-08-26.dahlia",
+    apiVersion: "2026-09-30.endive",
     typescript: true,
     appInfo: {
       name: "Flags.gg",
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
   try {
     const stripeSession = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      allowed_payment_method_types: ['card'],
       line_items: [
         {
           price: priceId,
