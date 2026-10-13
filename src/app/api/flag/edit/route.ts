@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader, isFlagId, invalidId } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 type EditFlag = {
@@ -15,12 +16,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isFlagId(flag_id)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/flag/${flag_id}`, {
+    const response = await fetch(`${env.API_SERVER}/flag/${encodeURIComponent(flag_id)}`, {
       method : 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({
         name: newName,

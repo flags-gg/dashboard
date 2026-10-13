@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import {env} from "~/env";
+import { authHeader, isUuid } from "~/server/api";
 import { EnvironmentsData, IEnvironment } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
@@ -9,11 +10,15 @@ export async function getEnvironments(agent_id: string): Promise<{ data: Environ
     throw new Error('No access token found')
   }
 
+  if (!isUuid(agent_id)) {
+    return { data: null, error: new Error('Invalid agent id') }
+  }
+
   try {
-    const res = await fetch(`${env.API_SERVER}/agent/${agent_id}/environments`, {
+    const res = await fetch(`${env.API_SERVER}/agent/${encodeURIComponent(agent_id)}/environments`, {
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store'
     })
@@ -35,10 +40,14 @@ export async function getEnvironment(environment_id: string): Promise<{ data: IE
     throw new Error('No access token found')
   }
 
+  if (!isUuid(environment_id)) {
+    return { data: null, error: new Error('Invalid environment id') }
+  }
+
   try {
-    const res = await fetch(`${env.API_SERVER}/environment/${environment_id}`, {
+    const res = await fetch(`${env.API_SERVER}/environment/${encodeURIComponent(environment_id)}`, {
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store'
     })

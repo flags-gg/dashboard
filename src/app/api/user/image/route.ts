@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
+import { authHeader, isUploadedImageUrl } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 export async function PUT(request: Request) {
@@ -15,12 +16,16 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUploadedImageUrl(image)) {
+    return NextResponse.json({ error: 'Invalid image url' }, { status: 400 })
+  }
+
   try {
     const response = await fetch(`${env.API_SERVER}/user/image`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user?.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({image: image}),
       cache: 'no-store',

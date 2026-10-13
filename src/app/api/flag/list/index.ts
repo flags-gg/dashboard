@@ -1,12 +1,17 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { Flag } from "~/lib/interfaces";
 import { env } from "~/env";
+import { authHeader, isUuid } from "~/server/api";
 
-export async function fetchFlags(environment_id: string, userId: string): Promise<Flag[]> {
-  const res = await fetch(`${env.API_SERVER}/environment/${environment_id}/flags`, {
+export async function fetchFlags(environment_id: string): Promise<Flag[]> {
+  if (!isUuid(environment_id)) {
+    throw new Error('Invalid environment id')
+  }
+
+  const res = await fetch(`${env.API_SERVER}/environment/${encodeURIComponent(environment_id)}/flags`, {
     headers: {
       'Content-Type': 'application/json',
-      'x-user-subject': userId,
+      ...(await authHeader()),
     },
     cache: 'no-store'
   })
@@ -24,5 +29,5 @@ export async function getFlags(environment_id: string): Promise<Flag[]> {
     throw new Error('No access token found')
   }
 
-  return fetchFlags(environment_id, user.id)
+  return fetchFlags(environment_id)
 }

@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { IProject } from "~/lib/interfaces";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 export async function GET() {
@@ -14,7 +15,7 @@ export async function GET() {
     const response = await fetch(`${env.API_SERVER}/projects`, {
       method: 'GET',
       headers: {
-        'x-user-subject': userId,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })

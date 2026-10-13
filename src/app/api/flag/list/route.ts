@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const flags = await fetchFlags(environment_id, user.id)
+    const flags = await fetchFlags(environment_id)
     return NextResponse.json(flags)
   } catch (e) {
     logError('Failed to fetch flags', e)

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { env } from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { put } from "./agent";
 import { FlagAgent } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
@@ -17,12 +18,16 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(agentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/agent/${agentId}`, {
+    const response = await fetch(`${env.API_SERVER}/agent/${encodeURIComponent(agentId)}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })
@@ -50,12 +55,16 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(agentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/agent/${agentId}`, {
+    const response = await fetch(`${env.API_SERVER}/agent/${encodeURIComponent(agentId)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store'
     })

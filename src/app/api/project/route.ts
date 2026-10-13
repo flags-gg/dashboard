@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { env } from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { put, getProject } from "./project";
 import { logError } from "~/lib/logger";
 
@@ -15,12 +16,16 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(projectId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/project/${projectId}`, {
+    const response = await fetch(`${env.API_SERVER}/project/${encodeURIComponent(projectId)}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })
@@ -41,15 +46,23 @@ export async function PUT(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const {searchParams} = new URL(request.url)
   const projectId = searchParams.get('projectId')
 
   if (!projectId) {
     return NextResponse.json({ error: 'No projectId provided' }, { status: 400 })
   }
+  if (!isUuid(projectId)) {
+    return invalidId()
+  }
   const data = await getProject(projectId)
-  if (!data) {
-    return NextResponse.json({ error: 'No project found' }, { status: 404 })
+  if (data instanceof Error) {
+    return NextResponse.json({ error: data.message }, { status: 500 })
   }
 
   return NextResponse.json(data)

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { AgentLimits } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
@@ -16,11 +17,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'No project id provided' }, { status: 400 })
   }
 
+  if (!isUuid(project_id)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/project/${project_id}/limits`, {
+    const response = await fetch(`${env.API_SERVER}/project/${encodeURIComponent(project_id)}/limits`, {
       method: 'GET',
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
         'Content-Type': 'application/json',
       },
       cache: 'no-store',

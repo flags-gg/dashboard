@@ -2,6 +2,7 @@ import { createMockRequest, mockUser, mockFetchSuccess, mockFetchFailure, mockFe
 
 jest.mock("@clerk/nextjs/server", () => ({
   currentUser: jest.fn(),
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
 }));
 
 jest.mock("~/env", () => ({
@@ -28,7 +29,7 @@ describe("POST /api/agent/create", () => {
     mockedCurrentUser.mockResolvedValue(null);
     const req = createMockRequest("/api/agent/create", {
       method: "POST",
-      body: { projectId: "proj-1", name: "New Agent" },
+      body: { projectId: "b0000000-0000-4000-8000-000000000001", name: "New Agent" },
     });
 
     const res = await POST(req);
@@ -42,7 +43,7 @@ describe("POST /api/agent/create", () => {
 
     const req = createMockRequest("/api/agent/create", {
       method: "POST",
-      body: { projectId: "proj-1", name: "New Agent" },
+      body: { projectId: "b0000000-0000-4000-8000-000000000001", name: "New Agent" },
     });
 
     const res = await POST(req);
@@ -57,16 +58,16 @@ describe("POST /api/agent/create", () => {
 
     const req = createMockRequest("/api/agent/create", {
       method: "POST",
-      body: { projectId: "proj-1", name: "New Agent" },
+      body: { projectId: "b0000000-0000-4000-8000-000000000001", name: "New Agent" },
     });
 
     await POST(req);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://api.test.com/v1/project/proj-1/agent",
+      "https://api.test.com/v1/project/b0000000-0000-4000-8000-000000000001/agent",
       expect.objectContaining({
         method: "POST",
-        body: JSON.stringify({ name: "New Agent", project_id: "proj-1" }),
+        body: JSON.stringify({ name: "New Agent", project_id: "b0000000-0000-4000-8000-000000000001" }),
       })
     );
   });
@@ -77,7 +78,7 @@ describe("POST /api/agent/create", () => {
 
     const req = createMockRequest("/api/agent/create", {
       method: "POST",
-      body: { projectId: "proj-1", name: "New Agent" },
+      body: { projectId: "b0000000-0000-4000-8000-000000000001", name: "New Agent" },
     });
 
     const res = await POST(req);
@@ -90,7 +91,7 @@ describe("POST /api/agent/create", () => {
 
     const req = createMockRequest("/api/agent/create", {
       method: "POST",
-      body: { projectId: "proj-1", name: "New Agent" },
+      body: { projectId: "b0000000-0000-4000-8000-000000000001", name: "New Agent" },
     });
 
     const res = await POST(req);

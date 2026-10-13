@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 export async function POST(request: Request) {
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
     const response = await fetch(`${env.API_SERVER}/company`, {
       method: 'POST',
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

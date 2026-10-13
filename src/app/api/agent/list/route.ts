@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import { FlagAgent } from "~/lib/interfaces";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 export async function GET() {
@@ -16,7 +17,7 @@ export async function GET() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': userId,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })

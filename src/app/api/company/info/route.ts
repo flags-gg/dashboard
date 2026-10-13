@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader } from "~/server/api";
 import { ICompanyInfo } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
@@ -15,7 +16,7 @@ export async function GET() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })

@@ -39,16 +39,17 @@ The app uses Next.js API routes as a proxy layer to the external API server (`ht
 
 1. **Client → Next.js API Route**: 
    ```typescript
-   fetch('/api/endpoint', { method: 'POST', body: JSON.stringify(data) })
+   fetch('/api/endpoint', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }) // non-JSON mutations get 415
    ```
 
 2. **API Route → External API**:
    ```typescript
    fetch(`${env.API_SERVER}/endpoint`, {
-     headers: { 'x-user-subject': user.id },
+     headers: { ...(await authHeader()) }, // ~/server/api: Clerk session JWT as Bearer
      body: JSON.stringify(data)
    })
    ```
+   Validate ids with `isUuid`/`isFlagId` from `~/server/api` and `encodeURIComponent` path segments.
 
 3. **Authentication**: All routes use Clerk middleware. In API routes:
    ```typescript

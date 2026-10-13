@@ -2,6 +2,7 @@ import {SecretMenu} from "~/lib/interfaces";
 import { currentUser } from "@clerk/nextjs/server";
 
 import {env} from "~/env";
+import { authHeader, isUuid } from "~/server/api";
 
 export async function getSecretMenu(menu_id: string): Promise<SecretMenu> {
   const user = await currentUser();
@@ -9,9 +10,13 @@ export async function getSecretMenu(menu_id: string): Promise<SecretMenu> {
     throw new Error('No access token found')
   }
 
-  const res = await fetch(`${env.API_SERVER}/secret-menu/${menu_id}`, {
+  if (!isUuid(menu_id)) {
+    throw new Error('Invalid secret menu id')
+  }
+
+  const res = await fetch(`${env.API_SERVER}/secret-menu/${encodeURIComponent(menu_id)}`, {
     headers: {
-      'x-user-subject': user.id,
+      ...(await authHeader()),
     },
     cache: 'no-store'
   })

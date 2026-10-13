@@ -2,6 +2,7 @@ import {NextResponse} from 'next/server';
 import { currentUser } from "@clerk/nextjs/server";
 
 import {env} from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { logError } from "~/lib/logger";
 
 type SecretMenuParams = {
@@ -20,19 +21,23 @@ export async function POST(request: Request) {
     return NextResponse.json({message: "No Menu to retrieve"}, { status: 404 });
   }
 
+  if (!isUuid(menuId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/secret-menu/${menuId}`, {
+    const response = await fetch(`${env.API_SERVER}/secret-menu/${encodeURIComponent(menuId)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     });
     if (!response.ok) {
       return NextResponse.json({message: "Failed to get secret menu"}, { status: 500 });
     }
-    return response
+    return NextResponse.json(await response.json())
   } catch (error) {
     logError('Error getting secret menu:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
@@ -46,12 +51,16 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(menu_id)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/secret-menu/${menu_id}/state`, {
+    const response = await fetch(`${env.API_SERVER}/secret-menu/${encodeURIComponent(menu_id)}/state`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     });

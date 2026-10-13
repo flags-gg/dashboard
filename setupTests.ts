@@ -3,14 +3,15 @@ import '@testing-library/jest-dom';
 // Polyfill Web APIs needed by next/server in test environment
 import { TextEncoder, TextDecoder } from 'util';
 
+// Header names are case-insensitive, like the real Headers.
 class MockHeaders extends Map<string, string> {
   constructor(init?: Record<string, string> | [string, string][]) {
-    if (Array.isArray(init)) {
-      super(init);
-    } else {
-      super(Object.entries(init ?? {}));
-    }
+    super();
+    for (const [k, v] of Array.isArray(init) ? init : Object.entries(init ?? {})) this.set(k, v);
   }
+  get(key: string) { return super.get(key.toLowerCase()); }
+  set(key: string, value: string) { return super.set(key.toLowerCase(), value); }
+  has(key: string) { return super.has(key.toLowerCase()); }
 }
 
 class MockRequest {

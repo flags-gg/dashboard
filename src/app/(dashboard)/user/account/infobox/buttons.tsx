@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "~/components/ui/dialog";
-import { useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { deleteCookie } from "cookies-next";
@@ -19,35 +19,23 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
 
-async function deleteAccount(): Promise<null | Error> {
-  try {
-    const response = await fetch(`/api/user/delete`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
-    if (!response.ok) {
-      return new Error("Failed to delete account");
-    }
-
-    return null;
-  } catch (error) {
-    if (error instanceof Error) {
-      return Error(`Failed to delete account: ${error.message}`);
-    } else {
-      logError("deleteAccount", error);
-    }
+async function deleteAccount(): Promise<void> {
+  const response = await fetch(`/api/user/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete account");
   }
-
-  return new Error("Failed to delete account");
 }
 
 export function InfoButtons() {
   const [openDelete, setOpenDelete] = useState(false);
   const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
-  const router = useRouter();
+  const { signOut } = useClerk();
   const queryClient = useQueryClient();
 
   return (
@@ -74,7 +62,7 @@ export function InfoButtons() {
                 setOnboardingComplete(false)
                 deleteCookie("hasCompletedOnboarding")
                 queryClient.clear()
-                router.push("/api/auth/signout")
+                void signOut({ redirectUrl: "/" })
               }).catch((error) => {
                 if (error instanceof Error) {
                   toast("Failed to delete account", {

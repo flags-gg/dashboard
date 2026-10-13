@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@clerk/nextjs/server";
 import { env } from "~/env";
+import { authHeader, isUuid, invalidId } from "~/server/api";
 import { IEnvironment } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 
@@ -17,12 +18,16 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(environmentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/environment/${environmentId}`, {
+    const response = await fetch(`${env.API_SERVER}/environment/${encodeURIComponent(environmentId)}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       body: JSON.stringify({
         name: name,
@@ -54,12 +59,16 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(environmentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/environment/${environmentId}`, {
+    const response = await fetch(`${env.API_SERVER}/environment/${encodeURIComponent(environmentId)}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store',
     })
@@ -83,11 +92,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!isUuid(environmentId)) {
+    return invalidId()
+  }
+
   try {
-    const response = await fetch(`${env.API_SERVER}/environment/${environmentId}`, {
+    const response = await fetch(`${env.API_SERVER}/environment/${encodeURIComponent(environmentId)}`, {
       method: 'GET',
       headers: {
-        'x-user-subject': user.id,
+        ...(await authHeader()),
       },
       cache: 'no-store'
     })

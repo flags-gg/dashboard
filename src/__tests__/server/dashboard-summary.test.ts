@@ -1,3 +1,6 @@
+jest.mock("@clerk/nextjs/server", () => ({
+  auth: jest.fn(async () => ({ userId: "user_123", getToken: async () => "test-token" })),
+}));
 jest.mock("~/env", () => ({ env: { API_SERVER: "http://orchestrator:8080" } }));
 
 import { getDashboardSummary } from "~/server/get-dashboard-summary";
@@ -12,7 +15,7 @@ describe("dashboard summary", () => {
       json: async () => ({ projects: null, agents: null, environments: null, allFlags: null,
         recentFlagChanges: null, environmentCoverage: null, stats: { requestTotals: {} } }),
     });
-    const result = await getDashboardSummary("local-user");
+    const result = await getDashboardSummary();
     expect(result.projects).toEqual([]);
     expect(result.agents).toEqual([]);
     expect(result.environments).toEqual([]);
@@ -20,12 +23,12 @@ describe("dashboard summary", () => {
     expect(result.recentFlagChanges).toEqual([]);
     expect(result.environmentCoverage).toEqual([]);
     expect(global.fetch).toHaveBeenCalledWith("http://orchestrator:8080/stats/dashboard", expect.objectContaining({
-      headers: expect.objectContaining({ "x-user-subject": "local-user" }),
+      headers: expect.objectContaining({ Authorization: "Bearer test-token" }),
     }));
   });
 
   it("includes the API status when fetching fails", async () => {
     global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 401 });
-    await expect(getDashboardSummary("local-user")).rejects.toThrow("Failed to fetch /stats/dashboard (401)");
+    await expect(getDashboardSummary()).rejects.toThrow("Failed to fetch /stats/dashboard (401)");
   });
 });
