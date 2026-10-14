@@ -27,17 +27,8 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    '/((?!.*\\..*|_next).*)',
-
-    '/company/:path*',
-    '/user/:path*',
-    '/projects',
-    '/project/:path*',
-    '/agents/:path*',
-    '/environments/:path*',
-    '/secretmenu/:path*',
-    '/',
-
+    // Clerk's default: skip only real static files, so dotted page paths still get Clerk before auth().
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     '/(api)(.*)',
   ]
 }

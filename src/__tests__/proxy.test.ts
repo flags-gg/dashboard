@@ -7,7 +7,7 @@ jest.mock("next/server", () => ({
   NextResponse: { json: (body: unknown, init?: ResponseInit) => Response.json(body, init) },
 }));
 
-import proxy from "~/proxy";
+import proxy, { config } from "~/proxy";
 
 type Handler = (auth: unknown, req: unknown) => Promise<Response | undefined>;
 const handler = proxy as unknown as Handler;
@@ -21,6 +21,22 @@ function setup(userId: string | null) {
 function req(path: string, method = "GET", headers: Record<string, string> = {}, body: string | null = null) {
   return { url: `http://localhost:3000${path}`, method, headers: new Headers(headers), body };
 }
+
+describe("proxy matcher", () => {
+  const runs = (path: string) => new RegExp(`^${config.matcher[0]}$`).test(path);
+
+  it("runs on dotted page paths so auth() never fires without Clerk", () => {
+    for (const path of ["/agent/a.b", "/environment/x.y", "/wp-login.php", "/.env", "/projects"]) {
+      expect(runs(path)).toBe(true);
+    }
+  });
+
+  it("skips static assets and Next internals", () => {
+    for (const path of ["/_next/static/x.js", "/favicon.ico", "/logo.svg"]) {
+      expect(runs(path)).toBe(false);
+    }
+  });
+});
 
 describe("proxy", () => {
   it("leaves public routes alone", async () => {
