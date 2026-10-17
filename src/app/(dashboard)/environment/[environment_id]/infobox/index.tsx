@@ -23,14 +23,14 @@ export default async function InfoBox({environment_id}: {environment_id: string}
           <Name environment_id={environment_id} />
         </div>
         <div className={"ml-auto flex items-center gap-1"}>
-          <Clone environment_id={environment_id} />
-          <Delete environment_id={environment_id} />
+          <Clone environment_id={environment_id} agent_id={environmentInfo.agent_id} />
+          <Delete environment_id={environment_id} agent_id={environmentInfo.agent_id} />
         </div>
       </CardHeader>
       <CardContent className={"p-2 text-sm"}>
         <Info environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
       </CardContent>
-      <InfoButtons environmentId={environmentInfo.environment_id} />
+      <InfoButtons environmentId={environmentInfo.environment_id} agentId={environmentInfo.agent_id} />
     </Card>
   );
 }
