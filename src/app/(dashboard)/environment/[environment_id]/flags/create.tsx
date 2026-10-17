@@ -15,8 +15,6 @@ import {
 } from "~/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { agentAtom } from "~/lib/statemanager";
-import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { Flag } from "~/lib/interfaces";
 import { toast } from "sonner";
@@ -51,9 +49,8 @@ async function createFlagAction(environment_id: string, agent_id: string, name: 
   return Error("Failed to create flag")
 }
 
-export default function CreateFlag({ environment_id }: { environment_id: string }) {
+export default function CreateFlag({ environment_id, agent_id }: { environment_id: string; agent_id: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [agentInfo] = useAtom(agentAtom)
   const router = useRouter()
 
   const FormSchema = z.object({
@@ -68,7 +65,7 @@ export default function CreateFlag({ environment_id }: { environment_id: string 
     setIsOpen(false)
 
     try {
-      const flag = await createFlagAction(environment_id, agentInfo.agent_id, data.flagName)
+      const flag = await createFlagAction(environment_id, agent_id, data.flagName)
       if (flag instanceof Error) {
         throw flag
       }

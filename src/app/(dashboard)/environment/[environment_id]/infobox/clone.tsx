@@ -1,6 +1,6 @@
 "use client"
 
-import { agentAtom, environmentAtom } from "~/lib/statemanager";
+import { environmentAtom } from "~/lib/statemanager";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { Copy } from "lucide-react";
@@ -54,9 +54,8 @@ async function cloneEnvironmentAction(environment_id: string, agent_id: string, 
   return Error("Failed to clone environment")
 }
 
-export default function Clone({environment_id}: {environment_id: string}) {
+export default function Clone({environment_id, agent_id}: {environment_id: string; agent_id: string}) {
   const [environmentInfo] = useAtom(environmentAtom)
-  const [agentInfo] = useAtom(agentAtom)
   const [openClone, setOpenClone] = useState(false);
   const router = useRouter()
   const {is} = useFlags();
@@ -71,11 +70,11 @@ export default function Clone({environment_id}: {environment_id: string}) {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     setOpenClone(false)
-    cloneEnvironmentAction(environment_id, agentInfo.agent_id, data.name).then(() => {
+    cloneEnvironmentAction(environment_id, agent_id, data.name).then(() => {
       toast("Environment Cloned", {
         description: "The environment has been cloned",
       })
-      router.push(`/agent/${agentInfo.agent_id}?ts=${Date.now()}`)
+      router.push(`/agent/${agent_id}?ts=${Date.now()}`)
     }).catch((e) => {
       throw new Error(`Failed to clone environment: ${e}`)
     })
