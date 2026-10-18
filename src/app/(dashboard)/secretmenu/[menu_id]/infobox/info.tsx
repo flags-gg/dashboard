@@ -19,7 +19,7 @@ export default function Info({secretMenuInfo}: {secretMenuInfo: SecretMenu}) {
       <ul className={"grid gap-3"}>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Enabled</span>
-          <span><MenuSwitch menu_id={secretMenuInfo.menu_id} /></span>
+          <span><MenuSwitch menu_id={secretMenuInfo.menu_id} enabled={secretMenuInfo.enabled} /></span>
         </li>
       </ul>
     </div>

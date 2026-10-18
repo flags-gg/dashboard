@@ -1,8 +1,8 @@
 "use client"
 
 import {Switch} from "~/components/ui/switch";
-import { environmentAtom } from "~/lib/statemanager";
-import { useAtom } from "jotai";
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
 
@@ -29,21 +29,18 @@ async function enableDisableMenu(menu_id: string) {
   }
 }
 
-export function MenuSwitch({menu_id}: { menu_id: string }) {
-  const [selectedEnvironment, setSelectedEnvironment] = useAtom(environmentAtom)
+export function MenuSwitch({menu_id, enabled}: { menu_id: string; enabled: boolean }) {
+  const [isEnabled, setIsEnabled] = useState(enabled)
+  const queryClient = useQueryClient()
 
   return (
-    <Switch checked={selectedEnvironment?.secret_menu?.enabled} name={"menu"} onCheckedChange={() => {
-      enableDisableMenu(menu_id).then(() => {
+    <Switch checked={isEnabled} name={"menu"} onCheckedChange={() => {
+      enableDisableMenu(menu_id).then((result) => {
+        if (result instanceof Error) throw result
+        setIsEnabled(!isEnabled)
+        void queryClient.invalidateQueries({ queryKey: ["environment"] })
         toast("Menu Updated", {
           description: "The menu has been updated",
-        })
-        setSelectedEnvironment({
-          ...selectedEnvironment,
-          secret_menu: {
-            ...selectedEnvironment.secret_menu,
-            enabled: !selectedEnvironment.secret_menu.enabled,
-          }
         })
       }).catch((e) => {
         toast("Error Updating Menu", {
