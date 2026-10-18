@@ -2,8 +2,7 @@
 
 import { CardFooter } from "~/components/ui/card";
 import CreateAgent from "~/app/(dashboard)/agent/create";
-import { useAtom } from "jotai";
-import { projectAtom } from "~/lib/statemanager";
+import { useProject } from "~/hooks/use-project";
 import { useFlags } from "@flags-gg/react-library";
 import { useCompanyLimits } from "~/hooks/use-company-limits";
 import { buttonVariants } from "~/components/ui/button";
@@ -12,8 +11,8 @@ import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
 
-export default function InfoButtons() {
-  const [projectInfo] = useAtom(projectAtom);
+export default function InfoButtons({project_id}: {project_id: string}) {
+  const { data: projectInfo, isLoading: projectLoading } = useProject(project_id);
   const { is } = useFlags();
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
   const {user} = useUser();
@@ -21,7 +20,7 @@ export default function InfoButtons() {
     return <></>
   }
 
-  if (isLoading) {
+  if (isLoading || projectLoading) {
     return (
       <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
         <Spinner />
@@ -37,7 +36,7 @@ export default function InfoButtons() {
   }
 
   const maxAgents = companyLimits?.agents?.allowed ?? 0;
-  const usedAgents = projectInfo.agents_used ?? 0;
+  const usedAgents = projectInfo?.agents_used ?? 0;
 
   if (maxAgents === 0 || usedAgents >= maxAgents) {
     return (
@@ -49,7 +48,7 @@ export default function InfoButtons() {
 
   return (
     <CardFooter className="p-3 border-t-2 gap-2 items-center justify-center">
-      {is("create agent")?.enabled() && <CreateAgent project_id={projectInfo.project_id} />}
+      {is("create agent")?.enabled() && <CreateAgent project_id={project_id} />}
       {is("update limits")?.enabled() && <Link className={buttonVariants({variant: "default"})} href="/company/limits">Update Limits</Link>}
     </CardFooter>
   );
