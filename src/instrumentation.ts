@@ -8,6 +8,9 @@ export function register() {
 function isClientRequestAbort(error: unknown): boolean {
   if (typeof error !== "object" || error === null) return false;
   const candidate = error as { message?: unknown; code?: unknown; stack?: unknown };
+  // React's streaming renderer aborts with this exact message when the response
+  // closes mid-render, i.e. the client navigated away or cancelled an RSC fetch.
+  if (candidate.message === "The destination stream closed early.") return true;
   // Node destroys an unfinished IncomingMessage with this error when the
   // client disconnects. Require its origin so upstream ECONNRESETs still report.
   return candidate.message === "aborted"
