@@ -133,7 +133,7 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Enabled</span>
-          <span><ProjectSwitch projectId={projectInfo.project_id} /></span>
+          <span><ProjectSwitch projectId={project_id} /></span>
         </li>
         <li className={"flex items-center justify-between"}>
           <span className={"text-muted-foreground"}>Logo</span>

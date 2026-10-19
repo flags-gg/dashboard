@@ -9,8 +9,6 @@ import {useEffect, useState} from "react";
 import {arrayMove} from "@dnd-kit/sortable";
 import {Separator} from "~/components/ui/separator";
 import {Button} from "~/components/ui/button";
-import { useAtom } from "jotai";
-import { environmentAtom } from "~/lib/statemanager";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
 
@@ -89,10 +87,9 @@ async function saveSequence(menu_id: string, sequence: string[]) {
   }
 }
 
-export default function Maker({menuId}: {menuId: string}) {
+export default function Maker({menuId, environmentId}: {menuId: string; environmentId?: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
   const [error, setError] = useState<string | null>(null)
-  const [selectedEnvironment] = useAtom(environmentAtom)
 
   useEffect(() => {
     getSequence(menuId).then(resp => {
@@ -192,7 +189,12 @@ export default function Maker({menuId}: {menuId: string}) {
             const sequence = code?.map((key) => key.keyCode)
 
             if (menuId === "") {
-              createMenuId(selectedEnvironment.environment_id, sequence).then(() => {
+              if (!environmentId) {
+                setError("No environment selected, open the secret menu from an environment page")
+                return
+              }
+              createMenuId(environmentId, sequence).then((resp) => {
+                if (resp instanceof Error) throw resp
                 toast("Menu Saved", {
                   description: "Saved the menu"
                 })
