@@ -5,6 +5,8 @@ let lastReportAt = 0;
 
 export function reportBrowserError(message: string, error?: unknown, source = "browser") {
   if (typeof window === "undefined" || typeof fetch !== "function") return;
+  // Cancelled requests (react-query aborting on unmount/key change, navigation) aren't errors.
+  if (error instanceof Error && error.name === "AbortError") return;
 
   const detail = error instanceof Error ? error : undefined;
   const body = JSON.stringify({

@@ -51,9 +51,6 @@ export default function CreateProject() {
   const [createdProject, setCreatedProject] = useState<IProject | null>(null);
   const queryClient = useQueryClient();
   const {user} = useUser();
-  if (!user) {
-    return <></>
-  }
 
   const { data: companyLimits, isLoading, error } = useCompanyLimits();
 
@@ -90,6 +87,7 @@ export default function CreateProject() {
     createProjectMutation.mutate(data.projectName);
   };
 
+  if (!user) return <></>;
   if (isLoading) return <NewLoader />;
   if (error) return <div>Error: {error.message}</div>;
 

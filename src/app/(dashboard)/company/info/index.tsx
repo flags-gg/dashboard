@@ -71,10 +71,6 @@ export default function Info() {
     imageElement = <Image src={imageURL} alt={companyInfo?.company?.name ?? ""} width={50} height={50} className={"cursor-pointer"} />
   }
 
-  if (isLoading) {
-    return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
-  }
-
   useEffect(() => {
     if (showError) {
       toast(errorInfo.title, {
@@ -84,6 +80,10 @@ export default function Info() {
       setShowError(false)
     }
   }, [showError, errorInfo])
+
+  if (isLoading) {
+    return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
+  }
 
   const copyInviteCode = () => {
     navigator.clipboard.writeText(companyInfo?.company?.invite_code ?? "").then(() => {

@@ -25,4 +25,10 @@ describe("browser Bugfixes relay", () => {
     reportBrowserError("failed", error, "handled");
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
+
+  it("ignores aborted requests", () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+    reportBrowserError("error in getUserDetails", new DOMException("signal is aborted without reason", "AbortError"), "handled");
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
 });
