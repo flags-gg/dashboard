@@ -1,41 +1,30 @@
 "use client"
 
 import {Switch} from "~/components/ui/switch";
-import { useAtom } from "jotai";
-import { environmentAtom } from "~/lib/statemanager";
 import { useEnvironment } from "~/hooks/use-environment";
-import { IEnvironment } from "~/lib/interfaces";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
-import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
-async function enableDisableEnvironment(environmentInfo: IEnvironment) {
-  try {
-    const response = await fetch('/api/environment', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        environmentId: environmentInfo.environment_id,
-        name: environmentInfo.name,
-        enabled: environmentInfo.enabled,
-      }),
-    })
-    if (!response.ok) {
-      return new Error('Failed to enable/disable environment')
-    }
-  } catch (e) {
-    if (e instanceof Error) {
-      throw new Error(`Failed to enable/disable environment: ${e.message}`)
-    } else {
-      logError('An unknown error occurred', e)
-    }
+async function enableDisableEnvironment(environmentId: string, name: string, enabled: boolean) {
+  const response = await fetch('/api/environment', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      environmentId: environmentId,
+      name: name,
+      enabled: enabled,
+    }),
+  })
+  if (!response.ok) {
+    throw new Error('Failed to enable/disable environment')
   }
 }
 
 export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
-  const [environmentInfo, setEnvironmentInfo] = useAtom(environmentAtom)
+  const queryClient = useQueryClient()
   const {data: environmentData, isLoading, error} = useEnvironment(environmentId)
 
   if (error) {
@@ -44,37 +33,23 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
     });
   }
 
-  if (isLoading) {
+  if (isLoading || !environmentData) {
     return <Spinner />
   }
 
   const onSwitch = () => {
-    const updatedEnvironmentInfo = {...environmentInfo, enabled: !environmentInfo.enabled}
-    try {
-      setEnvironmentInfo(updatedEnvironmentInfo)
-      enableDisableEnvironment(updatedEnvironmentInfo).then(() => {
-        toast("Environment Updated", {
-          description: "The environment has been updated",
-        })
-      }).catch((e) => {
-        if (e instanceof Error) {
-          throw new Error(`Failed to enable/disable environment: ${e.message}`)
-        }
-        throw new Error("Failed to enable/disable environment - unknown:", e)
+    const enabled = !environmentData.enabled
+    enableDisableEnvironment(environmentId, environmentData.name, enabled).then(() => {
+      toast("Environment Updated", {
+        description: "The environment has been updated",
       })
-    } catch (e) {
-      if (e instanceof Error) {
-        toast("Environment Error", {
-          description: `There was an error updating the environment: ${e.message}`,
-        })
-      } else {
-        logError("Error updating environment", e)
-        toast("Environment Error", {
-          description: `There was an error updating the environment`,
-        })
-      }
-    }
+      void queryClient.invalidateQueries({ queryKey: ["environment", environmentId] })
+    }).catch((e: unknown) => {
+      toast("Environment Error", {
+        description: `There was an error updating the environment: ${e instanceof Error ? e.message : "unknown error"}`,
+      })
+    })
   }
 
-  return<Switch checked={environmentData?.enabled} name={"environment"} onCheckedChange={onSwitch} />
+  return <Switch checked={environmentData.enabled} name={"environment"} onCheckedChange={onSwitch} />
 }

@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   title: "Flags.gg - Secret Menu Builder",
 }
 
-export default async function SecretMenuPage() {
+export default async function SecretMenuPage({searchParams}: {searchParams: Promise<{environment?: string}>}) {
+  const {environment} = await searchParams
   const user = await currentUser();
   if (!user) {
     return (
@@ -23,7 +24,7 @@ export default async function SecretMenuPage() {
       <header className={"col-span-3"}>
         <h1 className="text-2xl font-semibold">Secret Menu Builder</h1>
       </header>
-      <Maker menuId={""} />
+      <Maker menuId={""} environmentId={environment} />
       <InfoBox />
     </div>
   )

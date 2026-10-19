@@ -78,7 +78,7 @@ export default function Info({environmentId, menuId}: {environmentId: string, me
               <Link className={buttonVariants({ variant: "secondary" })} href={`/secretmenu/${menuId}`}>Disabled</Link>
             )
           ) : (
-            <Link className={buttonVariants({ variant: "secondary" })} href={`/secretmenu/`}>Create</Link>
+            <Link className={buttonVariants({ variant: "secondary" })} href={`/secretmenu/?environment=${environmentId}`}>Create</Link>
           )}</span>
         </li>
       </ul>

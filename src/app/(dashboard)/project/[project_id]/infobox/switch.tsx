@@ -7,37 +7,31 @@ import { useProject } from "~/hooks/use-project";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Spinner } from "~/components/ui/spinner";
-import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function enableDisableProject(project_id: string, enabled: boolean, name: string) {
-  try {
-    const response = await fetch('/api/project', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        projectId: project_id,
-        enabled: enabled,
-        name: name,
-      }),
-    })
-    if (!response.ok) {
-      return new Error('Failed to enable/disable project')
-    }
-  } catch (e) {
-    if (e instanceof Error) {
-      throw new Error(`Failed to enable/disable project: ${e.message}`)
-    } else {
-      logError('Failed to enable/disable project', e)
-    }
+  const response = await fetch('/api/project', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      projectId: project_id,
+      enabled: enabled,
+      name: name,
+    }),
+  })
+  if (!response.ok) {
+    throw new Error('Failed to enable/disable project')
   }
 }
 
 export function ProjectSwitch({projectId}: {projectId: string}) {
-  const [projectInfo, setProjectInfo] = useAtom(projectAtom)
+  const [, setProjectInfo] = useAtom(projectAtom)
+  const queryClient = useQueryClient()
   const {data: projectData, isLoading, error} = useProject(projectId)
 
+  // ponytail: still feeds projectAtom for its remaining readers, goes with FLA-66
   useEffect(() => {
     if (projectData) {
       setProjectInfo(projectData)
@@ -56,34 +50,18 @@ export function ProjectSwitch({projectId}: {projectId: string}) {
   }
 
   const onSwitch = () => {
-    const updatedProjectInfo = {...projectInfo, enabled: !projectInfo.enabled}
-
-    try {
-      enableDisableProject(updatedProjectInfo.project_id, updatedProjectInfo.enabled, updatedProjectInfo.name).then(() => {
-        toast("Project Updated", {
-          description: `The project has been ${updatedProjectInfo.enabled ? "enabled" : "disabled"}`,
-        })
-        setProjectInfo(updatedProjectInfo)
-      }).catch((e) => {
-        if (e instanceof Error) {
-          throw new Error(`Failed to enable/disable project: ${e.message}`)
-        }
-        throw new Error("Failed to enable/disable project - unknown:", e)
+    const enabled = !projectData.enabled
+    enableDisableProject(projectId, enabled, projectData.name).then(() => {
+      toast("Project Updated", {
+        description: `The project has been ${enabled ? "enabled" : "disabled"}`,
       })
-    } catch (e) {
-      if (e instanceof Error) {
-        toast("Error updating project", {
-          description: `There was an error updating the project: ${e.message}`,
-        })
-      } else {
-        logError("Error updating project", e)
-        toast("Error updating project", {
-          description: `There was an unknown error updating the project`,
-        })
-        logError("Error updating project", e)
-      }
-    }
+      void queryClient.invalidateQueries({ queryKey: ["project", projectId] })
+    }).catch((e: unknown) => {
+      toast("Error updating project", {
+        description: `There was an error updating the project: ${e instanceof Error ? e.message : "unknown error"}`,
+      })
+    })
   }
 
-  return <Switch checked={projectInfo?.enabled} name={"project-switch"} onCheckedChange={onSwitch} />
+  return <Switch checked={projectData.enabled} name={"project-switch"} onCheckedChange={onSwitch} />
 }

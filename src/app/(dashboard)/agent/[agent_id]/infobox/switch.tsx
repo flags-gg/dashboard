@@ -1,76 +1,51 @@
 "use client"
 
 import { Switch } from "~/components/ui/switch";
-import { agentAtom } from "~/lib/statemanager";
-import { useAtom } from "jotai";
 import { useAgent } from "~/hooks/use-agent";
 import {toast} from "sonner";
 import { Spinner } from "~/components/ui/spinner";
-import { logError } from "~/lib/logger";
+import { useQueryClient } from "@tanstack/react-query";
 
 async function enableDisableAgent(agent_id: string, enabled: boolean, agentName: string) {
-  try {
-    const response = await fetch('/api/agent', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        agentId: agent_id,
-        name: agentName,
-        enabled: enabled,
-      }),
-    })
-    if (!response.ok) {
-      return new Error('Failed to enable/disable agent')
-    }
-  } catch (e) {
-    if (e instanceof Error) {
-      throw new Error(`Failed to enable/disable agent: ${e.message}`)
-    } else {
-      logError('Failed to enable/disable agent', e)
-    }
+  const response = await fetch('/api/agent', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      agentId: agent_id,
+      name: agentName,
+      enabled: enabled,
+    }),
+  })
+  if (!response.ok) {
+    throw new Error('Failed to enable/disable agent')
   }
 }
 
 export function AgentSwitch({agent_id}: {agent_id: string}) {
-  const [agentInfo, setAgentInfo] = useAtom(agentAtom)
+  const queryClient = useQueryClient()
   const {data: agentData, isLoading} = useAgent(agent_id)
 
-  if (isLoading) {
+  if (isLoading || !agentData) {
     return <Spinner />
   }
 
   const onSwitch = () => {
-    const updatedAgentInfo = {...agentInfo, enabled: !agentInfo.enabled}
-
-    try {
-      enableDisableAgent(updatedAgentInfo.agent_id, updatedAgentInfo.enabled, updatedAgentInfo.name).then(() => {
-        toast("Agent Updated", {
-          description: `The agent has been ${updatedAgentInfo.enabled ? "enabled" : "disabled"}`,
-        })
-        setAgentInfo(updatedAgentInfo)
-      }).catch((e) => {
-        if (e instanceof Error) {
-          throw new Error(`Failed to enable/disable agent: ${e.message}`)
-        }
-        throw new Error("Failed to enable/disable agent - unknown:", e)
+    const enabled = !agentData.enabled
+    enableDisableAgent(agent_id, enabled, agentData.name).then(() => {
+      toast("Agent Updated", {
+        description: `The agent has been ${enabled ? "enabled" : "disabled"}`,
       })
-    } catch (e) {
-      if (e instanceof Error) {
-        toast("Error updating agent", {
-          description: `There was an error updating the agent: ${e.message}`,
-        })
-      } else {
-        toast("Error updating agent", {
-          description: `There was an unknown error updating the agent`,
-        })
-        logError("Error updating agent", e)
-      }
-    }
+      void queryClient.invalidateQueries({ queryKey: ["agent", agent_id] })
+    }).catch((e: unknown) => {
+      toast("Error updating agent", {
+        description: `There was an error updating the agent: ${e instanceof Error ? e.message : "unknown error"}`,
+      })
+    })
   }
 
   return (
-    <Switch checked={agentData?.enabled} name={"agent"} onCheckedChange={onSwitch} />
+    <Switch checked={agentData.enabled} name={"agent"} onCheckedChange={onSwitch} />
   )
 }

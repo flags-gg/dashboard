@@ -24,7 +24,7 @@ export default async function InfoBox({project_id}: {project_id: string}) {
       <CardContent className={"p-6 text-sm"}>
         <ProjectInfo project_id={project_id} />
       </CardContent>
-      <InfoButtons />
+      <InfoButtons project_id={project_id} />
     </Card>
   )
 }
