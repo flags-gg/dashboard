@@ -51,7 +51,15 @@ describe("Bugfixes server instrumentation", () => {
     expect(logError).not.toHaveBeenCalled();
   });
 
+  it("does not report React's render abort when the client closes an RSC stream", () => {
+    onRequestError(new Error("The destination stream closed early."), { path: "/?_rsc=abc", method: "GET" }, {
+      routePath: "/", routeType: "render",
+    });
+    expect(logError).not.toHaveBeenCalled();
+  });
+
   it.each([
+    new Error("The destination stream errored while writing data."),
     Object.assign(new Error("socket hang up"), { code: "ECONNRESET" }),
     Object.assign(new Error("aborted"), { code: "ECONNRESET", stack: "Error: aborted\n    at fetch (node:internal/deps/undici:100:12)" }),
     new Error("aborted"),
