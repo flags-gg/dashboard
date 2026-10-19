@@ -23,10 +23,11 @@ interface IError {
 
 type EmbeddedCheckoutStripeProp = ComponentProps<typeof EmbeddedCheckoutProvider>["stripe"];
 
+// Load once at module level; without a key loadStripe rejects (unhandled) on every render.
+const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = (stripeKey ? loadStripe(stripeKey) : null) as EmbeddedCheckoutStripeProp;
+
 export default function Plan() {
-  const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
-  ) as EmbeddedCheckoutStripeProp;
 
   const {data: companyInfo, isLoading: detailsLoading} = useCompanyDetails();
   const {data: upgradeChoices, isLoading: choicesLoading} = useUpgradeChoices();
