@@ -130,8 +130,8 @@ importers:
         specifier: ^7.3.3
         version: 7.3.3(next@16.3.8(@babel/core@7.29.7)(@types/node@26.6.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)(uploadthing@7.7.4(next@16.3.8(@babel/core@7.29.7)(@types/node@26.6.5)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(tailwindcss@4.3.3))
       bugfixes:
-        specifier: ^2.3.4
-        version: 2.3.4
+        specifier: ^2.3.5
+        version: 2.3.5
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -2649,8 +2649,8 @@ packages:
   bser@2.1.2:
     resolution: {integrity: sha512-V2o8YS2EhrKMO9AumnkK0ynynfFlsajpYupwq7S46H5mhcanwxDkNTw3K67wPIcKTH1ffkA4vhMOtAc7gRmPZw==}
 
-  bugfixes@2.3.4:
-    resolution: {integrity: sha512-7LLNTTcGAf1bBzJeQ5hDlR+AdF68bBWSqJrL0IRDICm6y39W1WXU7gGz0+lZXXaDpHgFX2kW4fMud3yzoCa61Q==}
+  bugfixes@2.3.5:
+    resolution: {integrity: sha512-PtP5Wq6NYrPtbTlnwoy9mqDIcq0AOjjhG5y40zI0kLg1XJ2H+3l4ckilv2ykHWytSXzHJ8dQyq72TxPpN60E3A==}
     engines: {node: '>=24.0.0'}
 
   call-bind-apply-helpers@1.0.2:
@@ -7550,7 +7550,7 @@ snapshots:
     dependencies:
       node-int64: 0.4.0
 
-  bugfixes@2.3.4: {}
+  bugfixes@2.3.5: {}
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
