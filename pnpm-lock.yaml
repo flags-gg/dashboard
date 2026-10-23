@@ -22,8 +22,8 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react@19.3.1)
       '@flags-gg/react-library':
-        specifier: ^1.14.9
-        version: 1.14.9(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+        specifier: ^1.14.10
+        version: 1.14.10(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@hookform/resolvers':
         specifier: ^5.9.2
         version: 5.9.2(@sinclair/typebox@0.34.52)(@standard-schema/spec@1.1.0)(effect@3.17.7)(react-hook-form@7.90.0(@types/react@19.3.0)(react@19.3.1))(zod@4.6.7)
@@ -662,8 +662,8 @@ packages:
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@flags-gg/react-library@1.14.9':
-    resolution: {integrity: sha512-2GNfTX9OeMVN2MyiruLw23O1QKqnaKpb4J6RYZGpRBESOWXtY4LJxk+76xtF7f6czThp2I4Oa95PYmQd3EDX7Q==}
+  '@flags-gg/react-library@1.14.10':
+    resolution: {integrity: sha512-L4VhH8ufNyE4HdiGUwZPSRJ+F5LnC2C8q4T/8uoLnFCaI6IwBDA4q6Cy0ABfQp+QKrhRRuim3+5fVBV26vps1A==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -5533,7 +5533,7 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
-  '@flags-gg/react-library@1.14.9(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+  '@flags-gg/react-library@1.14.10(@babel/core@7.29.7)(@babel/template@7.29.7)(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
       '@swc/helpers': 0.5.23
       fast-equals: 6.2.1
