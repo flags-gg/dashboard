@@ -86,7 +86,7 @@ export interface SecretMenu {
   },
   environment_details: {
     name: string,
-    id: string,
+    environment_id: string,
   }
 }
 
