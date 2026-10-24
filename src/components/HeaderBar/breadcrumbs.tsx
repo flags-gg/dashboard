@@ -10,97 +10,76 @@ import {
 import Link from "next/link";
 import {useAtom} from "jotai";
 import { Fragment, useEffect } from "react";
-import { agentAtom, commitHashAtom, environmentAtom, projectAtom, secretMenuAtom } from "~/lib/statemanager";
+import { commitHashAtom, secretMenuAtom } from "~/lib/statemanager";
+import { useEnvironment } from "~/hooks/use-environment";
+import { useAgent } from "~/hooks/use-agent";
+import { useProject } from "~/hooks/use-project";
 import {usePathname} from "next/navigation";
 
 function useBreadcrumbs() {
-  const [project] = useAtom(projectAtom)
-  const [agent] = useAtom(agentAtom)
-  const [environment] = useAtom(environmentAtom)
   const [secretMenu] = useAtom(secretMenuAtom)
   const pathname = usePathname()
 
   const pathSegments = pathname.split("/").filter(Boolean) ?? []
+  const [section = "", id = ""] = pathSegments
+
+  // ids come from the route and the fetched data, never from persisted atoms, which hold whatever was visited last
+  // ponytail: secretMenuAtom is only trusted when it's for this route's menu, it's set from server data on that page
+  const menu = section === "secretmenu" && secretMenu?.menu_id === id ? secretMenu : undefined
+  const environmentId = section === "environment" ? id : (menu?.environment_details?.environment_id ?? "")
+  const { data: environment } = useEnvironment(environmentId)
+  const agentId = section === "agent" ? id : (environment?.agent_id ?? "")
+  const { data: agent } = useAgent(agentId)
+  const projectId = section === "project" ? id : (agent?.project_info?.project_id ?? "")
+  const { data: project } = useProject(projectId)
 
   const breadcrumbs = [{
     title: "Home",
     url: "/",
   }]
 
-  if (pathSegments[0] === "company") {
+  if (section === "company") {
     breadcrumbs.push({ title: "Company", url: "/company" });
     return breadcrumbs
   }
 
-  if (pathSegments[0] === "projects") {
-    breadcrumbs.push({ title: "Projects", url: "/projects" });
-    return breadcrumbs
-  }
-
-  // Add "Projects" breadcrumb if necessary
-  if (
-    pathSegments.includes("project") ||
-    pathSegments.includes("agent") ||
-    pathSegments.includes("environment") ||
-    pathSegments.includes("secretmenu")
-  ) {
+  if (["projects", "project", "agent", "environment", "secretmenu"].includes(section)) {
     breadcrumbs.push({ title: "Projects", url: "/projects" });
   }
 
-  // Add Project breadcrumb
-  if (
-    (pathSegments.includes("project") ||
-      pathSegments.includes("agent") ||
-      pathSegments.includes("environment") ||
-      pathSegments.includes("secretmenu")) &&
-    project?.project_id
-  ) {
+  if (projectId) {
     breadcrumbs.push({
-      title: project.name || `Project ${project.project_id}`,
-      url: `/project/${project.project_id}`,
+      title: project?.name || agent?.project_info?.name || `Project ${projectId}`,
+      url: `/project/${projectId}`,
     });
   }
 
-  // Add Agent breadcrumb
-  if (
-    (pathSegments.includes("agent") ||
-      pathSegments.includes("environment") ||
-      pathSegments.includes("secretmenu")) &&
-    agent?.agent_id
-  ) {
+  if (agentId) {
     breadcrumbs.push({
-      title: agent.name || `Agent ${agent.agent_id}`,
-      url: `/agent/${agent.agent_id}`,
+      title: agent?.name || environment?.agent_name || `Agent ${agentId}`,
+      url: `/agent/${agentId}`,
     });
   }
 
-  // Add Environment breadcrumb
-  if (
-    (pathSegments.includes("environment") || pathSegments.includes("secretmenu")) &&
-    environment?.environment_id
-  ) {
-    let title = environment.name || `Environment ${environment.environment_id}`;
-    title += " - Flags"
-
+  if (environmentId) {
     breadcrumbs.push({
-      title: title,
-      url: `/environment/${environment.environment_id}`,
+      title: `${environment?.name || menu?.environment_details?.name || `Environment ${environmentId}`} - Flags`,
+      url: `/environment/${environmentId}`,
     });
   }
 
-  // Add Secret Menu breadcrumb
-  if (pathSegments.includes("secretmenu") && secretMenu?.menu_id) {
+  if (menu) {
     breadcrumbs.push({
       title: "Secret Menu",
-      url: `/secretmenu/${secretMenu.menu_id}`,
+      url: `/secretmenu/${menu.menu_id}`,
     });
-  }
 
-  if (pathSegments.includes("secretmenu") && pathSegments.includes("styling") && secretMenu?.menu_id) {
-    breadcrumbs.push({
-      title: "Styling",
-      url: `/secretmenu/${secretMenu.menu_id}/styling`,
-    });
+    if (pathSegments.includes("styling")) {
+      breadcrumbs.push({
+        title: "Styling",
+        url: `/secretmenu/${menu.menu_id}/styling`,
+      });
+    }
   }
 
   return breadcrumbs

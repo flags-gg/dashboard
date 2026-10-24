@@ -59,7 +59,7 @@ export const secretMenuAtom = atomWithStorage<SecretMenu>("secretMenuAtom", {
   },
   environment_details: {
     name: '',
-    id: '',
+    environment_id: '',
   }
 })
 
