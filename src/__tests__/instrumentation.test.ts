@@ -58,6 +58,13 @@ describe("Bugfixes server instrumentation", () => {
     expect(logError).not.toHaveBeenCalled();
   });
 
+  it("does not report Server Actions missing from this deployment", () => {
+    onRequestError(new Error("Failed to find Server Action. This request might be from an older or newer deployment."), { path: "/", method: "POST" }, {
+      routePath: "/page", routeType: "render",
+    });
+    expect(logError).not.toHaveBeenCalled();
+  });
+
   it.each([
     new Error("The destination stream errored while writing data."),
     Object.assign(new Error("socket hang up"), { code: "ECONNRESET" }),

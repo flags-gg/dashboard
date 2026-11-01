@@ -2,11 +2,14 @@ const MAX_MESSAGE = 2_000;
 const MAX_STACK = 6_000;
 let lastReport = "";
 let lastReportAt = 0;
+// fetch() rejecting with these means the visitor's connection dropped: Chrome, Chrome reading the body, Firefox, Safari.
+const CONNECTION_FAILURES = new Set(["Failed to fetch", "network error", "NetworkError when attempting to fetch resource.", "Load failed"]);
 
 export function reportBrowserError(message: string, error?: unknown, source = "browser") {
   if (typeof window === "undefined" || typeof fetch !== "function") return;
   // Cancelled requests (react-query aborting on unmount/key change, navigation) aren't errors.
   if (error instanceof Error && error.name === "AbortError") return;
+  if (error instanceof TypeError && CONNECTION_FAILURES.has(error.message)) return;
 
   const detail = error instanceof Error ? error : undefined;
   const body = JSON.stringify({
