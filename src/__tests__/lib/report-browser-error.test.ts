@@ -31,4 +31,16 @@ describe("browser Bugfixes relay", () => {
     reportBrowserError("error in getUserDetails", new DOMException("signal is aborted without reason", "AbortError"), "handled");
     expect(global.fetch).not.toHaveBeenCalled();
   });
+
+  it.each(["Failed to fetch", "network error", "NetworkError when attempting to fetch resource.", "Load failed"])("ignores the connection failure %s", (message) => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+    reportBrowserError("Failed to fetch environment:", new TypeError(message), "handled");
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("still reports other TypeErrors", () => {
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+    reportBrowserError("failed", new TypeError("x is not a function"), "handled");
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+  });
 });

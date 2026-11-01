@@ -19,12 +19,19 @@ function isClientRequestAbort(error: unknown): boolean {
     && /\bat (?:abortIncoming|socketOnClose) \((?:node:)?_http_server:\d+:\d+\)/.test(candidate.stack);
 }
 
+// A POST carrying an action id this build doesn't have: a tab left open across a deploy, or a scanner.
+function isUnknownServerAction(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) return false;
+  const { message } = error as { message?: unknown };
+  return typeof message === "string" && message.startsWith("Failed to find Server Action");
+}
+
 export function onRequestError(
   error: unknown,
   request: { path: string; method: string },
   context: { routePath: string; routeType: string },
 ) {
-  if (isClientRequestAbort(error)) return;
+  if (isClientRequestAbort(error) || isUnknownServerAction(error)) return;
 
   logError("dashboard uncaught server error", error, {
     path: request.path,
