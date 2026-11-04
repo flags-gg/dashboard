@@ -180,11 +180,18 @@ export interface AgentEnvironment {
   production: boolean,
 }
 
+export interface FlagState {
+  environment_id: string,
+  flag_id: string,
+  enabled: boolean,
+  rollout: number, // % of visitors that see it when enabled
+}
+
 // one flag across an agent's environments; states only lists environments it has reached
 export interface AgentFlag {
   name: string,
   ticket?: string,
-  states: { environment_id: string, flag_id: string, enabled: boolean }[],
+  states: FlagState[],
 }
 
 export interface AgentFlags {

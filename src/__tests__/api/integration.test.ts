@@ -11,6 +11,7 @@ jest.mock("~/env", () => ({
 
 import { currentUser } from "@clerk/nextjs/server";
 import { DELETE as archiveFlag } from "~/app/api/flag/archive/route";
+import { PATCH as setRollout } from "~/app/api/flag/rollout/route";
 import { GET as listTokens, POST as createToken, DELETE as revokeToken } from "~/app/api/company/integration-token/route";
 
 const mockedCurrentUser = currentUser as jest.MockedFunction<typeof currentUser>;
@@ -66,5 +67,17 @@ describe("flag archive and integration tokens", () => {
     global.fetch = mockFetchSuccess({}, 204);
     expect((await revokeToken(createMockRequest("/api/company/integration-token", { method: "DELETE", body: { id: 7 } }))).status).toBe(204);
     expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/company/integration-token/7", expect.objectContaining({ method: "DELETE" }));
+  });
+
+  it("rollout validates the percentage and forwards it", async () => {
+    signedIn();
+    const req = (body: Record<string, unknown>) => createMockRequest("/api/flag/rollout", { method: "PATCH", body });
+    expect((await setRollout(req({ flag_id: "42", rollout: 101 }))).status).toBe(400);
+    expect((await setRollout(req({ flag_id: "42", rollout: 2.5 }))).status).toBe(400);
+    expect((await setRollout(req({ flag_id: "../x", rollout: 5 }))).status).toBe(400);
+    global.fetch = mockFetchSuccess({});
+    expect((await setRollout(req({ flag_id: "42", rollout: 25 }))).status).toBe(200);
+    expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/flag/42/rollout",
+      expect.objectContaining({ method: "PATCH", body: JSON.stringify({ rollout: 25 }) }));
   });
 });

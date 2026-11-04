@@ -30,17 +30,17 @@ export default async function AgentPage({params}: {params: Promise<{agent_id: st
     )
   }
 
+  // flags get the full width; environments and agent settings sit underneath
   return (
-    <div className={"grid grid-cols-3 gap-3"}>
-      <header className={"col-span-3"}>
-        <h1 className={"text-2xl font-semibold"}>Flags</h1>
-      </header>
+    <div className={"space-y-10"}>
       <FlagMatrix agent_id={agent_id} />
-      <InfoBox agent_id={agent_id} />
-      <header className={"col-span-3 mt-6"}>
-        <h2 className={"text-lg font-semibold"}>Environments</h2>
-      </header>
-      <EnvironmentsList agent_id={agent_id} />
+      <section className={"space-y-4"}>
+        <h2 className={"text-lg font-semibold"}>Environments &amp; agent</h2>
+        <div className={"grid gap-3 lg:grid-cols-3"}>
+          <EnvironmentsList agent_id={agent_id} />
+          <InfoBox agent_id={agent_id} />
+        </div>
+      </section>
     </div>
   )
 }
