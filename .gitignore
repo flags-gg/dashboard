@@ -27,3 +27,6 @@ keycloak.secret
 .next/*
 secrets_file.json
 secrets_file.yaml
+.codex
+Dockerfile.dev
+tsconfig.tsbuildinfo
