@@ -43,14 +43,14 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative sm:w-72">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="relative w-full sm:w-72">
           <Search aria-hidden className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input type="search" aria-label="Search flags" placeholder="Search flags or tickets" value={query}
             onChange={e => setQuery(e.target.value)} className="pl-8" />
         </div>
         <ToggleGroup type="single" variant="outline" size="sm" value={filter}
-          onValueChange={v => v && setFilter(v as Filter)} aria-label="Filter flags" className="max-w-full overflow-x-auto">
+          onValueChange={v => v && setFilter(v as Filter)} aria-label="Filter flags" className="min-w-0 max-w-full overflow-x-auto">
           {filters.map(([value, label]) => (
             <ToggleGroupItem key={value} value={value} className="flex-none gap-1.5 px-3">
               {label}<span className="tabular-nums text-muted-foreground">{count(value)}</span>
