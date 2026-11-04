@@ -172,3 +172,29 @@ export interface CompanyStats {
   environment_requests: EnvironmentRequestSummary[];
   latest_api_key_creator?: APIKeyCreator;
 }
+
+export interface AgentEnvironment {
+  environment_id: string,
+  name: string,
+  level: number,
+  production: boolean,
+}
+
+// one flag across an agent's environments; states only lists environments it has reached
+export interface AgentFlag {
+  name: string,
+  ticket?: string,
+  states: { environment_id: string, flag_id: string, enabled: boolean }[],
+}
+
+export interface AgentFlags {
+  agent_id: string,
+  environments: AgentEnvironment[],
+  flags: AgentFlag[],
+}
+
+export interface IntegrationToken {
+  id: number,
+  name: string,
+  created_at: string,
+}

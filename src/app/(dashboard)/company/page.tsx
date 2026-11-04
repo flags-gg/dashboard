@@ -4,6 +4,7 @@ import Info from "./info";
 import Settings from "./settings";
 import Users from "./users";
 import Header from "./header";
+import Integrations from "./integrations";
 
 export default async function Company() {
   return (
@@ -16,6 +17,7 @@ export default async function Company() {
       </div>
       <Separator />
       <Users />
+      <Integrations />
     </div>
   );
 }
