@@ -6,7 +6,7 @@ import { type Metadata } from "next";
 import { getAgent } from "~/app/api/agent/agent";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { PageTabs } from "~/components/page-tabs";
 
 export async function generateMetadata({params}: {params: Promise<{agent_id: string}>}): Promise<Metadata> {
   const {agent_id} = await params
@@ -33,20 +33,14 @@ export default async function AgentPage({params}: {params: Promise<{agent_id: st
 
   // flags are the day-to-day view; environments and agent settings are a tab away
   return (
-    <Tabs defaultValue={"flags"} className={"gap-6"}>
-      <TabsList>
-        <TabsTrigger value={"flags"}>Flags</TabsTrigger>
-        <TabsTrigger value={"settings"}>Environments &amp; agent</TabsTrigger>
-      </TabsList>
-      <TabsContent value={"flags"}>
-        <FlagMatrix agent_id={agent_id} />
-      </TabsContent>
-      <TabsContent value={"settings"}>
+    <PageTabs tabs={[
+      { value: "flags", label: "Flags", content: <FlagMatrix agent_id={agent_id} /> },
+      { value: "settings", label: "Environments & agent", content: (
         <div className={"grid items-start gap-3 lg:grid-cols-3"}>
           <EnvironmentsList agent_id={agent_id} />
           <InfoBox agent_id={agent_id} />
         </div>
-      </TabsContent>
-    </Tabs>
+      ) },
+    ]} />
   )
 }

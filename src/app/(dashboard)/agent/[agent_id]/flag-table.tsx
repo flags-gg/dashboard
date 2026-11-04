@@ -8,6 +8,7 @@ import { ToggleGroup, ToggleGroupItem } from "~/components/ui/toggle-group";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import type { AgentFlag, AgentFlags } from "~/lib/interfaces";
 import { cn } from "~/lib/utils";
+import { tableFrame } from "~/components/page-intro";
 import { StateCell } from "./state-cell";
 import { PromoteButton, RemoveFlag } from "./flag-actions";
 
@@ -59,7 +60,7 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
         </ToggleGroup>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border">
+      <div className={tableFrame}>
         {/* fixed layout: the name and actions columns are sized, environments share the rest equally */}
         <Table className="table-fixed" style={{ minWidth: `${18 + envs.length * 8 + 3.5}rem` }}>
           <TableHeader>

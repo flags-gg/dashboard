@@ -1,75 +1,53 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-import {ProjectsData} from "~/lib/interfaces";
-import {Card} from "~/components/ui/card";
-import { fetchProjects } from "~/app/api/project/project";
 import Link from "next/link";
 import Image from "next/image";
 import { ShieldPlus } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
+import { tableFrame } from "~/components/page-intro";
+import { fetchProjects } from "~/app/api/project/project";
 import { logError } from "~/lib/logger";
 
 export default async function ProjectList() {
-  let projects: ProjectsData = { projects: [] };
+  let projects;
   try {
-    await fetchProjects().then((data) => {
-      projects = data;
-    }).catch((e) => {
-      throw e
-    })
+    projects = (await fetchProjects()).projects ?? [];
   } catch (e) {
     logError(e);
-    return (
-      <div className={"gap-3 col-span-2"}>
-        <Card className={"mb-3 p-3"}>Error loading projects</Card>
-      </div>
-    );
-  }
-
-  if (!projects) {
-    return <div className={"gap-3 col-span-2"}>
-      <Card className={"mb-3 p-3"}>
-        Loading projects
-      </Card>
-    </div>
+    return <p className="rounded-lg border p-4 text-sm">Error loading projects.</p>;
   }
 
   return (
-    <div className={"col-span-2"}>
-      <Card className={"mb-3"}>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead></TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Project ID</TableHead>
-              <TableHead>Agent Limit</TableHead>
-              <TableHead>Agents Used</TableHead>
+    <div className={tableFrame}>
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="w-full">Project</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead className="text-right">Agents</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {projects.length === 0 && (
+            <TableRow className="hover:bg-transparent">
+              <TableCell colSpan={3} className="py-10 text-center text-muted-foreground">No projects yet. Create one to get started.</TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {projects?.projects?.map(project => (
-              <TableRow key={`project-${project.id}`}>
-                <TableCell className={"place-content-center justify-center"} style={{ paddingLeft: "3%" }}>
-                  <Link href={`/project/${project.project_id}`}>
-                    {project.logo ? <Image src={project.logo} alt={project.name} width={50} height={50} /> : <ShieldPlus className={"size-5"} />}
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/project/${project.project_id}`}>{project.name}</Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/project/${project.project_id}`}>{project.project_id}</Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/project/${project.project_id}`}>{project.agent_limit}</Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/project/${project.project_id}`}>{project.agents_used}</Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+          )}
+          {projects.map(project => (
+            // the name link covers the whole row
+            <TableRow key={`project-${project.id}`} className="relative">
+              <TableCell>
+                <Link href={`/project/${project.project_id}`} className="flex items-center gap-3 font-medium after:absolute after:inset-0">
+                  {project.logo
+                    ? <Image src={project.logo} alt="" width={28} height={28} className="size-7 rounded object-cover" />
+                    : <ShieldPlus aria-hidden className="size-5 text-muted-foreground" />}
+                  {project.name}
+                </Link>
+              </TableCell>
+              <TableCell><code className="text-xs text-muted-foreground">{project.project_id}</code></TableCell>
+              <TableCell className="text-right tabular-nums">{project.agents_used} / {project.agent_limit}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
-  )
+  );
 }

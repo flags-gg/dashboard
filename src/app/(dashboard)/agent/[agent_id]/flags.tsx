@@ -1,6 +1,7 @@
 import { getAgentFlags } from "~/app/api/agent/flags";
 import CreateFlag from "~/app/(dashboard)/environment/[environment_id]/flags/create";
 import { FlagTable } from "./flag-table";
+import { PageIntro } from "~/components/page-intro";
 import { logError } from "~/lib/logger";
 
 // Flags are rows, environments are columns (lowest first); a flag starts off in the first
@@ -10,16 +11,10 @@ export default async function FlagMatrix({ agent_id }: { agent_id: string }) {
     const data = await getAgentFlags(agent_id);
     const first = data.environments[0];
     return (
-      <section className="space-y-4">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h1 className="sr-only">Flags</h1>
-            <p className="text-sm text-muted-foreground">
-              New flags start off in {first?.name ?? "the first environment"}. Click a state to toggle it or roll it out to a percentage of visitors.
-            </p>
-          </div>
-          {first && <CreateFlag environment_id={first.environment_id} agent_id={agent_id} />}
-        </div>
+      <section>
+        <PageIntro title="Flags"
+          description={`New flags start off in ${first?.name ?? "the first environment"}. Click a state to toggle it or roll it out to a percentage of visitors.`}
+          action={first && <CreateFlag environment_id={first.environment_id} agent_id={agent_id} />} />
         <FlagTable data={data} agentId={agent_id} />
       </section>
     );

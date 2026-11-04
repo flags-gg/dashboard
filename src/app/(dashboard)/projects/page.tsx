@@ -1,8 +1,9 @@
 import List from "./list";
-import InfoBox from "./infobox";
+import ProjectActions from "./actions";
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
+import { PageIntro } from "~/components/page-intro";
 
 export const metadata: Metadata = {
   title: "Flags.gg - Projects",
@@ -19,12 +20,9 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <div className={"grid grid-cols-3 gap-3"}>
-      <header className={"col-span-3"}>
-        <h1 className={"text-2xl font-semibold"}>Projects</h1>
-      </header>
+    <section>
+      <PageIntro title="Projects" description="A project groups the agents (your apps) that read flags." action={<ProjectActions />} />
       <List />
-      <InfoBox />
-    </div>
+    </section>
   )
 }
