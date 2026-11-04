@@ -5,6 +5,7 @@ import Link from "next/link";
 import {getEnvironments} from "~/app/api/environment/environment";
 import CreateChild from "~/app/(dashboard)/agent/[agent_id]/child/create";
 import { logError } from "~/lib/logger";
+import { EnvironmentSwitch } from "~/app/(dashboard)/environment/[environment_id]/infobox/switch";
 
 // Environments in promotion order (dev first); only the last one can get a child.
 export default async function EnvironmentsList({ agent_id }: { agent_id: string }) {
@@ -25,7 +26,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
           <TableRow>
             <TableHead>Environment</TableHead>
             <TableHead>ID</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Enabled</TableHead>
             <TableHead className="text-right"><span className="sr-only">Actions</span></TableHead>
           </TableRow>
         </TableHeader>
@@ -42,7 +43,7 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
                 <code className="text-xs text-muted-foreground select-all">{environment.environment_id}</code>
               </TableCell>
               <TableCell>
-                <Badge variant={environment.enabled ? "outline" : "secondary"}>{environment.enabled ? "Enabled" : "Disabled"}</Badge>
+                <EnvironmentSwitch environmentId={environment.environment_id} label={`${environment.name} enabled`} />
               </TableCell>
               <TableCell className="text-right">
                 {environment === last && <CreateChild envId={environment.environment_id} agentId={agent_id}/>}

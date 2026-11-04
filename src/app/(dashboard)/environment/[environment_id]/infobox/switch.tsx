@@ -23,7 +23,7 @@ async function enableDisableEnvironment(environmentId: string, name: string, ena
   }
 }
 
-export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
+export function EnvironmentSwitch({environmentId, label}: {environmentId: string, label?: string}) {
   const queryClient = useQueryClient()
   const {data: environmentData, isLoading, error} = useEnvironment(environmentId)
 
@@ -51,5 +51,5 @@ export function EnvironmentSwitch({environmentId}: {environmentId: string}) {
     })
   }
 
-  return <Switch checked={environmentData.enabled} name={"environment"} onCheckedChange={onSwitch} />
+  return <Switch checked={environmentData.enabled} name={"environment"} aria-label={label ?? `${environmentData.name} enabled`} onCheckedChange={onSwitch} />
 }
