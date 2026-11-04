@@ -41,7 +41,7 @@ export default async function RootLayout({
                 <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
                 <SidebarProvider>
                   <SideBar />
-                  <div className={"flex flex-col sm:py-4 size-full"}>
+                  <div className={"flex min-w-0 flex-col sm:py-4 size-full"}>
                     <HeaderBar />
                     <main className="flex-1 size-full p-4" suppressHydrationWarning={true}>
                       {children}

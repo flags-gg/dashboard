@@ -11,6 +11,9 @@ jest.mock("~/env", () => ({
 
 import { currentUser } from "@clerk/nextjs/server";
 import { DELETE as archiveFlag } from "~/app/api/flag/archive/route";
+import { PATCH as setRollout } from "~/app/api/flag/rollout/route";
+import { PUT as setRules } from "~/app/api/flag/rules/route";
+import { GET as getMetrics } from "~/app/api/agent/metrics/route";
 import { GET as listTokens, POST as createToken, DELETE as revokeToken } from "~/app/api/company/integration-token/route";
 
 const mockedCurrentUser = currentUser as jest.MockedFunction<typeof currentUser>;
@@ -66,5 +69,45 @@ describe("flag archive and integration tokens", () => {
     global.fetch = mockFetchSuccess({}, 204);
     expect((await revokeToken(createMockRequest("/api/company/integration-token", { method: "DELETE", body: { id: 7 } }))).status).toBe(204);
     expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/company/integration-token/7", expect.objectContaining({ method: "DELETE" }));
+  });
+
+  it("rollout validates the percentage and forwards it", async () => {
+    signedIn();
+    const req = (body: Record<string, unknown>) => createMockRequest("/api/flag/rollout", { method: "PATCH", body });
+    expect((await setRollout(req({ flag_id: "42", rollout: 101 }))).status).toBe(400);
+    expect((await setRollout(req({ flag_id: "42", rollout: 2.5 }))).status).toBe(400);
+    expect((await setRollout(req({ flag_id: "../x", rollout: 5 }))).status).toBe(400);
+    global.fetch = mockFetchSuccess({});
+    expect((await setRollout(req({ flag_id: "42", rollout: 25 }))).status).toBe(200);
+    expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/flag/42/rollout",
+      expect.objectContaining({ method: "PATCH", body: JSON.stringify({ rollout: 25 }) }));
+  });
+
+  it("rules are forwarded and the API's validation error is passed through", async () => {
+    signedIn();
+    const req = (body: Record<string, unknown>) => createMockRequest("/api/flag/rules", { method: "PUT", body });
+    expect((await setRules(req({ flag_id: "../x", rules: [] }))).status).toBe(400);
+    expect((await setRules(req({ flag_id: "42", rules: "nope" }))).status).toBe(400);
+
+    const rules = [{ attribute: "groups", operator: "in", values: ["beta"], serve: true }];
+    global.fetch = mockFetchSuccess({});
+    expect((await setRules(req({ flag_id: "42", rules }))).status).toBe(200);
+    expect(global.fetch).toHaveBeenCalledWith("https://api.test.com/v1/flag/42/rules",
+      expect.objectContaining({ method: "PUT", body: JSON.stringify({ rules }) }));
+
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 400, text: async () => '{"error":"rule 1: unknown operator \\"regex\\""}' });
+    const bad = await setRules(req({ flag_id: "42", rules }));
+    expect(bad.status).toBe(400);
+    expect((await bad.json()).error).toContain("unknown operator");
+  });
+
+  it("metrics validates the agent and range and proxies the series", async () => {
+    signedIn();
+    expect((await getMetrics(createMockRequest("/api/agent/metrics", { searchParams: { agent_id: "x", days: "7" } }))).status).toBe(400);
+    expect((await getMetrics(createMockRequest("/api/agent/metrics", { searchParams: { agent_id: AGENT, days: "365" } }))).status).toBe(400);
+    global.fetch = mockFetchSuccess({ days: [] });
+    const res = await getMetrics(createMockRequest("/api/agent/metrics", { searchParams: { agent_id: AGENT, days: "7" } }));
+    expect(res.status).toBe(200);
+    expect(global.fetch).toHaveBeenCalledWith(`https://api.test.com/v1/agent/${AGENT}/metrics?days=7`, expect.anything());
   });
 });

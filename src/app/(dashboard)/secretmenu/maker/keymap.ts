@@ -1,8 +1,8 @@
 export const DirectionMap = [
-  {id: 'ArrowUp', icon: '🔼'},
-  {id: 'ArrowDown', icon: '🔽'},
-  {id: 'ArrowLeft', icon: '◀️'},
-  {id: 'ArrowRight', icon: '▶️'},
+  {id: 'ArrowUp', icon: '↑'},
+  {id: 'ArrowDown', icon: '↓'},
+  {id: 'ArrowLeft', icon: '←'},
+  {id: 'ArrowRight', icon: '→'},
 ]
 
 export const LetterMap = [

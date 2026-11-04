@@ -1,11 +1,12 @@
+import Link from "next/link";
 import Maker from "./maker";
-import InfoBox from "./info"
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
+import { PageIntro } from "~/components/page-intro";
 
 export const metadata: Metadata = {
-  title: "Flags.gg - Secret Menu Builder",
+  title: "Flags.gg - New Secret Menu",
 }
 
 export default async function SecretMenuPage({searchParams}: {searchParams: Promise<{environment?: string}>}) {
@@ -20,12 +21,11 @@ export default async function SecretMenuPage({searchParams}: {searchParams: Prom
   }
 
   return (
-    <div className={"grid grid-cols-3 gap-3"}>
-      <header className={"col-span-3"}>
-        <h1 className="text-2xl font-semibold">Secret Menu Builder</h1>
-      </header>
+    <section>
+      <PageIntro title="New secret menu"
+        description={<>Pick the key sequence testers type in your app to open a menu that overrides flags.
+          {environment && <>{" "}<Link className="underline underline-offset-4 hover:text-foreground" href={`/environment/${environment}`}>Back to the environment</Link></>}</>} />
       <Maker menuId={""} environmentId={environment} />
-      <InfoBox />
-    </div>
+    </section>
   )
 }

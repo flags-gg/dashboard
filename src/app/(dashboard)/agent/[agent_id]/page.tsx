@@ -1,4 +1,3 @@
-import EnvironmentsList from "./list";
 import FlagMatrix from "./flags";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
@@ -6,6 +5,8 @@ import { type Metadata } from "next";
 import { getAgent } from "~/app/api/agent/agent";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
+import { PageTabs } from "~/components/page-tabs";
+import { AgentMetricsView } from "./metrics";
 
 export async function generateMetadata({params}: {params: Promise<{agent_id: string}>}): Promise<Metadata> {
   const {agent_id} = await params
@@ -30,17 +31,12 @@ export default async function AgentPage({params}: {params: Promise<{agent_id: st
     )
   }
 
+  // flags are the day-to-day view; environments and agent settings are a tab away
   return (
-    <div className={"grid grid-cols-3 gap-3"}>
-      <header className={"col-span-3"}>
-        <h1 className={"text-2xl font-semibold"}>Flags</h1>
-      </header>
-      <FlagMatrix agent_id={agent_id} />
-      <InfoBox agent_id={agent_id} />
-      <header className={"col-span-3 mt-6"}>
-        <h2 className={"text-lg font-semibold"}>Environments</h2>
-      </header>
-      <EnvironmentsList agent_id={agent_id} />
-    </div>
+    <PageTabs tabs={[
+      { value: "flags", label: "Flags", content: <FlagMatrix agent_id={agent_id} /> },
+      { value: "metrics", label: "Metrics", content: <AgentMetricsView agentId={agent_id} /> },
+      { value: "settings", label: "Environments & agent", content: <div className={"max-w-4xl"}><InfoBox agent_id={agent_id} /></div> },
+    ]} />
   )
 }

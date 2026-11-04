@@ -13,10 +13,11 @@ import {
 } from "~/components/ui/dialog";
 import {UploadButton} from "~/lib/utils/uploadthing";
 import Image from "next/image";
-import { Copy, ShieldPlus } from "lucide-react";
+import { ShieldPlus } from "lucide-react";
 import { ProjectSwitch } from "./switch";
-import { Skeleton } from "~/components/ui/skeleton";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
+import { Button } from "~/components/ui/button";
+import { CopyValue, SettingRow, SettingsSection, SettingsSkeleton } from "~/components/settings";
+import Name from "./name";
 import { useProjectLimits } from "~/hooks/use-project-limits";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
@@ -56,13 +57,6 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   const { data: projectLimits, isLoading, error } = useProjectLimits(project_id);
   const {user} = useUser();
 
-  const copyProjectId = () => {
-    navigator.clipboard.writeText(project_id ?? "").then(() => {
-      toast(`${projectInfo.name} Project ID Copied`, {
-        description: `The ${projectInfo.name} project id has been copied to your clipboard`,
-      })
-    })
-  }
 
   useEffect(() => {
     if (user) {
@@ -91,52 +85,25 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
   }
 
   if (isLoading) {
-    return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
+    return <SettingsSkeleton />
   }
 
-  let imageElement = <ShieldPlus className={"size-5 cursor-pointer"} />
+  let imageElement = <Button variant={"outline"} size={"icon"} aria-label={"Upload logo"}><ShieldPlus className={"size-5"} /></Button>
   if (imageURL && imageURL !== "") {
     imageElement =
-      <Image src={imageURL} alt={projectInfo.name} width={50} height={50} className={"cursor-pointer"} />
+      <button type={"button"} aria-label={"Change logo"} className={"rounded"}><Image src={imageURL} alt={projectInfo.name} width={40} height={40} className={"size-10 rounded object-cover"} /></button>
   }
 
   return (
-    <div className={"grid gap-3"}>
-      <ul className={"grid gap-3"}>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Project ID</span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <p className={"cursor-pointer"}>{project_id.slice(0, 11)}...</p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  {project_id}
-                  <Copy className={"size-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyProjectId} />
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Name</span>
-          <span>{projectInfo.name}</span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Max Agents</span>
-          <span>{projectLimits?.allowed ?? 0}</span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Agents Used</span>
-          <span>{projectLimits?.used ?? 0}</span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Enabled</span>
-          <span><ProjectSwitch projectId={project_id} /></span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Logo</span>
+    <SettingsSection title={"General"}>
+      <SettingRow label={"Name"}><Name project_id={project_id} /></SettingRow>
+      <SettingRow label={"Project ID"} description={"Used by SDKs together with the agent and environment IDs."}>
+        <CopyValue value={project_id} what={"Project ID"} />
+      </SettingRow>
+      <SettingRow label={"Enabled"} description={"A disabled project serves no flags to any of its agents."}>
+        <ProjectSwitch projectId={project_id} />
+      </SettingRow>
+      <SettingRow label={"Logo"} description={"Click to upload a new one."}>
           <Dialog open={iconOpen} onOpenChange={setIconOpen}>
             <DialogTrigger asChild>
               {imageElement}
@@ -186,8 +153,10 @@ export default function ProjectInfo({project_id}: {project_id: string}) {
               </div>
             </DialogContent>
           </Dialog>
-        </li>
-      </ul>
-    </div>
+      </SettingRow>
+      <SettingRow label={"Agents"}>
+        <span className={"text-sm tabular-nums"}>{projectLimits?.used ?? 0} of {projectLimits?.allowed ?? 0}</span>
+      </SettingRow>
+    </SettingsSection>
   )
 }

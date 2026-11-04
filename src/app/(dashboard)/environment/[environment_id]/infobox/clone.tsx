@@ -5,7 +5,6 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 import { Copy } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "~/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -85,11 +84,9 @@ export default function Clone({environment_id, agent_id}: {environment_id: strin
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger>
         <Dialog open={openClone} onOpenChange={setOpenClone}>
           <DialogTrigger asChild>
-            <Copy className={"size-5 mt-1.5"} />
+            <Button variant={"outline"} size={"sm"}><Copy className={"size-4"} />Clone</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -112,8 +109,5 @@ export default function Clone({environment_id, agent_id}: {environment_id: strin
             </Form>
           </DialogContent>
         </Dialog>
-      </TooltipTrigger>
-      <TooltipContent sideOffset={4}>Clone Environment</TooltipContent>
-    </Tooltip>
   )
 }

@@ -12,7 +12,7 @@ import {
 } from "~/components/ui/alert-dialog";
 import { logError } from "~/lib/logger";
 
-// call runs one request, toasts on failure and refreshes the server-rendered matrix on success
+// run sends one request, toasts on failure and refreshes the server-rendered data on success
 function useAction() {
   const [busy, setBusy] = useState(false);
   const router = useRouter();
@@ -38,10 +38,11 @@ function useAction() {
 export function PromoteButton({ flagId, to }: { flagId: string, to: string }) {
   const { busy, run } = useAction();
   return (
-    <Button size={"sm"} variant={"outline"} disabled={busy} title={`Promote to ${to}`} aria-label={`Promote to ${to}`}
+    <Button size={"sm"} variant={"ghost"} disabled={busy} aria-label={`Promote to ${to}`}
+      className={"h-7 gap-1 rounded-full border border-dashed px-2.5 text-xs text-muted-foreground hover:text-foreground"}
       onClick={() => run("Promote", "/api/flag/promote", "POST", { flag_id: flagId })}>
-      {busy ? <Spinner /> : <ArrowRight className={"size-4"} />}
-      <span className={"sr-only sm:not-sr-only"}>Promote</span>
+      {busy ? <Spinner /> : <ArrowRight className={"size-3.5"} />}
+      Promote
     </Button>
   );
 }
@@ -51,7 +52,8 @@ export function RemoveFlag({ agentId, name, ticket }: { agentId: string, name: s
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size={"icon"} variant={"ghost"} disabled={busy} title={"Remove flag"} aria-label={`Remove ${name}`}>
+        <Button size={"icon"} variant={"ghost"} disabled={busy} aria-label={`Remove ${name}`}
+          className={"size-8 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 focus-visible:opacity-100 hover:text-destructive"}>
           {busy ? <Spinner /> : <Archive className={"size-4"} />}
         </Button>
       </AlertDialogTrigger>

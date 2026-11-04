@@ -67,7 +67,7 @@ export default function Delete({agent_id}: {agent_id: string}) {
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogTrigger asChild>
-        <Trash2 className={"size-5 mt-1.5 cursor-pointer"}/>
+        <Button variant={"destructive"} size={"sm"}><Trash2 className={"size-4"} />Delete agent</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

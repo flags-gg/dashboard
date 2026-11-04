@@ -1,30 +1,22 @@
-import {Card, CardContent, CardHeader} from "~/components/ui/card";
-import ProjectInfo from "./info";
-import Name from "./name";
-import InfoButtons from "./buttons";
-import Delete from "./delete";
 import { currentUser } from "@clerk/nextjs/server";
+import { SettingRow, SettingsSection } from "~/components/settings";
+import ProjectInfo from "./info";
+import Delete from "./delete";
 
+// The project settings tab.
 export default async function InfoBox({project_id}: {project_id: string}) {
-  const user = await currentUser();
-  if (!user) {
+  if (!(await currentUser())) {
     return <></>
   }
 
   return (
-    <Card>
-      <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-        <div className={"grid gap-0.5"}>
-          <Name project_id={project_id} />
-        </div>
-        <div className={"ml-auto flex items-center gap-1"}>
+    <div className={"space-y-6"}>
+      <ProjectInfo project_id={project_id} />
+      <SettingsSection title={"Danger zone"} danger>
+        <SettingRow label={"Delete this project"} description={"Removes the project with all its agents, environments and flags."}>
           <Delete project_id={project_id} />
-        </div>
-      </CardHeader>
-      <CardContent className={"p-6 text-sm"}>
-        <ProjectInfo project_id={project_id} />
-      </CardContent>
-      <InfoButtons project_id={project_id} />
-    </Card>
+        </SettingRow>
+      </SettingsSection>
+    </div>
   )
 }

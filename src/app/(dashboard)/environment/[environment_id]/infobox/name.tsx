@@ -3,7 +3,6 @@
 import { useAtom } from "jotai";
 import { environmentAtom } from "~/lib/statemanager";
 import { useState } from "react";
-import { CardTitle } from "~/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
 import { Pencil } from "lucide-react";
@@ -84,12 +83,12 @@ export default function Name({environment_id}: {environment_id: string}) {
   }
 
   return (
-    <CardTitle className={"group flex items-center gap-2 text-lg"}>
+    <span className={"flex items-center gap-1 text-sm"}>
       {environmentInfo.name}
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
         <PopoverTrigger asChild>
-          <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
-            <Pencil className={"size-5"} />
+          <Button variant={"ghost"} className={"size-8"} size={"icon"} aria-label={"Rename environment"}>
+            <Pencil className={"size-4"} />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -109,6 +108,6 @@ export default function Name({environment_id}: {environment_id: string}) {
           </Form>
         </PopoverContent>
       </Popover>
-    </CardTitle>
+    </span>
   )
 }

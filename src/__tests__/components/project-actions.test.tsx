@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import InfoButtons from "~/app/(dashboard)/project/[project_id]/infobox/buttons";
+import AgentActions from "~/app/(dashboard)/project/[project_id]/actions";
 
 jest.mock("sonner", () => ({ toast: jest.fn() }));
-jest.mock("@clerk/nextjs", () => ({ useUser: () => ({ user: { id: "u1" } }) }));
 jest.mock("@flags-gg/react-library", () => ({ useFlags: () => ({ is: () => ({ enabled: () => true }) }) }));
 jest.mock("~/app/(dashboard)/agent/create", () => ({
   __esModule: true,
@@ -22,16 +21,16 @@ beforeEach(() => {
   localStorage.setItem("projectAtom", JSON.stringify({ project_id: "proj-a", agents_used: 0 }));
 });
 
-describe("project InfoButtons", () => {
+describe("project AgentActions", () => {
   it("creates agents in the route's project", () => {
     projectData.current = { project_id: "proj-b", agents_used: 1 };
-    render(<InfoButtons project_id={"proj-b"} />);
+    render(<AgentActions project_id={"proj-b"} />);
     expect(screen.getByText("create agent for proj-b")).toBeTruthy();
   });
 
   it("uses the fetched project's agent count for the limit", () => {
     projectData.current = { project_id: "proj-b", agents_used: 2 };
-    render(<InfoButtons project_id={"proj-b"} />);
+    render(<AgentActions project_id={"proj-b"} />);
     expect(screen.queryByText(/create agent for/)).toBeNull();
   });
 });

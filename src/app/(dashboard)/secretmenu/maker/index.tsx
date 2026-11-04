@@ -1,13 +1,13 @@
 "use client"
 
-import {Card, CardContent, CardFooter} from "~/components/ui/card";
-import {DndContext, type DragEndEvent, rectIntersection} from "@dnd-kit/core";
+import {DndContext, type DragEndEvent, PointerSensor, rectIntersection, useSensor, useSensors} from "@dnd-kit/core";
+import { useRouter } from "next/navigation";
+import { SettingsSection } from "~/components/settings";
 import {DirectionMap, LetterMap, NumberMap} from "./keymap";
 import Draggable from "./draggable";
 import DropTarget from "./droptarget";
 import {useEffect, useState} from "react";
 import {arrayMove} from "@dnd-kit/sortable";
-import {Separator} from "~/components/ui/separator";
 import {Button} from "~/components/ui/button";
 import { toast } from "sonner";
 import { logError } from "~/lib/logger";
@@ -90,6 +90,8 @@ async function saveSequence(menu_id: string, sequence: string[]) {
 export default function Maker({menuId, environmentId}: {menuId: string; environmentId?: string}) {
   const [code, setCode] = useState<{id: string, icon: string, keyCode: string}[]>([])
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
 
   useEffect(() => {
     getSequence(menuId).then(resp => {
@@ -149,70 +151,73 @@ export default function Maker({menuId, environmentId}: {menuId: string; environm
     setCode(code.filter((_, i) => i !== id))
   }
 
-  if (error) {
-    return (
-      <div className="col-span-2 gap-3">
-        <Card className={"mb-3"}>
-          <CardContent className={"p-6 text-sm"}>
-            <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
-              <p>{error}</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    )
+  const handleAdd = (keyId: string) => {
+    const key = [...DirectionMap, ...LetterMap, ...NumberMap].find((k) => k.id === keyId)
+    if (key) {
+      setCode([...code, {id: `${key.id}-${Math.random()}`, icon: key.icon, keyCode: key.id}])
+    }
   }
 
-  return (
-    <div className={"gap-3 col-span-2 min-w-[50rem]"}>
-      <Card className={"mb-3"}>
-        <CardContent className={"p-6 text-sm"}>
-          <DndContext onDragEnd={handleDragEnd} collisionDetection={rectIntersection}>
-            <div className={"flex justify-center mb-5 gap-3 flex-wrap"}>
-              {DirectionMap?.map((key) => (
-                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
-              ))}
-              <Separator />
-              {LetterMap?.map((key) => (
-                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
-              ))}
-              <Separator />
-              {NumberMap?.map((key) => (
-                <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} />
-              ))}
-            </div>
-            <DropTarget sequence={code} onRemove={handleRemove} />
-          </DndContext>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={() => {
-            const sequence = code?.map((key) => key.keyCode)
+  const save = () => {
+    setError(null)
+    const sequence = code.map((key) => key.keyCode)
 
-            if (menuId === "") {
-              if (!environmentId) {
-                setError("No environment selected, open the secret menu from an environment page")
-                return
-              }
-              createMenuId(environmentId, sequence).then((resp) => {
-                if (resp instanceof Error) throw resp
-                toast("Menu Saved", {
-                  description: "Saved the menu"
-                })
-              }).catch((e) => {
-                logError("Error creating menu", e);
-                setError("Error creating menu")
-              })
+    if (menuId === "") {
+      if (!environmentId) {
+        setError("No environment selected, open the secret menu from an environment page")
+        return
+      }
+      createMenuId(environmentId, sequence).then((resp) => {
+        if (resp instanceof Error) throw resp
+        toast("Secret menu created")
+        router.push(`/secretmenu/${resp.menu_id}`)
+      }).catch((e) => {
+        logError("Error creating menu", e);
+        setError("Error creating menu")
+      })
+      return
+    }
 
-              return
-            }
+    saveSequence(menuId, sequence).then((resp) => {
+      if (resp instanceof Error) throw resp
+      toast("Secret menu saved")
+    }).catch((e) => {
+      logError("Error saving menu", e);
+      setError("Error saving menu")
+    })
+  }
 
-            saveSequence(menuId, sequence).catch((e) => {
-              logError("Error saving menu", e);
-              setError("Error saving menu")
-            })
-          }} className={"w-full"}>Save</Button>
-        </CardFooter>
-      </Card>
+  const keyRow = (label: string, keys: {id: string, icon: string}[]) => (
+    <div className={"space-y-2"}>
+      <p className={"text-xs font-medium uppercase tracking-wide text-muted-foreground"}>{label}</p>
+      <div className={"flex flex-wrap gap-1.5"}>
+        {keys.map((key) => <Draggable key={`${key.id}-draggable`} id={key.id} icon={key.icon} onAdd={handleAdd} />)}
+      </div>
     </div>
+  )
+
+  return (
+    // pointer drags start after a small move, so a plain click (or Enter) adds the key instead
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={rectIntersection}>
+      <div className={"space-y-6"}>
+        <SettingsSection title={"Sequence"} description={"What testers type, in order."}
+          action={<div className={"flex gap-2"}>
+            <Button variant={"ghost"} size={"sm"} disabled={code.length === 0} onClick={() => setCode([])}>Clear</Button>
+            <Button size={"sm"} disabled={code.length === 0} onClick={save}>Save</Button>
+          </div>}>
+          <div className={"space-y-2 p-4"}>
+            <DropTarget sequence={code} onRemove={handleRemove} />
+            {error && <p role={"alert"} className={"text-sm text-destructive"}>{error}</p>}
+          </div>
+        </SettingsSection>
+        <SettingsSection title={"Keys"}>
+          <div className={"space-y-4 p-4"}>
+            {keyRow("Arrows", DirectionMap)}
+            {keyRow("Letters", LetterMap)}
+            {keyRow("Numbers", NumberMap)}
+          </div>
+        </SettingsSection>
+      </div>
+    </DndContext>
   )
 }

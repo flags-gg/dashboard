@@ -5,6 +5,9 @@ import { type Metadata } from "next";
 import { getProject } from "~/app/api/project/project";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
+import AgentActions from "./actions";
+import { PageIntro } from "~/components/page-intro";
+import { PageTabs } from "~/components/page-tabs";
 
 export async function generateMetadata({params}: {params: Promise<{project_id: string}>}): Promise<Metadata> {
   const {project_id} = await params
@@ -30,12 +33,12 @@ export default async function ProjectPage({params}: {params: Promise<{project_id
   }
 
   return (
-    <div className={"grid grid-cols-3 gap-3"}>
-      <header className={"col-span-3"}>
-        <h1 className={"text-2xl font-semibold"}>Project Agents</h1>
-      </header>
-      <List project_id={project_id} />
-      <InfoBox project_id={project_id} />
-    </div>
+    <PageTabs tabs={[
+      { value: "agents", label: "Agents", content: <>
+        <PageIntro title="Agents" description="Agents are the apps that read flags; each has its own chain of environments." action={<AgentActions project_id={project_id} />} />
+        <List project_id={project_id} />
+      </> },
+      { value: "settings", label: "Project settings", content: <div className="max-w-4xl"><InfoBox project_id={project_id} /></div> },
+    ]} />
   );
 }

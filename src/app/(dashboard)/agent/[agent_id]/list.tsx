@@ -1,73 +1,56 @@
-import {Card} from "~/components/ui/card";
+import { Badge } from "~/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import Link from "next/link";
 import {getEnvironments} from "~/app/api/environment/environment";
 import CreateChild from "~/app/(dashboard)/agent/[agent_id]/child/create";
 import { logError } from "~/lib/logger";
+import { EnvironmentSwitch } from "~/app/(dashboard)/environment/[environment_id]/infobox/switch";
 
+// Environments in promotion order (dev first); only the last one can get a child.
 export default async function EnvironmentsList({ agent_id }: { agent_id: string }) {
   const { data: environments, error } = await getEnvironments(agent_id);
 
   if (error ?? !environments) {
     logError(error);
-    return (
-      <div className={"gap-3 col-span-2"}>
-        <Card className={"mb-3 p-3"}>
-          Error loading environments
-        </Card>
-      </div>
-    )
+    return <p className={"px-4 py-3 text-sm"}>Error loading environments</p>
   }
 
-  const levels = environments?.environments?.map(environment => environment.level ?? -Infinity) ?? [];
-  const maxLevel = levels.length ? Math.max(...levels) : -Infinity;
-
-  const sortedEnvironments = (environments?.environments ?? [])
-    .slice()
-    .sort((a, b) => {
-      const aNum = Number(a.id);
-      const bNum = Number(b.id);
-      if (!Number.isNaN(aNum) && !Number.isNaN(bNum)) {
-        return bNum - aNum; // highest id first, lowest at bottom
-      }
-      return String(b.id).localeCompare(String(a.id));
-    });
+  const sorted = (environments.environments ?? []).slice().sort((a, b) => (a.level ?? 0) - (b.level ?? 0));
+  const last = sorted.at(-1);
 
   return (
-    <div className={"gap-3 col-span-2 min-w-[40rem]"}>
-      <Card className={"mb-3"}>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Environment ID</TableHead>
-              <TableHead>Enabled</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+    <div className={"overflow-x-auto"}>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Environment</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead>Enabled</TableHead>
+            <TableHead className="text-right"><span className="sr-only">Actions</span></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sorted.map((environment, i) => (
+            <TableRow key={environment.id}>
+              <TableCell className="whitespace-nowrap">
+                <Link className="font-medium hover:underline" href={`/environment/${environment.environment_id}`}>
+                  <span className="text-muted-foreground tabular-nums">{i + 1}.</span> {environment.name}
+                </Link>
+                {environment === last && sorted.length > 1 && <Badge variant="secondary" className="ml-2 text-[10px]">prod</Badge>}
+              </TableCell>
+              <TableCell>
+                <code className="text-xs text-muted-foreground select-all">{environment.environment_id}</code>
+              </TableCell>
+              <TableCell>
+                <EnvironmentSwitch environmentId={environment.environment_id} label={`${environment.name} enabled`} />
+              </TableCell>
+              <TableCell className="text-right">
+                {environment === last && <CreateChild envId={environment.environment_id} agentId={agent_id}/>}
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedEnvironments.map(environment => (
-              <TableRow key={environment.id}>
-                <TableCell>
-                  <Link href={`/environment/${environment.environment_id}`}>{environment.name}</Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/environment/${environment.environment_id}`}>{environment.environment_id}</Link>
-                </TableCell>
-                <TableCell>
-                  <Link
-                    href={`/environment/${environment.environment_id}`}>{environment.enabled ? "True" : "False"}</Link>
-                </TableCell>
-                <TableCell className="text-right">
-                  {environment.level === maxLevel && (
-                    <CreateChild envId={environment.environment_id} agentId={agent_id}/>
-                  )}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   )
 }

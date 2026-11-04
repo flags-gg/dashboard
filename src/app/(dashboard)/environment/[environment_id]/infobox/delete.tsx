@@ -56,7 +56,7 @@ export default function Delete({environment_id, agent_id}: {environment_id: stri
   return (
     <Dialog open={openDelete} onOpenChange={setOpenDelete}>
       <DialogTrigger asChild>
-        <Trash2 className={"size-5 mt-1.5 cursor-pointer"}/>
+        <Button variant={"destructive"} size={"sm"}><Trash2 className={"size-4"} />Delete environment</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

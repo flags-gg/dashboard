@@ -1,11 +1,17 @@
-import InfoBox from "./infobox";
+import Link from "next/link";
 import Maker from "../maker";
+import MenuActions from "./actions";
 import { type Metadata } from "next";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
+import { getSecretMenu } from "~/app/api/secretmenu/data";
+import { PageIntro } from "~/components/page-intro";
+import { InfoBoxError } from "~/components/InfoBoxError";
+import { logError } from "~/lib/logger";
+import type { SecretMenu } from "~/lib/interfaces";
 
 export const metadata: Metadata = {
-  title: "Flags.gg - SecretMenu Builder",
+  title: "Flags.gg - Secret Menu",
 }
 
 export default async function SecretMenuSpecificPage({params}: {params: Promise<{menu_id: string}>}) {
@@ -19,13 +25,22 @@ export default async function SecretMenuSpecificPage({params}: {params: Promise<
     )
   }
 
+  let menu: SecretMenu
+  try {
+    menu = await getSecretMenu(menu_id)
+  } catch (e) {
+    logError(e)
+    return <InfoBoxError name={"secret menu"} blurb={"Failed to load the secret menu"} />
+  }
+
+  const env = menu.environment_details
   return (
-    <div className={"grid grid-cols-3 gap-3"}>
-      <header className={"col-span-3"}>
-        <h1 className={"text-2xl font-semibold"}>Secret Menu Updater</h1>
-      </header>
+    <section>
+      <PageIntro title={`${env.name} secret menu`}
+        description={<>Testers type this sequence in your app to open a menu that overrides flags in{" "}
+          <Link className="underline underline-offset-4 hover:text-foreground" href={`/environment/${env.environment_id}`}>{env.name}</Link>.</>}
+        action={<MenuActions menu={menu} />} />
       <Maker menuId={menu_id} />
-      <InfoBox menu_id={menu_id} />
-    </div>
+    </section>
   )
 }
