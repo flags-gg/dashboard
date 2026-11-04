@@ -9,7 +9,9 @@ import { Slider } from "~/components/ui/slider";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/lib/utils";
-import type { FlagState } from "~/lib/interfaces";
+import type { FlagState, TargetingRule } from "~/lib/interfaces";
+import { Target } from "lucide-react";
+import { RulesEditor } from "./rules-editor";
 import { logError } from "~/lib/logger";
 
 const PRESETS = [1, 5, 25, 50, 100];
@@ -28,6 +30,8 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
   const [rollout, setRollout] = useState(state.rollout);
   const [draft, setDraft] = useState(state.rollout);
   const [busy, setBusy] = useState(false);
+  const [rules, setRules] = useState<TargetingRule[]>(state.rules ?? []);
+  const [editing, setEditing] = useState(false);
 
   const run = async (what: string, fn: () => Promise<void>) => {
     setBusy(true);
@@ -53,15 +57,34 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
     setDraft(value);
   });
 
+  // returns the API's reason on failure, so the editor can show it
+  const saveRules = async (next: TargetingRule[]): Promise<string | null> => {
+    const res = await fetch("/api/flag/rules", {
+      method: "PUT", headers: { "Content-Type": "application/json" }, cache: "no-store",
+      body: JSON.stringify({ flag_id: state.flag_id, rules: next }),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({})) as { error?: string };
+      return body.error ?? `Saving failed (${res.status})`;
+    }
+    setRules(next);
+    setEditing(false);
+    toast("Targeting rules saved", { description: `${name} in ${env}` });
+    router.refresh();
+    return null;
+  };
+
   const partial = enabled && rollout < 100;
   const label = !enabled ? "Off" : partial ? `${rollout}%` : "On";
+  const targeted = enabled && rules.length > 0;
 
   return (
+    <>
     <Popover onOpenChange={open => open && setDraft(rollout)}>
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label={`${name} in ${env}: ${label}. Edit`}
+          aria-label={`${name} in ${env}: ${label}${targeted ? `, ${rules.length} targeting rule${rules.length > 1 ? "s" : ""}` : ""}. Edit`}
           className={cn(
             "inline-flex min-w-16 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium tabular-nums transition-colors",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
@@ -73,6 +96,7 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
         >
           <span aria-hidden className={cn("size-1.5 rounded-full", !enabled ? "border border-current" : "bg-current")} />
           {label}
+          {targeted && <Target aria-hidden className="size-3" />}
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-72 space-y-4" align="start">
@@ -104,7 +128,18 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
             <p className="text-xs text-muted-foreground">The rollout applies once the flag is enabled.</p>
           )}
         </div>
+        <div className="flex items-center justify-between border-t pt-3">
+          <div>
+            <p className="text-sm font-medium">Targeting</p>
+            <p className="text-xs text-muted-foreground">
+              {rules.length ? `${rules.length} rule${rules.length > 1 ? "s" : ""}, checked before the rollout` : "Everyone gets the rollout"}
+            </p>
+          </div>
+          <Button type="button" size="sm" variant="outline" onClick={() => setEditing(true)}>Edit rules</Button>
+        </div>
       </PopoverContent>
     </Popover>
+    <RulesEditor open={editing} onOpenChange={setEditing} title={`${name} in ${env}`} rules={rules} onSave={saveRules} />
+    </>
   );
 }

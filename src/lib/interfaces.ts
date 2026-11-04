@@ -180,11 +180,20 @@ export interface AgentEnvironment {
   production: boolean,
 }
 
+// Checked top to bottom on the server; the first match decides the flag, otherwise the rollout applies.
+export interface TargetingRule {
+  attribute: string,
+  operator: "in" | "not_in" | "contains" | "starts_with" | "ends_with",
+  values: string[],
+  serve: boolean,
+}
+
 export interface FlagState {
   environment_id: string,
   flag_id: string,
   enabled: boolean,
   rollout: number, // % of visitors that see it when enabled
+  rules?: TargetingRule[],
 }
 
 // one flag across an agent's environments; states only lists environments it has reached
