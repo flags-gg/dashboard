@@ -13,6 +13,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { DELETE as archiveFlag } from "~/app/api/flag/archive/route";
 import { PATCH as setRollout } from "~/app/api/flag/rollout/route";
 import { PUT as setRules } from "~/app/api/flag/rules/route";
+import { GET as getMetrics } from "~/app/api/agent/metrics/route";
 import { GET as listTokens, POST as createToken, DELETE as revokeToken } from "~/app/api/company/integration-token/route";
 
 const mockedCurrentUser = currentUser as jest.MockedFunction<typeof currentUser>;
@@ -98,5 +99,15 @@ describe("flag archive and integration tokens", () => {
     const bad = await setRules(req({ flag_id: "42", rules }));
     expect(bad.status).toBe(400);
     expect((await bad.json()).error).toContain("unknown operator");
+  });
+
+  it("metrics validates the agent and range and proxies the series", async () => {
+    signedIn();
+    expect((await getMetrics(createMockRequest("/api/agent/metrics", { searchParams: { agent_id: "x", days: "7" } }))).status).toBe(400);
+    expect((await getMetrics(createMockRequest("/api/agent/metrics", { searchParams: { agent_id: AGENT, days: "365" } }))).status).toBe(400);
+    global.fetch = mockFetchSuccess({ days: [] });
+    const res = await getMetrics(createMockRequest("/api/agent/metrics", { searchParams: { agent_id: AGENT, days: "7" } }));
+    expect(res.status).toBe(200);
+    expect(global.fetch).toHaveBeenCalledWith(`https://api.test.com/v1/agent/${AGENT}/metrics?days=7`, expect.anything());
   });
 });

@@ -6,6 +6,7 @@ import { getAgent } from "~/app/api/agent/agent";
 import { currentUser } from "@clerk/nextjs/server";
 import { SignIn } from "@clerk/nextjs";
 import { PageTabs } from "~/components/page-tabs";
+import { AgentMetricsView } from "./metrics";
 
 export async function generateMetadata({params}: {params: Promise<{agent_id: string}>}): Promise<Metadata> {
   const {agent_id} = await params
@@ -34,6 +35,7 @@ export default async function AgentPage({params}: {params: Promise<{agent_id: st
   return (
     <PageTabs tabs={[
       { value: "flags", label: "Flags", content: <FlagMatrix agent_id={agent_id} /> },
+      { value: "metrics", label: "Metrics", content: <AgentMetricsView agentId={agent_id} /> },
       { value: "settings", label: "Environments & agent", content: <div className={"max-w-4xl"}><InfoBox agent_id={agent_id} /></div> },
     ]} />
   )

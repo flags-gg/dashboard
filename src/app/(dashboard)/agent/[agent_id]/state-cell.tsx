@@ -77,9 +77,11 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
   const partial = enabled && rollout < 100;
   const label = !enabled ? "Off" : partial ? `${rollout}%` : "On";
   const targeted = enabled && rules.length > 0;
+  const servedTotal = (state.served_on ?? 0) + (state.served_off ?? 0);
+  const servedPct = servedTotal ? Math.round((100 * (state.served_on ?? 0)) / servedTotal) : null;
 
   return (
-    <>
+    <span className="inline-flex flex-col items-center gap-0.5">
     <Popover onOpenChange={open => open && setDraft(rollout)}>
       <PopoverTrigger asChild>
         <button
@@ -139,7 +141,13 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
         </div>
       </PopoverContent>
     </Popover>
+    {servedPct !== null && (
+      <span className="text-[11px] tabular-nums text-muted-foreground"
+        title={`Served on to ${(state.served_on ?? 0).toLocaleString()} of ${servedTotal.toLocaleString()} users in the last 7 days`}>
+        {servedPct}% of {new Intl.NumberFormat(undefined, { notation: "compact" }).format(servedTotal)}
+      </span>
+    )}
     <RulesEditor open={editing} onOpenChange={setEditing} title={`${name} in ${env}`} rules={rules} onSave={saveRules} />
-    </>
+    </span>
   );
 }

@@ -194,6 +194,22 @@ export interface FlagState {
   enabled: boolean,
   rollout: number, // % of visitors that see it when enabled
   rules?: TargetingRule[],
+  served_on?: number,  // users served it on in the last 7 days
+  served_off?: number,
+}
+
+// Daily series, oldest first, one value per entry in `days`.
+export interface AgentMetrics {
+  days: string[],
+  environments: {
+    environment_id: string, name: string, level: number,
+    users: number[], requests: number[],
+    p50_ms: number, p95_ms: number, // 1001 means over a second
+  }[],
+  flags: {
+    name: string, environment_id: string,
+    served_on: number[], served_off: number[], rule_hits: number[],
+  }[],
 }
 
 // one flag across an agent's environments; states only lists environments it has reached
