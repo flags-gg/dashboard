@@ -60,24 +60,24 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
       </div>
 
       <div className="overflow-x-auto rounded-lg border">
-        <Table>
+        {/* fixed layout: the name and actions columns are sized, environments share the rest equally */}
+        <Table className="table-fixed" style={{ minWidth: `${18 + envs.length * 8 + 3.5}rem` }}>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-80 min-w-56">Flag</TableHead>
+              <TableHead className="w-72">Flag</TableHead>
               {envs.map((env, i) => (
-                <TableHead key={env.environment_id} className={cn("w-36 whitespace-nowrap", env === prod && "bg-muted/30")}>
+                <TableHead key={env.environment_id} className={cn("truncate text-center", env === prod && "bg-muted/30")}>
                   {chain && <span className="text-muted-foreground tabular-nums">{i + 1}. </span>}{env.name}
-                  {env === prod && <Badge variant="secondary" className="ml-1.5 align-middle text-[10px]">prod</Badge>}
+                  {env === prod && !/prod/i.test(env.name) && <Badge variant="secondary" className="ml-1.5 align-middle text-[10px]">prod</Badge>}
                 </TableHead>
               ))}
-              <TableHead className="w-full p-0" aria-hidden />
-              <TableHead><span className="sr-only">Actions</span></TableHead>
+              <TableHead className="w-14"><span className="sr-only">Actions</span></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {shown.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={envs.length + 3} className="py-10 text-center text-muted-foreground">
+                <TableCell colSpan={envs.length + 2} className="py-10 text-center text-muted-foreground">
                   {data.flags.length === 0
                     ? (envs.length ? "No flags yet. Create one to get started." : "Create an environment before adding flags.")
                     : "No flags match."}
@@ -93,21 +93,20 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
                 <TableRow key={flag.name} className="group">
                   <TableCell>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-sm">{flag.name}</span>
+                      <span className="min-w-0 truncate font-mono text-sm" title={flag.name}>{flag.name}</span>
                       {flag.ticket && <Badge variant="outline" className="font-mono text-[11px]">{flag.ticket}</Badge>}
                     </div>
                   </TableCell>
                   {envs.map((env, i) => {
                     const state = byEnv.get(env.environment_id);
                     return (
-                      <TableCell key={env.environment_id} className={cn("whitespace-nowrap", env === prod && "bg-muted/30")}>
+                      <TableCell key={env.environment_id} className={cn("whitespace-nowrap text-center", env === prod && "bg-muted/30")}>
                         {state ? <StateCell name={flag.name} env={env.name} state={state} />
                           : i === deepest + 1 && from ? <PromoteButton flagId={from.flag_id} to={env.name} />
-                          : <span className="pl-3 text-muted-foreground/50" aria-label="Not promoted yet">·</span>}
+                          : <span className="text-muted-foreground/50" aria-label="Not promoted yet">·</span>}
                       </TableCell>
                     );
                   })}
-                  <TableCell className="p-0" aria-hidden />
                   <TableCell className="text-right">
                     <RemoveFlag agentId={agentId} name={flag.name} ticket={flag.ticket} />
                   </TableCell>
