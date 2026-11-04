@@ -5,22 +5,13 @@ import { useAtom } from "jotai";
 import {useEffect} from "react";
 import { AgentSwitch } from "./switch";
 import { useAgent } from "~/hooks/use-agent";
-import { Skeleton } from "~/components/ui/skeleton";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
-import { toast } from "sonner";
-import { Copy } from "lucide-react";
+import { CopyValue, SettingRow, SettingsSection, SettingsSkeleton } from "~/components/settings";
+import Name from "./name";
 
 export default function AgentInfo({agent_id}: {agent_id: string}) {
   const [, setSelectedAgent] = useAtom(agentAtom);
   const {data: agentInfo, isLoading} = useAgent(agent_id);
 
-  const copyAgentId = () => {
-    navigator.clipboard.writeText(agent_id ?? "").then(() => {
-      toast(`${agentInfo?.name} Agent ID Copied`, {
-        description: `The ${agentInfo?.name} agent id has been copied to your clipboard`,
-      })
-    })
-  }
 
   useEffect(() => {
     if (agentInfo) {
@@ -29,45 +20,24 @@ export default function AgentInfo({agent_id}: {agent_id: string}) {
   }, [agentInfo]);
 
   if (isLoading) {
-    return <Skeleton className="min-h-[10rem] min-w-fit rounded-xl" />
+    return <SettingsSkeleton />
   }
 
   return (
-    <div className={"grid gap-3"}>
-      <ul className={"grid gap-3"}>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Agent ID</span>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <p className={"cursor-pointer"}>{agentInfo?.agent_id.slice(0, 11)}...</p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  {agentInfo?.agent_id}
-                  <Copy className={"size-5 mt-[-1.3rem] ml-[19rem] cursor-pointer"} onClick={copyAgentId} />
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Environment Limit</span>
-          <span>{agentInfo?.environment_limit}</span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Environments Used</span>
-          <span>{agentInfo?.environments ? agentInfo?.environments?.length : 0}</span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Request Limit</span>
-          <span>{agentInfo?.request_limit.toLocaleString()}</span>
-        </li>
-        <li className={"flex items-center justify-between"}>
-          <span className={"text-muted-foreground"}>Enabled</span>
-          <span><AgentSwitch agent_id={agent_id} /></span>
-        </li>
-      </ul>
-    </div>
+    <SettingsSection title={"General"}>
+      <SettingRow label={"Name"}><Name agent_id={agent_id} /></SettingRow>
+      <SettingRow label={"Agent ID"} description={"Used by SDKs to identify this app."}>
+        <CopyValue value={agent_id} what={"Agent ID"} />
+      </SettingRow>
+      <SettingRow label={"Enabled"} description={"A disabled agent serves no flags in any environment."}>
+        <AgentSwitch agent_id={agent_id} />
+      </SettingRow>
+      <SettingRow label={"Environments"}>
+        <span className={"text-sm tabular-nums"}>{agentInfo?.environments?.length ?? 0} of {agentInfo?.environment_limit}</span>
+      </SettingRow>
+      <SettingRow label={"Request limit"}>
+        <span className={"text-sm tabular-nums"}>{agentInfo?.request_limit.toLocaleString()}</span>
+      </SettingRow>
+    </SettingsSection>
   );
 }

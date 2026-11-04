@@ -1,4 +1,3 @@
-import {Card} from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import Link from "next/link";
@@ -13,14 +12,14 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
 
   if (error ?? !environments) {
     logError(error);
-    return <Card className={"p-3 lg:col-span-2"}>Error loading environments</Card>
+    return <p className={"px-4 py-3 text-sm"}>Error loading environments</p>
   }
 
   const sorted = (environments.environments ?? []).slice().sort((a, b) => (a.level ?? 0) - (b.level ?? 0));
   const last = sorted.at(-1);
 
   return (
-    <Card className={"overflow-x-auto p-0 lg:col-span-2"}>
+    <div className={"overflow-x-auto"}>
       <Table>
         <TableHeader>
           <TableRow>
@@ -52,6 +51,6 @@ export default async function EnvironmentsList({ agent_id }: { agent_id: string 
           ))}
         </TableBody>
       </Table>
-    </Card>
+    </div>
   )
 }

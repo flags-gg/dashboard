@@ -1,13 +1,11 @@
-import {Card, CardContent, CardHeader} from "~/components/ui/card";
 import {getEnvironment} from "~/app/api/environment/environment";
 import Info from "./info";
-import Name from "./name";
 import {InfoBoxError} from "~/components/InfoBoxError";
-import InfoButtons from "./buttons";
-import Clone from "./clone"
 import Delete from "./delete"
+import { SettingRow, SettingsSection } from "~/components/settings";
 import { logError } from "~/lib/logger";
 
+// The environment settings tab.
 export default async function InfoBox({environment_id}: {environment_id: string}) {
   const { data: environmentInfo, error } = await getEnvironment(environment_id)
 
@@ -17,20 +15,13 @@ export default async function InfoBox({environment_id}: {environment_id: string}
   }
 
   return (
-    <Card className={"min-h-[5rem] max-h-[18rem]"}>
-      <CardHeader className={"flex flex-row items-start bg-muted/50"}>
-        <div className={"grid gap-0.5"}>
-          <Name environment_id={environment_id} />
-        </div>
-        <div className={"ml-auto flex items-center gap-1"}>
-          <Clone environment_id={environment_id} agent_id={environmentInfo.agent_id} />
+    <div className={"space-y-6"}>
+      <Info environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
+      <SettingsSection title={"Danger zone"} danger>
+        <SettingRow label={"Delete this environment"} description={"Removes it and its flags. Apps using its ID stop receiving flags."}>
           <Delete environment_id={environment_id} agent_id={environmentInfo.agent_id} />
-        </div>
-      </CardHeader>
-      <CardContent className={"p-2 text-sm"}>
-        <Info environmentId={environmentInfo.environment_id} menuId={environmentInfo.secret_menu.menu_id} />
-      </CardContent>
-      <InfoButtons environmentId={environmentInfo.environment_id} agentId={environmentInfo.agent_id} />
-    </Card>
+        </SettingRow>
+      </SettingsSection>
+    </div>
   );
 }

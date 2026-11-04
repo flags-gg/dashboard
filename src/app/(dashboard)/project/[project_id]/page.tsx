@@ -38,7 +38,7 @@ export default async function ProjectPage({params}: {params: Promise<{project_id
         <PageIntro title="Agents" description="Agents are the apps that read flags; each has its own chain of environments." action={<AgentActions project_id={project_id} />} />
         <List project_id={project_id} />
       </> },
-      { value: "settings", label: "Project settings", content: <div className="max-w-md"><InfoBox project_id={project_id} /></div> },
+      { value: "settings", label: "Project settings", content: <div className="max-w-4xl"><InfoBox project_id={project_id} /></div> },
     ]} />
   );
 }

@@ -60,7 +60,7 @@ export default async function EnvironmentPage({params}: {params: Promise<{enviro
   return (
     <PageTabs tabs={[
       { value: "flags", label: "Flags", content: <Flags environment_id={environment_id} /> },
-      { value: "settings", label: "Environment settings", content: <div className="max-w-md"><InfoBox environment_id={environment_id} /></div> },
+      { value: "settings", label: "Environment settings", content: <div className="max-w-4xl"><InfoBox environment_id={environment_id} /></div> },
     ]} />
   )
 }

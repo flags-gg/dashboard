@@ -1,4 +1,3 @@
-import EnvironmentsList from "./list";
 import FlagMatrix from "./flags";
 import {redirect} from "next/navigation";
 import InfoBox from "./infobox";
@@ -35,12 +34,7 @@ export default async function AgentPage({params}: {params: Promise<{agent_id: st
   return (
     <PageTabs tabs={[
       { value: "flags", label: "Flags", content: <FlagMatrix agent_id={agent_id} /> },
-      { value: "settings", label: "Environments & agent", content: (
-        <div className={"grid items-start gap-3 lg:grid-cols-3"}>
-          <EnvironmentsList agent_id={agent_id} />
-          <InfoBox agent_id={agent_id} />
-        </div>
-      ) },
+      { value: "settings", label: "Environments & agent", content: <div className={"max-w-4xl"}><InfoBox agent_id={agent_id} /></div> },
     ]} />
   )
 }

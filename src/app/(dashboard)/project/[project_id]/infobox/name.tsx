@@ -3,7 +3,6 @@
 import {Popover, PopoverContent, PopoverTrigger} from "~/components/ui/popover";
 import {Button} from "~/components/ui/button";
 import {Pencil} from "lucide-react";
-import {CardTitle} from "~/components/ui/card";
 import { useEffect, useState } from "react";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
@@ -98,12 +97,12 @@ export default function Name({project_id}: {project_id: string}) {
   }
 
   return (
-    <CardTitle className={"group flex items-center gap-2 text-lg"}>
+    <span className={"flex items-center gap-1 text-sm"}>
       {projectName}
       <Popover open={openEdit} onOpenChange={setOpenEdit}>
         <PopoverTrigger asChild>
-          <Button variant={"outline"} className={"bg-muted/10 border-0"} size={"icon"}>
-            <Pencil className={"size-5"} />
+          <Button variant={"ghost"} className={"size-8"} size={"icon"} aria-label={"Rename project"}>
+            <Pencil className={"size-4"} />
           </Button>
         </PopoverTrigger>
         <PopoverContent>
@@ -123,6 +122,6 @@ export default function Name({project_id}: {project_id: string}) {
           </Form>
         </PopoverContent>
       </Popover>
-    </CardTitle>
+    </span>
   )
 }
