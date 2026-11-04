@@ -13,7 +13,7 @@ export default async function FlagMatrix({ agent_id }: { agent_id: string }) {
       <section className="space-y-4">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold">Flags</h1>
+            <h1 className="sr-only">Flags</h1>
             <p className="text-sm text-muted-foreground">
               New flags start off in {first?.name ?? "the first environment"}. Click a state to toggle it or roll it out to a percentage of visitors.
             </p>

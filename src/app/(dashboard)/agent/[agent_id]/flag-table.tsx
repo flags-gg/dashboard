@@ -17,7 +17,8 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const envs = data.environments;
-  const prod = envs.find(e => e.production);
+  const chain = envs.length > 1;
+  const prod = chain ? envs.find(e => e.production) : undefined;
 
   const matches = useMemo(() => {
     const inProd = (f: AgentFlag) => f.states.find(s => s.environment_id === prod?.environment_id);
@@ -35,7 +36,10 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
   const shown = searched.filter(f => matches(f, filter));
   const count = (which: Filter) => searched.filter(f => matches(f, which)).length;
 
-  const filters: [Filter, string][] = [["all", "All"], ["live", "Live"], ["rollout", "Rolling out"], ["pending", "Not in production"]];
+  const filters: [Filter, string][] = [["all", "All"], ["live", "Live"], ["rollout", "Rolling out"]];
+  if (chain) {
+    filters.push(["pending", "Not in production"]);
+  }
 
   return (
     <div className="space-y-3">
@@ -46,9 +50,9 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
             onChange={e => setQuery(e.target.value)} className="pl-8" />
         </div>
         <ToggleGroup type="single" variant="outline" size="sm" value={filter}
-          onValueChange={v => v && setFilter(v as Filter)} aria-label="Filter flags" className="flex-wrap">
+          onValueChange={v => v && setFilter(v as Filter)} aria-label="Filter flags" className="max-w-full overflow-x-auto">
           {filters.map(([value, label]) => (
-            <ToggleGroupItem key={value} value={value} className="gap-1.5 px-3">
+            <ToggleGroupItem key={value} value={value} className="flex-none gap-1.5 px-3">
               {label}<span className="tabular-nums text-muted-foreground">{count(value)}</span>
             </ToggleGroupItem>
           ))}
@@ -59,20 +63,21 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-full min-w-48">Flag</TableHead>
+              <TableHead className="w-80 min-w-56">Flag</TableHead>
               {envs.map((env, i) => (
-                <TableHead key={env.environment_id} className="whitespace-nowrap">
-                  <span className="text-muted-foreground tabular-nums">{i + 1}.</span> {env.name}
-                  {env.production && <Badge variant="secondary" className="ml-1.5 align-middle text-[10px]">prod</Badge>}
+                <TableHead key={env.environment_id} className={cn("w-36 whitespace-nowrap", env === prod && "bg-muted/30")}>
+                  {chain && <span className="text-muted-foreground tabular-nums">{i + 1}. </span>}{env.name}
+                  {env === prod && <Badge variant="secondary" className="ml-1.5 align-middle text-[10px]">prod</Badge>}
                 </TableHead>
               ))}
+              <TableHead className="w-full p-0" aria-hidden />
               <TableHead><span className="sr-only">Actions</span></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {shown.length === 0 && (
               <TableRow className="hover:bg-transparent">
-                <TableCell colSpan={envs.length + 2} className="py-10 text-center text-muted-foreground">
+                <TableCell colSpan={envs.length + 3} className="py-10 text-center text-muted-foreground">
                   {data.flags.length === 0
                     ? (envs.length ? "No flags yet. Create one to get started." : "Create an environment before adding flags.")
                     : "No flags match."}
@@ -95,13 +100,14 @@ export function FlagTable({ data, agentId }: { data: AgentFlags, agentId: string
                   {envs.map((env, i) => {
                     const state = byEnv.get(env.environment_id);
                     return (
-                      <TableCell key={env.environment_id} className={cn("whitespace-nowrap", env.production && "bg-muted/30")}>
+                      <TableCell key={env.environment_id} className={cn("whitespace-nowrap", env === prod && "bg-muted/30")}>
                         {state ? <StateCell name={flag.name} env={env.name} state={state} />
                           : i === deepest + 1 && from ? <PromoteButton flagId={from.flag_id} to={env.name} />
                           : <span className="pl-3 text-muted-foreground/50" aria-label="Not promoted yet">·</span>}
                       </TableCell>
                     );
                   })}
+                  <TableCell className="p-0" aria-hidden />
                   <TableCell className="text-right">
                     <RemoveFlag agentId={agentId} name={flag.name} ticket={flag.ticket} />
                   </TableCell>
