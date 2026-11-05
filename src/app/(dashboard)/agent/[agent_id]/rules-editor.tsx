@@ -56,7 +56,7 @@ export function RulesEditor({ open, onOpenChange, title, rules, onSave }: {
 
   return (
     <Dialog open={open} onOpenChange={o => { if (o) { setDrafts(rules.map(toDraft)); setError(null); } onOpenChange(o); }}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-5xl">
         <DialogHeader>
           <DialogTitle>Targeting rules · {title}</DialogTitle>
           <DialogDescription>
@@ -69,23 +69,25 @@ export function RulesEditor({ open, onOpenChange, title, rules, onSave }: {
         <ol className="space-y-2">
           {drafts.length === 0 && <li className="rounded-lg border border-dashed p-4 text-center text-sm text-muted-foreground">No rules: everyone gets the flag&apos;s on/off and rollout.</li>}
           {drafts.map((d, i) => (
-            <li key={i} className="flex flex-wrap items-center gap-2 rounded-lg border p-2 text-sm">
-              <span className="w-5 text-right tabular-nums text-muted-foreground">{i + 1}.</span>
-              <span>Serve</span>
-              <Select value={d.serve ? "on" : "off"} onValueChange={v => update(i, { serve: v === "on" })}>
-                <SelectTrigger className="h-8 w-20" aria-label={`Rule ${i + 1} serves`}><SelectValue /></SelectTrigger>
-                <SelectContent><SelectItem value="on">On</SelectItem><SelectItem value="off">Off</SelectItem></SelectContent>
-              </Select>
-              <span>when</span>
-              <Input list="rule-attributes" className="h-8 w-28" aria-label={`Rule ${i + 1} attribute`} placeholder="attribute"
-                value={d.attribute} onChange={e => update(i, { attribute: e.target.value })} />
-              <Select value={d.operator} onValueChange={v => update(i, { operator: v as TargetingRule["operator"] })}>
-                <SelectTrigger className="h-8 w-36" aria-label={`Rule ${i + 1} operator`}><SelectValue /></SelectTrigger>
-                <SelectContent>{OPERATORS.map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}</SelectContent>
-              </Select>
-              <Input className="h-8 min-w-40 flex-1" aria-label={`Rule ${i + 1} values`} placeholder="values, comma separated"
-                value={d.values} onChange={e => update(i, { values: e.target.value })} />
-              <div className="flex">
+            <li key={i} className="flex items-center gap-2 rounded-lg border p-2 text-sm">
+              <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                <span className="w-5 text-right tabular-nums text-muted-foreground">{i + 1}.</span>
+                <span>Serve</span>
+                <Select value={d.serve ? "on" : "off"} onValueChange={v => update(i, { serve: v === "on" })}>
+                  <SelectTrigger className="h-8 w-20" aria-label={`Rule ${i + 1} serves`}><SelectValue /></SelectTrigger>
+                  <SelectContent><SelectItem value="on">On</SelectItem><SelectItem value="off">Off</SelectItem></SelectContent>
+                </Select>
+                <span>when</span>
+                <Input list="rule-attributes" className="h-8 w-28" aria-label={`Rule ${i + 1} attribute`} placeholder="attribute"
+                  value={d.attribute} onChange={e => update(i, { attribute: e.target.value })} />
+                <Select value={d.operator} onValueChange={v => update(i, { operator: v as TargetingRule["operator"] })}>
+                  <SelectTrigger className="h-8 w-36" aria-label={`Rule ${i + 1} operator`}><SelectValue /></SelectTrigger>
+                  <SelectContent>{OPERATORS.map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}</SelectContent>
+                </Select>
+                <Input className="h-8 min-w-0 basis-40 flex-1" aria-label={`Rule ${i + 1} values`} placeholder="values, comma separated"
+                  value={d.values} onChange={e => update(i, { values: e.target.value })} />
+              </div>
+              <div className="flex shrink-0">
                 <Button type="button" variant="ghost" size="icon" className="size-8" aria-label={`Move rule ${i + 1} up`} disabled={i === 0} onClick={() => move(i, -1)}><ArrowUp className="size-4" /></Button>
                 <Button type="button" variant="ghost" size="icon" className="size-8" aria-label={`Move rule ${i + 1} down`} disabled={i === drafts.length - 1} onClick={() => move(i, 1)}><ArrowDown className="size-4" /></Button>
                 <Button type="button" variant="ghost" size="icon" className="size-8 hover:text-destructive" aria-label={`Remove rule ${i + 1}`} onClick={() => setDrafts(ds => ds.filter((_, j) => j !== i))}><Trash2 className="size-4" /></Button>
