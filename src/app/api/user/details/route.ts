@@ -21,7 +21,8 @@ export async function GET() {
       cache: 'no-store',
     })
     if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to fetch user details' }, { status: 404 })
+      logError('Failed to fetch user details', `Backend returned ${response.status}`)
+      return NextResponse.json({ error: 'Failed to fetch user details' }, { status: response.status })
     }
 
     const data = await response.json() as UserDetails

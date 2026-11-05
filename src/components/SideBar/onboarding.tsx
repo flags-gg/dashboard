@@ -10,8 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "~/components/ui/sidebar";
-import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
-import { useAtom } from "jotai";
 import Link from "next/link";
 import { HousePlus, Home, Book } from "lucide-react";
 import { useFlags } from "@flags-gg/react-library";
@@ -21,12 +19,6 @@ import Image from "next/image";
 export default function Onboarding() {
   const {is} = useFlags();
   const {user} = useUser();
-
-  const [hasCompletedOnboarding] = useAtom(hasCompletedOnboardingAtom);
-
-  if (hasCompletedOnboarding) {
-    return null
-  }
 
   return(
     <Sidebar>

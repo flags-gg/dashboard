@@ -8,32 +8,50 @@ import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useEffect } from "react";
 import { useUserDetails } from "~/hooks/use-user-details";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarHeader } from "~/components/ui/sidebar";
+import { Button } from "~/components/ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function SideBar() {
   const {user} = useUser();
 
-  const [isOnboarded, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
-  const {data: onboardedData, error: onboardedError} = useUserDetails(user?.id ?? "");
+  const [, setIsOnboarded] = useAtom(hasCompletedOnboardingAtom);
+  const {data: onboardedData, error: onboardedError, refetch, isFetching} = useUserDetails(user?.id ?? "");
 
   useEffect(() => {
-    if (onboardedError) {
-      window.location.href = "/";
+    if (onboardedData) {
+      setIsOnboarded(Boolean(onboardedData.onboarded));
+    } else if (!user) {
+      setIsOnboarded(false);
     }
-  }, [onboardedError]);
+  }, [onboardedData, user, setIsOnboarded]);
 
-  useEffect(() => {
-    if (onboardedData?.onboarded && !isOnboarded) {
-      setIsOnboarded(true);
-    }
-  }, [onboardedData?.onboarded, isOnboarded, setIsOnboarded]);
+  if (!user) return <Unknown />;
 
-  if (onboardedData?.onboarded || isOnboarded) {
+  if (onboardedError || !onboardedData) {
+    return (
+      <Sidebar>
+        <SidebarHeader>
+          <Link href="/"><Image src="/logo512.png" alt="Flags.gg" width={250} height={250} className="size-25 ml-15" /></Link>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup className="gap-3 p-4">
+            {onboardedError ? (
+              <>
+                <p role="alert" className="text-sm text-muted-foreground">Unable to load your account. Please try again.</p>
+                <Button type="button" variant="outline" size="sm" disabled={isFetching} onClick={() => void refetch()}>Try again</Button>
+              </>
+            ) : <p role="status" className="text-sm text-muted-foreground">Loading your account…</p>}
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+    );
+  }
+
+  if (onboardedData.onboarded) {
     return <Standard />;
   }
 
-  if (user) {
-    return <Onboarding />
-  }
-
-  return <Unknown />
+  return <Onboarding />;
 }
