@@ -101,7 +101,9 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
           {targeted && <Target aria-hidden className="size-3" />}
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-72 space-y-4" align="start">
+      <PopoverContent className="w-72 space-y-4" align="start"
+        // The rules dialog is portalled outside this popover; keep the controls and draft while it has focus.
+        onInteractOutside={event => { if (editing) event.preventDefault(); }}>
         <div>
           <p className="text-sm font-medium">{name}</p>
           <p className="text-xs text-muted-foreground">{env}</p>
