@@ -141,3 +141,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Keep the third-party request form readable in both dashboard themes. */
+.tracklines-support .tl-embed { color: var(--foreground); max-width: none; }
+.tracklines-support .tl-embed .tl-embed-field input,
+.tracklines-support .tl-embed .tl-embed-field textarea {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--input);
+}
+.tracklines-support .tl-embed .tl-embed-btn { background: var(--primary); color: var(--primary-foreground); }
+.tracklines-support .tl-embed .tl-embed-muted { color: var(--muted-foreground); }
+.tracklines-support .tl-embed .tl-embed-msg { color: var(--destructive); }
+.tracklines-support .tl-embed .tl-embed-ok { color: oklch(0.65 0.17 150); }

@@ -347,6 +347,7 @@ export default async function Home() {
         <Card>
           <CardContent className={"pt-6"}>
             <p>Failed to load dashboard overview.</p>
+            <p className="mt-2 text-sm text-muted-foreground">If this keeps happening, <Link href="/support" className="text-foreground underline underline-offset-4">contact support</Link> and we&apos;ll help you get back in.</p>
           </CardContent>
         </Card>
       </div>

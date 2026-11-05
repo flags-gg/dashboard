@@ -40,7 +40,7 @@ describe("proxy matcher", () => {
 
 describe("proxy", () => {
   it("leaves public routes alone", async () => {
-    for (const path of ["/", "/api/uploadthing", "/api/webhooks"]) {
+    for (const path of ["/", "/support", "/api/uploadthing", "/api/webhooks"]) {
       const { auth, protect } = setup(null);
       expect(await handler(auth, req(path, "POST", { "content-type": "text/plain" }, "x"))).toBeUndefined();
       expect(protect).not.toHaveBeenCalled();

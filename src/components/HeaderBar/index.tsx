@@ -4,6 +4,9 @@ import BreadCrumbs from "./breadcrumbs";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { env } from "~/env";
 import { ThemeChooser } from "./themeChooser";
+import Link from "next/link";
+import { buttonVariants } from "~/components/ui/button";
+import { LifeBuoy } from "lucide-react";
 
 export default async function HeaderBar() {
   const commitHash = env.COMMIT_HASH ?? "developmentHash"
@@ -13,6 +16,9 @@ export default async function HeaderBar() {
       <SidebarTrigger />
       <BreadCrumbs commitHash={commitHash} />
       <SearchBox />
+      <Link href="/support" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+        <LifeBuoy className="size-4" /><span className="sr-only sm:not-sr-only">Contact support</span>
+      </Link>
       <ThemeChooser />
       <UserNav />
     </header>

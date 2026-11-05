@@ -30,11 +30,11 @@ const uploadthing = "https://utfs.io https://*.ufs.sh https://*.uploadthing.com"
 // Report-only until validated in production; then move it to Content-Security-Policy.
 const cspReportOnly = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} ${clerk} https://js.stripe.com https://challenges.cloudflare.com`,
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} ${clerk} https://js.stripe.com https://challenges.cloudflare.com https://tracklin.es`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https://img.clerk.com https://avatars.githubusercontent.com https://*.stripe.com ${uploadthing}`,
   "font-src 'self' data:",
-  `connect-src 'self' ${clerk} ${apiOrigins} https://api.stripe.com https://merchant-ui-api.stripe.com ${uploadthing}`,
+  `connect-src 'self' ${clerk} ${apiOrigins} https://api.stripe.com https://merchant-ui-api.stripe.com ${uploadthing} https://tracklin.es`,
   "frame-src https://js.stripe.com https://*.js.stripe.com https://hooks.stripe.com https://checkout.stripe.com https://challenges.cloudflare.com",
   "worker-src 'self' blob:",
   "object-src 'none'",

@@ -29,8 +29,6 @@ describe("InfoBoxError", () => {
     const element = await InfoBoxError({ name: "Test", blurb: "error" });
     render(element);
 
-    expect(
-      screen.getByText("If this error persists, please contact support.")
-    ).toBeTruthy();
+    expect(screen.getByRole("link", { name: "contact support" })).toHaveAttribute("href", "/support");
   });
 });

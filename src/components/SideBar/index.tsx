@@ -41,6 +41,7 @@ export default function SideBar() {
               <>
                 <p role="alert" className="text-sm text-muted-foreground">Unable to load your account. Please try again.</p>
                 <Button type="button" variant="outline" size="sm" disabled={isFetching} onClick={() => void refetch()}>Try again</Button>
+                <Link href="/support" className="text-sm underline underline-offset-4">Contact support</Link>
               </>
             ) : <p role="status" className="text-sm text-muted-foreground">Loading your account…</p>}
           </SidebarGroup>

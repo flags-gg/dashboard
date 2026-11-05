@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { logError } from "~/lib/logger";
+import { SUPPORT_REQUEST_URL } from "~/lib/support";
 
 export default function GlobalError({
   error,
@@ -27,6 +28,7 @@ export default function GlobalError({
           >
             Try again
           </button>
+          <a href={SUPPORT_REQUEST_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4">Contact support</a>
         </div>
       </body>
     </html>

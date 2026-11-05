@@ -37,6 +37,7 @@ describe("Sidebar account loading", () => {
     mockState.error = new Error("Failed to fetch user details: 401");
     const { rerender } = render(<SideBar />);
     expect(screen.getByRole("alert")).toHaveTextContent("Unable to load your account");
+    expect(screen.getByRole("link", { name: "Contact support" })).toHaveAttribute("href", "/support");
     expect(mockRefetch).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
     expect(mockRefetch).toHaveBeenCalledTimes(1);

@@ -2,7 +2,7 @@ import {clerkMiddleware, createRouteMatcher} from "@clerk/nextjs/server";
 import {NextResponse} from "next/server";
 
 // "/" renders its own <SignIn />; UploadThing callbacks and webhooks are called by third parties.
-const isPublicRoute = createRouteMatcher(["/", "/api/uploadthing(.*)", "/api/webhooks(.*)"]);
+const isPublicRoute = createRouteMatcher(["/", "/support", "/api/uploadthing(.*)", "/api/webhooks(.*)"]);
 const isApiRoute = createRouteMatcher(["/api(.*)"]);
 const MUTATING = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
