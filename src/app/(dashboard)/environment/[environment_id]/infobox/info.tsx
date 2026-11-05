@@ -10,15 +10,13 @@ import { useEnvironment } from "~/hooks/use-environment";
 import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import Link from "next/link";
 import { buttonVariants } from "~/components/ui/button";
-import { toast } from "sonner";
-import { Copy } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
-import { Button } from "~/components/ui/button";
 import { useAgent } from "~/hooks/use-agent";
 import { useFlags } from "@flags-gg/react-library";
 import { CopyValue, SettingRow, SettingsSection, SettingsSkeleton } from "~/components/settings";
 import Name from "./name";
 import Clone from "./clone";
+import ConnectApp from "./connect-app";
 
 export default function Info({environmentId, menuId}: {environmentId: string, menuId: string}) {
   const { data: environmentInfo, error, isLoading } = useEnvironment(environmentId)
@@ -46,12 +44,6 @@ export default function Info({environmentId, menuId}: {environmentId: string, me
     )
   }
 
-  const snippet = `<FlagsProvider options={{
-  projectId: "${projectId ?? ""}",
-  agentId: "${environmentInfo.agent_id}",
-  environmentId: "${environmentInfo.environment_id}",
-}}>`
-
   return (
     <div className={"space-y-6"}>
       <SettingsSection title={"General"} action={<Clone environment_id={environmentId} agent_id={environmentInfo.agent_id} />}>
@@ -78,10 +70,7 @@ export default function Info({environmentId, menuId}: {environmentId: string, me
       </SettingsSection>
 
       {is("view guide")?.enabled() && (
-        <SettingsSection title={"Connect your app"} description={"Wrap your React app with this to read the flags of this environment."}
-          action={<Button variant={"outline"} size={"sm"} onClick={() => void navigator.clipboard.writeText(snippet).then(() => toast("Configuration copied"))}><Copy className={"size-4"} />Copy</Button>}>
-          <pre className={"overflow-x-auto p-4 text-xs"}><code>{snippet}</code></pre>
-        </SettingsSection>
+        <ConnectApp projectId={projectId} agentId={environmentInfo.agent_id} environmentId={environmentInfo.environment_id} />
       )}
     </div>
   );
