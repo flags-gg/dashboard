@@ -11,7 +11,7 @@ import { z } from "zod";
 import { Separator } from "~/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion";
-import { getUserDetails } from "~/hooks/use-user-details";
+import { useUserDetails } from "~/hooks/use-user-details";
 import { useEffect } from "react";
 import { useAtom } from "jotai";
 import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
@@ -23,6 +23,7 @@ export default function StepTwo() {
   const router = useRouter()
   const [, setOnboardingComplete] = useAtom(hasCompletedOnboardingAtom)
   const {user, isLoaded} = useUser()
+  const { refetch: refreshUserDetails } = useUserDetails(user?.id ?? "")
 
   // Handle unauthenticated users and step validation
   useEffect(() => {
@@ -34,10 +35,16 @@ export default function StepTwo() {
     if (!user) return
 
     // they have somehow got to the second step without completing the first step
-    getUserDetails().then(userData => {
+    void refreshUserDetails().then(({ data: userData, error }) => {
+      if (error) {
+        logError("Unable to check onboarding status", error)
+        return
+      }
       if (userData?.onboarded) {
         setOnboardingComplete(true)
-        router.push("/")
+        router.replace("/")
+        router.refresh()
+        return
       }
 
       if (!userData?.created) {
@@ -47,7 +54,17 @@ export default function StepTwo() {
       logError("User not setup yet", err)
       router.push("/onboarding")
     })
-  }, [isLoaded, user, router, setOnboardingComplete])
+  }, [isLoaded, user, router, setOnboardingComplete, refreshUserDetails])
+
+  const finishOnboarding = async () => {
+    // Refresh the same query the sidebar reads before leaving onboarding.
+    const { data, error } = await refreshUserDetails()
+    if (error) throw error
+    if (!data?.onboarded) throw new Error("Your company setup is not complete yet. Please try again.")
+    setOnboardingComplete(true)
+    router.replace("/")
+    router.refresh()
+  }
 
   const companyCodeSchema = z.object({
     companyCode: z.string().min(2, {message: "Company Invite Code is required a minimum of 2 characters"}),
@@ -75,14 +92,13 @@ export default function StepTwo() {
         cache: "no-store",
       })
       if (!res.ok) {
-        new Error("Failed to create company")
+        throw new Error("Failed to join company")
       }
 
-      toast("Company Created", {
+      await finishOnboarding()
+      toast("Company joined", {
         description: "Last step of onboarding has been completed",
       })
-      setOnboardingComplete(true)
-      router.push("/")
     } catch (e) {
       if (e instanceof Error) {
         toast("Error", {
@@ -130,14 +146,13 @@ export default function StepTwo() {
         cache: "no-store",
       })
       if (!res.ok) {
-        new Error("Failed to create company")
+        throw new Error("Failed to create company")
       }
 
+      await finishOnboarding()
       toast("Company Created", {
         description: "Last step of onboarding has been completed",
       })
-      setOnboardingComplete(true)
-      router.push("/")
     } catch (e) {
       if (e instanceof Error) {
         toast("Error", {
@@ -185,7 +200,7 @@ export default function StepTwo() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit" disabled={companyCodeForm.formState.isSubmitting}>Continue</Button>
                   </form>
                 </Form>
               </AccordionContent>
@@ -221,7 +236,7 @@ export default function StepTwo() {
                         </FormItem>
                       )}
                     />
-                    <Button type="submit">Continue</Button>
+                    <Button type="submit" disabled={companyForm.formState.isSubmitting}>Continue</Button>
                   </form>
                 </Form>
               </AccordionContent>

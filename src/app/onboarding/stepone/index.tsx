@@ -72,7 +72,7 @@ export default function StepOne() {
         cache: "no-store",
       })
       if (!res.ok) {
-        new Error("Failed to create account")
+        throw new Error("Failed to create account")
       }
 
       toast("Account Created", {
