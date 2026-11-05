@@ -18,8 +18,6 @@ import {
   SidebarMenuItem,
   SidebarHeader, SidebarFooter
 } from "~/components/ui/sidebar";
-import { useAtomValue } from "jotai";
-import { hasCompletedOnboardingAtom } from "~/lib/statemanager";
 import { useFlags } from "@flags-gg/react-library";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -29,9 +27,7 @@ export default function Standard() {
   const {is} = useFlags();
   const {user} = useUser();
 
-  const hasCompletedOnboarding = useAtomValue(hasCompletedOnboardingAtom);
-
-  if (!hasCompletedOnboarding || !user) {
+  if (!user) {
     return null
   }
 
