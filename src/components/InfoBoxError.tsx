@@ -1,4 +1,5 @@
 import {Card, CardContent, CardHeader, CardTitle} from "~/components/ui/card";
+import Link from "next/link";
 
 export async function InfoBoxError({ name, blurb }: { name: string, blurb: string }) {
   return (
@@ -8,7 +9,7 @@ export async function InfoBoxError({ name, blurb }: { name: string, blurb: strin
         </CardHeader>
         <CardContent className={"p-6 text-sm"}>
           <p>There was an error loading the {name} information. Please try again later.</p>
-          <p>If this error persists, please contact support.</p>
+          <p>If this error persists, please <Link href="/support" className="underline underline-offset-4">contact support</Link>.</p>
           <p>Error: {blurb}</p>
         </CardContent>
       </Card>
