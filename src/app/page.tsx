@@ -14,6 +14,7 @@ import {
 import { APIKeyCreator, Flag } from "~/lib/interfaces";
 import { logError } from "~/lib/logger";
 import { getDashboardSummary } from "~/server/get-dashboard-summary";
+import { InfoBoxError } from "~/components/InfoBoxError";
 
 function formatTimestamp(value?: string): string {
   if (!value) {
@@ -58,7 +59,10 @@ export default async function Home() {
   }
 
   const details = await getUserDetailsServer();
-  if (details && !details.onboarded) {
+  if (!details) {
+    return <InfoBoxError name="account" blurb="We could not check your account setup. Please try again." />;
+  }
+  if (!details.onboarded) {
     redirect("/onboarding");
   }
 
