@@ -1,3 +1,4 @@
+import { CompanyWebhooks } from "~/components/webhooks/company-webhooks";
 import Info from "./info";
 import Settings from "./settings";
 import Users from "./users";
@@ -13,6 +14,7 @@ export default async function Company() {
         { value: "overview", label: "Overview", content: <div className="grid items-start gap-4 lg:grid-cols-2"><Info /><Settings /></div> },
         { value: "users", label: "Users", content: <Users /> },
         { value: "integrations", label: "Integrations", content: <Integrations /> },
+        { value: "webhooks", label: "Webhooks", content: <CompanyWebhooks /> },
       ]} />
     </div>
   );
