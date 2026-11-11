@@ -10,7 +10,7 @@ import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/lib/utils";
 import type { FlagState, TargetingRule } from "~/lib/interfaces";
-import { Target } from "lucide-react";
+import { ChevronDown, LoaderCircle, Target } from "lucide-react";
 import { RulesEditor } from "./rules-editor";
 import { logError } from "~/lib/logger";
 
@@ -23,7 +23,7 @@ async function send(url: string, method: string, body: unknown) {
   }
 }
 
-// The pill reads at a glance (On / 25% / Off); clicking opens the on/off switch and the rollout slider.
+// The main button toggles immediately; the chevron opens rollout and targeting controls.
 export function StateCell({ name, env, state }: { name: string, env: string, state: FlagState }) {
   const router = useRouter();
   const [enabled, setEnabled] = useState(state.enabled);
@@ -34,6 +34,7 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
   const [editing, setEditing] = useState(false);
 
   const run = async (what: string, fn: () => Promise<void>) => {
+    if (busy) return;
     setBusy(true);
     try {
       await fn();
@@ -83,29 +84,53 @@ export function StateCell({ name, env, state }: { name: string, env: string, sta
   return (
     <span className="inline-flex flex-col items-center gap-0.5">
     <Popover onOpenChange={open => open && setDraft(rollout)}>
-      <PopoverTrigger asChild>
+      <span className={cn(
+        "inline-flex items-stretch rounded-md border text-xs font-medium tabular-nums",
+        !enabled && "border-border text-muted-foreground",
+        enabled && !partial && "border-emerald-500/40 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+        partial && "border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-300",
+      )}>
         <button
           type="button"
-          aria-label={`${name} in ${env}: ${label}${targeted ? `, ${rules.length} targeting rule${rules.length > 1 ? "s" : ""}` : ""}. Edit`}
+          disabled={busy}
+          aria-label={`Turn ${enabled ? "off" : "on"} ${name} in ${env}`}
+          aria-busy={busy}
+          title={`Turn ${enabled ? "off" : "on"} ${name} in ${env}`}
+          onClick={toggle}
           className={cn(
-            "inline-flex min-w-16 items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium tabular-nums transition-colors",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-            !enabled && "border-border text-muted-foreground hover:bg-muted",
-            enabled && !partial && "border-emerald-500/40 bg-emerald-500/15 text-emerald-700 hover:bg-emerald-500/25 dark:text-emerald-300",
-            partial && "border-amber-500/40 bg-amber-500/15 text-amber-700 hover:bg-amber-500/25 dark:text-amber-300",
-            busy && "opacity-60",
+            "inline-flex min-w-16 items-center justify-center gap-1.5 rounded-l-md px-2.5 py-1.5 transition-colors",
+            "focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-wait disabled:opacity-60",
+            !enabled ? "hover:bg-muted" : partial ? "hover:bg-amber-500/10" : "hover:bg-emerald-500/10",
           )}
         >
-          <span aria-hidden className={cn("size-1.5 rounded-full", !enabled ? "border border-current" : "bg-current")} />
+          {busy ? <LoaderCircle aria-hidden className="size-3 animate-spin" /> : (
+            <span aria-hidden className={cn("size-1.5 rounded-full", !enabled ? "border border-current" : "bg-current")} />
+          )}
           {label}
           {targeted && <Target aria-hidden className="size-3" />}
         </button>
-      </PopoverTrigger>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            disabled={busy}
+            aria-label={`${name} in ${env}: ${label}${targeted ? `, ${rules.length} targeting rule${rules.length > 1 ? "s" : ""}` : ""}. Edit`}
+            title="Advanced options: rollout and targeting"
+            className={cn(
+              "inline-flex items-center justify-center rounded-r-md border-l border-current/20 px-1.5 transition-colors",
+              "focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-wait disabled:opacity-60",
+              !enabled ? "hover:bg-muted" : partial ? "hover:bg-amber-500/10" : "hover:bg-emerald-500/10",
+            )}
+          >
+            <ChevronDown aria-hidden className="size-3.5" />
+          </button>
+        </PopoverTrigger>
+      </span>
       <PopoverContent className="w-72 space-y-4" align="start"
         // The rules dialog is portalled outside this popover; keep the controls and draft while it has focus.
         onInteractOutside={event => { if (editing) event.preventDefault(); }}>
         <div>
-          <p className="text-sm font-medium">{name}</p>
+          <p className="text-sm font-medium">Advanced options</p>
+          <p className="mt-1 text-sm">{name}</p>
           <p className="text-xs text-muted-foreground">{env}</p>
         </div>
         <div className="flex items-center justify-between">
